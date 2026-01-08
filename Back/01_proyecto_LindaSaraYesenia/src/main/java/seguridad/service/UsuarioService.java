@@ -7,15 +7,23 @@ import seguridad.model.Usuario;
 
 public interface UsuarioService {
 	
-	Usuario findById(String username);
-	Usuario findByUsernamePassword(String username, String password);
+	Usuario findById(Integer idUsuario);
+	Usuario findByEmail(String email);
+	
 	List<Usuario> findAll();
+	
 	Usuario registrarCliente(Usuario usuario);
+	Usuario registrarUsuarios(Usuario usuario);
+	
+	
 	List<Usuario> findByPerfil(int idPerfil);
-	int deleteById(String username);
+	
+	int deleteById(Integer idUsuario);
+	
 	Usuario updateUsuario(Usuario usuario);
 	
 	String normalizePassword(String raw);
-	Usuario saveUsuario(Usuario usuario); 
+	
+	 List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
 
 }

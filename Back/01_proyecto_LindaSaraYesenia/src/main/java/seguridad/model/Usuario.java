@@ -14,6 +14,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -34,6 +36,10 @@ public class Usuario implements UserDetails, Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@Column(name="id_usuario")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer idUsuario;
+	
 	private String username;
 	private String password;
 	private String nombre;
@@ -45,12 +51,27 @@ public class Usuario implements UserDetails, Serializable{
 	private LocalDate fechaNacimiento;
 	@Column(name = "direccion")
 	private String direccion;
+	@Column(unique = true)
+	private String email;
+	
 	@ManyToOne
 	@JoinColumn(name="id_perfil")
 	private Perfil perfil;
 
 	
 	
+	public Integer getIdUsuario() {
+		return idUsuario;
+	}
+
+
+
+	public void setIdUsuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+
+
 	public String getUsername() {
 		return username;
 	}
@@ -147,6 +168,18 @@ public class Usuario implements UserDetails, Serializable{
 
 
 
+	public String getEmail() {
+		return email;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+
 	public Perfil getPerfil() {
 		return perfil;
 	}
@@ -155,12 +188,6 @@ public class Usuario implements UserDetails, Serializable{
 
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
-	}
-
-
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 

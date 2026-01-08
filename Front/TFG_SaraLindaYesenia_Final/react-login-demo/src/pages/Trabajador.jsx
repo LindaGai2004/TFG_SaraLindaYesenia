@@ -54,7 +54,7 @@ export default function Trabajador() {
       <section id="sidebar">
         <a href="#" className="brand">
           <i className='bx bxs-smile'></i>
-          <span className="text">TrabajadorHub</span>
+          <span>TrabajadorHub</span>
         </a>
         
         <ul className="side-menu top">
@@ -66,7 +66,7 @@ export default function Trabajador() {
             >
               <a href={item.href}>
                 <i className={`bx ${item.icon}`}></i>
-                <span className="text">{item.text}</span>
+                <span>{item.text}</span>
               </a>
             </li>
           ))}
@@ -76,7 +76,7 @@ export default function Trabajador() {
           <li>
             <a href="#" className="logout">
               <i className='bx bx-power-off'></i>
-              <span className="text" onClick={logout}>Logout</span>
+              <span onClick={logout}>Logout</span>
             </a>
           </li>
         </ul>
@@ -151,21 +151,21 @@ export default function Trabajador() {
           <ul className="box-info">
             <li>
               <i className='bx bxs-calendar-check'></i>
-              <span className="text">
+              <span>
                 <h3>1020</h3>
                 <p>Tareas Completadas</p>
               </span>
             </li>
             <li>
               <i className='bx bxs-group'></i>
-              <span className="text">
+              <span>
                 <h3>{clientes.length}</h3>
                 <p>Clientes</p>
               </span>
             </li>
             <li>
               <i className='bx bxs-dollar-circle'></i>
-              <span className="text">
+              <span>
                 <h3>$2543.00</h3>
                 <p>Total Sales</p>
               </span>

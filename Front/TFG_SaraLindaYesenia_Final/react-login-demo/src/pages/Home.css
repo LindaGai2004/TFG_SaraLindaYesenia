@@ -1569,7 +1569,7 @@
 .texto-logro {
   font-size: 18px;
   color: #555;
-  margin-top: 8px;
+  margin-top: 8px !important;
 }
 
 

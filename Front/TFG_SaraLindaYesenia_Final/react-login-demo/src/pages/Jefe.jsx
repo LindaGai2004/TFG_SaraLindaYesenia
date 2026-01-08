@@ -7,6 +7,8 @@ export default function Jefe() {
   const [misDatos, setMisDatos] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [trabajadores, setTrabajadores] = useState([]);
+
+
   const [darkMode, setDarkMode] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState(0);
 
@@ -29,7 +31,7 @@ export default function Jefe() {
     fechaNacimiento: "",
     enabled: 1,
     fechaRegistro: new Date().toISOString().split('T')[0],
-    idPerfil: 3 // Trabajadores tienen idPerfil 3
+    idPerfil: 3 
   });
 
   // Cargar datos de la API
@@ -209,7 +211,7 @@ export default function Jefe() {
       <section id="sidebar">
         <a href="#" className="brand">
           <i className='bx bxs-smile'></i>
-          <span className="text">JefeHub</span>
+          <span>JefeHub</span>
         </a>
         
         <ul className="side-menu top">
@@ -221,7 +223,7 @@ export default function Jefe() {
             >
               <a href={item.href}>
                 <i className={`bx ${item.icon}`}></i>
-                <span className="text">{item.text}</span>
+                <span>{item.text}</span>
               </a>
             </li>
           ))}
@@ -231,7 +233,7 @@ export default function Jefe() {
           <li>
             <a href="#" className="logout">
               <i className='bx bx-power-off'></i>
-              <span className="text" onClick={logout}>Logout</span>
+              <span onClick={logout}>Logout</span>
             </a>
           </li>
         </ul>
@@ -304,21 +306,21 @@ export default function Jefe() {
           <ul className="box-info">
             <li>
               <i className='bx bxs-briefcase'></i>
-              <span className="text">
+              <span>
                 <h3>{trabajadores.length}</h3>
                 <p>Trabajadores</p>
               </span>
             </li>
             <li>
               <i className='bx bxs-group'></i>
-              <span className="text">
+              <span>
                 <h3>{clientes.length}</h3>
                 <p>Clientes</p>
               </span>
             </li>
             <li>
               <i className='bx bxs-dollar-circle'></i>
-              <span className="text">
+              <span>
                 <h3>$2543.00</h3>
                 <p>Total Sales</p>
               </span>
