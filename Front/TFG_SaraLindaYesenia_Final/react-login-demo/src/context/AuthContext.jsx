@@ -54,9 +54,10 @@ export function AuthProvider({ children }) {
   }, []);
 
   // Login: llama al backend y guarda el user normalizado
-  async function login(username, password) {
+  //Ahora Actualizado para ingresar con email NO username
+  async function login(email, password) {
     try {
-      const res = await apiPost('/api/login', { username, password });
+      const res = await apiPost('/api/login', { email, password });
       // apiPost debe devolver el usuario (JSON) o lanzar error
       const normalized = normalizeUser(res);
       setUser(normalized);

@@ -8,7 +8,7 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -50,7 +50,7 @@ export default function Login() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    const user = await login(username, password);
+    const user = await login(email, password);
     if (!user) {
       setError('Credenciales inválidas');
       return;
@@ -118,8 +118,8 @@ export default function Login() {
             className="login-input"
             type="email"
             placeholder='Correo electrónico *'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <label className="login-label"></label>
