@@ -29,7 +29,6 @@ public class ProductoServiceImpl implements ProductoService{
 
 	@Override
 	public Producto insertarProducto(Producto producto) {
-		if (findOne(producto.getIdProducto()) == null) {
 			
 			try {
 				return productoRepository.save(producto);
@@ -37,8 +36,6 @@ public class ProductoServiceImpl implements ProductoService{
 				throw new RuntimeException("Error al insertar producto: " + e.getMessage());
 			}
 			
-		}else
-			return null;
 	}
 
 
