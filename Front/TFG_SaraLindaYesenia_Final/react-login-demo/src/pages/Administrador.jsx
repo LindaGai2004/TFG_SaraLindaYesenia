@@ -211,10 +211,10 @@ export default function Administrador() {
   };
 
   const menuItems = [
-    { text: 'Administrador', href: '#', icon: 'bxs-dashboard', img:'/icon-des.png' },
-    { text: 'Jefe', href: '#', icon: 'bxs-group' },
-    { text: 'Trabajador', href: '#', icon: 'bxs-briefcase' },
-    { text: 'Cliente', href: '#', icon: 'bxs-user' }
+    { text: 'Administrador', href: '#' },
+    { text: 'Jefe', href: '#'},
+    { text: 'Trabajador', href: '#' },
+    { text: 'Cliente', href: '#' }
   ];
 
   // Render para la vista "Administrador" (solo mis datos y box-info)
@@ -263,21 +263,21 @@ export default function Administrador() {
       <ul className="box-info">
         <li>
           <i className='bx bxs-calendar-check'></i>
-          <span className="text">
+          <span>
             <h3>1020</h3>
             <p>New Order</p>
           </span>
         </li>
         <li>
           <i className='bx bxs-group'></i>
-          <span className="text">
+          <span>
             <h3>{clientes.length}</h3>
             <p>Clientes</p>
           </span>
         </li>
         <li>
           <i className='bx bxs-dollar-circle'></i>
-          <span className="text">
+          <span>
             <h3>$2543.00</h3>
             <p>Total Sales</p>
           </span>
@@ -374,7 +374,6 @@ export default function Administrador() {
       {/* SIDEBAR */}
       <section id="sidebar">
         <a href="#" className="brand">
-          <i className='bx bxs-smile'></i>
           
         </a>
         
@@ -387,7 +386,7 @@ export default function Administrador() {
               >
                 {item.img && <img src={item.img} alt={item.text} className="menu-img" />}
                 <i className={`bx ${item.icon}`}></i>
-                <span className="text">{item.text}</span>
+                <span>{item.text}</span>
               </a>
             </li>
           ))}
@@ -397,7 +396,7 @@ export default function Administrador() {
           <li>
             <a href="#" className="logout" onClick={(e) => { e.preventDefault(); logout(); }}>
               <i className='bx bx-power-off'></i>
-              <span className="text">Logout</span>
+              <span>Logout</span>
             </a>
           </li>
         </ul>
