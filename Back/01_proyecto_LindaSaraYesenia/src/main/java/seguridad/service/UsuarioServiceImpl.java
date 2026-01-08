@@ -1,181 +1,201 @@
-package seguridad.service;
-
-import java.time.LocalDate;
+	package seguridad.service;
+	
+	import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+	import org.springframework.security.core.userdetails.UserDetails;
+	import org.springframework.security.core.userdetails.UserDetailsService;
+	import org.springframework.security.core.userdetails.UsernameNotFoundException;
+	import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+	import org.springframework.stereotype.Service;
+	
+	import seguridad.model.Perfil;
+	import seguridad.model.Rol;
+	import seguridad.model.Usuario;
+	import seguridad.repository.PerfilRepository;
+	import seguridad.repository.UsuarioRepository;
+	@Service
+	public class UsuarioServiceImpl implements UsuarioService, UserDetailsService{
+	
+	@Autowired
+		private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	    private PerfilRepository perfilRepository;
+	
+	
+	
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+	
+		Usuario usuario = usuarioRepository.findByEmail(email)
+	                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
+		
+		return usuario;
+	}
+	
+	@Override
+	public Usuario findById(Integer idUsuario) {
+		return usuarioRepository.findById(idUsuario).orElse(null);
+	}
+	
+	@Override
+	public Usuario findByEmail(String email) {
+		return usuarioRepository.findByEmail(email).orElse(null);
+	}
+	
+	/*
+	@Override
+	public Usuario findByEmailPassword(String email, String password) {
+	        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+	        if (usuario != null && usuario.getPassword().equals("{noop}" + password)) {
+	           return usuario;
+	        } else {
+	        return null;
+	        }
+	}
+	*/
+	
+	@Override
+	public List<Usuario> findAll() {
+		return usuarioRepository.findAll();
+	}
+	
+	@Override
+	public Usuario registrarCliente(Usuario usuario) {
+	
+	   if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+	       throw new RuntimeException("El email ya está registrado");
+	   }
+	
+	   
+	   if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
+	       throw new RuntimeException("Password requerida");
+	   }
+	   //el service se asegura de añadir {noop} si hace falta
+	   String password = usuario.getPassword();
+	   if (!password.startsWith("{noop}")) {
+	       usuario.setPassword("{noop}" + password);
+	   } else {
+	       usuario.setPassword(password);
+	   }
+	
+	   usuario.setFechaRegistro(LocalDate.now());
+	
+	   if (usuario.getDireccion() == null)
+	    usuario.setDireccion("");
+	
+	   if (usuario.getEnabled() == 0)
+	    usuario.setEnabled(1);
+	
+	 
+	   if (usuario.getPerfil() == null || usuario.getPerfil().getIdPerfil() == 0) {
+	       Perfil perfilCliente = perfilRepository.findById(2).orElseThrow(()
+	        -> new RuntimeException("El perfil cliente no existe"));
+	       usuario.setPerfil(perfilCliente);
+	   } 
+	   return usuarioRepository.save(usuario);
+	}
+	
+	//añadir jefe y trabajador
+	@Override
+	public Usuario registrarUsuarios(Usuario usuario) {
+		
+		if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+		       throw new RuntimeException("El email ya está registrado");
+		   }
+		
+		   
+		   if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
+		       throw new RuntimeException("Password requerida");
+		   }
+		   //el service se asegura de añadir {noop} si hace falta
+		   String password = usuario.getPassword();
+		   if (!password.startsWith("{noop}")) {
+		       usuario.setPassword("{noop}" + password);
+		   } else {
+		       usuario.setPassword(password);
+		   }
+		
+		   usuario.setFechaRegistro(LocalDate.now());
+		
+		   if (usuario.getDireccion() == null)
+		    usuario.setDireccion("");
+		
+		   if (usuario.getEnabled() == 0)
+		    usuario.setEnabled(1);
 
-import seguridad.model.Perfil;
-import seguridad.model.Rol;
-import seguridad.model.Usuario;
-import seguridad.repository.PerfilRepository;
-import seguridad.repository.UsuarioRepository;
-@Service
-public class UsuarioServiceImpl implements UsuarioService, UserDetailsService{
+		   if (usuario.getPerfil() == null || usuario.getPerfil().getIdPerfil() == 0) {
+			    throw new RuntimeException("Perfil obligatorio");
+			}
+		   
+		   Integer idPerfil = usuario.getPerfil().getIdPerfil();
+		   Perfil perfilDB = perfilRepository.findById(idPerfil)
+		        .orElseThrow(() -> new RuntimeException("Perfil con ID " + idPerfil + " no existe"));
+		   usuario.setPerfil(perfilDB);
+		   
+		
+		   return usuarioRepository.save(usuario);
+	}
+	
+	
+	@Override
+	public List<Usuario> findByPerfil(int idPerfil) {
+		return usuarioRepository.findByPerfil_IdPerfil(idPerfil);
+	}
+	
+	//ELIMINAR
+	@Override
+	public int deleteById(Integer idUsuario) {
 
-@Autowired
-private UsuarioRepository usuarioRepository;
+	   boolean exists = usuarioRepository.existsById(idUsuario);
+	   if (!exists) {
+	       return 0;
+	   }else {
+	   usuarioRepository.deleteById(idUsuario);
+	   return 1;
+	   }
+	}
+	
+	
+	//MODIFICAR
+	@Override
+	public Usuario updateUsuario(Usuario usuario) {
 
-@Autowired
-    private PerfilRepository perfilRepository;
+	   return usuarioRepository.save(usuario);
+	}
+	
+	
+	public String normalizePassword(String raw) {
+		  if (raw == null)
+		   
+		   return null;
+		String cleaned = raw.replace("{noop}", "").trim();
+		   
+		   return "{noop}" + cleaned;
+		}
 
+	//BUSCAR POR NOMBRE, USERMANE, ETC
+	@Override
+	public List<Usuario> FindByRolAndTexto(int idPerfil, String texto) {
+	    List<Usuario> porEmail = usuarioRepository.findByPerfil_IdPerfilAndEmailContainingIgnoreCase(idPerfil, texto);
+	    List<Usuario> porNombre = usuarioRepository.findByPerfil_IdPerfilAndNombreContainingIgnoreCase(idPerfil, texto);
+	    List<Usuario> porUsername = usuarioRepository.findByPerfil_IdPerfilAndUsernameContainingIgnoreCase(idPerfil, texto);
 
+	    Set<Usuario> resultado = new HashSet<>();
+	    resultado.addAll(porEmail);
+	    resultado.addAll(porNombre);
+	    resultado.addAll(porUsername);
 
-@Override
-public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-/*return usuarioRepository.findById(username).orElse(null);*/
-return usuarioRepository.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
-}
-
-@Override
-public Usuario findById(String username) {
-return usuarioRepository.findById(username).orElse(null);
-}
-
-@Override
-public Usuario findByUsernamePassword(String username, String password) {
-// return usuarioRepository.findByUsernameAndPassword(username, password);
-        Usuario usuario = usuarioRepository.findById(username).orElse(null);
-        //si funciona username, y password hay que agregar con {noop} y comparar con sql
-        if (usuario != null && usuario.getPassword().equals("{noop}" + password)) {
-           return usuario;
-        } else {
-        return null;
-        }
-}
-
-@Override
-public List<Usuario> findAll() {
-return usuarioRepository.findAll();
-}
-
-@Override
-public Usuario registrarCliente(Usuario usuario) {
-
-   if (usuarioRepository.existsById(usuario.getUsername())) {
-       throw new RuntimeException("El usuario ya existe");
-   }
-
-   
-   if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
-       throw new RuntimeException("Password requerida");
-   }
-   //el service se asegura de añadir {noop} si hace falta
-   String password = usuario.getPassword();
-   if (!password.startsWith("{noop}")) {
-       usuario.setPassword("{noop}" + password);
-   } else {
-       usuario.setPassword(password);
-   }
-   //dia registro siempre ser hoy
-   usuario.setFechaRegistro(LocalDate.now());
-   
-   //direccion puede ser null
-   if (usuario.getDireccion() == null)
-    usuario.setDireccion("");
-
-   // enabled por defecto si no viene; enabled puede ser actica(1) o no actica(2)
-   if (usuario.getEnabled() == 0)
-    usuario.setEnabled(1);
-
- 
-   if (usuario.getPerfil() == null || usuario.getPerfil().getIdPerfil() == 0) {
-    // Si el frontend NO manda perfil -> asignar cliente (2) por defecto
-       Perfil perfilCliente = perfilRepository.findById(2).orElseThrow(()
-        -> new RuntimeException("El perfil cliente no existe"));
-       usuario.setPerfil(perfilCliente);
-   } else {
-       // Si viene idPerfil -> buscar entidad; si funciona vuelve usuario, si no sale error con orElseThrow
-       Integer idPerfil = usuario.getPerfil().getIdPerfil();
-       Perfil perfilDB = perfilRepository.findById(idPerfil)
-           .orElseThrow(() -> new RuntimeException("Perfil con ID " + idPerfil + " no existe"));
-       usuario.setPerfil(perfilDB);
-   }
-
-   return usuarioRepository.save(usuario);
-}
+	    return new ArrayList<>(resultado);
+	}
 
 
-@Override
-public List<Usuario> findByPerfil(int idPerfil) {
-return usuarioRepository.findByPerfil_IdPerfil(idPerfil);
-}
 
-@Override
-public int deleteById(String username) {
-   // comprobamos existencia
-   boolean exists = usuarioRepository.existsById(username);
-   if (!exists) {
-       return 0; //no elimina
-   }
-   usuarioRepository.deleteById(username);
-   return 1; // exito, elimina
-}
-
-//Modificar
-@Override
-public Usuario updateUsuario(Usuario usuario) {
-//
-   Usuario existente = usuarioRepository.findById(usuario.getUsername())
-           .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-   // Actualizar básicos
-   if (usuario.getNombre() != null)
-    existente.setNombre(usuario.getNombre());
-   if (usuario.getApellidos() != null)
-    existente.setApellidos(usuario.getApellidos());
-   if (usuario.getDireccion() != null)
-    existente.setDireccion(usuario.getDireccion());
-   if (usuario.getFechaNacimiento() != null)
-    existente.setFechaNacimiento(usuario.getFechaNacimiento());
-
-   // Si viene password nueva, guardarla
-   if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
-       existente.setPassword(usuario.getPassword());
-   }
-
-   if (usuario.getFechaRegistro() != null)
-       existente.setFechaRegistro(usuario.getFechaRegistro());
- 
-    try {
-    existente.setEnabled(usuario.getEnabled());
-} catch (Exception e) {
-
-}
-
-   if (usuario.getPerfil() != null && usuario.getPerfil().getIdPerfil() != 0) {
-       Perfil perfilDB = perfilRepository.findById(usuario.getPerfil().getIdPerfil())
-               .orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
-       existente.setPerfil(perfilDB);
-   }
-
-   return usuarioRepository.save(existente);
-}
-
-
-//para no sale doble vez {noop}
-public String normalizePassword(String raw) {
-   if (raw == null)
-   
-    return null;
-   String cleaned = raw.replace("{noop}", "").trim();
-   
-   return "{noop}" + cleaned;
-}
-
-@Override
-public Usuario saveUsuario(Usuario usuario) {
-   if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
-       usuario.setPassword(normalizePassword(usuario.getPassword()));
-   }
-   return usuarioRepository.save(usuario);
-}
-
-}
+	
+	
+	}

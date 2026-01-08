@@ -16,6 +16,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -40,19 +43,19 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         // /** -> todas las rutas en controller; para todas las rutas permite 5137
         // vuelve a spring
-        return source;
+        	return source;
         /* Esquema  de cors
           传入请求: GET /api/usuarios
           ↓
-Spring Security 询问: "/api/usuarios 有什么 CORS 规则?"
-        ↓
-UrlBasedCorsConfigurationSource 查找: "/** 匹配 /api/usuarios"
-        ↓
-返回: config (允许 localhost:5173,所有方法等)
-        ↓
-Spring Security 应用这些规则
-          */
-    }
+			Spring Security 询问: "/api/usuarios 有什么 CORS 规则?"
+			        ↓
+			UrlBasedCorsConfigurationSource 查找: "/** 匹配 /api/usuarios"
+			        ↓
+			返回: config (允许 localhost:5173,所有方法等)
+			        ↓
+			Spring Security 应用这些规则
+			          */
+			    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider) throws Exception {
@@ -67,7 +70,7 @@ Spring Security 应用这些规则
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
            
             // las rutas no necesita verificar
-            .requestMatchers("/api/login", "/registro", "/todos", "/actuator/health").permitAll()
+            .requestMatchers("/api/login", "/registro", "/todos", "/actuator/health","/todos/productos").permitAll()
            
             //las rutas hay que verificar
             //Crear usuario -> admin y jefe se permite crear usaurio
@@ -88,10 +91,17 @@ Spring Security 应用这些规则
     return http.build();
     }
    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
     //Verificar username y password si esta bien -> buscar en sql
     @Bean
+    @SuppressWarnings("unused")
     AuthenticationProvider authenticationProvider(UserDetailsService uds) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(uds);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(uds);
+        provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
     @Bean

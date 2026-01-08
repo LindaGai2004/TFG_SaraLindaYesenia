@@ -13,40 +13,40 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor @NoArgsConstructor @Data @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 @Entity
-@Table(name="PERFILES")
-public class Perfil implements Serializable{
-	
-	
+@Table(name = "categoria_papeleria")
+public class CategoriaPapeleria implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
 	@Id
-	@Column(name="ID_PERFIL")
-	@GeneratedValue(strategy =GenerationType.IDENTITY )
+	@Column(name = "id_categoria_papeleria")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer idCategoriaPapeleria;
 	
-	private int idPerfil;
 	private String nombre;
-	
-	
-	public int getIdPerfil() {
-		return idPerfil;
+
+	public Integer getIdCategoriaPapeleria() {
+		return idCategoriaPapeleria;
 	}
-	public void setIdPerfil(int idPerfil) {
-		this.idPerfil = idPerfil;
+
+	public void setIdCategoriaPapeleria(Integer idCategoriaPapeleria) {
+		this.idCategoriaPapeleria = idCategoriaPapeleria;
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
-
 	
 	
 
