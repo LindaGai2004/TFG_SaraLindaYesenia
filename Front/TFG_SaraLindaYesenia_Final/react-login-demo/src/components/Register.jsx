@@ -5,6 +5,7 @@ import { apiPost } from '../api/api';
 import { Headphones, User, Search, ShoppingCart } from 'lucide-react';
 
 export default function Register() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -87,7 +88,8 @@ export default function Register() {
     if (!validate()) return;
     try {
       await apiPost('/registro', {
-        username: email,
+        username: username,
+        email: email,
         password,
         nombre: name,
         apellidos: surname,
@@ -97,6 +99,7 @@ export default function Register() {
         perfil: { idPerfil: 2 }
       });
       setOk(true);
+      setUsername("");
       setEmail("");
       setPassword("");
       setName("");
@@ -145,6 +148,18 @@ export default function Register() {
         <form onSubmit={onSubmit}>
           <h2 className="titulo-registro">Registro</h2>
 
+          <div className="registro-bloque">
+            <label className="registro-label"></label>
+            <input
+              className="registro-input"
+              placeholder='Usuario *'
+              type="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            {errors.email && <p className="error">{errors.email}</p>}
+          </div>
           <div className="registro-bloque">
             <label className="registro-label"></label>
             <input
