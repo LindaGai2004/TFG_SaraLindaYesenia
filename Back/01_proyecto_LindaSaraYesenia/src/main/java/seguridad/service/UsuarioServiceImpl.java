@@ -71,7 +71,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 	   if (usuarioRepository.existsByEmail(usuario.getEmail())) {
 	       throw new RuntimeException("El email ya está registrado");
 	   }
-	
+	   if (usuarioRepository.existsByUsername(usuario.getUsername() )) { // 
+	       throw new RuntimeException("El usuario ya está registrado");
+	   }
 	   
 	   if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
 	       throw new RuntimeException("Password requerida");
