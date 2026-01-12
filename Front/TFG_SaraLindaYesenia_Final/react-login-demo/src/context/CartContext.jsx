@@ -10,7 +10,13 @@ export const useCart = () => useContext(CartContext);
 export function CartProvider({ children }) {
   //Un carrito es una lista de items que se inicializa vacio
   const [cartItems, setCartItems] = useState([]);
-
+  function addToCart(producto) {
+      if (producto==null){
+        //here would go what happens if the product isnt in the cart
+      }else{
+        //and here if the product already exists so +1
+      }
+  }
   //Abrir el carrito guardado
   useEffect(() => {
     const storedCart = localStorage.getItem('cartItems');
@@ -32,6 +38,7 @@ export function CartProvider({ children }) {
   //Visible para los componentes
   const value = {
     cartItems,
+    addToCart,
     setCartItems, // we’ll replace this later with addToCart, removeFromCart
   };
 
