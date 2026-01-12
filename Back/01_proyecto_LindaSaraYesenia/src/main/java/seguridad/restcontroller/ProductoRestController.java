@@ -38,7 +38,7 @@ public class ProductoRestController {
 	
 	
 	@PostMapping("/alta/producto")
-	@PreAuthorize("hasRole('ADMON')") //si no es admin, vuelve error 403
+	@PreAuthorize("hasRole('ROLE_ADMON')") //si no es admin, vuelve error 403
 	public ResponseEntity<?> insertar(@RequestBody Producto producto) {
 	    Producto creado = productoService.insertarProducto(producto);
 	    
