@@ -104,7 +104,10 @@ export default function Login() {
           <div className="separador"></div>
           <Link to="/login" className="accion"><User size={24} /></Link>
           <div className="accion"><Search size={22} className="icono-buscar" /></div>
-          <div className="accion"><ShoppingCart size={22} className="icono-carrito" /></div>
+          {/* Carrito */}
+          <div className="accion" onClick={entrarCarrito}>
+            <ShoppingCart size={22} className="icono-carrito" />
+          </div>
         </div>
       </nav>
 
