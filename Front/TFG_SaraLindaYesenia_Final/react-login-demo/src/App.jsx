@@ -8,7 +8,7 @@ import Administrador from './pages/Administrador';
 import Jefe from './pages/Jefe';
 import Trabajador from './pages/Trabajador';
 import Cliente from './pages/Cliente';
-
+import MiCarrito from './components/MiCarrito';
 export default function App() {
   return (
     <BrowserRouter>
@@ -48,6 +48,14 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
               <Cliente />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/carrito"
+          element={
+            <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
+              <MiCarrito/>
             </ProtectedRoute>
           }
         />

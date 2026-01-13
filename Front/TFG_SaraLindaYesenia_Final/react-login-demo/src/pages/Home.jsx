@@ -1,7 +1,8 @@
 import './Home.css';
-import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, User, ShoppingCart, Headphones } from 'lucide-react';
+import { useState, useRef, useEffect, } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth }  from '../context/AuthContext';
+import { ChevronLeft, ChevronRight, Search, User, ShoppingCart, Headphones, AlertTriangle } from 'lucide-react';
 // Componente estar en pantalla
 function useOnScreen(ref) {
   const [isIntersecting, setIntersecting] = useState(false);
@@ -51,7 +52,16 @@ function Contador({ final, visible }) {
 
 
 export default function Home() {
-
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  function entrarCarrito(){
+    if(!user){
+      alert('Debes loguearte para ver tu carrito');
+      navigate('/login');
+    }else{
+      navigate('/carrito')
+    }
+  }
   // Generos
   useEffect(() => {
     // función del carrusel de géneros
@@ -261,7 +271,7 @@ export default function Home() {
           </div>
 
           {/* Carrito */}
-          <div className="accion">
+          <div className="accion" onClick={entrarCarrito}>
             <ShoppingCart size={22} className="icono-carrito" />
           </div>
         </div>

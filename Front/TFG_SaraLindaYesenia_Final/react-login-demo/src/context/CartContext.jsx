@@ -11,10 +11,19 @@ export function CartProvider({ children }) {
   //Un carrito es una lista de items que se inicializa vacio
   const [cartItems, setCartItems] = useState([]);
   function addToCart(producto) {
-      if (producto==null){
-        //here would go what happens if the product isnt in the cart
-      }else{
-        //and here if the product already exists so +1
+      const productoExistente = cartItems.find(
+        item => item.id_producto === producto.id_producto);
+      if(!productoExistente){
+        const nuevoItem = {...producto, cantidad: 1};
+        setCartItems([...cartItems, nuevoItem]);
+      }
+      else{
+        const carritoActualizado = cartItems.map(
+          item=> item.id_producto === producto.id_producto
+          ? {...item, cantidad: item.cantidad +1}
+          :item
+        );
+        setCartItems(carritoActualizado);
       }
   }
   //Abrir el carrito guardado
