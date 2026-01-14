@@ -31,48 +31,57 @@ create table pedidos
 );
 
 CREATE TABLE categoria_libro (
-	id_categoria_libro int primary key not null auto_increment,
+
+	id_libro int auto_increment primary key not null,
     genero_libro varchar(100) not null 
+    
 );
 
-CREATE TABLE categoria_papeleria (
-	id_categoria_papeleria int primary key not null auto_increment,
-    nombre varchar(100) not null 
+CREATE TABLE categoria_papeleria(
+	id_papeleria int auto_increment primary key not null,
+	categoria varchar(100) not null
 );
+
 
 CREATE TABLE productos (
     id_producto int not null auto_increment primary key,
-    nombre_libro varchar(100) not null,
+    nombre_producto varchar(100) not null,
     descripcion varchar(500),
-    tipo_producto ENUM ('LIBRO', 'PAPELERIA'),
+    tipo_producto ENUM ('LIBRO', 'PAPELERIA') not null,
     precio double not null,
     stock int not null,
     estado varchar(20) not null,
     fecha_alta date not null,
-    costo_real double not null,
-    id_categoria_papeleria int ,
-    id_categoria_libro int,
-	foreign key (id_categoria_papeleria) references categoria_papeleria(id_categoria_papeleria),
-	foreign key (id_categoria_libro) references categoria_libro(id_categoria_libro)
+    costo_real double not null
 
 );
 
 create table detalle_libro(
-	id_detalle_libro int auto_increment not null primary key,
+	id_producto int not null primary key,
 	ISBN long not null,
     idioma varchar(30) not null,
     editorial varchar(50),
     fecha_publicacion date not null,
 	autor varchar(100) not null,
     numero_paginas int not null,
-    id_producto int not null,
-    
+
+	id_libro int,
+    foreign key (id_libro) references categoria_libro (id_libro),   
+    foreign key (id_producto) references productos(id_producto)
+);
+
+CREATE TABLE detalle_papeleria (
+	id_producto int primary key not null,
+    marca varchar(50) not null,
+
+    id_papeleria int,
+    foreign key (id_papeleria) references categoria_papeleria(id_papeleria),
     foreign key (id_producto) references productos(id_producto)
 );
 
 create table detalle_pedido
 (
-	id_detalle_libro int primary key auto_increment not null,
+	id_detalle_pedido int primary key auto_increment not null,
 	id_pedido int not null,
     id_producto int not null,
     cantidad int not null,
@@ -148,7 +157,7 @@ INSERT INTO categoria_libro (genero_libro)VALUES
 ('Manga');
 
 
-INSERT INTO categoria_papeleria (nombre)VALUES
+INSERT INTO categoria_papeleria (categoria)VALUES
 ('Mochilas'),
 ('Agendas'),
 ('Cuadernos, libretas y recambios'),
@@ -169,168 +178,258 @@ INSERT INTO categoria_papeleria (nombre)VALUES
 -- ============================================
 
 -- ========== 50 LIBROS ==========
-INSERT INTO productos (nombre_libro, descripcion, tipo_producto, precio, stock, estado, fecha_alta, costo_real, id_categoria_libro, id_categoria_papeleria) VALUES 
-('Don Quijote de la Mancha', 'Obra maestra de la literatura española', 'libro', 25.50, 15, 'disponible', '2024-01-15', 18.00, 3, NULL),
-('Cien años de soledad', 'Obra cumbre del realismo mágico', 'libro', 22.00, 18, 'disponible', '2024-01-16', 16.00, 3, NULL),
-('La sombra del viento', 'Misterio en la Barcelona de posguerra', 'libro', 19.90, 25, 'disponible', '2024-01-17', 14.50, 3, NULL),
-('El amor en los tiempos del cólera', 'Historia de amor de cincuenta años', 'libro', 20.50, 12, 'disponible', '2024-01-18', 15.00, 3, NULL),
-('Crimen y castigo', 'Novela psicológica sobre culpa y redención', 'libro', 24.00, 10, 'disponible', '2024-01-19', 17.50, 3, NULL),
-('Rayuela', 'Novela experimental de lectura múltiple', 'libro', 21.90, 8, 'disponible', '2024-01-20', 16.00, 3, NULL),
-('La casa de los espíritus', 'Saga familiar en Chile', 'libro', 23.50, 14, 'disponible', '2024-01-21', 17.00, 3, NULL),
-('Los pilares de la tierra', 'Épica medieval sobre una catedral', 'libro', 26.90, 20, 'disponible', '2024-01-22', 19.50, 3, NULL),
-('El túnel', 'Novela psicológica sobre obsesión', 'libro', 15.90, 22, 'disponible', '2024-01-23', 11.50, 3, NULL),
-('La ciudad y los perros', 'Vida en un colegio militar', 'libro', 19.50, 11, 'disponible', '2024-01-24', 14.00, 3, NULL),
-('Pedro Páramo', 'Realismo mágico y fantasmas', 'libro', 14.90, 19, 'disponible', '2024-01-26', 10.50, 3, NULL),
-('Como agua para chocolate', 'Romance y recetas en la Revolución', 'libro', 18.50, 24, 'disponible', '2024-01-27', 13.50, 3, NULL),
-('El juego del ángel', 'Segunda parte del Cementerio de Libros', 'libro', 22.50, 17, 'disponible', '2024-01-29', 16.50, 3, NULL),
-('Crónica de una muerte anunciada', 'Reconstrucción de un crimen de honor', 'libro', 17.50, 21, 'disponible', '2024-01-30', 12.50, 3, NULL),
-('El perfume', 'Historia de un asesino con olfato extraordinario', 'libro', 20.90, 15, 'disponible', '2024-02-01', 15.00, 3, NULL),
-('1984', 'Novela distópica sobre un futuro totalitario', 'libro', 18.90, 20, 'disponible', '2024-02-02', 13.50, 5, NULL),
-('Un mundo feliz', 'Distopía sobre una sociedad perfecta', 'libro', 17.90, 16, 'disponible', '2024-02-03', 13.00, 5, NULL),
-('Fahrenheit 451', 'Sociedad que prohíbe los libros', 'libro', 16.50, 18, 'disponible', '2024-02-04', 12.00, 5, NULL),
-('Fundación', 'Saga épica de ciencia ficción', 'libro', 21.90, 12, 'disponible', '2024-02-05', 16.00, 5, NULL),
-('Dune', 'Épica espacial en un planeta desértico', 'libro', 24.90, 14, 'disponible', '2024-02-06', 18.50, 5, NULL),
-('El señor de los anillos', 'Épica fantasía sobre el Anillo Único', 'libro', 35.00, 25, 'disponible', '2024-02-07', 25.00, 6, NULL),
-('Harry Potter y la piedra filosofal', 'Primera aventura del mago joven', 'libro', 19.90, 30, 'disponible', '2024-02-08', 14.50, 6, NULL),
-('Crónicas de Narnia', 'Aventuras mágicas en un mundo paralelo', 'libro', 28.50, 20, 'disponible', '2024-02-09', 20.00, 6, NULL),
-('El hobbit', 'Precuela de El Señor de los Anillos', 'libro', 18.90, 22, 'disponible', '2024-02-10', 14.00, 6, NULL),
-('Eragon', 'Joven descubre un huevo de dragón', 'libro', 20.50, 15, 'disponible', '2024-02-11', 15.00, 6, NULL),
-('Los miserables', 'Épica sobre justicia y redención', 'libro', 32.00, 8, 'disponible', '2024-02-12', 23.00, 7, NULL),
-('Guerra y paz', 'Épica sobre las guerras napoleónicas', 'libro', 38.50, 6, 'disponible', '2024-02-13', 28.00, 7, NULL),
-('El nombre de la rosa', 'Misterio medieval en una abadía', 'libro', 24.90, 12, 'disponible', '2024-02-14', 18.00, 7, NULL),
-('Los tres mosqueteros', 'Aventuras en la Francia del siglo XVII', 'libro', 22.90, 16, 'disponible', '2024-02-15', 16.50, 7, NULL),
-('Ivanhoe', 'Caballeros y torneos medievales', 'libro', 19.90, 10, 'disponible', '2024-02-16', 14.50, 7, NULL),
-('El principito', 'Fábula poética sobre la vida', 'libro', 12.90, 40, 'disponible', '2024-02-17', 9.00, 8, NULL),
-('Matilda', 'Niña con poderes telequinéticos', 'libro', 14.50, 35, 'disponible', '2024-02-18', 10.50, 8, NULL),
-('Charlie y la fábrica de chocolate', 'Aventura en una fábrica mágica', 'libro', 13.90, 38, 'disponible', '2024-02-19', 10.00, 8, NULL),
-('Donde viven los monstruos', 'Viaje fantástico de un niño', 'libro', 15.50, 25, 'disponible', '2024-02-20', 11.00, 8, NULL),
-('El grúfalo', 'Cuento sobre un ratón astuto', 'libro', 11.90, 30, 'disponible', '2024-02-21', 8.50, 8, NULL),
-('Bajo la misma estrella', 'Romance juvenil sobre dos adolescentes', 'libro', 16.90, 28, 'disponible', '2024-02-22', 12.50, 9, NULL),
-('Los juegos del hambre', 'Distopía con supervivencia extrema', 'libro', 18.90, 26, 'disponible', '2024-02-23', 14.00, 9, NULL),
-('Divergente', 'Sociedad dividida en facciones', 'libro', 17.50, 24, 'disponible', '2024-02-24', 13.00, 9, NULL),
-('Crepúsculo', 'Romance entre humana y vampiro', 'libro', 19.90, 20, 'disponible', '2024-02-25', 14.50, 9, NULL),
-('Percy Jackson y el ladrón del rayo', 'Mitología griega moderna', 'libro', 16.50, 22, 'disponible', '2024-02-26', 12.00, 9, NULL),
-('Asesinato en el Orient Express', 'Misterio en un tren de lujo', 'libro', 17.90, 18, 'disponible', '2024-02-27', 13.00, 10, NULL),
-('El código Da Vinci', 'Thriller sobre secretos religiosos', 'libro', 21.50, 20, 'disponible', '2024-02-28', 15.50, 10, NULL),
-('Sherlock Holmes: Estudio en escarlata', 'Primera aventura del detective', 'libro', 14.90, 16, 'disponible', '2024-03-01', 10.50, 10, NULL),
-('La chica del tren', 'Thriller psicológico adictivo', 'libro', 19.50, 15, 'disponible', '2024-03-02', 14.00, 10, NULL),
-('El silencio de los corderos', 'Thriller sobre un asesino en serie', 'libro', 18.90, 12, 'disponible', '2024-03-03', 14.00, 10, NULL),
-('Orgullo y prejuicio', 'Romance clásico de Jane Austen', 'libro', 16.90, 22, 'disponible', '2024-03-04', 12.50, 11, NULL),
-('Jane Eyre', 'Historia de amor y superación', 'libro', 18.50, 18, 'disponible', '2024-03-05', 13.50, 11, NULL),
-('Cumbres borrascosas', 'Pasión destructiva en los páramos', 'libro', 17.90, 14, 'disponible', '2024-03-06', 13.00, 11, NULL),
-('Sentido y sensibilidad', 'Romance y razón en conflicto', 'libro', 16.50, 16, 'disponible', '2024-03-07', 12.00, 11, NULL),
-('Lo que el viento se llevó', 'Épica romántica en la Guerra Civil', 'libro', 29.90, 10, 'disponible', '2024-03-08', 22.00, 11, NULL);
+INSERT INTO productos
+(nombre_producto, descripcion, tipo_producto, precio, stock, estado, fecha_alta, costo_real) VALUES
+('La arquitectura de la felicidad','Ensayo sobre arquitectura y bienestar','LIBRO',18.90,40,'disponible','2024-01-01',12.50),
+('Veinte poemas de amor y una canción desesperada','Libro de poesía de Pablo Neruda','LIBRO',14.50,35,'disponible','2024-01-02',9.50),
+('Cien años de soledad','Novela del realismo mágico','LIBRO',22.90,50,'disponible','2024-01-03',15.00),
+('La vida es sueño','Obra clásica del teatro español','LIBRO',12.50,30,'disponible','2024-01-04',8.00),
+('1984','Novela distópica de ciencia ficción','LIBRO',16.90,45,'disponible','2024-01-05',11.00),
+('Harry Potter y la piedra filosofal','Novela de fantasía juvenil','LIBRO',19.90,60,'disponible','2024-01-06',13.00),
+('Los pilares de la Tierra','Novela histórica medieval','LIBRO',25.90,40,'disponible','2024-01-07',18.00),
+('El principito','Libro infantil clásico','LIBRO',10.90,80,'disponible','2024-01-08',6.50),
+('Los juegos del hambre','Novela juvenil distópica','LIBRO',17.50,55,'disponible','2024-01-09',12.00),
+('Diez negritos','Novela de misterio policiaco','LIBRO',14.90,45,'disponible','2024-01-10',9.80),
+('Orgullo y prejuicio','Novela romántica clásica','LIBRO',15.90,35,'disponible','2024-01-11',10.50),
+('Los tres mosqueteros','Novela de aventuras','LIBRO',18.50,30,'disponible','2024-01-12',12.00),
+('Biblia Reina-Valera','Texto sagrado del cristianismo','LIBRO',29.90,25,'disponible','2024-01-13',20.00),
+('Don Quijote de la Mancha','Clásico de la literatura española','LIBRO',26.90,20,'disponible','2024-01-14',18.50),
+('El perfume','Novela de terror psicológico','LIBRO',16.50,40,'disponible','2024-01-15',11.20),
+('Guía Lonely Planet España','Guía turística actualizada','LIBRO',27.90,30,'disponible','2024-01-16',19.00),
+('Historia del arte','Manual ilustrado de arte','LIBRO',34.90,25,'disponible','2024-01-17',24.00),
+('Teoría musical básica','Introducción al lenguaje musical','LIBRO',21.90,30,'disponible','2024-01-18',15.00),
+('Didáctica moderna','Manual sobre educación actual','LIBRO',23.50,28,'disponible','2024-01-19',16.00),
+('Cocina mediterránea','Recetario de cocina tradicional','LIBRO',19.50,45,'disponible','2024-01-20',13.00),
+('Introducción a la programación','Fundamentos de informática','LIBRO',28.90,35,'disponible','2024-01-21',20.00),
+('Watchmen','Novela gráfica de superhéroes','LIBRO',24.90,30,'disponible','2024-01-22',17.00),
+('Naruto Volumen 1','Manga shōnen japonés','LIBRO',9.90,70,'disponible','2024-01-23',6.50),
+('La casa de los espíritus','Novela latinoamericana','LIBRO',18.90,40,'disponible','2024-01-24',12.50),
+('El túnel','Novela psicológica argentina','LIBRO',13.90,30,'disponible','2024-01-25',9.00),
+('Crimen y castigo','Clásico de la literatura rusa','LIBRO',21.90,25,'disponible','2024-01-26',15.00),
+('Pedro Páramo','Novela breve mexicana','LIBRO',12.90,35,'disponible','2024-01-27',8.50),
+('Como agua para chocolate','Novela romántica','LIBRO',15.50,40,'disponible','2024-01-28',10.50),
+('Fahrenheit 451','Ciencia ficción distópica','LIBRO',16.90,45,'disponible','2024-01-29',11.00),
+('Fundación','Saga clásica de ciencia ficción','LIBRO',17.90,40,'disponible','2024-01-30',12.00),
+('Dune','Épica de ciencia ficción','LIBRO',22.90,35,'disponible','2024-01-31',16.00),
+('El señor de los anillos','Fantasía épica','LIBRO',39.90,20,'disponible','2024-02-01',28.00),
+('El hobbit','Fantasía clásica','LIBRO',18.50,45,'disponible','2024-02-02',12.50),
+('Los miserables','Clásico de la literatura francesa','LIBRO',29.90,18,'disponible','2024-02-03',21.00),
+('Guerra y paz','Novela histórica rusa','LIBRO',34.90,15,'disponible','2024-02-04',25.00),
+('El nombre de la rosa','Misterio histórico','LIBRO',19.90,35,'disponible','2024-02-05',13.50),
+('Ivanhoe','Novela de aventuras histórica','LIBRO',16.50,25,'disponible','2024-02-06',11.00),
+('Charlie y la fábrica de chocolate','Libro infantil','LIBRO',11.90,50,'disponible','2024-02-07',7.50),
+('Matilda','Novela infantil','LIBRO',12.50,45,'disponible','2024-02-08',8.00),
+('Bajo la misma estrella','Novela juvenil romántica','LIBRO',16.90,40,'disponible','2024-02-09',11.50),
+('Crepúsculo','Romance juvenil fantástico','LIBRO',17.90,35,'disponible','2024-02-10',12.00),
+('La chica del tren','Thriller psicológico','LIBRO',18.90,30,'disponible','2024-02-11',13.00),
+('El silencio de los corderos','Thriller y terror','LIBRO',19.50,25,'disponible','2024-02-12',14.00),
+('Jane Eyre','Novela romántica clásica','LIBRO',15.90,30,'disponible','2024-02-13',10.50),
+('Cumbres borrascosas','Novela romántica gótica','LIBRO',16.90,28,'disponible','2024-02-14',11.50),
+('Lo que el viento se llevó','Novela romántica histórica','LIBRO',24.90,20,'disponible','2024-02-15',17.50),
+('Estudio en escarlata','Novela policiaca','LIBRO',13.90,35,'disponible','2024-02-16',9.00),
+('El código Da Vinci','Thriller contemporáneo','LIBRO',21.90,30,'disponible','2024-02-17',15.50),
+('Las crónicas de Narnia','Saga de fantasía','LIBRO',29.90,25,'disponible','2024-02-18',21.00),
+('El alquimista','Novela de Paulo Coelho sobre sueños y destino','LIBRO',18.90,40,'disponible','2024-02-19',12.50);
+
+
 
 -- ========== 50 PAPELERÍA ==========
-INSERT INTO productos (nombre_libro, descripcion, tipo_producto, precio, stock, estado, fecha_alta, costo_real, id_categoria_libro, id_categoria_papeleria) VALUES 
-('Mochila escolar azul', 'Mochila resistente con múltiples compartimentos', 'papeleria', 35.90, 50, 'disponible', '2024-03-10', 25.00, NULL, 1),
-('Mochila deportiva Nike', 'Mochila deportiva de alta calidad', 'papeleria', 45.00, 30, 'disponible', '2024-03-11', 32.00, NULL, 1),
-('Mochila universitaria gris', 'Mochila con compartimento para portátil', 'papeleria', 42.50, 40, 'disponible', '2024-03-12', 30.00, NULL, 1),
-('Mochila infantil Spiderman', 'Mochila con diseño de superhéroe', 'papeleria', 28.90, 35, 'disponible', '2024-03-13', 20.00, NULL, 1),
-('Agenda 2025 ejecutiva', 'Agenda día por página de cuero', 'papeleria', 18.90, 60, 'disponible', '2024-03-14', 13.50, NULL, 2),
-('Agenda 2025 escolar', 'Agenda semanal para estudiantes', 'papeleria', 12.50, 80, 'disponible', '2024-03-15', 9.00, NULL, 2),
-('Agenda 2025 minimalista', 'Agenda con diseño simple y elegante', 'papeleria', 15.90, 55, 'disponible', '2024-03-16', 11.00, NULL, 2),
-('Planificador mensual 2025', 'Planificador con vista mensual', 'papeleria', 14.50, 45, 'disponible', '2024-03-17', 10.00, NULL, 2),
-('Cuaderno A4 cuadriculado', 'Cuaderno 100 hojas de calidad', 'papeleria', 3.50, 150, 'disponible', '2024-03-18', 2.50, NULL, 3),
-('Cuaderno A5 rayado', 'Cuaderno tamaño medio 80 hojas', 'papeleria', 2.80, 200, 'disponible', '2024-03-19', 2.00, NULL, 3),
-('Libreta espiral A4', 'Libreta con espiral metálico', 'papeleria', 4.50, 120, 'disponible', '2024-03-20', 3.20, NULL, 3),
-('Bloc notas adhesivas', 'Pack de 5 blocs de colores', 'papeleria', 5.90, 100, 'disponible', '2024-03-21', 4.00, NULL, 3),
-('Recambio hojas A4', 'Paquete 500 hojas cuadriculadas', 'papeleria', 6.50, 80, 'disponible', '2024-03-22', 4.50, NULL, 3),
-('Cuaderno Moleskine', 'Cuaderno de lujo tapa dura', 'papeleria', 18.90, 40, 'disponible', '2024-03-23', 13.50, NULL, 3),
-('Tarjetas de felicitación', 'Pack 10 tarjetas con sobres', 'papeleria', 8.90, 70, 'disponible', '2024-03-24', 6.00, NULL, 4),
-('Papel de regalo navideño', 'Rollo 5 metros diseños variados', 'papeleria', 4.50, 90, 'disponible', '2024-03-25', 3.00, NULL, 4),
-('Sobres de colores', 'Pack 25 sobres tamaño carta', 'papeleria', 3.90, 85, 'disponible', '2024-03-26', 2.50, NULL, 4),
-('Etiquetas adhesivas', 'Pack 100 etiquetas decorativas', 'papeleria', 5.50, 65, 'disponible', '2024-03-27', 3.80, NULL, 4),
-('Papel A4 80g', 'Resma 500 hojas blancas', 'papeleria', 7.50, 200, 'disponible', '2024-03-28', 5.20, NULL, 5),
-('Papel fotográfico', 'Pack 20 hojas glossy A4', 'papeleria', 12.90, 45, 'disponible', '2024-03-29', 9.00, NULL, 5),
-('Papel kraft', 'Rollo 10 metros marrón', 'papeleria', 6.90, 55, 'disponible', '2024-03-30', 4.80, NULL, 5),
-('Cartulinas colores', 'Pack 50 cartulinas A4', 'papeleria', 8.90, 60, 'disponible', '2024-03-31', 6.20, NULL, 5),
-('Pluma estilográfica Parker', 'Pluma de lujo con estuche', 'papeleria', 45.00, 25, 'disponible', '2024-04-01', 32.00, NULL, 6),
-('Bolígrafo Montblanc', 'Bolígrafo de alta gama', 'papeleria', 380.00, 10, 'disponible', '2024-04-02', 270.00, NULL, 6),
-('Set de plumas caligrafía', 'Kit completo de caligrafía', 'papeleria', 28.50, 30, 'disponible', '2024-04-03', 20.00, NULL, 6),
-('Portaminas profesional', 'Portaminas metálico 0.5mm', 'papeleria', 15.90, 40, 'disponible', '2024-04-04', 11.00, NULL, 6),
-('Set acuarelas profesional', 'Caja 24 colores acuarela', 'papeleria', 32.90, 35, 'disponible', '2024-04-05', 23.00, NULL, 7),
-('Lápices de colores Faber-Castell', 'Caja 48 lápices profesionales', 'papeleria', 28.50, 40, 'disponible', '2024-04-06', 20.00, NULL, 7),
-('Set rotuladores Copic', 'Set 12 rotuladores para manga', 'papeleria', 55.00, 20, 'disponible', '2024-04-07', 39.00, NULL, 7),
-('Sketchbook A4', 'Cuaderno dibujo 100 hojas', 'papeleria', 14.90, 45, 'disponible', '2024-04-08', 10.50, NULL, 7),
-('Témperas escolares', 'Set 12 botes de colores', 'papeleria', 9.90, 60, 'disponible', '2024-04-09', 7.00, NULL, 7),
-('Kit manualidades infantil', 'Set completo de materiales creativos', 'papeleria', 18.90, 50, 'disponible', '2024-04-10', 13.50, NULL, 7),
-('Óleo profesional', 'Set 12 tubos colores básicos', 'papeleria', 42.00, 25, 'disponible', '2024-04-11', 30.00, NULL, 8),
-('Pinceles artísticos', 'Set 10 pinceles variados', 'papeleria', 24.50, 35, 'disponible', '2024-04-12', 17.50, NULL, 8),
-('Lienzo preparado 50x60', 'Lienzo sobre bastidor', 'papeleria', 16.90, 30, 'disponible', '2024-04-13', 12.00, NULL, 8),
-('Caballete de madera', 'Caballete plegable profesional', 'papeleria', 68.00, 15, 'disponible', '2024-04-14', 48.00, NULL, 8),
-('Calculadora científica Casio', 'Calculadora con funciones avanzadas', 'papeleria', 28.90, 50, 'disponible', '2024-04-15', 20.50, NULL, 9),
-('Calculadora básica', 'Calculadora de escritorio 12 dígitos', 'papeleria', 12.50, 70, 'disponible', '2024-04-16', 8.80, NULL, 9),
-('Destructora de papel', 'Destructora con corte en tiras', 'papeleria', 85.00, 20, 'disponible', '2024-04-17', 60.00, NULL, 9),
-('Plastificadora A4', 'Máquina plastificar documentos', 'papeleria', 45.00, 18, 'disponible', '2024-04-18', 32.00, NULL, 9),
-('Archivador palanca A4', 'Archivador lomo 75mm', 'papeleria', 4.50, 150, 'disponible', '2024-04-19', 3.20, NULL, 10),
-('Carpeta anillas', 'Carpeta 4 anillas tamaño A4', 'papeleria', 3.90, 120, 'disponible', '2024-04-20', 2.70, NULL, 10),
-('Separadores índice', 'Juego 12 separadores de colores', 'papeleria', 2.90, 100, 'disponible', '2024-04-21', 2.00, NULL, 10),
-('Cajas archivo', 'Pack 10 cajas cartón A4', 'papeleria', 15.90, 60, 'disponible', '2024-04-22', 11.00, NULL, 10),
-('Fundas portadocumentos', 'Pack 100 fundas transparentes', 'papeleria', 8.50, 80, 'disponible', '2024-04-23', 6.00, NULL, 10),
-('Estuche triple', 'Estuche 3 compartimentos', 'papeleria', 12.90, 65, 'disponible', '2024-04-24', 9.00, NULL, 12),
-('Estuche cilíndrico', 'Estuche redondo con cremallera', 'papeleria', 8.90, 85, 'disponible', '2024-04-25', 6.20, NULL, 12),
-('Portatodo enrollable', 'Estuche enrollable para lápices', 'papeleria', 14.50, 45, 'disponible', '2024-04-26', 10.00, NULL, 12),
-('Bolígrafos BIC azul', 'Pack 10 bolígrafos', 'papeleria', 3.50, 200, 'disponible', '2024-04-27', 2.50, NULL, 13),
-('Lápices HB', 'Pack 12 lápices grafito', 'papeleria', 4.90, 150, 'disponible', '2024-04-28', 3.40, NULL, 13),
-('Goma de borrar Milán', 'Pack 3 gomas blancas', 'papeleria', 1.90, 180, 'disponible', '2024-04-29', 1.30, NULL, 13);
+INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stock, estado, fecha_alta, costo_real) VALUES
+('Mochila escolar azul', 'Mochila resistente con múltiples compartimentos', 'PAPELERIA', 35.90, 50, 'disponible', '2024-03-10', 25.00),
+('Mochila deportiva Nike', 'Mochila deportiva de alta calidad', 'PAPELERIA', 45.00, 30, 'disponible', '2024-03-11', 32.00),
+('Mochila universitaria gris', 'Mochila con compartimento para portátil', 'PAPELERIA', 42.50, 40, 'disponible', '2024-03-12', 30.00),
+('Mochila infantil Spiderman', 'Mochila con diseño de superhéroe', 'PAPELERIA', 28.90, 35, 'disponible', '2024-03-13', 20.00),
+('Agenda ejecutiva 2025', 'Agenda día por página de cuero', 'PAPELERIA', 18.90, 60, 'disponible', '2024-03-14', 13.50),
+('Agenda escolar 2025', 'Agenda semanal para estudiantes', 'PAPELERIA', 12.50, 80, 'disponible', '2024-03-15', 9.00),
+('Agenda minimalista 2025', 'Agenda con diseño simple y elegante', 'PAPELERIA', 15.90, 55, 'disponible', '2024-03-16', 11.00),
+('Planificador mensual 2025', 'Planificador con vista mensual', 'PAPELERIA', 14.50, 45, 'disponible', '2024-03-17', 10.00),
+('Cuaderno A4 cuadriculado', 'Cuaderno 100 hojas de calidad', 'PAPELERIA', 3.50, 150, 'disponible', '2024-03-18', 2.50),
+('Cuaderno A5 rayado', 'Cuaderno tamaño medio 80 hojas', 'PAPELERIA', 2.80, 200, 'disponible', '2024-03-19', 2.00),
+('Libreta espiral A4', 'Libreta con espiral metálico', 'PAPELERIA', 4.50, 120, 'disponible', '2024-03-20', 3.20),
+('Bloc notas adhesivas', 'Pack de 5 blocs de colores', 'PAPELERIA', 5.90, 100, 'disponible', '2024-03-21', 4.00),
+('Recambio hojas A4', 'Paquete 500 hojas cuadriculadas', 'PAPELERIA', 6.50, 80, 'disponible', '2024-03-22', 4.50),
+('Cuaderno Moleskine', 'Cuaderno de lujo tapa dura', 'PAPELERIA', 18.90, 40, 'disponible', '2024-03-23', 13.50),
+('Tarjetas de felicitación', 'Pack 10 tarjetas con sobres', 'PAPELERIA', 8.90, 70, 'disponible', '2024-03-24', 6.00),
+('Papel de regalo navideño', 'Rollo 5 metros diseños variados', 'PAPELERIA', 4.50, 90, 'disponible', '2024-03-25', 3.00),
+('Sobres de colores', 'Pack 25 sobres tamaño carta', 'PAPELERIA', 3.90, 85, 'disponible', '2024-03-26', 2.50),
+('Etiquetas adhesivas', 'Pack 100 etiquetas decorativas', 'PAPELERIA', 5.50, 65, 'disponible', '2024-03-27', 3.80),
+('Papel A4 80g', 'Resma 500 hojas blancas', 'PAPELERIA', 7.50, 200, 'disponible', '2024-03-28', 5.20),
+('Papel fotográfico', 'Pack 20 hojas glossy A4', 'PAPELERIA', 12.90, 45, 'disponible', '2024-03-29', 9.00),
+('Papel kraft', 'Rollo 10 metros marrón', 'PAPELERIA', 6.90, 55, 'disponible', '2024-03-30', 4.80),
+('Cartulinas colores', 'Pack 50 cartulinas A4', 'PAPELERIA', 8.90, 60, 'disponible', '2024-03-31', 6.20),
+('Pluma estilográfica Parker', 'Pluma de lujo con estuche', 'PAPELERIA', 45.00, 25, 'disponible', '2024-04-01', 32.00),
+('Bolígrafo Montblanc', 'Bolígrafo de alta gama', 'PAPELERIA', 380.00, 10, 'disponible', '2024-04-02', 270.00),
+('Set de plumas caligrafía', 'Kit completo de caligrafía', 'PAPELERIA', 28.50, 30, 'disponible', '2024-04-03', 20.00),
+('Portaminas profesional', 'Portaminas metálico 0.5mm', 'PAPELERIA', 15.90, 40, 'disponible', '2024-04-04', 11.00),
+('Set acuarelas profesional', 'Caja 24 colores acuarela', 'PAPELERIA', 32.90, 35, 'disponible', '2024-04-05', 23.00),
+('Lápices de colores Faber-Castell', 'Caja 48 lápices profesionales', 'PAPELERIA', 28.50, 40, 'disponible', '2024-04-06', 20.00),
+('Set rotuladores Copic', 'Set 12 rotuladores para manga', 'PAPELERIA', 55.00, 20, 'disponible', '2024-04-07', 39.00),
+('Sketchbook A4', 'Cuaderno dibujo 100 hojas', 'PAPELERIA', 14.90, 45, 'disponible', '2024-04-08', 10.50),
+('Témperas escolares', 'Set 12 botes de colores', 'PAPELERIA', 9.90, 60, 'disponible', '2024-04-09', 7.00),
+('Kit manualidades infantil', 'Set completo de materiales creativos', 'PAPELERIA', 18.90, 50, 'disponible', '2024-04-10', 13.50),
+('Óleo profesional', 'Set 12 tubos colores básicos', 'PAPELERIA', 42.00, 25, 'disponible', '2024-04-11', 30.00),
+('Pinceles artísticos', 'Set 10 pinceles variados', 'PAPELERIA', 24.50, 35, 'disponible', '2024-04-12', 17.50),
+('Lienzo preparado 50x60', 'Lienzo sobre bastidor', 'PAPELERIA', 16.90, 30, 'disponible', '2024-04-13', 12.00),
+('Caballete de madera', 'Caballete plegable profesional', 'PAPELERIA', 68.00, 15, 'disponible', '2024-04-14', 48.00),
+('Calculadora científica Casio', 'Calculadora con funciones avanzadas', 'PAPELERIA', 28.90, 50, 'disponible', '2024-04-15', 20.50),
+('Calculadora básica', 'Calculadora de escritorio 12 dígitos', 'PAPELERIA', 12.50, 70, 'disponible', '2024-04-16', 8.80),
+('Destructora de papel', 'Destructora con corte en tiras', 'PAPELERIA', 85.00, 20, 'disponible', '2024-04-17', 60.00),
+('Plastificadora A4', 'Máquina plastificar documentos', 'PAPELERIA', 45.00, 18, 'disponible', '2024-04-18', 32.00),
+('Archivador palanca A4', 'Archivador lomo 75mm', 'PAPELERIA', 4.50, 150, 'disponible', '2024-04-19', 3.20),
+('Carpeta anillas', 'Carpeta 4 anillas tamaño A4', 'PAPELERIA', 3.90, 120, 'disponible', '2024-04-20', 2.70),
+('Separadores índice', 'Juego 12 separadores de colores', 'PAPELERIA', 2.90, 100, 'disponible', '2024-04-21', 2.00),
+('Cajas archivo', 'Pack 10 cajas cartón A4', 'PAPELERIA', 15.90, 60, 'disponible', '2024-04-22', 11.00),
+('Fundas portadocumentos', 'Pack 100 fundas transparentes', 'PAPELERIA', 8.50, 80, 'disponible', '2024-04-23', 6.00),
+('Estuche triple', 'Estuche 3 compartimentos', 'PAPELERIA', 12.90, 65, 'disponible', '2024-04-24', 9.00),
+('Estuche cilíndrico', 'Estuche redondo con cremallera', 'PAPELERIA', 8.90, 85, 'disponible', '2024-04-25', 6.20),
+('Portatodo enrollable', 'Estuche enrollable para lápices', 'PAPELERIA', 14.50, 45, 'disponible', '2024-04-26', 10.00),
+('Bolígrafos BIC azul', 'Pack 10 bolígrafos', 'PAPELERIA', 3.50, 200, 'disponible', '2024-04-27', 2.50),
+('Lápices HB', 'Pack 12 lápices grafito', 'PAPELERIA', 4.90, 150, 'disponible', '2024-04-28', 3.40);
+
 
 
 -- ============================================
 -- PARTE 2: DETALLE_LIBRO (solo para los 50 libros)
 -- ============================================
 
-INSERT INTO detalle_libro (ISBN, idioma, editorial, fecha_publicacion, autor, numero_paginas, id_producto) VALUES
-(9788437604947, 'Español', 'Cátedra', '1605-01-16', 'Miguel de Cervantes', 1200, 1),
-(9788497592208, 'Español', 'Alfaguara', '1967-05-30', 'Gabriel García Márquez', 496, 2),
-(9788408163251, 'Español', 'Planeta', '2001-04-17', 'Carlos Ruiz Zafón', 576, 3),
-(9788497592457, 'Español', 'Debolsillo', '1985-12-05', 'Gabriel García Márquez', 496, 4),
-(9788491050735, 'Español', 'Alianza Editorial', '1866-01-01', 'Fiódor Dostoyevski', 736, 5),
-(9788420471808, 'Español', 'Alfaguara', '1963-06-28', 'Julio Cortázar', 600, 6),
-(9788497592437, 'Español', 'Plaza & Janés', '1982-10-26', 'Isabel Allende', 464, 7),
-(9788497593656, 'Español', 'Plaza & Janés', '1989-09-01', 'Ken Follett', 1008, 8),
-(9788432217265, 'Español', 'Seix Barral', '1948-01-01', 'Ernesto Sabato', 160, 9),
-(9788420412146, 'Español', 'Alfaguara', '1963-10-01', 'Mario Vargas Llosa', 416, 10),
-(9788493442965, 'Español', 'RM', '1955-03-19', 'Juan Rulfo', 144, 11),
-(9786070710278, 'Español', 'Debolsillo', '1989-01-01', 'Laura Esquivel', 256, 12),
-(9788408163268, 'Español', 'Planeta', '2008-04-17', 'Carlos Ruiz Zafón', 672, 13),
-(9788497592888, 'Español', 'Diana', '1981-04-05', 'Gabriel García Márquez', 128, 14),
-(9788432217271, 'Español', 'Seix Barral', '1985-03-01', 'Patrick Süskind', 320, 15),
-(9788499890944, 'Español', 'Debolsillo', '1949-06-08', 'George Orwell', 352, 16),
-(9788497594257, 'Español', 'Debolsillo', '1932-01-01', 'Aldous Huxley', 288, 17),
-(9788497594639, 'Español', 'Debolsillo', '1953-10-19', 'Ray Bradbury', 224, 18),
-(9788497599405, 'Español', 'Debolsillo', '1951-05-01', 'Isaac Asimov', 304, 19),
-(9788497594820, 'Español', 'Debolsillo', '1965-08-01', 'Frank Herbert', 688, 20),
-(9788445000663, 'Español', 'Minotauro', '1954-07-29', 'J.R.R. Tolkien', 1200, 21),
-(9788498386561, 'Español', 'Salamandra', '1997-06-26', 'J.K. Rowling', 256, 22),
-(9788408043464, 'Español', 'Destino', '1950-10-16', 'C.S. Lewis', 768, 23),
-(9788445000656, 'Español', 'Minotauro', '1937-09-21', 'J.R.R. Tolkien', 352, 24),
-(9788499185873, 'Español', 'Roca Editorial', '2003-08-26', 'Christopher Paolini', 544, 25),
-(9788497594912, 'Español', 'Debolsillo', '1862-01-01', 'Victor Hugo', 1488, 26),
-(9788497594080, 'Español', 'Debolsillo', '1869-01-01', 'León Tolstói', 1408, 27),
-(9788497935999, 'Español', 'Debolsillo', '1980-10-28', 'Umberto Eco', 664, 28),
-(9788497594356, 'Español', 'Debolsillo', '1844-01-01', 'Alexandre Dumas', 736, 29),
-(9788420633671, 'Español', 'Alianza Editorial', '1819-12-01', 'Walter Scott', 560, 30),
-(9788478885978, 'Español', 'Salamandra', '1943-04-06', 'Antoine de Saint-Exupéry', 96, 31),
-(9788420412696, 'Español', 'Alfaguara', '1988-10-01', 'Roald Dahl', 240, 32),
-(9788420412689, 'Español', 'Alfaguara', '1964-01-17', 'Roald Dahl', 192, 33),
-(9788484647263, 'Español', 'Kalandraka', '1963-01-01', 'Maurice Sendak', 48, 34),
-(9788484648895, 'Español', 'Macmillan', '1999-03-01', 'Julia Donaldson', 32, 35),
-(9788415594079, 'Español', 'Nube de Tinta', '2012-01-10', 'John Green', 304, 36),
-(9788427202139, 'Español', 'Molino', '2008-09-14', 'Suzanne Collins', 400, 37),
-(9788427203013, 'Español', 'Molino', '2011-05-03', 'Veronica Roth', 512, 38),
-(9788420410111, 'Español', 'Alfaguara', '2005-10-05', 'Stephenie Meyer', 512, 39),
-(9788498382662, 'Español', 'Salamandra', '2005-06-28', 'Rick Riordan', 400, 40),
-(9788467007299, 'Español', 'Espasa', '1934-01-01', 'Agatha Christie', 256, 41),
-(9788479537593, 'Español', 'Umbriel', '2003-03-18', 'Dan Brown', 656, 42),
-(9788491050421, 'Español', 'Alianza Editorial', '1887-11-01', 'Arthur Conan Doyle', 144, 43),
-(9788408154686, 'Español', 'Planeta', '2015-01-13', 'Paula Hawkins', 416, 44),
-(9788420686684, 'Español', 'Alfaguara', '1988-01-01', 'Thomas Harris', 384, 45),
-(9788491050155, 'Español', 'Alianza Editorial', '1813-01-28', 'Jane Austen', 416, 46),
-(9788491050193, 'Español', 'Alianza Editorial', '1847-10-16', 'Charlotte Brontë', 624, 47),
-(9788491050209, 'Español', 'Alianza Editorial', '1847-12-01', 'Emily Brontë', 416, 48),
-(9788491050186, 'Español', 'Alianza Editorial', '1811-10-30', 'Jane Austen', 384, 49),
-(9788467007305, 'Español', 'Espasa', '1936-06-30', 'Margaret Mitchell', 1024, 50);
+INSERT INTO detalle_libro
+(ISBN, idioma, editorial, fecha_publicacion, autor, numero_paginas, id_producto, id_libro) VALUES
+(9788437604947,'Español','Cátedra','1605-01-16','Miguel de Cervantes',1216,1,14),
+(9788439722222,'Español','Sudamericana','1967-05-30','Gabriel García Márquez',471,2,3),
+(9788408172173,'Español','Planeta','2001-04-12','Carlos Ruiz Zafón',576,3,10),
+(9788439721116,'Español','Debolsillo','1985-09-01','Gabriel García Márquez',368,4,11),
+(9788420423459,'Español','Alianza','1866-01-01','Fiódor Dostoyevski',671,5,14),
+(9788439722223,'Español','RBA','1963-06-28','Julio Cortázar',736,6,3),
+(9788401029876,'Español','Plaza & Janés','1982-01-01','Isabel Allende',448,7,3),
+(9788408144444,'Español','Plaza & Janés','1989-10-01','Ken Follett',1076,8,7),
+(9788439723333,'Español','Seix Barral','1948-01-01','Ernesto Sabato',160,9,3),
+(9788432223334,'Español','Seix Barral','1963-01-01','Mario Vargas Llosa',480,10,3),
+
+(9788439724445,'Español','FCE','1955-03-19','Juan Rulfo',124,11,3),
+(9788439725556,'Español','Debolsillo','1989-01-01','Laura Esquivel',256,12,11),
+(9788408172174,'Español','Planeta','2008-04-17','Carlos Ruiz Zafón',672,13,10),
+(9788439722224,'Español','Sudamericana','1981-01-01','Gabriel García Márquez',144,14,3),
+(9788439726667,'Español','Seix Barral','1985-01-01','Patrick Süskind',320,15,15),
+
+(9788420429999,'Español','Debolsillo','1949-06-08','George Orwell',352,16,5),
+(9788439727778,'Español','Debolsillo','1932-01-01','Aldous Huxley',288,17,5),
+(9788439728889,'Español','Minotauro','1953-10-19','Ray Bradbury',256,18,5),
+(9788439729990,'Español','Debolsillo','1951-06-01','Isaac Asimov',296,19,5),
+(9788439730001,'Español','Debolsillo','1965-08-01','Frank Herbert',688,20,5),
+
+(9788439731112,'Español','Minotauro','1954-07-29','J.R.R. Tolkien',1216,21,6),
+(9788401333444,'Español','Salamandra','1997-06-26','J.K. Rowling',256,22,6),
+(9788439732223,'Español','Destino','1950-10-16','C.S. Lewis',816,23,6),
+(9788439733334,'Español','Minotauro','1937-09-21','J.R.R. Tolkien',310,24,6),
+(9788439734445,'Español','RBA','2003-08-26','Christopher Paolini',544,25,6),
+
+(9788439735556,'Español','Alianza','1862-01-01','Victor Hugo',1488,26,14),
+(9788439736667,'Español','Alianza','1869-01-01','León Tolstói',1225,27,14),
+(9788439737778,'Español','Debolsillo','1980-01-01','Umberto Eco',592,28,10),
+(9788439738889,'Español','Anaya','1844-01-01','Alexandre Dumas',704,29,12),
+(9788439739990,'Español','Anaya','1819-01-01','Walter Scott',624,30,12),
+
+(9788439740001,'Español','Salamandra','1943-04-06','Antoine de Saint-Exupéry',96,31,8),
+(9788439740002,'Español','Alfaguara','1988-10-01','Roald Dahl',248,32,8),
+(9788439740003,'Español','Alfaguara','1964-01-01','Roald Dahl',192,33,8),
+(9788439740004,'Español','Kalandraka','1963-01-01','Maurice Sendak',48,34,8),
+(9788439740005,'Español','Bruño','1999-01-01','Julia Donaldson',32,35,8),
+
+(9788439740006,'Español','Nube de Tinta','2012-01-10','John Green',304,36,9),
+(9788439740007,'Español','RBA','2008-09-14','Suzanne Collins',384,37,9),
+(9788439740008,'Español','RBA','2011-04-25','Veronica Roth',432,38,9),
+(9788439740009,'Español','Debolsillo','2005-10-05','Stephenie Meyer',512,39,11),
+(9788439740010,'Español','Salamandra','2005-06-28','Rick Riordan',416,40,9),
+
+(9788439740011,'Español','Planeta','1934-01-01','Agatha Christie',256,41,10),
+(9788439740012,'Español','Planeta','2003-03-18','Dan Brown',688,42,10),
+(9788439740013,'Español','Anaya','1887-11-01','Arthur Conan Doyle',188,43,10),
+(9788439740014,'Español','Planeta','2013-06-03','Paula Hawkins',496,44,10),
+(9788439740015,'Español','Planeta','1988-01-01','Thomas Harris',368,45,15),
+
+(9788439740016,'Español','Alianza','1813-01-28','Jane Austen',432,46,11),
+(9788439740017,'Español','Alianza','1847-10-16','Charlotte Brontë',624,47,11),
+(9788439740018,'Español','Alianza','1847-12-01','Emily Brontë',416,48,11),
+(9788439740019,'Español','Alianza','1811-01-01','Jane Austen',384,49,11),
+(9780061122415,'Español','Editorial Planeta','1988-01-01','Paulo Coelho',208,50,3);
+
+
+
+INSERT INTO detalle_papeleria (id_producto, marca, id_papeleria) VALUES
+-- Mochilas
+(51,'Genérica',1),
+(52,'Nike',1),
+(53,'Samsonite',1),
+(54,'Marvel',1),
+
+-- Agendas
+(55,'Finocam',2),
+(56,'Oxford',2),
+(57,'Muji',2),
+(58,'Mr Wonderful',2),
+
+-- Cuadernos, libretas y recambios
+(59,'Oxford',3),
+(60,'Oxford',3),
+(61,'Oxford',3),
+(62,'Post-it',3),
+(63,'Papiro',3),
+(64,'Moleskine',3),
+
+-- Papelería de regalo
+(65,'Hallmark',4),
+(66,'Navipack',4),
+(67,'Pollen',4),
+(68,'Avery',4),
+
+-- Papel
+(69,'Navigator',5),
+(70,'HP',5),
+(71,'Clairefontaine',5),
+(72,'Canson',5),
+
+-- Alta escritura
+(73,'Parker',6),
+(74,'Montblanc',6),
+(75,'Manuscript',6),
+(76,'Rotring',6),
+
+-- Creatividad
+(77,'Winsor & Newton',7),
+(78,'Faber-Castell',7),
+(79,'Copic',7),
+(80,'Canson',7),
+(81,'Pelikan',7),
+(82,'Crayola',7),
+
+-- Bellas Artes
+(83,'Talens',8),
+(84,'Da Vinci',8),
+(85,'Jullian',8),
+(86,'Arteza',8),
+
+-- Calculadoras y máquinas de oficina
+(87,'Casio',9),
+(88,'Sharp',9),
+(89,'Fellowes',9),
+(90,'GBC',9),
+
+-- Archivo y clasificación
+(91,'Esselte',10),
+(92,'Esselte',10),
+(93,'Avery',10),
+(94,'Bankers Box',10),
+(95,'Leitz',10),
+
+-- Estuches
+(96,'Eastpak',12),
+(97,'Totto',12),
+(98,'Faber-Castell',12),
+
+-- Escritura escolar
+(99,'BIC',13),
+(100,'Staedtler',13);
+
 
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unidad) VALUES
 (1, 1, 2, 19.99),
