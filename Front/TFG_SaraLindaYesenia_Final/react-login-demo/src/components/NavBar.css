@@ -1,0 +1,176 @@
+@font-face {
+    font-family: "Ablafit";
+    src: url("/Ablafit-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Cormorant";
+    src: url("/Cormorant-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Cormorant";
+    src: url("/Cormorant-Italic.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic
+  }
+  
+  @font-face {
+    font-family: "Cormorant";
+    src: url("/Cormorant-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Cormorant";
+    src: url("/Cormorant-MediumItalic.ttf") format("truetype");
+    font-weight: 500;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: "Cormorant";
+    src: url("/Cormorant-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Cormorant";
+    src: url("/Cormorant-SemiBoldItalic.ttf") format("truetype");
+    font-weight: 600;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: "Cormorant";
+    src: url("/Cormorant-Bold.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Cormorant";
+    src: url("/Cormorant-BoldItalic.ttf") format("truetype");
+    font-weight: 800;
+    font-style: italic;
+  }
+  
+/*------------------------------------- NAVEGADOR -------------------------------------*/
+.barra-navegacion {
+    background-color: #f9f7f4;
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ddd;
+    grid-template-columns: 1fr auto 1fr;
+    column-gap: 2rem;
+    display: grid;
+    align-items: center;
+    letter-spacing: .4px;
+  
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transform: translateY(0);
+    /* Oculta por defecto */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  
+  .barra-navegacion.visible {
+    transform: translateY(0);
+    /* Muestra la barra */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .enlaces-navegacion {
+    display: flex;
+    gap: 30px;
+    padding: 19px 0;
+  }
+  
+  .enlace {
+    text-decoration: none;
+    color: #1c1c1c;
+    font-weight: 100;
+    transition: color 0.4s;
+    font-size: 14px;
+  }
+  
+  .enlace:hover {
+    color: #7f7c7c;
+  }
+  
+  .icon.icon-caret {
+    width: 11px;
+    height: 11px;
+    vertical-align: middle;
+    margin-left: 1px;
+  }
+  
+  .titulo-pagina {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .titulo-pagina h1 {
+    font-family: "Ablafit", sans-serif;
+    margin: 0;
+    font-size: 27px;
+    color: #333;
+  }
+  
+  .acciones-usuario {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-self: end;
+  }
+  
+  .accion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: #2c2c2c;
+    font-weight: 500;
+  }
+  
+  .accion:hover {
+    color: #7f7c7c;
+    ;
+  }
+  
+  .telefono .texto-telefono {
+    font-size: 14px;
+    color: #2c2c2c;
+    font-weight: 100;
+    transition: color 0.4s;
+    font-size: 14px;
+  }
+  
+  .separador {
+    width: 1px;
+    height: 24px;
+    background-color: #ccc;
+    margin: 0 8px;
+  }
+  
+  .icono-buscar,
+  .icono-carrito {
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .icono-buscar:hover,
+  .icono-carrito:hover {
+    color: #7f7c7c;
+  }
