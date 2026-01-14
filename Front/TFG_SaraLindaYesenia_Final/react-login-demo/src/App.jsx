@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Login from './components/Login';
@@ -9,9 +9,15 @@ import Jefe from './pages/Jefe';
 import Trabajador from './pages/Trabajador';
 import Cliente from './pages/Cliente';
 import MiCarrito from './components/MiCarrito';
+import NavBar from './components/NavBar';
 export default function App() {
+  const location = useLocation();
+  const hideNavbarRoutes = ['/cliente'];
+  const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
+
   return (
-    <BrowserRouter>
+    <>
+      {shouldShowNavbar && <NavBar />}
       <Routes>
         {/* Dashboard puede ser una landing común o también redirigir según rol */}
         <Route path="/" element={<Home/>} />
@@ -60,6 +66,6 @@ export default function App() {
           }
         />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }

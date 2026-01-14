@@ -1,13 +1,13 @@
 import './Login.css';
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
-import { Headphones, User, Search, ShoppingCart } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const from = location.state?.from;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -55,6 +55,11 @@ export default function Login() {
       setError('Credenciales inválidas');
       return;
     }
+    //from existe solo cuando el usuario fue redirigido desde login
+    if (from){
+      navigate(from, {replace:true});
+      return;
+    }
 
     const rolRaw = user?.perfil?.nombre || '';
     const rol = String(rolRaw).trim().toUpperCase();
@@ -80,36 +85,6 @@ export default function Login() {
 
   return (
     <div className="pagina-login">
-
-      {/* --- NAVBAR --- */}
-      <nav className={`barra-navegacion ${isVisible ? 'visible' : ''}`}>
-        <div className="enlaces-navegacion">
-          <Link to="/ficcion" className="enlace">Ficción y literatura</Link>
-          <Link to="/mejores-libros" className="enlace">Mejores libros</Link>
-          <Link to="/blogs" className="enlace">Blogs</Link>
-          <Link to="/contacto" className="enlace">Contacto</Link>
-        </div>
-
-        <div className="titulo-pagina">
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <h1>Archives</h1>
-          </Link>
-        </div>
-
-        <div className="acciones-usuario">
-          <div className="accion telefono">
-            <Headphones size={22} className="icono-cascos" />
-            <span className="texto-telefono">+34 900 123 456</span>
-          </div>
-          <div className="separador"></div>
-          <Link to="/login" className="accion"><User size={24} /></Link>
-          <div className="accion"><Search size={22} className="icono-buscar" /></div>
-          {/* Carrito */}
-          <div className="accion" onClick={entrarCarrito}>
-            <ShoppingCart size={22} className="icono-carrito" />
-          </div>
-        </div>
-      </nav>
 
       {/* --- FORMULARIO --- */}
       <div className="login-contenedor">

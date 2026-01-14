@@ -11,13 +11,13 @@ function MiCarrito() {
         precio: 10
     };
 
-    console.log(cartItems);
     return (
         <div>
             <h1>Cart</h1>
             <button onClick={() => addToCart(testProduct)}>
                 Añadir Producto
             </button>
+            <pre>{JSON.stringify(cartItems, null, 2)}</pre>
         </div>
     );
 }
