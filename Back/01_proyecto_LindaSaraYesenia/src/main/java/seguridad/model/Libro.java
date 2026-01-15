@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Entity
-@Table(name = "detalle_libro")
-public class DetalleLibro implements Serializable {
+@Table(name = "libro")
+public class Libro implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -31,7 +31,6 @@ public class DetalleLibro implements Serializable {
 	private Integer idProducto;
 	
 	private Long ISBN;
-	private String idioma;
 	private String editorial;
 	@Column(name = "fecha_publicacion")
 	private LocalDate fechaPublicacion;
@@ -47,5 +46,9 @@ public class DetalleLibro implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "id_libro")
-	private CategoriaLibro categoriaLibro;
+	private Genero genero;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_idioma")
+	private Idioma idioma;
 }
