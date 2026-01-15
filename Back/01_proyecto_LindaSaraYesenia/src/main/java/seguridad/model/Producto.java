@@ -50,10 +50,7 @@ public class Producto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_categoria_papeleria")
 	private CategoriaPapeleria categoriaPapeleria;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_categoria_libro")
-	private CategoriaLibro categoriaLibro;
+
 
 	public Integer getIdProducto() {
 		return idProducto;
