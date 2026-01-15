@@ -15,23 +15,21 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity @Data @Builder
-@Table(name = "categoria_libro")
-public class CategoriaLibro implements Serializable {
-	
+@Data
+@Builder
+@Entity
+@Table(name = "categoria")
+public class Categoria implements Serializable{
 	private static final long serialVersionUID = 1L;
-
 	@Id
-	@Column(name = "id_libro")
+	@Column(name = "id_papeleria")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idLibro;
+	private Integer idPapeleria;
 	
-	@Column(name = "genero_libro")
-	private String generoLibro;
-	
-	
-	
+	@Column(name = "categoria_papeleria")
+	private String categoriaPapeleria;
+
 	
 	
-	
+
 }
