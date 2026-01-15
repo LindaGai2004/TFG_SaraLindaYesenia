@@ -2,22 +2,31 @@ import { useCart } from '../context/CartContext';
 
 
 function MiCarrito() {
-    //hook
-    const { cartItems, addToCart } = useCart();
-
+    const {cartItems, addToCart} = useCart();
     const testProduct = {
-        id_producto: 1,
+        id_producto:1,
         nombre: 'Test Book',
         precio: 10
     };
-
     return (
-        <div>
-            <h1>Cart</h1>
+        <div style={{paddingTop:'120px'}}>
+            <h1>Mi Carrito</h1>
             <button onClick={() => addToCart(testProduct)}>
-                Añadir Producto
+                Añadir uno
             </button>
-            <pre>{JSON.stringify(cartItems, null, 2)}</pre>
+            {cartItems.length === 0 ?(
+                <p>Tu carrito esta vacio</p>
+            ) : (
+                <ul>
+                    {cartItems.map(item=>(
+                        <li key={item.id_producto}>
+                            <strong>{item.nombre}</strong> - ${item.precio} <br/>
+                            Cantidad: {item.cantidad} <br/>
+                            Subtotal: ${item.precio * item.cantidad}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }
