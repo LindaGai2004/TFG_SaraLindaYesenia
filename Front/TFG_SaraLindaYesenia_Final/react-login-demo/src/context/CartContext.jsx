@@ -11,20 +11,32 @@ export function CartProvider({ children }) {
   //Un carrito es una lista de items que se inicializa vacio
   const [cartItems, setCartItems] = useState([]);
   function addToCart(producto) {
-      const productoExistente = cartItems.find(
-        item => item.id_producto === producto.id_producto);
-      if(!productoExistente){
-        const nuevoItem = {...producto, cantidad: 1};
-        setCartItems([...cartItems, nuevoItem]);
-      }
-      else{
-        const carritoActualizado = cartItems.map(
-          item=> item.id_producto === producto.id_producto
-          ? {...item, cantidad: item.cantidad +1}
-          :item
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(
+        item => item.id_producto === producto.id_producto
+      );
+
+      if (existingItem) {
+        return prevItems.map(item =>
+          item.id_producto === producto.id_producto
+            ? { ...item, cantidad: item.cantidad + 1 }
+            : item
         );
-        setCartItems(carritoActualizado);
       }
+      //Si el producto no esta en el carrito -> lo agrega
+      return [...prevItems, { ...producto, cantidad: 1 }];
+    });
+  }
+  function increaseCantidad(id_producto){
+    setCartItems(prevItems =>
+      prevItems.map(
+        
+      )
+
+    )
+  }
+  function decreaseCantidad(id_producto){
+    
   }
   //Abrir el carrito guardado
   useEffect(() => {
@@ -48,7 +60,8 @@ export function CartProvider({ children }) {
   const value = {
     cartItems,
     addToCart,
-    setCartItems, // we’ll replace this later with addToCart, removeFromCart
+    increaseCantidad,
+    decreaseCantidad
   };
 
   //Significa que los componentes de este Provider pueden acceder al carrito (route, pages, botones pueden leerlo)
