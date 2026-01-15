@@ -26,9 +26,9 @@ public class DetalleLibro implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "id_detalle_libro")
+	@Column(name = "id_producto")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idDetalleLibro;
+	private Integer idProducto;
 	
 	private Long ISBN;
 	private String idioma;
@@ -37,11 +37,15 @@ public class DetalleLibro implements Serializable {
 	private LocalDate fechaPublicacion;
 	
 	private String autor;
-	@Column(name = "numero_pagina")
+	@Column(name = "numero_paginas")
 	private Integer numeroPagina;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_producto")
 	private Producto producto;
 
+	
+	@ManyToOne
+	@JoinColumn(name = "id_libro")
+	private CategoriaLibro categoriaLibro;
 }
