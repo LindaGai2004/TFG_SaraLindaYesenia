@@ -46,14 +46,13 @@ public class ProductoServiceImpl implements ProductoService{
 		 Producto existente = productoRepository.findById(producto.getIdProducto())
 			      	.orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 		 
-		 existente.setNombreLibro(producto.getNombreLibro());
+		 existente.setNombreProducto(producto.getNombreProducto());
 		 existente.setCostoReal(producto.getCostoReal());
 		 existente.setDescripcion(producto.getDescripcion());
 		 existente.setEstado(producto.getEstado());
 		 existente.setFechaAlta(producto.getFechaAlta());
 		 existente.setPrecio(producto.getPrecio());
 		 existente.setStock(producto.getStock());
-		 existente.setTipoProducto(producto.getTipoProducto());
 		 
 		 return productoRepository.save(existente);
 	}
