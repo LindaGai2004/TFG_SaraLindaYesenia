@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -25,11 +26,11 @@ public class Papeleria extends Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
-	@Column(name = "id_marca")
+	@JoinColumn(name = "id_marca")
 	private Marca marca;
 	
 	@ManyToOne
-	@Column(name = "id_papeleria")
+	@JoinColumn (name = "id_papeleria")
 	private Categoria categoria;
 
 	public Papeleria(String nombreProducto, String descripcion, Double precio, Integer stock, String estado,

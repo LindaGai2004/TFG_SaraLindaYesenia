@@ -10,12 +10,9 @@ import seguridad.model.Producto;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer>{
 
-	List<Producto> findByNombreLibroContainingIgnoreCase ( String nombreLibro );
+	List<Producto> findByNombreProductoContainingIgnoreCase ( String nombreProducto );
 	
-    @Query("SELECT p FROM Producto p WHERE LOWER(p.tipoProducto) = LOWER(:tipo)")
-    List<Producto> findByTipoProductoIgnoreCase(@Param("tipo") String tipo);
+ 
     
-	List<Producto> findByCategoriaPapeleria_NombreContainingIgnoreCase ( String nombre );
-	List<Producto> findByCategoriaLibro_GeneroLibroContainingIgnoreCase ( String generoLibro );
 	
 }
