@@ -1,44 +1,45 @@
 package seguridad.model;
 
-import java.awt.TextArea;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@EqualsAndHashCode(of = "idProducto")
 @Entity
-@Table(name = "PRODUCTOS")
+@DiscriminatorColumn(name = "tipo_producto", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "productos")
 
-public class Producto implements Serializable {
+public abstract class Producto implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "id_producto")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idProducto;
+	
 	@Column(name = "nombre_producto")
 	private String nombreProducto;
+	
 	private String descripcion;
-	@Enumerated(EnumType.STRING)
-	@Column(name = "tipo_producto")
-	private TipoProducto tipoProducto;
+	
 	private Double precio;
 	private Integer stock;
 	private String estado;
@@ -46,6 +47,21 @@ public class Producto implements Serializable {
 	private LocalDate fechaAlta;
 	@Column(name = "costo_real")
 	private Double costoReal;
+	
+	
+	public Producto(String nombreProducto, String descripcion, Double precio, Integer stock, String estado,
+			LocalDate fechaAlta, Double costoReal) {
+		super();
+		this.nombreProducto = nombreProducto;
+		this.descripcion = descripcion;
+		this.precio = precio;
+		this.stock = stock;
+		this.estado = estado;
+		this.fechaAlta = fechaAlta;
+		this.costoReal = costoReal;
+	}
+	
+	
 	
 	
 	
