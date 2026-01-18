@@ -10,6 +10,8 @@ import Trabajador from './pages/Trabajador';
 import Cliente from './pages/Cliente';
 import MiCarrito from './components/MiCarrito';
 import NavBar from './components/NavBar';
+import Checkout from './pages/Checkout';  
+
 export default function App() {
   const location = useLocation();
   const hideNavbarRoutes = ['/cliente'];
@@ -62,6 +64,14 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
               <MiCarrito/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+        path="/checkout"
+          element={
+          <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
+              <Checkout />
             </ProtectedRoute>
           }
         />

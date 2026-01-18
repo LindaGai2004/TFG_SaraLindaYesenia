@@ -73,6 +73,7 @@ export function AuthProvider({ children }) {
     setUser(null);
     localStorage.removeItem('user');
     // opcional: llamar a backend /logout si lo tienes
+    localStorage.removeItem('cartItems'); // Limpiar carrito al cerrar sesión
   }
 
   // Exponemos initializing para que ProtectedRoute espere mientras cargamos
