@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import seguridad.model.Producto;
-import seguridad.model.TipoProducto;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer>{
 

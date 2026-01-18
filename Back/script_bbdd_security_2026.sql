@@ -30,16 +30,16 @@ create table pedidos
     foreign key (id_usuario) references usuarios(id_usuario)
 );
 
-CREATE TABLE categoria_libro (
+CREATE TABLE genero (
 
 	id_libro int auto_increment primary key not null,
     genero_libro varchar(100) not null 
     
 );
 
-CREATE TABLE categoria_papeleria(
+CREATE TABLE categoria(
 	id_papeleria int auto_increment primary key not null,
-	categoria varchar(100) not null
+	categoria_papeleria varchar(100) not null
 );
 
 
@@ -55,28 +55,35 @@ CREATE TABLE productos (
     costo_real double not null
 
 );
-
-create table detalle_libro(
+CREATE TABLE idioma(
+	id_idioma int auto_increment primary key not null,
+	idioma_libro varchar(50) not null
+);
+create table libros(
 	id_producto int not null primary key,
 	ISBN long not null,
-    idioma varchar(30) not null,
     editorial varchar(50),
     fecha_publicacion date not null,
 	autor varchar(100) not null,
     numero_paginas int not null,
 
 	id_libro int,
-    foreign key (id_libro) references categoria_libro (id_libro),   
-    foreign key (id_producto) references productos(id_producto)
+    id_idioma int,
+    foreign key (id_libro) references genero (id_libro),   
+    foreign key (id_producto) references productos(id_producto),
+    foreign key (id_idioma) references idioma(id_idioma)
 );
-
-CREATE TABLE detalle_papeleria (
+CREATE TABLE marca(
+	id_marca int auto_increment not null primary key,
+    marca_papeleria varchar(100)
+);
+CREATE TABLE papelerias (
 	id_producto int primary key not null,
-    marca varchar(50) not null,
-
+	id_marca int ,
     id_papeleria int,
-    foreign key (id_papeleria) references categoria_papeleria(id_papeleria),
-    foreign key (id_producto) references productos(id_producto)
+    foreign key (id_papeleria) references categoria(id_papeleria),
+    foreign key (id_producto) references productos(id_producto),
+    foreign key (id_marca) references marca(id_marca)
 );
 
 create table detalle_pedido
@@ -131,7 +138,7 @@ INSERT INTO pedidos (fecha_venta, estado, id_usuario) VALUES
 ('2024-12-10', 'CANCELADO', 2);
 
 
-INSERT INTO categoria_libro (genero_libro)VALUES
+INSERT INTO genero (genero_libro)VALUES
 ('Arquitectura y diseño'),
 ('Poesía'),
 ('Novela'),
@@ -157,7 +164,7 @@ INSERT INTO categoria_libro (genero_libro)VALUES
 ('Manga');
 
 
-INSERT INTO categoria_papeleria (categoria)VALUES
+INSERT INTO categoria (categoria_papeleria)VALUES
 ('Mochilas'),
 ('Agendas'),
 ('Cuadernos, libretas y recambios'),
@@ -291,144 +298,189 @@ INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stoc
 -- ============================================
 -- PARTE 2: DETALLE_LIBRO (solo para los 50 libros)
 -- ============================================
+INSERT INTO idioma (idioma_libro) VALUES
+('español');
+INSERT INTO libros
+(ISBN, editorial, fecha_publicacion, autor, numero_paginas, id_producto, id_libro, id_idioma) VALUES
+(9788437604947,'Cátedra','1605-01-16','Miguel de Cervantes',1216,1,14,1),
+(9788439722222,'Sudamericana','1967-05-30','Gabriel García Márquez',471,2,3,1),
+(9788408172173,'Planeta','2001-04-12','Carlos Ruiz Zafón',576,3,10,1),
+(9788439721116,'Debolsillo','1985-09-01','Gabriel García Márquez',368,4,11,1),
+(9788420423459,'Alianza','1866-01-01','Fiódor Dostoyevski',671,5,14,1),
+(9788439722223,'RBA','1963-06-28','Julio Cortázar',736,6,3,1),
+(9788401029876,'Plaza & Janés','1982-01-01','Isabel Allende',448,7,3,1),
+(9788408144444,'Plaza & Janés','1989-10-01','Ken Follett',1076,8,7,1),
+(9788439723333,'Seix Barral','1948-01-01','Ernesto Sabato',160,9,3,1),
+(9788432223334,'Seix Barral','1963-01-01','Mario Vargas Llosa',480,10,3,1),
 
-INSERT INTO detalle_libro
-(ISBN, idioma, editorial, fecha_publicacion, autor, numero_paginas, id_producto, id_libro) VALUES
-(9788437604947,'Español','Cátedra','1605-01-16','Miguel de Cervantes',1216,1,14),
-(9788439722222,'Español','Sudamericana','1967-05-30','Gabriel García Márquez',471,2,3),
-(9788408172173,'Español','Planeta','2001-04-12','Carlos Ruiz Zafón',576,3,10),
-(9788439721116,'Español','Debolsillo','1985-09-01','Gabriel García Márquez',368,4,11),
-(9788420423459,'Español','Alianza','1866-01-01','Fiódor Dostoyevski',671,5,14),
-(9788439722223,'Español','RBA','1963-06-28','Julio Cortázar',736,6,3),
-(9788401029876,'Español','Plaza & Janés','1982-01-01','Isabel Allende',448,7,3),
-(9788408144444,'Español','Plaza & Janés','1989-10-01','Ken Follett',1076,8,7),
-(9788439723333,'Español','Seix Barral','1948-01-01','Ernesto Sabato',160,9,3),
-(9788432223334,'Español','Seix Barral','1963-01-01','Mario Vargas Llosa',480,10,3),
+(9788439724445,'FCE','1955-03-19','Juan Rulfo',124,11,3,1),
+(9788439725556,'Debolsillo','1989-01-01','Laura Esquivel',256,12,11,1),
+(9788408172174,'Planeta','2008-04-17','Carlos Ruiz Zafón',672,13,10,1),
+(9788439722224,'Sudamericana','1981-01-01','Gabriel García Márquez',144,14,3,1),
+(9788439726667,'Seix Barral','1985-01-01','Patrick Süskind',320,15,15,1),
 
-(9788439724445,'Español','FCE','1955-03-19','Juan Rulfo',124,11,3),
-(9788439725556,'Español','Debolsillo','1989-01-01','Laura Esquivel',256,12,11),
-(9788408172174,'Español','Planeta','2008-04-17','Carlos Ruiz Zafón',672,13,10),
-(9788439722224,'Español','Sudamericana','1981-01-01','Gabriel García Márquez',144,14,3),
-(9788439726667,'Español','Seix Barral','1985-01-01','Patrick Süskind',320,15,15),
+(9788420429999,'Debolsillo','1949-06-08','George Orwell',352,16,5,1),
+(9788439727778,'Debolsillo','1932-01-01','Aldous Huxley',288,17,5,1),
+(9788439728889,'Minotauro','1953-10-19','Ray Bradbury',256,18,5,1),
+(9788439729990,'Debolsillo','1951-06-01','Isaac Asimov',296,19,5,1),
+(9788439730001,'Debolsillo','1965-08-01','Frank Herbert',688,20,5,1),
 
-(9788420429999,'Español','Debolsillo','1949-06-08','George Orwell',352,16,5),
-(9788439727778,'Español','Debolsillo','1932-01-01','Aldous Huxley',288,17,5),
-(9788439728889,'Español','Minotauro','1953-10-19','Ray Bradbury',256,18,5),
-(9788439729990,'Español','Debolsillo','1951-06-01','Isaac Asimov',296,19,5),
-(9788439730001,'Español','Debolsillo','1965-08-01','Frank Herbert',688,20,5),
+(9788439731112,'Minotauro','1954-07-29','J.R.R. Tolkien',1216,21,6,1),
+(9788401333444,'Salamandra','1997-06-26','J.K. Rowling',256,22,6,1),
+(9788439732223,'Destino','1950-10-16','C.S. Lewis',816,23,6,1),
+(9788439733334,'Minotauro','1937-09-21','J.R.R. Tolkien',310,24,6,1),
+(9788439734445,'RBA','2003-08-26','Christopher Paolini',544,25,6,1),
 
-(9788439731112,'Español','Minotauro','1954-07-29','J.R.R. Tolkien',1216,21,6),
-(9788401333444,'Español','Salamandra','1997-06-26','J.K. Rowling',256,22,6),
-(9788439732223,'Español','Destino','1950-10-16','C.S. Lewis',816,23,6),
-(9788439733334,'Español','Minotauro','1937-09-21','J.R.R. Tolkien',310,24,6),
-(9788439734445,'Español','RBA','2003-08-26','Christopher Paolini',544,25,6),
+(9788439735556,'Alianza','1862-01-01','Victor Hugo',1488,26,14,1),
+(9788439736667,'Alianza','1869-01-01','León Tolstói',1225,27,14,1),
+(9788439737778,'Debolsillo','1980-01-01','Umberto Eco',592,28,10,1),
+(9788439738889,'Anaya','1844-01-01','Alexandre Dumas',704,29,12,1),
+(9788439739990,'Anaya','1819-01-01','Walter Scott',624,30,12,1),
 
-(9788439735556,'Español','Alianza','1862-01-01','Victor Hugo',1488,26,14),
-(9788439736667,'Español','Alianza','1869-01-01','León Tolstói',1225,27,14),
-(9788439737778,'Español','Debolsillo','1980-01-01','Umberto Eco',592,28,10),
-(9788439738889,'Español','Anaya','1844-01-01','Alexandre Dumas',704,29,12),
-(9788439739990,'Español','Anaya','1819-01-01','Walter Scott',624,30,12),
+(9788439740001,'Salamandra','1943-04-06','Antoine de Saint-Exupéry',96,31,8,1),
+(9788439740002,'Alfaguara','1988-10-01','Roald Dahl',248,32,8,1),
+(9788439740003,'Alfaguara','1964-01-01','Roald Dahl',192,33,8,1),
+(9788439740004,'Kalandraka','1963-01-01','Maurice Sendak',48,34,8,1),
+(9788439740005,'Bruño','1999-01-01','Julia Donaldson',32,35,8,1),
 
-(9788439740001,'Español','Salamandra','1943-04-06','Antoine de Saint-Exupéry',96,31,8),
-(9788439740002,'Español','Alfaguara','1988-10-01','Roald Dahl',248,32,8),
-(9788439740003,'Español','Alfaguara','1964-01-01','Roald Dahl',192,33,8),
-(9788439740004,'Español','Kalandraka','1963-01-01','Maurice Sendak',48,34,8),
-(9788439740005,'Español','Bruño','1999-01-01','Julia Donaldson',32,35,8),
+(9788439740006,'Nube de Tinta','2012-01-10','John Green',304,36,9,1),
+(9788439740007,'RBA','2008-09-14','Suzanne Collins',384,37,9,1),
+(9788439740008,'RBA','2011-04-25','Veronica Roth',432,38,9,1),
+(9788439740009,'Debolsillo','2005-10-05','Stephenie Meyer',512,39,11,1),
+(9788439740010,'Salamandra','2005-06-28','Rick Riordan',416,40,9,1),
 
-(9788439740006,'Español','Nube de Tinta','2012-01-10','John Green',304,36,9),
-(9788439740007,'Español','RBA','2008-09-14','Suzanne Collins',384,37,9),
-(9788439740008,'Español','RBA','2011-04-25','Veronica Roth',432,38,9),
-(9788439740009,'Español','Debolsillo','2005-10-05','Stephenie Meyer',512,39,11),
-(9788439740010,'Español','Salamandra','2005-06-28','Rick Riordan',416,40,9),
+(9788439740011,'Planeta','1934-01-01','Agatha Christie',256,41,10,1),
+(9788439740012,'Planeta','2003-03-18','Dan Brown',688,42,10,1),
+(9788439740013,'Anaya','1887-11-01','Arthur Conan Doyle',188,43,10,1),
+(9788439740014,'Planeta','2013-06-03','Paula Hawkins',496,44,10,1),
+(9788439740015,'Planeta','1988-01-01','Thomas Harris',368,45,15,1),
 
-(9788439740011,'Español','Planeta','1934-01-01','Agatha Christie',256,41,10),
-(9788439740012,'Español','Planeta','2003-03-18','Dan Brown',688,42,10),
-(9788439740013,'Español','Anaya','1887-11-01','Arthur Conan Doyle',188,43,10),
-(9788439740014,'Español','Planeta','2013-06-03','Paula Hawkins',496,44,10),
-(9788439740015,'Español','Planeta','1988-01-01','Thomas Harris',368,45,15),
+(9788439740016,'Alianza','1813-01-28','Jane Austen',432,46,11,1),
+(9788439740017,'Alianza','1847-10-16','Charlotte Brontë',624,47,11,1),
+(9788439740018,'Alianza','1847-12-01','Emily Brontë',416,48,11,1),
+(9788439740019,'Alianza','1811-01-01','Jane Austen',384,49,11,1),
+(9780061122415,'Editorial Planeta','1988-01-01','Paulo Coelho',208,50,3,1);
 
-(9788439740016,'Español','Alianza','1813-01-28','Jane Austen',432,46,11),
-(9788439740017,'Español','Alianza','1847-10-16','Charlotte Brontë',624,47,11),
-(9788439740018,'Español','Alianza','1847-12-01','Emily Brontë',416,48,11),
-(9788439740019,'Español','Alianza','1811-01-01','Jane Austen',384,49,11),
-(9780061122415,'Español','Editorial Planeta','1988-01-01','Paulo Coelho',208,50,3);
+INSERT INTO marca (marca_papeleria) VALUES
+('Genérica'),
+('Nike'),
+('Samsonite'),
+('Marvel'),
+('Finocam'),
+('Oxford'),
+('Muji'),
+('Mr Wonderful'),
+('Post-it'),
+('Papiro'),
+('Moleskine'),
+('Hallmark'),
+('Navipack'),
+('Pollen'),
+('Avery'),
+('Navigator'),
+('HP'),
+('Clairefontaine'),
+('Canson'),
+('Parker'),
+('Montblanc'),
+('Manuscript'),
+('Rotring'),
+('Winsor & Newton'),
+('Faber-Castell'),
+('Copic'),
+('Pelikan'),
+('Crayola'),
+('Talens'),
+('Da Vinci'),
+('Jullian'),
+('Arteza'),
+('Casio'),
+('Sharp'),
+('Fellowes'),
+('GBC'),
+('Esselte'),
+('Bankers Box'),
+('Leitz'),
+('Eastpak'),
+('Totto'),
+('BIC'),
+('Staedtler');
 
 
-
-INSERT INTO detalle_papeleria (id_producto, marca, id_papeleria) VALUES
+INSERT INTO papelerias (id_producto, id_marca, id_papeleria) VALUES
 -- Mochilas
-(51,'Genérica',1),
-(52,'Nike',1),
-(53,'Samsonite',1),
-(54,'Marvel',1),
+(51,1,1),
+(52,2,1),
+(53,3,1),
+(54,4,1),
 
 -- Agendas
-(55,'Finocam',2),
-(56,'Oxford',2),
-(57,'Muji',2),
-(58,'Mr Wonderful',2),
+(55,5,2),
+(56,6,2),
+(57,7,2),
+(58,8,2),
 
 -- Cuadernos, libretas y recambios
-(59,'Oxford',3),
-(60,'Oxford',3),
-(61,'Oxford',3),
-(62,'Post-it',3),
-(63,'Papiro',3),
-(64,'Moleskine',3),
+(59,6,3),
+(60,6,3),
+(61,6,3),
+(62,9,3),
+(63,10,3),
+(64,11,3),
 
 -- Papelería de regalo
-(65,'Hallmark',4),
-(66,'Navipack',4),
-(67,'Pollen',4),
-(68,'Avery',4),
+(65,12,4),
+(66,13,4),
+(67,14,4),
+(68,15,4),
 
 -- Papel
-(69,'Navigator',5),
-(70,'HP',5),
-(71,'Clairefontaine',5),
-(72,'Canson',5),
+(69,16,5),
+(70,17,5),
+(71,18,5),
+(72,19,5),
 
 -- Alta escritura
-(73,'Parker',6),
-(74,'Montblanc',6),
-(75,'Manuscript',6),
-(76,'Rotring',6),
+(73,20,6),
+(74,21,6),
+(75,22,6),
+(76,23,6),
 
 -- Creatividad
-(77,'Winsor & Newton',7),
-(78,'Faber-Castell',7),
-(79,'Copic',7),
-(80,'Canson',7),
-(81,'Pelikan',7),
-(82,'Crayola',7),
+(77,24,7),
+(78,25,7),
+(79,26,7),
+(80,19,7),
+(81,27,7),
+(82,28,7),
 
 -- Bellas Artes
-(83,'Talens',8),
-(84,'Da Vinci',8),
-(85,'Jullian',8),
-(86,'Arteza',8),
+(83,29,8),
+(84,30,8),
+(85,31,8),
+(86,32,8),
 
 -- Calculadoras y máquinas de oficina
-(87,'Casio',9),
-(88,'Sharp',9),
-(89,'Fellowes',9),
-(90,'GBC',9),
+(87,33,9),
+(88,34,9),
+(89,35,9),
+(90,36,9),
 
 -- Archivo y clasificación
-(91,'Esselte',10),
-(92,'Esselte',10),
-(93,'Avery',10),
-(94,'Bankers Box',10),
-(95,'Leitz',10),
+(91,37,10),
+(92,37,10),
+(93,15,10),
+(94,38,10),
+(95,39,10),
 
 -- Estuches
-(96,'Eastpak',12),
-(97,'Totto',12),
-(98,'Faber-Castell',12),
+(96,40,12),
+(97,41,12),
+(98,25,12),
 
 -- Escritura escolar
-(99,'BIC',13),
-(100,'Staedtler',13);
+(99,42,13),
+(100,43,13);
 
 
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unidad) VALUES

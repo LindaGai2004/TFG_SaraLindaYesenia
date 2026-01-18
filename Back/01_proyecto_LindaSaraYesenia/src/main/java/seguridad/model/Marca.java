@@ -11,28 +11,21 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@EqualsAndHashCode(of = "idPapeleria")
 @Entity
-@Table(name = "categoria")
-public class Categoria implements Serializable{
-	
+@Table(name = "marca")
+public class Marca implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "id_papeleria")
+	@Column(name = "id_marca")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idPapeleria;
+	private int idMarca;
 	
-	@Column(name = "categoria_papeleria")
-	private String categoriaPapeleria;
-
-	
-	
-
+	@Column(name = "marca_papeleria")
+	private String marcaPapeleria;
 }
