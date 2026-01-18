@@ -187,11 +187,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 	    List<Usuario> porEmail = usuarioRepository.findByPerfil_IdPerfilAndEmailContainingIgnoreCase(idPerfil, texto);
 	    List<Usuario> porNombre = usuarioRepository.findByPerfil_IdPerfilAndNombreContainingIgnoreCase(idPerfil, texto);
 	    List<Usuario> porUsername = usuarioRepository.findByPerfil_IdPerfilAndUsernameContainingIgnoreCase(idPerfil, texto);
+	    List<Usuario> porApellido = usuarioRepository.findByPerfil_IdPerfilAndApellidosContainingIgnoreCase(idPerfil, texto);
 
 	    Set<Usuario> resultado = new HashSet<>();
 	    resultado.addAll(porEmail);
 	    resultado.addAll(porNombre);
 	    resultado.addAll(porUsername);
+	    resultado.addAll(porApellido);
 
 	    return new ArrayList<>(resultado);
 	}
