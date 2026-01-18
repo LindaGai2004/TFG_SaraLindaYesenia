@@ -7,32 +7,39 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@EqualsAndHashCode(of = "idPapeleria")
 @Entity
-@Table(name = "categoria")
-public class Categoria implements Serializable{
+@Table(name = "DETALLE_PEDIDO")
+public class DetallePedido implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
-	@Column(name = "id_papeleria")
+	@Column(name = "id_detalle_pedido")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idPapeleria;
+	private Long idDetallePedido;
 	
-	@Column(name = "categoria_papeleria")
-	private String categoriaPapeleria;
-
+	@ManyToOne
+	@JoinColumn(name = "id_pedido")
+	private Pedido pedido;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_producto")
+	private Producto producto;
 	
+	private Integer cantidad;
+	
+	@Column(name = "precio_unidad")
+	private Double precioUnidad; 
 
 }
