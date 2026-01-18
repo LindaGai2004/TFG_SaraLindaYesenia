@@ -29,14 +29,28 @@ export function CartProvider({ children }) {
   }
   function increaseCantidad(id_producto){
     setCartItems(prevItems =>
-      prevItems.map(
-        
+      prevItems.map(item=>
+        item.id_producto === id_producto
+        ? {...item, cantidad: item.cantidad + 1}
+        : item        
       )
 
     )
   }
   function decreaseCantidad(id_producto){
-    
+    setCartItems(prevItems =>
+      prevItems.map(item=>
+        item.id_producto === id_producto
+        ? {...item, cantidad: item.cantidad - 1 }
+        : item
+      )
+      .filter(item=>item.cantidad > 0)
+    )
+  }
+  function quitarFromCart(id_producto){
+    setCartItems(prevItems=>
+      prevItems.filter(item=> item.id_producto !== id_producto)
+    );
   }
   //Abrir el carrito guardado
   useEffect(() => {
@@ -61,7 +75,8 @@ export function CartProvider({ children }) {
     cartItems,
     addToCart,
     increaseCantidad,
-    decreaseCantidad
+    decreaseCantidad,
+    quitarFromCart
   };
 
   //Significa que los componentes de este Provider pueden acceder al carrito (route, pages, botones pueden leerlo)
