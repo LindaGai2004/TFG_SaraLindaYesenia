@@ -11,7 +11,7 @@ import Cliente from './pages/Cliente';
 import MiCarrito from './components/MiCarrito';
 import NavBar from './components/NavBar';
 import Checkout from './pages/Checkout';  
-
+import './App.css';
 export default function App() {
   const location = useLocation();
   const hideNavbarRoutes = ['/cliente'];
@@ -20,6 +20,7 @@ export default function App() {
   return (
     <>
       {shouldShowNavbar && <NavBar />}
+        <main className={shouldShowNavbar ? 'app-content with-navbar' : 'app-content'}>
       <Routes>
         {/* Dashboard puede ser una landing común o también redirigir según rol */}
         <Route path="/" element={<Home/>} />
@@ -76,6 +77,7 @@ export default function App() {
           }
         />
       </Routes>
+      </main>
     </>
   );
 }
