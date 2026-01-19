@@ -80,7 +80,8 @@ public class UsuarioRestController {
             UsuarioDto dto = new UsuarioDto(nuevo);
             return ResponseEntity.ok(dto);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al registrar");
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
