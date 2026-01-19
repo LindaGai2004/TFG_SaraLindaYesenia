@@ -1,11 +1,11 @@
 import { useCart } from '../context/CartContext';
-import {useNavigate} from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import './MiCarrito.css';
 function MiCarrito() {
-    const {cartItems, addToCart, increaseCantidad, decreaseCantidad, quitarFromCart} = useCart();
+    const { cartItems, addToCart, increaseCantidad, decreaseCantidad, quitarFromCart } = useCart();
     const navigate = useNavigate();
     const testProduct = {
-        id_producto:1,
+        id_producto: 1,
         nombre: 'Test Book',
         precio: 10
     };
@@ -13,52 +13,128 @@ function MiCarrito() {
         (acc, item) => acc + item.precio * item.cantidad,
         0
     );
+    const delivery = 2.00;
     const iva = subtotal * 0.21;
     const total = subtotal + iva;
     return (
-        <div style={{paddingTop:'120px'}}>
-            <h1>Mi Carrito</h1>
-            <button onClick={() => addToCart(testProduct)}>
+       <div className="cart-page">
+            <button className="cart-back-btn" onClick={() => navigate(-1)}>
+                ← Regresar
+            </button>
+            
+            <h1 className="cart-title">Mi Carrito</h1>
+            
+            {/* Temporary test button */}
+            <button className="cart-add-test" onClick={() => addToCart(testProduct)}>
                 Añadir uno
             </button>
-            {cartItems.length === 0 ?(
-                <p>Tu carrito esta vacio</p>
+            
+            {cartItems.length === 0 ? (
+                <p className="cart-empty">Tu carrito está vacío</p>
             ) : (
-                <ul>
-                    {cartItems.map(item=>(
-                        <li key={item.id_producto} style={{marginBottom:'16px'}}>
-                            <strong>{item.nombre}</strong> - ${item.precio}
-                            <div>
-                                <button onClick={() => decreaseCantidad(item.id_producto)}>-</button>
-                                <span style={{margin: '0 10px'}}>
-                                    {item.cantidad}
-                                </span>
-                                <button onClick={() => increaseCantidad(item.id_producto)}>+</button>
+                <div className="cart-list">
+                    <div className="cart-items-container">
+                        <div className="cart-table-header">
+                            <span>Productos</span>
+                            <span>Cantidad</span>
+                            <span>Precio</span>
+                        </div>
+                        
+                        {cartItems.map(item => (
+                            <div key={item.id_producto} className="cart-item">
+                                <div className="cart-item-image"></div>
+                                
+                                <div className="cart-item-info">
+                                    <div className="cart-item-author">Jordan Avery</div>
+                                    <strong className="cart-item-name">{item.nombre}</strong>
+                                    <div className="cart-item-price">
+                                        €{item.precio.toFixed(2)}
+                                        <span className="cart-item-price-old">€20.00</span>
+                                    </div>
+                                </div>
+                                
+                                <div className="cart-quantity-controls">
+                                    <button
+                                        className="cart-btn cart-btn-decrease"
+                                        onClick={() => decreaseCantidad(item.id_producto)}
+                                    >
+                                        −
+                                    </button>
+                                    <span className="cart-quantity">
+                                        {item.cantidad}
+                                    </span>
+                                    <button
+                                        className="cart-btn cart-btn-increase"
+                                        onClick={() => increaseCantidad(item.id_producto)}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                                
+                                <div className="cart-item-subtotal">
+                                    €{(item.precio * item.cantidad).toFixed(2)}
+                                </div>
+                                
+                                <button
+                                    className="cart-btn-remove"
+                                    onClick={() => quitarFromCart(item.id_producto)}
+                                >
+                                    🗑️
+                                </button>
                             </div>
-                            <div>
-                                Subtotal: ${item.precio * item.cantidad}
-                            </div>
-                            <button onClick = {() => quitarFromCart(item.id_producto)} style={{ marginLeft: '10px' }}>🗑️</button>
-                        </li>
-                    ))}
-                    {cartItems.length > 0 && (
-                        <div style={{marginTop: '24px'}}>
-                            <hr/>
-                            <p>Subtotal: ${subtotal.toFixed(2)}</p>
-                            <p>IVA: ${iva.toFixed(2)}</p>
-                            <p>Total: ${total.toFixed(2)}</p>
-                            <button onClick ={()=>{
-                                if (cartItems.length === 0){
-                                    alert ('El carrito esta vacio');
+                        ))}
+                    </div>
+                    
+                    <div className="cart-summary">
+                        <div className="cart-summary-line">
+                            <span>Subtotal</span>
+                            <span>€{subtotal.toFixed(2)}</span>
+                        </div>
+                        <div className="cart-summary-line">
+                            <span>Delivery</span>
+                            <span>€{delivery.toFixed(2)}</span>
+                        </div>
+                        <div className="cart-summary-line">
+                            <span>IVA</span>
+                            <span>€{iva.toFixed(2)}</span>
+                        </div>
+                        
+                        <hr className="cart-divider" />
+                        
+                        <div className="cart-summary-total">
+                            <span>Total</span>
+                            <span>€{total.toFixed(2)}</span>
+                        </div>
+                        
+                        <div className="cart-summary-subtitle">
+                            Instrucciones especiales para el envío
+                        </div>
+                        <textarea 
+                            className="cart-instructions"
+                            placeholder=""
+                        ></textarea>
+                        
+                        <button
+                            className="cart-btn-secondary"
+                            onClick={() => navigate(-1)}
+                        >
+                            Regresar
+                        </button>
+                        
+                        <button
+                            className="cart-checkout-btn"
+                            onClick={() => {
+                                if (cartItems.length === 0) {
+                                    alert('El carrito está vacío');
                                     return;
                                 }
                                 navigate('/checkout');
-                            }}>
-                                Finalizar compra
-                            </button>
-                        </div>
-                    )}
-                </ul>
+                            }}
+                        >
+                            Finalizar compra
+                        </button>
+                    </div>
+                </div>
             )}
         </div>
     );
