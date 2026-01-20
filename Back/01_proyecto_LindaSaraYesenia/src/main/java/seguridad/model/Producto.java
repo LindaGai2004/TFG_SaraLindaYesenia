@@ -8,6 +8,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,24 +44,29 @@ public abstract class Producto implements Serializable{
 	
 	private Double precio;
 	private Integer stock;
-	private String estado;
+	
+	@Enumerated(EnumType.STRING)
+	private EstadoProducto estadoProducto;
+	
 	@Column(name = "fecha_alta")
 	private LocalDate fechaAlta;
 	@Column(name = "costo_real")
 	private Double costoReal;
 	
 	
-	public Producto(String nombreProducto, String descripcion, Double precio, Integer stock, String estado,
-			LocalDate fechaAlta, Double costoReal) {
+	public Producto(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
+			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal) {
 		super();
+		this.idProducto = idProducto;
 		this.nombreProducto = nombreProducto;
 		this.descripcion = descripcion;
 		this.precio = precio;
 		this.stock = stock;
-		this.estado = estado;
+		this.estadoProducto = estadoProducto;
 		this.fechaAlta = fechaAlta;
 		this.costoReal = costoReal;
 	}
+	
 	
 	
 	

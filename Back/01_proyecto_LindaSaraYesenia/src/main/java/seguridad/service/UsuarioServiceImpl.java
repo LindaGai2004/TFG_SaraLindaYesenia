@@ -10,11 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.security.core.userdetails.UserDetails;
 	import org.springframework.security.core.userdetails.UserDetailsService;
 	import org.springframework.security.core.userdetails.UsernameNotFoundException;
-	import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 	import org.springframework.stereotype.Service;
 	
 	import seguridad.model.Perfil;
-	import seguridad.model.Rol;
 	import seguridad.model.Usuario;
 	import seguridad.repository.PerfilRepository;
 	import seguridad.repository.UsuarioRepository;
@@ -170,7 +168,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 	   return usuarioRepository.save(usuario);
 	}
-	
 	
 	public String normalizePassword(String raw) {
 		  if (raw == null)

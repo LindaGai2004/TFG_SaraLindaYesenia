@@ -21,7 +21,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @DiscriminatorValue("PAPELERIA")
-@Table(name = "papeleria")
+@Table(name = "papelerias")
 public class Papeleria extends Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -33,12 +33,15 @@ public class Papeleria extends Producto implements Serializable {
 	@JoinColumn (name = "id_papeleria")
 	private Categoria categoria;
 
-	public Papeleria(String nombreProducto, String descripcion, Double precio, Integer stock, String estado,
-			LocalDate fechaAlta, Double costoReal, Marca marca, Categoria categoria) {
-		super(nombreProducto, descripcion, precio, stock, estado, fechaAlta, costoReal);
+	public Papeleria(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
+			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal, Marca marca, Categoria categoria) {
+		super(idProducto, nombreProducto, descripcion, precio, stock, estadoProducto, fechaAlta, costoReal);
 		this.marca = marca;
 		this.categoria = categoria;
 	}
+
+	
+	
 	
 	
 	
