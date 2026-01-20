@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import seguridad.model.Libro;
+import seguridad.model.Papeleria;
 import seguridad.model.Producto;
 import seguridad.model.Usuario;
 import seguridad.service.ProductoService;
@@ -27,7 +29,7 @@ public class ProductoRestController {
 	@Autowired
 	private ProductoService productoService;
 
-	
+	//todos los productos => para filtrar todos
 	@GetMapping("/todos/productos")
 	public ResponseEntity<?> todos(){
 		List<Producto> lista = productoService.findAll();
@@ -35,16 +37,6 @@ public class ProductoRestController {
 		return ResponseEntity.ok(lista);
 	}
 	
-	
-	
-	@PostMapping("/alta/producto")
-	@PreAuthorize("hasRole('ROLE_ADMON')") //si no es admin, vuelve error 403
-	public ResponseEntity<?> insertar(@RequestBody Producto producto) {
-	    Producto creado = productoService.insertarProducto(producto);
-	    
-	    return ResponseEntity.ok(creado);
-
-	}
 	
 	@DeleteMapping("/eliminar/{idProducto}")
 	@PreAuthorize("hasRole('ADMON')")
@@ -62,12 +54,6 @@ public class ProductoRestController {
 
 	}
 	
-	@PutMapping("/modificar/producto")
-	@PreAuthorize("hasRole('ADMON')")
-	public ResponseEntity<?> update(@RequestBody Producto producto){
-		
-		Producto modifica = productoService.updateProducto(producto);
-		return ResponseEntity.ok(modifica);
-	}
+
 
 }

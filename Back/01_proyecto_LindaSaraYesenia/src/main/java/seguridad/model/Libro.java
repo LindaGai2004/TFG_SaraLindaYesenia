@@ -53,10 +53,10 @@ public class Libro extends Producto implements Serializable{
 	@JoinColumn(name = "id_idioma")
 	private Idioma idioma;
 
-	public Libro(String nombreProducto, String descripcion, Double precio, Integer stock, String estado,
-			LocalDate fechaAlta, Double costoReal, Long iSBN, String editorial, LocalDate fechaPublicacion,
-			String autor, Integer numeroPagina, Genero genero, Idioma idioma) {
-		super(nombreProducto, descripcion, precio, stock, estado, fechaAlta, costoReal);
+	public Libro(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
+			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal, Long iSBN, String editorial,
+			LocalDate fechaPublicacion, String autor, Integer numeroPagina, Genero genero, Idioma idioma) {
+		super(idProducto, nombreProducto, descripcion, precio, stock, estadoProducto, fechaAlta, costoReal);
 		ISBN = iSBN;
 		this.editorial = editorial;
 		this.fechaPublicacion = fechaPublicacion;
@@ -65,6 +65,13 @@ public class Libro extends Producto implements Serializable{
 		this.genero = genero;
 		this.idioma = idioma;
 	}
+
+	
+	
+
+
+
+
 
 
 	

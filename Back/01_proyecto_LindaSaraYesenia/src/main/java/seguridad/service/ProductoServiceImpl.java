@@ -1,10 +1,13 @@
 package seguridad.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import seguridad.model.Libro;
+import seguridad.model.Papeleria;
 import seguridad.model.Producto;
 import seguridad.repository.ProductoRepository;
 
@@ -23,40 +26,8 @@ public class ProductoServiceImpl implements ProductoService{
 
 	@Override
 	public Producto findOne(Integer idproducto) {
-		// TODO Auto-generated method stub
 		return productoRepository.findById(idproducto).orElseThrow();
 	}
-
-	@Override
-	public Producto insertarProducto(Producto producto) {
-			
-			try {
-				return productoRepository.save(producto);
-			} catch (Exception e) {
-				throw new RuntimeException("Error al insertar producto: " + e.getMessage());
-			}
-			
-	}
-
-
-	@Override
-	public Producto updateProducto(Producto producto) {
-		
-		
-		 Producto existente = productoRepository.findById(producto.getIdProducto())
-			      	.orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-		 
-		 existente.setNombreProducto(producto.getNombreProducto());
-		 existente.setCostoReal(producto.getCostoReal());
-		 existente.setDescripcion(producto.getDescripcion());
-		 existente.setEstado(producto.getEstado());
-		 existente.setFechaAlta(producto.getFechaAlta());
-		 existente.setPrecio(producto.getPrecio());
-		 existente.setStock(producto.getStock());
-		 
-		 return productoRepository.save(existente);
-	}
-
 
 	@Override
 	public int deleteById(Integer idProducto) {
@@ -67,11 +38,11 @@ public class ProductoServiceImpl implements ProductoService{
 			}catch (Exception e) {
 				return 0;
 			}
-			
 		}else {
 			return -1;
 		}
 	}
+
 
 
 	
