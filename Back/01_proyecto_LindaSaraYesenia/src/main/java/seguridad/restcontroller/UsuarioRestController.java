@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import seguridad.model.Perfil;
 import seguridad.model.Usuario;
-import seguridad.model.UsuarioDto;
+import seguridad.model.Dto.UsuarioDto;
 import seguridad.repository.PerfilRepository;
 import seguridad.service.UsuarioService;
 

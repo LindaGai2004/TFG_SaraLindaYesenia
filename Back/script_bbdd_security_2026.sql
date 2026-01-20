@@ -74,7 +74,11 @@ id_libro int,
     foreign key (id_idioma) references idioma(id_idioma)
 );
 CREATE TABLE marca(
+<<<<<<< HEAD
 id_marca int auto_increment not null primary key,
+=======
+	id_marca int auto_increment not null primary key,
+>>>>>>> 94f8a795e1bf13203bc07e11953d1327fb2d1a1f
     marca_papeleria varchar(100) not null
 );
 CREATE TABLE papeleria (

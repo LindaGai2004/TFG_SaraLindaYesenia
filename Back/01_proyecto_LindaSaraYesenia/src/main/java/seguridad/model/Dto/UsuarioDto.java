@@ -1,4 +1,4 @@
-package seguridad.model;
+package seguridad.model.Dto;
 
 import java.time.LocalDate;
 
@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import seguridad.model.Usuario;
 
 @AllArgsConstructor
 @NoArgsConstructor
