@@ -26,6 +26,7 @@ create table pedidos
 	id_pedido int auto_increment primary key,
     fecha_venta date not null,
     estado ENUM ('REALIZADO', 'CANCELADO', 'DEVUELTO'),
+    total DECIMAL(12,2) NOT NULL,
     id_usuario int,
     foreign key (id_usuario) references usuarios(id_usuario)
 );
@@ -53,7 +54,6 @@ CREATE TABLE productos (
     estado varchar(20) not null,
     fecha_alta date not null,
     costo_real double not null
-
 );
 CREATE TABLE idioma(
 	id_idioma int auto_increment primary key not null,
@@ -61,12 +61,11 @@ CREATE TABLE idioma(
 );
 create table libros(
 	id_producto int not null primary key,
-	ISBN long not null,
+	ISBN VARCHAR(12) not null,
     editorial varchar(50),
     fecha_publicacion date not null,
 	autor varchar(100) not null,
     numero_paginas int not null,
-
 	id_libro int,
     id_idioma int,
     foreign key (id_libro) references genero (id_libro),   
@@ -125,17 +124,17 @@ insert into usuarios (username, password, nombre, apellidos, enabled, fecha_regi
 
 
 
-INSERT INTO pedidos (fecha_venta, estado, id_usuario) VALUES
-('2024-01-15', 'REALIZADO', 1),
-('2024-02-20', 'REALIZADO', 2),
-('2024-03-10', 'REALIZADO', 3),
-('2024-04-05', 'CANCELADO', 4),
-('2024-05-12', 'REALIZADO', 1),
-('2024-06-18', 'REALIZADO', 2),
-('2024-07-22', 'DEVUELTO', 3),
-('2024-08-30', 'REALIZADO', 4),
-('2024-09-15', 'REALIZADO', 1),
-('2024-12-10', 'CANCELADO', 2);
+INSERT INTO pedidos (fecha_venta, estado, total, id_usuario) VALUES
+('2024-01-15', 'REALIZADO', 72.48, 1),
+('2024-02-20', 'REALIZADO', 53.50, 2),
+('2024-03-10', 'REALIZADO', 46.20, 3),
+('2024-04-05', 'CANCELADO', 0.00, 4),
+('2024-05-12', 'REALIZADO', 40.40, 1),
+('2024-06-18', 'REALIZADO', 34.00, 2),
+('2024-07-22', 'DEVUELTO', 0.00, 3),
+('2024-08-30', 'REALIZADO', 52.90, 4),
+('2024-09-15', 'REALIZADO', 105.00, 1),
+('2024-12-10', 'CANCELADO', 0.00, 2);
 
 
 INSERT INTO genero (genero_libro)VALUES
