@@ -75,7 +75,7 @@ create table libros(
 );
 CREATE TABLE marca(
 	id_marca int auto_increment not null primary key,
-    marca_papeleria varchar(100)
+    marca_papeleria varchar(100) not null
 );
 CREATE TABLE papelerias (
 	id_producto int primary key not null,
