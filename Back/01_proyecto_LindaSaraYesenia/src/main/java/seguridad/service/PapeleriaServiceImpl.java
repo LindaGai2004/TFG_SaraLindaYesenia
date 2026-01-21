@@ -44,7 +44,7 @@ public class PapeleriaServiceImpl implements PapeleriaService {
         existente.setDescripcion(papeleria.getDescripcion());
         existente.setPrecio(papeleria.getPrecio());
         existente.setStock(papeleria.getStock());
-        existente.setEstado(papeleria.getEstado());
+        existente.setEstadoProducto(papeleria.getEstadoProducto());
         existente.setFechaAlta(papeleria.getFechaAlta());
         existente.setCostoReal(papeleria.getCostoReal());
 
