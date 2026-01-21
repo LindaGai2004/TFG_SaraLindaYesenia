@@ -40,7 +40,7 @@ public class LibroServiceImpl implements LibroService {
 		existente.setDescripcion(libro.getDescripcion());
 		existente.setPrecio(libro.getPrecio());
 		existente.setStock(libro.getStock());
-		existente.setEstado(libro.getEstado());
+		existente.setEstadoProducto(libro.getEstadoProducto());
 		existente.setFechaAlta(libro.getFechaAlta());
 		existente.setCostoReal(libro.getCostoReal());
 	
