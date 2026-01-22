@@ -51,7 +51,7 @@ CREATE TABLE productos (
     tipo_producto ENUM ('LIBRO', 'PAPELERIA') not null,
     precio DECIMAL(10,2) not null,
     stock int not null,
-    estado ENUM('DISPONIBLE', 'AGOTADO') not null,
+    estado_producto ENUM('DISPONIBLE', 'AGOTADO') not null,
     fecha_alta date not null,
     costo_real double not null
 
@@ -186,7 +186,7 @@ INSERT INTO idioma (idioma_libro) VALUES
 
 -- ========== 50 LIBROS ==========
 INSERT INTO productos
-(nombre_producto, descripcion, tipo_producto, precio, stock, estado, fecha_alta, costo_real) VALUES
+(nombre_producto, descripcion, tipo_producto, precio, stock, estado_producto, fecha_alta, costo_real) VALUES
 ('La arquitectura de la felicidad','Ensayo sobre arquitectura y bienestar','LIBRO',18.90,40,'DISPONIBLE','2024-01-01',12.50),
 ('Veinte poemas de amor y una canción desesperada','Libro de poesía de Pablo Neruda','LIBRO',14.50,35,'DISPONIBLE','2024-01-02',9.50),
 ('Cien años de soledad','Novela del realismo mágico','LIBRO',22.90,50,'DISPONIBLE','2024-01-03',15.00),
@@ -239,7 +239,7 @@ INSERT INTO productos
 ('El alquimista','Novela de Paulo Coelho sobre sueños y destino','LIBRO',18.90,40,'DISPONIBLE','2024-02-19',12.50);
 
 -- ========== 50 PAPELERÍA ==========
-INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stock, estado, fecha_alta, costo_real) VALUES
+INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stock, estado_producto, fecha_alta, costo_real) VALUES
 ('Mochila escolar azul', 'Mochila resistente con múltiples compartimentos', 'PAPELERIA', 35.90, 50, 'DISPONIBLE', '2024-03-10', 25.00),
 ('Mochila deportiva Nike', 'Mochila deportiva de alta calidad', 'PAPELERIA', 45.00, 30, 'DISPONIBLE', '2024-03-11', 32.00),
 ('Mochila universitaria gris', 'Mochila con compartimento para portátil', 'PAPELERIA', 42.50, 40, 'DISPONIBLE', '2024-03-12', 30.00),

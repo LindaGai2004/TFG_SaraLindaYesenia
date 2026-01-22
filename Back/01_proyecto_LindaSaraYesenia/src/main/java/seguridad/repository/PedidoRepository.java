@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import seguridad.model.Pedido;
 
 @Repository
-public interface PedidoRepository extends JpaRepository<Pedido, Integer> {	
+interface PedidoRepository extends JpaRepository<Pedido, Integer> {	
 	//Ver pedidos de un usuario	
 	List<Pedido> findByUsuario_IdUsuario(Integer idUsuario);
 }

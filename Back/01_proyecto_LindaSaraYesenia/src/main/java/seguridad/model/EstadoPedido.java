@@ -1,8 +1,8 @@
 package seguridad.model;
 
 public enum EstadoPedido {
-	REALIZADO,
-	CANCELADO,
-	DEVUELTO
+	Realizado,
+	Cancelado,
+	Devuelto
 
 }

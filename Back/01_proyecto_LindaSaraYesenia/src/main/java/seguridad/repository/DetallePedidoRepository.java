@@ -5,8 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import seguridad.model.DetallePedido;
 
-@Repository
-public interface DetallePedidoRepository extends JpaRepository<DetallePedido, Integer>{
+@Repository interface DetallePedidoRepository extends JpaRepository<DetallePedido, Integer>{
 	//Detalles de un pedido
 	List<DetallePedido> findByPedido_IdPedido(Integer idPedido);
 }
