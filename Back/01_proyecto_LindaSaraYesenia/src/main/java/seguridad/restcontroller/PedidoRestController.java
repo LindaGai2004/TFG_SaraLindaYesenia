@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 import seguridad.model.Dto.PedidoRequest;
+import seguridad.model.Dto.PedidoResponseDto;
 import seguridad.service.PedidoService;
 
 @RestController
@@ -27,14 +28,25 @@ public class PedidoRestController {
 	private PedidoService pserv;
 	
 	@PostMapping
+	@PreAuthorize("hasAnyRole('CLIENTE')")
 	public ResponseEntity<?> crearPedido(@RequestBody PedidoRequest pedido){
 		Pedido creado = pserv.insertPedido(pedido);
 		return ResponseEntity.ok(creado);
 	}
+	//Historial de pedidos por usuario
 	@GetMapping("usuario/{idUsuario}")
 	public ResponseEntity<?> pedidosPorUsuario(@PathVariable Integer idUsuario){
 		List<Pedido> pedidosUsuario = pserv.findByIdUsuario(idUsuario);
 		return ResponseEntity.ok(pedidosUsuario);
+	}
+	//Resumen del pedido
+	@GetMapping("/{idPedido}")
+	public ResponseEntity<?> pedidoPorIdPedido(@PathVariable Integer idPedido){
+		Pedido pedido = pserv.findById(idPedido);
+		if (pedido == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(new PedidoResponseDto(pedido));
 	}
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ADMON', 'JEFE','TRABAJADOR')")

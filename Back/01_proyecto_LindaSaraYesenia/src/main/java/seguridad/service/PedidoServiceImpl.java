@@ -22,8 +22,11 @@ public class PedidoServiceImpl implements PedidoService {
 
 	@Autowired
 	private PedidoRepository prepo;
+	@Autowired
 	private ProductoRepository porepo;
+	@Autowired
 	private UsuarioRepository urepo;
+	@Autowired
 	private  DetallePedidoRepository dprepo;
 	@Override
 	public Pedido insertPedido(PedidoRequest request) {
@@ -33,7 +36,7 @@ public class PedidoServiceImpl implements PedidoService {
 		pedido.setUsuario(usuario);
 		pedido.setFechaVenta(LocalDate.now());
 		pedido.setEstado(EstadoPedido.REALIZADO);
-		
+		pedido.setTotal(0.0);
 		double total = 0;
 		pedido = prepo.save(pedido);
 		
