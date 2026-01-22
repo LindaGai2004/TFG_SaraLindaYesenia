@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Libro;
+import seguridad.repository.PerfilRepository;
 import seguridad.service.LibroService;
 
 @RestController
@@ -22,8 +23,15 @@ import seguridad.service.LibroService;
 @RequestMapping("/libros")
 public class LibroRestController {
 
+    private final PerfilRepository perfilRepository;
+
 	@Autowired
 	private LibroService libroService;
+
+
+    LibroRestController(PerfilRepository perfilRepository) {
+        this.perfilRepository = perfilRepository;
+    }
 
 	
 	@GetMapping("/todos")
@@ -41,6 +49,17 @@ public class LibroRestController {
 		return ResponseEntity.ok(libro);
 	}*/
 	
+	@PutMapping("/modificarLibro/{idProducto}")
+	@PreAuthorize("hasRole('ADMON')")
+	public ResponseEntity<?> modificar(@PathVariable Integer idProducto, @RequestBody Libro libro) {
+		libro.setIdProducto(idProducto);
+		Libro modificado = libroService.updateLibro(libro);
+		if(modificado == null) {
+			return ResponseEntity.status(404).build();
+		}
+		return ResponseEntity.ok(modificado);
+		
+	}
 
 	@PostMapping("/altaLibro")
 	@PreAuthorize("hasRole('ADMON')")
@@ -49,11 +68,6 @@ public class LibroRestController {
 		return ResponseEntity.ok(creado);
 	}
 
-	@PutMapping("/modificarLibro")
-	@PreAuthorize("hasRole('ADMON')")
-	public ResponseEntity<?> modificar(@RequestBody Libro libro) {
-		Libro modificado = libroService.updateLibro(libro);
-		return ResponseEntity.ok(modificado);
-	}
+
 
 }
