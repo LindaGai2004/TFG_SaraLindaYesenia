@@ -21,7 +21,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @DiscriminatorValue("PAPELERIA")
-@Table(name = "papelerias")
+@Table(name = "papeleria")
 public class Papeleria extends Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -46,6 +46,7 @@ public abstract class Producto implements Serializable{
 	private Integer stock;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name = "estado_producto")
 	private EstadoProducto estadoProducto;
 	
 	@Column(name = "fecha_alta")
