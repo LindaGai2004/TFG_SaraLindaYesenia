@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Libro;
-import seguridad.repository.PerfilRepository;
 import seguridad.service.LibroService;
 
 @RestController
@@ -23,17 +22,10 @@ import seguridad.service.LibroService;
 @RequestMapping("/libros")
 public class LibroRestController {
 
-    private final PerfilRepository perfilRepository;
-
 	@Autowired
 	private LibroService libroService;
 
 
-    LibroRestController(PerfilRepository perfilRepository) {
-        this.perfilRepository = perfilRepository;
-    }
-
-	
 	@GetMapping("/todos")
 	public ResponseEntity<?> todos(){
 		List<Libro> libro = libroService.findAll();
@@ -55,7 +47,7 @@ public class LibroRestController {
 		libro.setIdProducto(idProducto);
 		Libro modificado = libroService.updateLibro(libro);
 		if(modificado == null) {
-			return ResponseEntity.status(404).build();
+			return ResponseEntity.status(404).body("Libro con id : " + idProducto + " no existe");
 		}
 		return ResponseEntity.ok(modificado);
 		
