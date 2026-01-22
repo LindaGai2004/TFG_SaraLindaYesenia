@@ -35,24 +35,28 @@ public class PapeleriaServiceImpl implements PapeleriaService {
 
         Papeleria existente = findOne(papeleria.getIdProducto());
 
-        if (existente == null) {
-            return null;
+        if (existente != null) {
+        	// Campos heredados de Producto
+            existente.setNombreProducto(papeleria.getNombreProducto());
+            existente.setDescripcion(papeleria.getDescripcion());
+            existente.setPrecio(papeleria.getPrecio());
+            existente.setStock(papeleria.getStock());
+            existente.setEstadoProducto(papeleria.getEstadoProducto());
+            
+            if (papeleria.getFechaAlta() != null) {
+    		    existente.setFechaAlta(papeleria.getFechaAlta());
+    		}
+            existente.setCostoReal(papeleria.getCostoReal());
+
+            // Campos propios de Papelería
+            existente.setMarca(papeleria.getMarca());
+
+            return papeleriaRepo.save(existente);
+        }else {
+        	return null;
         }
 
-        // Campos heredados de Producto
-        existente.setNombreProducto(papeleria.getNombreProducto());
-        existente.setDescripcion(papeleria.getDescripcion());
-        existente.setPrecio(papeleria.getPrecio());
-        existente.setStock(papeleria.getStock());
-        existente.setEstadoProducto(papeleria.getEstadoProducto());
-        existente.setFechaAlta(papeleria.getFechaAlta());
-        existente.setCostoReal(papeleria.getCostoReal());
-
-        // Campos propios de Papelería
-        existente.setMarca(papeleria.getMarca());
-
-
-        return papeleriaRepo.save(existente);
+        
     }
 
 
