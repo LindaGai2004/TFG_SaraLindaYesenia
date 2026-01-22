@@ -1,5 +1,6 @@
 package seguridad.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +8,35 @@ import org.springframework.stereotype.Service;
 
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
+import seguridad.model.Producto;
+import seguridad.model.Usuario;
+import seguridad.model.Dto.PedidoItemRequest;
+import seguridad.model.Dto.PedidoRequest;
 import seguridad.repository.PedidoRepository;
+import seguridad.repository.UsuarioRepository;
 @Service
 public class PedidoServiceImpl implements PedidoService {
 
 	@Autowired
 	private PedidoRepository prepo;
+	private UsuarioRepository urepo;
+	
 	@Override
-	public Pedido insertPedido(Pedido pedido) {
+	public Pedido insertPedido(PedidoRequest request) {
+		Usuario usuario = urepo.findById(request.getIdUsuario())
+				.orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+		Pedido pedido = new Pedido();
+		pedido.setUsuario(usuario);
+		pedido.setFechaVenta(LocalDate.now());
+		pedido.setEstado(EstadoPedido.REALIZADO);
+		
+		double total = 0;
+		pedido = prepo.save(pedido);
+		
+		for (PedidoItemRequest item:request.getItems()) {
+			Producto producto = prepo.findById(item.getIdProducto());
+			
+		}
 		return prepo.save(pedido);
 	}
 	@Override
