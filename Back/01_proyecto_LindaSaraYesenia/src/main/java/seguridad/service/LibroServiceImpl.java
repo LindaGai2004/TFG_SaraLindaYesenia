@@ -32,28 +32,32 @@ public class LibroServiceImpl implements LibroService {
 
 	@Override
 	public Libro updateLibro (Libro libro) {
-		
+			
 		Libro existente = findOne(libro.getIdProducto());
+		if(existente != null) {
+			//Campos heredados de producto
+			existente.setNombreProducto(libro.getNombreProducto());
+			existente.setDescripcion(libro.getDescripcion());
+			existente.setPrecio(libro.getPrecio());
+			existente.setStock(libro.getStock());
+			existente.setEstadoProducto(libro.getEstadoProducto());
+			existente.setFechaAlta(libro.getFechaAlta());
+			existente.setCostoReal(libro.getCostoReal());
+		
+			//Campos de Libro
+			existente.setISBN(libro.getISBN());
+			existente.setEditorial(libro.getEditorial());
+			existente.setFechaPublicacion(libro.getFechaPublicacion());
+			existente.setAutor(libro.getAutor());
+			existente.setNumeroPagina(libro.getNumeroPagina());
+			existente.setGenero(libro.getGenero());
+			existente.setIdioma(libro.getIdioma());
 	
-		//Campos heredados de producto
-		existente.setNombreProducto(libro.getNombreProducto());
-		existente.setDescripcion(libro.getDescripcion());
-		existente.setPrecio(libro.getPrecio());
-		existente.setStock(libro.getStock());
-		existente.setEstadoProducto(libro.getEstadoProducto());
-		existente.setFechaAlta(libro.getFechaAlta());
-		existente.setCostoReal(libro.getCostoReal());
-	
-		//Campos de Libro
-		existente.setISBN(libro.getISBN());
-		existente.setEditorial(libro.getEditorial());
-		existente.setFechaPublicacion(libro.getFechaPublicacion());
-		existente.setAutor(libro.getAutor());
-		existente.setNumeroPagina(libro.getNumeroPagina());
-		existente.setGenero(libro.getGenero());
-		existente.setIdioma(libro.getIdioma());
-	
-		return libroRepo.save(existente);
+			return libroRepo.save(existente);
+		}else {
+			
+			return null;
+		}
 	}
 
 
