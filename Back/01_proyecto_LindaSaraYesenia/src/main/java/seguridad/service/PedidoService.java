@@ -4,11 +4,12 @@ import java.util.List;
 
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
+import seguridad.model.Dto.PedidoRequest;
 
 public interface PedidoService {
 	
 	//Para el cliente
-	Pedido insertPedido(Pedido pedido);
+	Pedido insertPedido(PedidoRequest request);
 	List<Pedido> findByIdUsuario(Integer idUsuario);
 	
 	//Para admon

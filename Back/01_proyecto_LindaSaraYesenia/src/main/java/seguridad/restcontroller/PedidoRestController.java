@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
+import seguridad.model.Dto.PedidoRequest;
 import seguridad.service.PedidoService;
 
 @RestController
@@ -24,9 +25,9 @@ import seguridad.service.PedidoService;
 public class PedidoRestController {
 	@Autowired
 	private PedidoService pserv;
-	//¿Crear pedido es como insert no? pq no usar insert
+	
 	@PostMapping
-	public ResponseEntity<?> crearPedido(@RequestBody Pedido pedido){
+	public ResponseEntity<?> crearPedido(@RequestBody PedidoRequest pedido){
 		Pedido creado = pserv.insertPedido(pedido);
 		return ResponseEntity.ok(creado);
 	}
