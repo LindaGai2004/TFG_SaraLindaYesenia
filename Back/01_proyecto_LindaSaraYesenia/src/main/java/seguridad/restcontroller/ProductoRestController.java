@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Libro;
@@ -54,6 +55,15 @@ public class ProductoRestController {
 
 	}
 	
+	@GetMapping("/buscar/todos")
+	public ResponseEntity<?> buscarProducto(@RequestParam String texto){
+		List<Producto> lista = productoService.buscardorProducto(texto);
+		if(lista.isEmpty()) {
+			return ResponseEntity.ok("No hay NINGUN PRODUCTO que coincidan con la busqueda");
+		}
+		return ResponseEntity.ok(lista);
+	}
+
 
 
 }

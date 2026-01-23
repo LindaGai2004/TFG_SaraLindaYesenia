@@ -13,6 +13,6 @@ public interface ProductoService {
 	Producto findOne(Integer idproducto);
 	int deleteById (Integer idProducto);
 	
-	
+	List<Producto> buscardorProducto (String texto);
 
 }

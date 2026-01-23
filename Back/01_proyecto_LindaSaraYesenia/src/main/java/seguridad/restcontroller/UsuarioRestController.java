@@ -145,7 +145,7 @@ public class UsuarioRestController {
 
         int rolActual = actual.getPerfil().getIdPerfil();
         int rolObjetivo = objetivo.getPerfil().getIdPerfil();
-        boolean isSelf = actual.getEmail().equals(email);
+        boolean isSelf = actual.getEmail().equals(email); 	
 
         boolean permitido = false;
 

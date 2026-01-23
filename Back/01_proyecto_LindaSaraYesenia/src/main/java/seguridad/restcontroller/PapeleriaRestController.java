@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Libro;
@@ -53,6 +54,15 @@ public class PapeleriaRestController {
 	public ResponseEntity<?> insertar(@RequestBody Papeleria papeleria) {
 		Papeleria creado = papeleriaService.insertPapeleria(papeleria);
 		return ResponseEntity.ok(creado);
+	}
+	
+	@GetMapping("/buscar")
+	public ResponseEntity<?> buscarPapeleria(@RequestParam String texto){
+		List<Papeleria> lista = papeleriaService.buscardorPapeleria(texto);
+		if(lista.isEmpty()) {
+			return ResponseEntity.ok("No hay PAPELERIA que coincidan con la busqueda");
+		}
+		return ResponseEntity.ok(lista);
 	}
 
 }

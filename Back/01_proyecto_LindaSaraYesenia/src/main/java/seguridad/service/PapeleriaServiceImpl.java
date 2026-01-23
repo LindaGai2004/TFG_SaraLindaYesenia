@@ -1,7 +1,10 @@
 package seguridad.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +61,17 @@ public class PapeleriaServiceImpl implements PapeleriaService {
 
         
     }
+
+	@Override
+	public List<Papeleria> buscardorPapeleria(String texto) {
+		List<Papeleria> porNombreProducto = papeleriaRepo.findByNombreProductoContainingIgnoreCase(texto);
+		List<Papeleria> porMarca = papeleriaRepo.findByMarcaMarcaPapeleriaContainingIgnoreCase(texto);
+		
+		Set<Papeleria> resultado = new HashSet<>();
+		resultado.addAll(porNombreProducto);
+		resultado.addAll(porMarca);
+		return new ArrayList<>(resultado);
+	}
 
 
 }
