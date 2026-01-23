@@ -1,7 +1,10 @@
 package seguridad.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +64,21 @@ public class LibroServiceImpl implements LibroService {
 			return libroRepo.save(existente);
 		}
 		return null;
+	}
+	@Override
+	public List<Libro> buscadorLibro(String texto) {
+		List<Libro> porNombreProducto = libroRepo.findByNombreProductoContainingIgnoreCase(texto);
+		List<Libro> porAutor = libroRepo.findByAutorContainingIgnoreCase(texto);
+		List<Libro> porIsbn = libroRepo.findByISBNContaining(texto);
+		List<Libro> porEditorial = libroRepo.findByEditorialContainingIgnoreCase(texto);
+		
+		Set<Libro> resultado = new HashSet<>(); //para quitar repeticion
+		resultado.addAll(porNombreProducto);
+		resultado.addAll(porEditorial);
+		resultado.addAll(porIsbn);
+		resultado.addAll(porAutor);
+		
+		return new ArrayList<>(resultado);
 	}
 
 

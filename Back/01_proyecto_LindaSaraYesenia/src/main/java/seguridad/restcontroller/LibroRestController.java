@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Libro;
@@ -58,6 +59,16 @@ public class LibroRestController {
 	public ResponseEntity<?> insertar(@RequestBody Libro libro) {
 		Libro creado = libroService.insertarLibro(libro);
 		return ResponseEntity.ok(creado);
+	}
+	
+	
+	@GetMapping("/buscar")
+	public ResponseEntity<?> buscarLibro(@RequestParam String texto){
+		List<Libro> lista = libroService.buscadorLibro(texto);
+		if(lista.isEmpty()) {
+			return ResponseEntity.ok("No hay LIBRO que coincidan con la busqueda");
+		}
+		return ResponseEntity.ok(lista);
 	}
 
 
