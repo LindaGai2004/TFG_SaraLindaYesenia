@@ -39,10 +39,4 @@ public class Papeleria extends Producto implements Serializable {
 		this.marca = marca;
 		this.categoria = categoria;
 	}
-
-	
-	
-	
-	
-	
 }
