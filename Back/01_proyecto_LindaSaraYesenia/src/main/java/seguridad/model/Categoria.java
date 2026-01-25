@@ -32,7 +32,4 @@ public class Categoria implements Serializable{
 	@Column(name = "categoria_papeleria")
 	private String categoriaPapeleria;
 
-	
-	
-
 }

@@ -74,10 +74,71 @@ public class ProductoServiceImpl implements ProductoService{
 		
 		return new ArrayList<>(resultado);
 	}
-
-
-
 	
 	
+	@Override
+	public List<Producto> filtrar(String tipo, String idioma, String genero, String marca, String categoria, Double precio, String estado) {
+
+	    List<Producto> resultado = new ArrayList<>();
+
+	    // FILTRO PARA LIBROS
+	    if ("libro".equalsIgnoreCase(tipo)) {
+
+	        List<Libro> libros = libroRepo.findAll();
+
+	        if (idioma != null && !idioma.isEmpty()) {
+	            libros.removeIf(l -> l.getIdioma() == null ||
+	                    !l.getIdioma().getIdiomaLibro().equalsIgnoreCase(idioma));
+	        }
+
+	        if (genero != null && !genero.isEmpty()) {
+	            libros.removeIf(l -> l.getGenero() == null ||
+	                    !l.getGenero().getGeneroLibro().equalsIgnoreCase(genero));
+	        }
+
+	        if (precio != null) {
+	            libros.removeIf(l -> l.getPrecio() > precio);
+	        }
+
+	        if (estado != null && !estado.isEmpty()) {
+	            libros.removeIf(l -> !l.getEstadoProducto().name().equalsIgnoreCase(estado));
+	        }
+
+	        resultado.addAll(libros);
+	    }
+
+	    // FILTRO PARA PAPELERÍA
+	    else if ("papeleria".equalsIgnoreCase(tipo)) {
+
+	        List<Papeleria> pap = papeleriaRepo.findAll();
+
+	        if (marca != null && !marca.isEmpty()) {
+	            pap.removeIf(p -> p.getMarca() == null ||
+	                    !p.getMarca().getMarcaPapeleria().equalsIgnoreCase(marca));
+	        }
+
+	        if (categoria != null && !categoria.isEmpty()) {
+	            pap.removeIf(p -> p.getCategoria() == null ||
+	                    !p.getCategoria().getCategoriaPapeleria().equalsIgnoreCase(categoria));
+	        }
+
+	        if (precio != null) {
+	            pap.removeIf(p -> p.getPrecio() > precio);
+	        }
+
+	        if (estado != null && !estado.isEmpty()) {
+	            pap.removeIf(p -> !p.getEstadoProducto().name().equalsIgnoreCase(estado));
+	        }
+
+	        resultado.addAll(pap);
+	    }
+
+	    // SI NO HAY TIPO → DEVOLVER TODOS
+	    else {
+	        resultado.addAll(productoRepository.findAll());
+	    }
+
+	    return resultado;
+	}
 
 }

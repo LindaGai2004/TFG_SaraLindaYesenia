@@ -30,10 +30,5 @@ public class Genero implements Serializable {
 	
 	@Column(name = "genero_libro")
 	private String generoLibro;
-	
-	
-	
-	
-	
-	
+
 }

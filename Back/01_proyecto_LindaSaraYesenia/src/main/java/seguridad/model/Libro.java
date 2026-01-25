@@ -65,15 +65,8 @@ public class Libro extends Producto implements Serializable{
 		this.genero = genero;
 		this.idioma = idioma;
 	}
-
 	
 	
-
-
-
-
-
-
 	
 }
 
