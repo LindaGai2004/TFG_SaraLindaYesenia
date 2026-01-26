@@ -26,6 +26,6 @@ public class Marca implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idMarca;
 	
-	@Column(name = "marca_papeleria")
-	private String marcaPapeleria;
+	@Column(name = "nombre_marca")
+	private String nombreMarca;
 }

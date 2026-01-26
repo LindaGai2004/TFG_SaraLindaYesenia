@@ -41,7 +41,7 @@ public class ProductoRestController {
 	
 	@GetMapping("/productos/filtrar")
 	public ResponseEntity<?> filtrarProductos(
-	        @RequestParam(required = false) String tipo_producto,
+	        @RequestParam(required = false) String tipo,
 	        @RequestParam(required = false) String idioma,
 	        @RequestParam(required = false) String genero,
 	        @RequestParam(required = false) String marca,
@@ -49,7 +49,7 @@ public class ProductoRestController {
 	        @RequestParam(required = false) Double precio,
 	        @RequestParam(required = false) String estado
 	) {
-	    List<Producto> lista = productoService.filtrar(tipo_producto, idioma, genero, marca, categoria, precio, estado);
+	    List<Producto> lista = productoService.filtrar(tipo, idioma, genero, marca, categoria, precio, estado);
 	    return ResponseEntity.ok(lista);
 	}
 
@@ -79,7 +79,4 @@ public class ProductoRestController {
 		}
 		return ResponseEntity.ok(lista);
 	}
-
-
-
 }

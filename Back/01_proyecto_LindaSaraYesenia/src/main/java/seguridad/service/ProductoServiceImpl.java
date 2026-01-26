@@ -62,7 +62,7 @@ public class ProductoServiceImpl implements ProductoService{
 		List<Libro> porEditorial = libroRepo.findByEditorialContainingIgnoreCase(texto);
 		
 		//papelerias
-		List<Papeleria> poeMarca = papeleriaRepo.findByMarcaMarcaPapeleriaContainingIgnoreCase(texto);
+		List<Papeleria> poeMarca = papeleriaRepo.findByMarcaNombreMarcaContainingIgnoreCase(texto);
 		
 		
 		Set<Producto> resultado = new HashSet<>();
@@ -86,20 +86,24 @@ public class ProductoServiceImpl implements ProductoService{
 
 	        List<Libro> libros = libroRepo.findAll();
 
+	        // FILTRO POR IDIOMA
 	        if (idioma != null && !idioma.isEmpty()) {
 	            libros.removeIf(l -> l.getIdioma() == null ||
-	                    !l.getIdioma().getIdiomaLibro().equalsIgnoreCase(idioma));
+	                    !l.getIdioma().getNombreIdioma().equalsIgnoreCase(idioma));
 	        }
 
+	        // FILTRO POR GÉNERO
 	        if (genero != null && !genero.isEmpty()) {
 	            libros.removeIf(l -> l.getGenero() == null ||
-	                    !l.getGenero().getGeneroLibro().equalsIgnoreCase(genero));
+	                    !l.getGenero().getNombreGenero().equalsIgnoreCase(genero));
 	        }
 
+	        // FILTRO POR PRECIO
 	        if (precio != null) {
 	            libros.removeIf(l -> l.getPrecio() > precio);
 	        }
 
+	        // FILTRO POR ESTADO
 	        if (estado != null && !estado.isEmpty()) {
 	            libros.removeIf(l -> !l.getEstadoProducto().name().equalsIgnoreCase(estado));
 	        }
@@ -112,20 +116,24 @@ public class ProductoServiceImpl implements ProductoService{
 
 	        List<Papeleria> pap = papeleriaRepo.findAll();
 
+	        // FILTRO POR MARCA
 	        if (marca != null && !marca.isEmpty()) {
 	            pap.removeIf(p -> p.getMarca() == null ||
-	                    !p.getMarca().getMarcaPapeleria().equalsIgnoreCase(marca));
+	                    !p.getMarca().getNombreMarca().equalsIgnoreCase(marca));
 	        }
 
+	        // FILTRO POR CATEGORÍA
 	        if (categoria != null && !categoria.isEmpty()) {
 	            pap.removeIf(p -> p.getCategoria() == null ||
-	                    !p.getCategoria().getCategoriaPapeleria().equalsIgnoreCase(categoria));
+	                    !p.getCategoria().getNombreCategoria().equalsIgnoreCase(categoria));
 	        }
 
+	        // FILTRO POR PRECIO
 	        if (precio != null) {
 	            pap.removeIf(p -> p.getPrecio() > precio);
 	        }
 
+	        // FILTRO POR ESTADO
 	        if (estado != null && !estado.isEmpty()) {
 	            pap.removeIf(p -> !p.getEstadoProducto().name().equalsIgnoreCase(estado));
 	        }
@@ -133,7 +141,7 @@ public class ProductoServiceImpl implements ProductoService{
 	        resultado.addAll(pap);
 	    }
 
-	    // SI NO HAY TIPO → DEVOLVER TODOS
+	    // SI NO SE INDICA TIPO → DEVOLVER TODOS
 	    else {
 	        resultado.addAll(productoRepository.findAll());
 	    }
