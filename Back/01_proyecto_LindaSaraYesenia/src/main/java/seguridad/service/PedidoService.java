@@ -5,6 +5,7 @@ import java.util.List;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 import seguridad.model.Dto.PedidoRequest;
+import seguridad.model.Dto.PedidoResponseDto;
 
 public interface PedidoService {
 	
@@ -17,4 +18,6 @@ public interface PedidoService {
 	Pedido findById(Integer idPedido);
 	Pedido updateEstado(Integer idPedido, EstadoPedido estado);
 	
+	//Resumen de pedido
+	PedidoResponseDto resumenPedido(Integer idPedido);
 }
