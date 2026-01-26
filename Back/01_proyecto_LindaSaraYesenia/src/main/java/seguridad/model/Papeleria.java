@@ -30,7 +30,7 @@ public class Papeleria extends Producto implements Serializable {
 	private Marca marca;
 	
 	@ManyToOne
-	@JoinColumn (name = "id_papeleria")
+	@JoinColumn (name = "id_categoria")
 	private Categoria categoria;
 
 	public Papeleria(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
