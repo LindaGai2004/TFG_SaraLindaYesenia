@@ -267,10 +267,7 @@ public class UsuarioRestController {
             return ResponseEntity.status(500).body(Map.of("error", "Error al eliminar", "message", e.getMessage()));
         }
     }
-   
-   
-   
-   
+    
    
    
   // AÑADIR TRABAJADOR Y JEFE POR ROL (PAGINA DASHBOARD DE ADMIN Y JEFE)
@@ -322,6 +319,9 @@ public class UsuarioRestController {
         }
     }
     
+    
+    
+    
     //BUSCAR POR NOMBRE, USERMANE, EMAIL DE LOS USUARIOS POR ROL
     @GetMapping("/buscar")
     public ResponseEntity<?> buscarUsuarios(@RequestParam("idPerfil") int rol, @RequestParam String texto, Authentication auth) {
@@ -360,6 +360,4 @@ public class UsuarioRestController {
 
         return ResponseEntity.ok(lista);
     }
-
-
 }

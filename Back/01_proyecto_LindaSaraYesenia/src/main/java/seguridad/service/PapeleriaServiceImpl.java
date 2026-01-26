@@ -62,16 +62,17 @@ public class PapeleriaServiceImpl implements PapeleriaService {
         
     }
 
-	@Override
-	public List<Papeleria> buscardorPapeleria(String texto) {
-		List<Papeleria> porNombreProducto = papeleriaRepo.findByNombreProductoContainingIgnoreCase(texto);
-		List<Papeleria> porMarca = papeleriaRepo.findByMarcaMarcaPapeleriaContainingIgnoreCase(texto);
-		
-		Set<Papeleria> resultado = new HashSet<>();
-		resultado.addAll(porNombreProducto);
-		resultado.addAll(porMarca);
-		return new ArrayList<>(resultado);
-	}
+    @Override
+    public List<Papeleria> buscardorPapeleria(String texto) {
+        List<Papeleria> porNombreProducto = papeleriaRepo.findByNombreProductoContainingIgnoreCase(texto);
+        List<Papeleria> porMarca = papeleriaRepo.findByMarcaNombreMarcaContainingIgnoreCase(texto);
+
+        Set<Papeleria> resultado = new HashSet<>();
+        resultado.addAll(porNombreProducto);
+        resultado.addAll(porMarca);
+
+        return new ArrayList<>(resultado);
+    }
 
 
 }

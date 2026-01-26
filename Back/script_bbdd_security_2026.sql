@@ -1,29 +1,27 @@
 create database tfg_2026;
 use tfg_2026;
-create table perfiles
-( id_perfil int not null auto_increment primary key,
-nombre varchar(250) not null
+create table perfiles( 
+	id_perfil int not null auto_increment primary key,
+	nombre varchar(250) not null
 );
 
-create table usuarios
-(
-id_usuario int auto_increment primary key,
-username varchar(45) not null,
-password varchar(250) not null,
-nombre varchar(100),
-apellidos varchar(200),
-enabled int,
-FECHA_REGISTRO date,
+create table usuarios(
+	id_usuario int auto_increment primary key,
+	username varchar(45) not null,
+	password varchar(250) not null,
+	nombre varchar(100),
+	apellidos varchar(200),
+	enabled int,
+	FECHA_REGISTRO date,
     fecha_nacimiento date,
     direccion varchar(200),
     email varchar(45) not null unique,
-id_perfil int,
+	id_perfil int,
     foreign key (id_perfil) references perfiles(id_perfil)
 );
 
-create table pedidos
-(
-id_pedido int auto_increment primary key,
+create table pedidos(
+	id_pedido int auto_increment primary key,
     fecha_venta date not null,
     estado ENUM ('REALIZADO', 'CANCELADO', 'DEVUELTO'),
     total DECIMAL(12,2) NOT NULL,
@@ -31,16 +29,16 @@ id_pedido int auto_increment primary key,
     foreign key (id_usuario) references usuarios(id_usuario)
 );
 
-CREATE TABLE genero (
 
-id_libro int auto_increment primary key not null,
-    genero_libro varchar(100) not null
-   
+CREATE TABLE genero (
+	id_genero int auto_increment primary key not null,
+    nombre_genero varchar(100) not null
 );
 
+
 CREATE TABLE categoria(
-id_papeleria int auto_increment primary key not null,
-categoria_papeleria varchar(100) not null
+	id_categoria int auto_increment primary key not null,
+	nombre_categoria varchar(100) not null
 );
 
 
@@ -56,40 +54,45 @@ CREATE TABLE productos (
     costo_real double not null
 
 );
+
 CREATE TABLE idioma(
-id_idioma int auto_increment primary key not null,
-idioma_libro varchar(50) not null
+	id_idioma int auto_increment primary key not null,
+	nombre_idioma varchar(50) not null
 );
+
 create table libros(
-id_producto int not null primary key,
-ISBN VARCHAR(13) not null,
-editorial varchar(50),
-fecha_publicacion date not null,
-autor varchar(100) not null,
-numero_paginas int not null,
-id_libro int,
+	id_producto int not null primary key,
+	ISBN VARCHAR(13) not null,
+	editorial varchar(50),
+	fecha_publicacion date not null,
+	autor varchar(100) not null,
+	numero_paginas int not null,
+	id_genero int,
     id_idioma int,
-    foreign key (id_libro) references genero (id_libro),  
+    foreign key (id_genero) references genero (id_genero),  
     foreign key (id_producto) references productos(id_producto),
     foreign key (id_idioma) references idioma(id_idioma)
 );
+
+
 CREATE TABLE marca(
-id_marca int auto_increment not null primary key,
-marca_papeleria varchar(100) not null
+	id_marca int auto_increment not null primary key,
+	nombre_marca varchar(100) not null
 );
+
+
 CREATE TABLE papeleria (
-id_producto int primary key not null,
-id_marca int ,
-    id_papeleria int,
-    foreign key (id_papeleria) references categoria(id_papeleria),
+	id_producto int primary key not null,
+	id_marca int ,
+    id_categoria int,
+    foreign key (id_categoria) references categoria(id_categoria),
     foreign key (id_producto) references productos(id_producto),
     foreign key (id_marca) references marca(id_marca)
 );
 
-create table detalle_pedido
-(
-id_detalle_pedido int primary key auto_increment not null,
-id_pedido int not null,
+create table detalle_pedido(
+	id_detalle_pedido int primary key auto_increment not null,
+	id_pedido int not null,
     id_producto int not null,
     cantidad int not null,
     precio_unidad dec(12,2) not null,
@@ -98,9 +101,8 @@ id_pedido int not null,
     unique (id_pedido, id_producto)
 );
 
-create table facturas
-(
-id_factura int auto_increment primary key,
+create table facturas(
+	id_factura int auto_increment primary key,
     num_factura varchar(15) not null,
     fecha_factura date not null,
     precio_total dec(15,2) not null,
@@ -109,19 +111,17 @@ id_factura int auto_increment primary key,
 );
 
 
-
-insert into perfiles(nombre)
+INSERT INTO perfiles(nombre)
 values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 ('ROLE_TRABAJADOR'),
 ('ROLE_JEFE');
 
 
-insert into usuarios (username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento,direccion, email, id_perfil)values
+INSERT INTO usuarios (username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento,direccion, email, id_perfil)values
 ('tomas', '{noop}tomasin', 'Tomas', 'Escu',1,'2025-11-05','1960-11-02','madrid', 'tomas@ifp.com',1),
 ('sarita', '{noop}sarita', 'Sara', 'Baras',2,'2024-02-05','1999-03-16','sevilla', 'sara@ifp.com',2),
 ('eva', '{noop}evita', 'Eva', 'Goma',1,'2000-01-02','1978-05-24','cordoba', 'eva@ifp.com',3),
 ('ramon', '{noop}ramoncin', 'Ramon', 'González',1,'2014-07-07','1996-06-04','madrid','ramon@ifp.com', 4);
-
 
 
 INSERT INTO pedidos (fecha_venta, estado, total, id_usuario) VALUES
@@ -136,7 +136,8 @@ INSERT INTO pedidos (fecha_venta, estado, total, id_usuario) VALUES
 ('2024-09-15','REALIZADO',38.92,1),
 ('2024-12-10','CANCELADO',23.55,2);
 
-INSERT INTO genero (genero_libro)VALUES
+
+INSERT INTO genero (nombre_genero)VALUES
 ('Arquitectura y diseño'),
 ('Poesía'),
 ('Novela'),
@@ -162,7 +163,7 @@ INSERT INTO genero (genero_libro)VALUES
 ('Manga');
 
 
-INSERT INTO categoria (categoria_papeleria)VALUES
+INSERT INTO categoria (nombre_categoria)VALUES
 ('Mochilas'),
 ('Agendas'),
 ('Cuadernos, libretas y recambios'),
@@ -178,8 +179,13 @@ INSERT INTO categoria (categoria_papeleria)VALUES
 ('Escritura escolar');
 
 
-INSERT INTO idioma (idioma_libro) VALUES
-('español');
+INSERT INTO idioma (nombre_idioma) VALUES
+('español'),
+("inglés"),
+("francés"),
+("chino"),
+("italiano");
+
 -- ============================================
 -- PARTE 1: 100 PRODUCTOS (50 libros + 50 papelería)
 -- ============================================
@@ -189,14 +195,14 @@ INSERT INTO productos
 (nombre_producto, descripcion, tipo_producto, precio, stock, estado_producto, fecha_alta, costo_real) VALUES
 ('La arquitectura de la felicidad','Ensayo sobre arquitectura y bienestar','LIBRO',18.90,40,'DISPONIBLE','2024-01-01',12.50),
 ('Veinte poemas de amor y una canción desesperada','Libro de poesía de Pablo Neruda','LIBRO',14.50,35,'DISPONIBLE','2024-01-02',9.50),
-('Cien años de soledad','Novela del realismo mágico','LIBRO',22.90,50,'DISPONIBLE','2024-01-03',15.00),
+('Cien años de soledad','Novela del realismo mágico','LIBRO',22.90,50,'AGOTADO','2024-01-03',15.00),
 ('La vida es sueño','Obra clásica del teatro español','LIBRO',12.50,30,'DISPONIBLE','2024-01-04',8.00),
 ('1984','Novela distópica de ciencia ficción','LIBRO',16.90,45,'DISPONIBLE','2024-01-05',11.00),
 ('Harry Potter y la piedra filosofal','Novela de fantasía juvenil','LIBRO',19.90,60,'DISPONIBLE','2024-01-06',13.00),
 ('Los pilares de la Tierra','Novela histórica medieval','LIBRO',25.90,40,'DISPONIBLE','2024-01-07',18.00),
 ('El principito','Libro infantil clásico','LIBRO',10.90,80,'DISPONIBLE','2024-01-08',6.50),
 ('Los juegos del hambre','Novela juvenil distópica','LIBRO',17.50,55,'DISPONIBLE','2024-01-09',12.00),
-('Diez negritos','Novela de misterio policiaco','LIBRO',14.90,45,'DISPONIBLE','2024-01-10',9.80),
+('Diez negritos','Novela de misterio policiaco','LIBRO',14.90,45,'AGOTADO','2024-01-10',9.80),
 ('Orgullo y prejuicio','Novela romántica clásica','LIBRO',15.90,35,'DISPONIBLE','2024-01-11',10.50),
 ('Los tres mosqueteros','Novela de aventuras','LIBRO',18.50,30,'DISPONIBLE','2024-01-12',12.00),
 ('Biblia Reina-Valera','Texto sagrado del cristianismo','LIBRO',29.90,25,'AGOTADO','2024-01-13',20.00),
@@ -206,13 +212,13 @@ INSERT INTO productos
 ('Historia del arte','Manual ilustrado de arte','LIBRO',34.90,25,'DISPONIBLE','2024-01-17',24.00),
 ('Teoría musical básica','Introducción al lenguaje musical','LIBRO',21.90,30,'DISPONIBLE','2024-01-18',15.00),
 ('Didáctica moderna','Manual sobre educación actual','LIBRO',23.50,28,'DISPONIBLE','2024-01-19',16.00),
-('Cocina mediterránea','Recetario de cocina tradicional','LIBRO',19.50,45,'DISPONIBLE','2024-01-20',13.00),
+('Cocina mediterránea','Recetario de cocina tradicional','LIBRO',19.50,45,'AGOTADO','2024-01-20',13.00),
 ('Introducción a la programación','Fundamentos de informática','LIBRO',28.90,35,'DISPONIBLE','2024-01-21',20.00),
 ('Watchmen','Novela gráfica de superhéroes','LIBRO',24.90,30,'DISPONIBLE','2024-01-22',17.00),
 ('Naruto Volumen 1','Manga shōnen japonés','LIBRO',9.90,70,'DISPONIBLE','2024-01-23',6.50),
 ('La casa de los espíritus','Novela latinoamericana','LIBRO',18.90,40,'DISPONIBLE','2024-01-24',12.50),
 ('El túnel','Novela psicológica argentina','LIBRO',13.90,30,'DISPONIBLE','2024-01-25',9.00),
-('Crimen y castigo','Clásico de la literatura rusa','LIBRO',21.90,25,'DISPONIBLE','2024-01-26',15.00),
+('Crimen y castigo','Clásico de la literatura rusa','LIBRO',21.90,25,'AGOTADO','2024-01-26',15.00),
 ('Pedro Páramo','Novela breve mexicana','LIBRO',12.90,35,'DISPONIBLE','2024-01-27',8.50),
 ('Como agua para chocolate','Novela romántica','LIBRO',15.50,40,'DISPONIBLE','2024-01-28',10.50),
 ('Fahrenheit 451','Ciencia ficción distópica','LIBRO',16.90,45,'DISPONIBLE','2024-01-29',11.00),
@@ -233,7 +239,7 @@ INSERT INTO productos
 ('Jane Eyre','Novela romántica clásica','LIBRO',15.90,30,'DISPONIBLE','2024-02-13',10.50),
 ('Cumbres borrascosas','Novela romántica gótica','LIBRO',16.90,28,'DISPONIBLE','2024-02-14',11.50),
 ('Lo que el viento se llevó','Novela romántica histórica','LIBRO',24.90,20,'DISPONIBLE','2024-02-15',17.50),
-('Estudio en escarlata','Novela policiaca','LIBRO',13.90,35,'DISPONIBLE','2024-02-16',9.00),
+('Estudio en escarlata','Novela policiaca','LIBRO',13.90,35,'AGOTADO','2024-02-16',9.00),
 ('El código Da Vinci','Thriller contemporáneo','LIBRO',21.90,30,'DISPONIBLE','2024-02-17',15.50),
 ('Las crónicas de Narnia','Saga de fantasía','LIBRO',29.90,25,'DISPONIBLE','2024-02-18',21.00),
 ('El alquimista','Novela de Paulo Coelho sobre sueños y destino','LIBRO',18.90,40,'DISPONIBLE','2024-02-19',12.50);
@@ -246,11 +252,11 @@ INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stoc
 ('Mochila infantil Spiderman', 'Mochila con diseño de superhéroe', 'PAPELERIA', 28.90, 35, 'DISPONIBLE', '2024-03-13', 20.00),
 
 ('Agenda ejecutiva 2025', 'Agenda día por página de cuero', 'PAPELERIA', 18.90, 60, 'DISPONIBLE', '2024-03-14', 13.50),
-('Agenda escolar 2025', 'Agenda semanal para estudiantes', 'PAPELERIA', 12.50, 80, 'DISPONIBLE', '2024-03-15', 9.00),
+('Agenda escolar 2025', 'Agenda semanal para estudiantes', 'PAPELERIA', 12.50, 80, 'AGOTADO', '2024-03-15', 9.00),
 ('Agenda minimalista 2025', 'Agenda con diseño simple y elegante', 'PAPELERIA', 15.90, 55, 'DISPONIBLE', '2024-03-16', 11.00),
 ('Planificador mensual 2025', 'Planificador con vista mensual', 'PAPELERIA', 14.50, 45, 'DISPONIBLE', '2024-03-17', 10.00),
 
-('Cuaderno A4 cuadriculado', 'Cuaderno 100 hojas de calidad', 'PAPELERIA', 3.50, 150, 'DISPONIBLE', '2024-03-18', 2.50),
+('Cuaderno A4 cuadriculado', 'Cuaderno 100 hojas de calidad', 'PAPELERIA', 3.50, 150, 'AGOTADO', '2024-03-18', 2.50),
 ('Cuaderno A5 rayado', 'Cuaderno tamaño medio 80 hojas', 'PAPELERIA', 2.80, 200, 'DISPONIBLE', '2024-03-19', 2.00),
 ('Libreta espiral A4', 'Libreta con espiral metálico', 'PAPELERIA', 4.50, 120, 'DISPONIBLE', '2024-03-20', 3.20),
 ('Bloc notas adhesivas', 'Pack de 5 blocs de colores', 'PAPELERIA', 5.90, 100, 'DISPONIBLE', '2024-03-21', 4.00),
@@ -308,29 +314,29 @@ INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stoc
 
 -- ========== DATOS DE LIBROS ==========
 INSERT INTO libros
-(id_producto, ISBN, editorial, fecha_publicacion, autor, numero_paginas, id_libro, id_idioma) VALUES
-(1,'9788437604947','Cátedra','1605-01-16','Miguel de Cervantes',1216,14,1),
-(2,'9788439722222','Sudamericana','1967-05-30','Gabriel García Márquez',471,3,1),
-(3,'9788408172173','Planeta','2001-04-12','Carlos Ruiz Zafón',576,10,1),
-(4,'9788439721116','Debolsillo','1985-09-01','Gabriel García Márquez',368,11,1),
-(5,'9788420423459','Alianza','1866-01-01','Fiódor Dostoyevski',671,14,1),
-(6,'9788439722223','RBA','1963-06-28','Julio Cortázar',736,3,1),
-(7,'9788401029876','Plaza & Janés','1982-01-01','Isabel Allende',448,3,1),
-(8,'9788408144444','Plaza & Janés','1989-10-01','Ken Follett',1076,7,1),
-(9,'9788439723333','Seix Barral','1948-01-01','Ernesto Sabato',160,3,1),
-(10,'9788432223334','Seix Barral','1963-01-01','Mario Vargas Llosa',480,3,1),
+(id_producto, ISBN, editorial, fecha_publicacion, autor, numero_paginas, id_genero, id_idioma) VALUES
+(1,'9788437604947','Cátedra','1605-01-16','Miguel de Cervantes',1216,1,1),
+(2,'9788439722222','Sudamericana','1967-05-30','Gabriel García Márquez',471,2,2),
+(3,'9788408172173','Planeta','2001-04-12','Carlos Ruiz Zafón',576,3,1),
+(4,'9788439721116','Debolsillo','1985-09-01','Gabriel García Márquez',368,4,1),
+(5,'9788420423459','Alianza','1866-01-01','Fiódor Dostoyevski',671,5,1),
+(6,'9788439722223','RBA','1963-06-28','Julio Cortázar',736,6,1),
+(7,'9788401029876','Plaza & Janés','1982-01-01','Isabel Allende',448,7,1),
+(8,'9788408144444','Plaza & Janés','1989-10-01','Ken Follett',1076,8,4),
+(9,'9788439723333','Seix Barral','1948-01-01','Ernesto Sabato',160,9,1),
+(10,'9788432223334','Seix Barral','1963-01-01','Mario Vargas Llosa',480,10,1),
 
-(11,'9788439724445','FCE','1955-03-19','Juan Rulfo',124,3,1),
+(11,'9788439724445','FCE','1955-03-19','Juan Rulfo',124,12,1),
 (12,'9788439725556','Debolsillo','1989-01-01','Laura Esquivel',256,11,1),
-(13,'9788408172174','Planeta','2008-04-17','Carlos Ruiz Zafón',672,10,1),
-(14,'9788439722224','Sudamericana','1981-01-01','Gabriel García Márquez',144,3,1),
+(13,'9788408172174','Planeta','2008-04-17','Carlos Ruiz Zafón',672,13,1),
+(14,'9788439722224','Sudamericana','1981-01-01','Gabriel García Márquez',144,14,5),
 (15,'9788439726667','Seix Barral','1985-01-01','Patrick Süskind',320,15,1),
 
-(16,'9788420429999','Debolsillo','1949-06-08','George Orwell',352,5,1),
-(17,'9788439727778','Debolsillo','1932-01-01','Aldous Huxley',288,5,1),
-(18,'9788439728889','Minotauro','1953-10-19','Ray Bradbury',256,5,1),
-(19,'9788439729990','Debolsillo','1951-06-01','Isaac Asimov',296,5,1),
-(20,'9788439730001','Debolsillo','1965-08-01','Frank Herbert',688,5,1),
+(16,'9788420429999','Debolsillo','1949-06-08','George Orwell',352,16,1),
+(17,'9788439727778','Debolsillo','1932-01-01','Aldous Huxley',288,17,1),
+(18,'9788439728889','Minotauro','1953-10-19','Ray Bradbury',256,18,1),
+(19,'9788439729990','Debolsillo','1951-06-01','Isaac Asimov',296,19,3),
+(20,'9788439730001','Debolsillo','1965-08-01','Frank Herbert',688,20,1),
 
 (21,'9788439731112','Minotauro','1954-07-29','J.R.R. Tolkien',1216,6,1),
 (22,'9788401333444','Salamandra','1997-06-26','J.K. Rowling',256,6,1),
@@ -342,11 +348,11 @@ INSERT INTO libros
 (27,'9788439736667','Alianza','1869-01-01','León Tolstói',1225,14,1),
 (28,'9788439737778','Debolsillo','1980-01-01','Umberto Eco',592,10,1),
 (29,'9788439738889','Anaya','1844-01-01','Alexandre Dumas',704,12,1),
-(30,'9788439739990','Anaya','1819-01-01','Walter Scott',624,12,1),
+(30,'9788439739990','Anaya','1819-01-01','Walter Scott',624,12,2),
 
 (31,'9788439740001','Salamandra','1943-04-06','Antoine de Saint-Exupéry',96,8,1),
 (32,'9788439740002','Alfaguara','1988-10-01','Roald Dahl',248,8,1),
-(33,'9788439740003','Alfaguara','1964-01-01','Roald Dahl',192,8,1),
+(33,'9788439740003','Alfaguara','1964-01-01','Roald Dahl',192,8,5),
 (34,'9788439740004','Kalandraka','1963-01-01','Maurice Sendak',48,8,1),
 (35,'9788439740005','Bruño','1999-01-01','Julia Donaldson',32,8,1),
 
@@ -356,7 +362,7 @@ INSERT INTO libros
 (39,'9788439740009','Debolsillo','2005-10-05','Stephenie Meyer',512,11,1),
 (40,'9788439740010','Salamandra','2005-06-28','Rick Riordan',416,9,1),
 
-(41,'9788439740011','Planeta','1934-01-01','Agatha Christie',256,10,1),
+(41,'9788439740011','Planeta','1934-01-01','Agatha Christie',256,10,4),
 (42,'9788439740012','Planeta','2003-03-18','Dan Brown',688,10,1),
 (43,'9788439740013','Anaya','1887-11-01','Arthur Conan Doyle',188,10,1),
 (44,'9788439740014','Planeta','2013-06-03','Paula Hawkins',496,10,1),
@@ -368,7 +374,7 @@ INSERT INTO libros
 (49,'9788439740019','Alianza','1811-01-01','Jane Austen',384,11,1),
 (50,'9780061122415','Editorial Planeta','1988-01-01','Paulo Coelho',208,3,1);
 
-INSERT INTO marca (marca_papeleria) VALUES
+INSERT INTO marca (nombre_marca) VALUES
 ('Genérica'),
 ('Nike'),
 ('Samsonite'),
@@ -414,7 +420,7 @@ INSERT INTO marca (marca_papeleria) VALUES
 ('Staedtler');
 
 -- ========== DATOS DE PAPELERIA ==========
-INSERT INTO papeleria (id_producto, id_marca, id_papeleria) VALUES
+INSERT INTO papeleria (id_producto, id_marca, id_categoria) VALUES
 -- Mochilas
 (51,1,1),
 (52,2,1),

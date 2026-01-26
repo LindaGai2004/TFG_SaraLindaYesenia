@@ -8,5 +8,5 @@ import seguridad.model.Papeleria;
 
 public interface PapeleriaRespository extends JpaRepository<Papeleria, Integer>{
 	List<Papeleria> findByNombreProductoContainingIgnoreCase (String nombreProducto);
-	List<Papeleria> findByMarcaMarcaPapeleriaContainingIgnoreCase(String marca);
+	List<Papeleria> findByMarcaNombreMarcaContainingIgnoreCase(String marca);
 }
