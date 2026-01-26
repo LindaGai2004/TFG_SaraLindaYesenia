@@ -75,7 +75,8 @@ public class SecurityConfig {
             //las rutas hay que verificar
             //Crear usuario -> admin y jefe se permite crear usaurio
             .requestMatchers("/admin/crear").hasAnyRole("ADMON","JEFE")
-           
+            //nuevo requestMatchers para ruta pedidos
+            .requestMatchers("/pedidos/**").authenticated()
             //las rutas de rol que requiere autenticacion
             .requestMatchers("/rol/**").authenticated()
             .anyRequest().authenticated()
