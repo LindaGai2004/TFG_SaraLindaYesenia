@@ -15,4 +15,6 @@ public interface ProductoService {
 	
 	List<Producto> buscardorProducto (String texto);
 
+	List<Producto> filtrar(String tipo, String idioma, String genero, String marca, String categoria, Double precio, String estado);
+
 }

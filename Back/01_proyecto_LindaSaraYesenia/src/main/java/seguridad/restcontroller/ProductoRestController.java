@@ -39,6 +39,22 @@ public class ProductoRestController {
 	}
 	
 	
+	@GetMapping("/productos/filtrar")
+	public ResponseEntity<?> filtrarProductos(
+	        @RequestParam(required = false) String tipo,
+	        @RequestParam(required = false) String idioma,
+	        @RequestParam(required = false) String genero,
+	        @RequestParam(required = false) String marca,
+	        @RequestParam(required = false) String categoria,
+	        @RequestParam(required = false) Double precio,
+	        @RequestParam(required = false) String estado
+	) {
+	    List<Producto> lista = productoService.filtrar(tipo, idioma, genero, marca, categoria, precio, estado);
+	    return ResponseEntity.ok(lista);
+	}
+
+	
+	
 	@DeleteMapping("/eliminar/{idProducto}")
 	@PreAuthorize("hasRole('ADMON')")
 	public ResponseEntity<?> delete(@PathVariable Integer idProducto){
@@ -63,7 +79,4 @@ public class ProductoRestController {
 		}
 		return ResponseEntity.ok(lista);
 	}
-
-
-
 }
