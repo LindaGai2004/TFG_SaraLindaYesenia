@@ -3,6 +3,6 @@ package seguridad.model;
 public enum EstadoPedido {
 	REALIZADO,
 	CANCELADO,
-	DEVUELTO
-
+	DEVUELTO,
+	CARRITO
 }

@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class PedidoItemResponseDto {
+public class PedidoItemResponse {
 	private String nombreProducto;
-    private Integer cantidad;
-    private Double precioUnidad;
-    private Double subtotalItem;
-    private Double ivaItem;
+	private Integer cantidad;
+	private Double precioUnidad;
+	private Double totalItem;
 }

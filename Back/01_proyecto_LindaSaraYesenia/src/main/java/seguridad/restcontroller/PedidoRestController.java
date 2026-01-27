@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 import seguridad.model.Dto.PedidoRequest;
-import seguridad.model.Dto.PedidoResponseDto;
+import seguridad.model.Dto.PedidoResponse;
 import seguridad.service.PedidoService;
 
 @RestController
@@ -46,7 +46,7 @@ public class PedidoRestController {
 		if (pedido == null) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(new PedidoResponseDto(pedido));
+		return ResponseEntity.ok(new PedidoResponse(pedido));
 	}
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ADMON', 'JEFE','TRABAJADOR')")

@@ -49,7 +49,7 @@ CREATE TABLE productos (
     tipo_producto ENUM ('LIBRO', 'PAPELERIA') not null,
     precio DECIMAL(10,2) not null,
     stock int not null,
-    estado_producto ENUM('DISPONIBLE', 'AGOTADO') not null,
+    estado_producto ENUM('DISPONIBLE', 'AGOTADO', 'CANCELADO', 'CARRITO') not null,
     fecha_alta date not null,
     costo_real double not null
 
@@ -180,11 +180,11 @@ INSERT INTO categoria (nombre_categoria)VALUES
 
 
 INSERT INTO idioma (nombre_idioma) VALUES
-('español'),
-("inglés"),
-("francés"),
-("chino"),
-("italiano");
+('Español'),
+('Inglés'),
+('Francés'),
+('Chino'),
+('Italiano');
 
 -- ============================================
 -- PARTE 1: 100 PRODUCTOS (50 libros + 50 papelería)
