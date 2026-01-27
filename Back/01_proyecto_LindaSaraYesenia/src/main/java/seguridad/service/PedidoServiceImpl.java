@@ -15,9 +15,9 @@ import seguridad.model.Pedido;
 import seguridad.model.Producto;
 import seguridad.model.Usuario;
 import seguridad.model.Dto.PedidoItemRequest;
-import seguridad.model.Dto.PedidoItemResponseDto;
+import seguridad.model.Dto.PedidoItemResponse;
 import seguridad.model.Dto.PedidoRequest;
-import seguridad.model.Dto.PedidoResponseDto;
+import seguridad.model.Dto.PedidoResponse;
 import seguridad.repository.PedidoRepository;
 import seguridad.repository.ProductoRepository;
 import seguridad.repository.UsuarioRepository;
@@ -37,7 +37,7 @@ public class PedidoServiceImpl implements PedidoService {
 	private static final double IVA_LIBRO = 0.04;
 	private static final double IVA_PAPELERIA = 0.21;
 
-	//guarda el subtotal
+	//cuando se crea un pedido actualiza el stock y guarda el total
 	@Override
 	public Pedido insertPedido(PedidoRequest request) {
 		Usuario usuario = urepo.findById(request.getIdUsuario())
@@ -103,15 +103,18 @@ public class PedidoServiceImpl implements PedidoService {
 		return prepo.save(pedido);
 	}
 	//muestra subtotal + iva = total final
+	//para el ui
 	@Override
-	public PedidoResponseDto resumenPedido(Integer idPedido) {
+	public PedidoResponse resumenPedido(Integer idPedido) {
 		Pedido pedido = prepo.findById(idPedido)
 				.orElseThrow(() -> new RuntimeException("No existe este pedido"));
+		
 		List<DetallePedido> detalles = dprepo.findByPedido_IdPedido(idPedido);
 		
 		double subtotal = 0;
 		double ivaTotal = 0;
-		List<PedidoItemResponseDto> items = new ArrayList<>();
+		
+		List<PedidoItemResponse> items = new ArrayList<>();
 		
 		for (DetallePedido d: detalles) {
 			double totalBase = d.getPrecioUnidad()* d.getCantidad();
@@ -119,22 +122,34 @@ public class PedidoServiceImpl implements PedidoService {
 			double iva;
 			
 			if(d.getProducto() instanceof Libro) {
-				iva = totalBase*0.04;
+				iva = totalBase*IVA_LIBRO;
 			}else {
-				iva = totalBase*0.21;
+				iva = totalBase*IVA_PAPELERIA;
 			}
 			ivaTotal += iva;
 			
-			PedidoItemResponseDto item = new PedidoItemResponseDto(
-					d.getProducto().getIdProducto(),
-					d.getProducto().getNombreProducto(),
-					d.getPrecioUnidad(),
-					d.getCantidad()
-					);
+			PedidoItemResponse item = new PedidoItemResponse(
+				    d.getProducto().getNombreProducto(),
+				    d.getCantidad(),
+				    d.getPrecioUnidad(),
+				    totalBase
+				);
 			items.add(item);	
 		}
 		double total = subtotal + ivaTotal;
-		
+		return new PedidoResponse(
+				pedido.getIdPedido(),
+				pedido.getFechaVenta(),
+				"MASTERCARD",
+				pedido.getEstado(),
+				subtotal,
+				ivaTotal,
+				total,
+				pedido.getUsuario().getNombre(),
+				pedido.getUsuario().getDireccion(),
+				pedido.getUsuario().getEmail(),
+				items
+				);
 	}
 
 }

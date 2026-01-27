@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//Este es para todo el json completo que envía el carrito
+//Este es para todo el json completo del pedido que envía el front
 public class PedidoRequest {
 	private Integer idUsuario;
 	private List<PedidoItemRequest> items;
