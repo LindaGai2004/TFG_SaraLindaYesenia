@@ -13,5 +13,5 @@ public class PedidoItemResponse {
 	private String nombreProducto;
 	private Integer cantidad;
 	private Double precioUnidad;
-	private Double totalItem;
+	private Double totalPorItem; //sin iva
 }
