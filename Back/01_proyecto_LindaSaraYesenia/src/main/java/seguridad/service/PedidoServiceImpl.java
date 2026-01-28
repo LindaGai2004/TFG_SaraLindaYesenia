@@ -1,87 +1,40 @@
 package seguridad.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import seguridad.model.DetallePedido;
 import seguridad.model.EstadoPedido;
-import seguridad.model.EstadoProducto;
 import seguridad.model.Libro;
 import seguridad.model.Pedido;
-import seguridad.model.Producto;
-import seguridad.model.Usuario;
-import seguridad.model.Dto.PedidoItemRequest;
 import seguridad.model.Dto.PedidoItemResponse;
-import seguridad.model.Dto.PedidoRequest;
 import seguridad.model.Dto.PedidoResponse;
 import seguridad.repository.PedidoRepository;
-import seguridad.repository.ProductoRepository;
-import seguridad.repository.UsuarioRepository;
 import seguridad.repository.DetallePedidoRepository;
 @Service
 public class PedidoServiceImpl implements PedidoService {
 
 	@Autowired
 	private PedidoRepository prepo;
+
 	@Autowired
-	private ProductoRepository porepo;
-	@Autowired
-	private UsuarioRepository urepo;
-	@Autowired
-	private  DetallePedidoRepository dprepo;
+	private DetallePedidoRepository dprepo;
 	
 	private static final double IVA_LIBRO = 0.04;
 	private static final double IVA_PAPELERIA = 0.21;
 
-	//cuando se crea un pedido actualiza el stock y guarda el total
 	@Override
-	public Pedido insertPedido(PedidoRequest request) {
-		Usuario usuario = urepo.findById(request.getIdUsuario())
-				.orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
-		Pedido pedido = new Pedido();
-		pedido.setUsuario(usuario);
-		pedido.setFechaVenta(LocalDate.now());
-		pedido.setEstado(EstadoPedido.REALIZADO);
-		pedido.setTotal(0.0);
-		//guardar pedido para obtener id
-		pedido = prepo.save(pedido);
-		
-		double total= 0.0;
-		
-		for (PedidoItemRequest item : request.getItems()) {
-			Producto producto = porepo.findById(item.getIdProducto())
-				.orElseThrow(()-> new RuntimeException("No existe el producto"));
-			
-			int cantidad = item.getCantidad();
-			
-			if (producto.getStock() < cantidad) {
-			    throw new RuntimeException("Stock insuficiente para " + producto.getNombreProducto());
-			}
-			
-			DetallePedido detalle = new DetallePedido();
-			detalle.setPedido(pedido);
-			detalle.setProducto(producto);
-			detalle.setCantidad(cantidad);
-			detalle.setPrecioUnidad(producto.getPrecio());
-			
-			dprepo.save(detalle);
-			
-			producto.setStock(producto.getStock() - cantidad);
-			
-			if (producto.getStock() == 0) {
-				producto.setEstadoProducto(EstadoProducto.AGOTADO);
-			}
-			porepo.save(producto);
-			
-			total += producto.getPrecio()*cantidad;
-		}
-		pedido.setTotal(total);
-		return prepo.save(pedido);
+	public Pedido findById(Integer idPedido) {
+		return prepo.findById(idPedido).orElse(null);
 	}
+	
 	@Override
 	public List<Pedido> findByIdUsuario(Integer idUsuario) {
 		return prepo.findByUsuario_IdUsuario(idUsuario);
@@ -90,17 +43,23 @@ public class PedidoServiceImpl implements PedidoService {
 	public List<Pedido> findAll() {
 		return prepo.findAll();
 	}
+
 	@Override
-	public Pedido findById(Integer idPedido) {
-		return prepo.findById(idPedido).orElse(null);
-	}
-	@Override
-	public Pedido updateEstado(Integer idPedido, EstadoPedido estado) {
-		Pedido pedido = findById(idPedido);
-		if (pedido==null)
-			return null;
-		pedido.setEstado(estado);
+	public Pedido updateEstado(Integer idPedido, EstadoPedido estadoPedido, Integer idUsuario) {
+		Pedido pedido = prepo.findById(idPedido).orElseThrow(()-> new RuntimeException("No existe el pedido"));
+		if (estadoPedido == EstadoPedido.CANCELADO) {
+			if (!pedido.getUsuario().getIdUsuario().equals(idUsuario)) {
+				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo el usuario tiene permiso para cancelar");
+			}
+			LocalDateTime venta = pedido.getFechaVenta().atStartOfDay();
+			long hours = ChronoUnit.HOURS.between(venta, LocalDateTime.now());
+			if (hours>24) {
+				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo puedes cancelar un pedido hasta 24 horas después de haberla realizado");
+			}
+		}
+		pedido.setEstado(estadoPedido);
 		return prepo.save(pedido);
+		
 	}
 	//muestra subtotal + iva = total final
 	//para el ui
@@ -117,14 +76,14 @@ public class PedidoServiceImpl implements PedidoService {
 		List<PedidoItemResponse> items = new ArrayList<>();
 		
 		for (DetallePedido d: detalles) {
-			double totalBase = d.getPrecioUnidad()* d.getCantidad();
-			subtotal += totalBase;
+			double totalPorItem = d.getPrecioUnidad()* d.getCantidad();
+			subtotal += totalPorItem;
 			double iva;
 			
 			if(d.getProducto() instanceof Libro) {
-				iva = totalBase*IVA_LIBRO;
+				iva = totalPorItem*IVA_LIBRO;
 			}else {
-				iva = totalBase*IVA_PAPELERIA;
+				iva = totalPorItem*IVA_PAPELERIA;
 			}
 			ivaTotal += iva;
 			
@@ -132,7 +91,7 @@ public class PedidoServiceImpl implements PedidoService {
 				    d.getProducto().getNombreProducto(),
 				    d.getCantidad(),
 				    d.getPrecioUnidad(),
-				    totalBase
+				    totalPorItem
 				);
 			items.add(item);	
 		}
