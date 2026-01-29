@@ -1,0 +1,71 @@
+/* CONTENEDOR GENERAL */
+.filtros-container {
+    width: 220px;
+    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  
+  /* BLOQUES DE FILTRO */
+  .filtro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  /* LABELS */
+  .filtro label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* SELECTS */
+  .filtro select {
+    padding: 0.45rem;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    font-size: 0.9rem;
+    background: #fff;
+    transition: border-color 0.2s ease;
+  }
+  
+  .filtro select:focus {
+    border-color: #184763;
+    outline: none;
+  }
+  
+  /* INPUTS */
+  .filtro input[type="text"],
+  .filtro input[type="number"] {
+    padding: 0.45rem;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    font-size: 0.9rem;
+    background: #fff;
+    transition: border-color 0.2s ease;
+  }
+  
+  .filtro input:focus {
+    border-color: #184763;
+    outline: none;
+  }
+  
+  /* BOTÓN FILTRAR */
+  .btn-filtrar {
+    width: 100%;
+    padding: 0.7rem;
+    background: #9c9a9a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s ease;
+  }
+  
+  .btn-filtrar:hover {
+    background: #184763;
+  }  
