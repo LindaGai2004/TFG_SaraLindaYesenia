@@ -174,7 +174,6 @@ INSERT INTO categoria (nombre_categoria)VALUES
 ('Bella Artes'),
 ('Calculadoras y maquinas de oficina'),
 ('Archivo y clasificacion'),
-('Romance'),
 ('Estuches'),
 ('Escritura escolar');
 

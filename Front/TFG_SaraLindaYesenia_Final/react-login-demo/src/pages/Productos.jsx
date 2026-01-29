@@ -1,12 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-
 import ProductoFiltros from "../components/ProductoFiltros.jsx";
 import ProductoLista from "../components/ProductoLista.jsx";
+import "./Productos.css"; // Asegúrate de tener estilos
 
 export default function Productos() {
-    
     const [productos, setProductos] = useState([]);
+    const [orden, setOrden] = useState("destacados");
 
     const filtrarProductos = async (filtros) => {
         try {
@@ -20,12 +20,23 @@ export default function Productos() {
     };
 
     return (
-        <div className="productos">
-            <h2>Página de productos</h2>
+        <div className="productos-container">
+            <aside className="filtros">
+                <h3>Filtro por:</h3>
+                <ProductoFiltros onFiltrar={filtrarProductos} />
+            </aside>
 
-            <ProductoFiltros onFiltrar={filtrarProductos} />
+            <main className="resultados">
+                <div className="resultados-header">
+                    <select value={orden} onChange={(e) => setOrden(e.target.value)}>
+                        <option value="destacados">Ordenado por: Destacados</option>
+                        <option value="precioAsc">Precio: Menor a mayor</option>
+                        <option value="precioDesc">Precio: Mayor a menor</option>
+                    </select>
+                </div>
 
-            <ProductoLista productos={productos} />
+                <ProductoLista productos={productos} orden={orden} />
+            </main>
         </div>
     );
 }
