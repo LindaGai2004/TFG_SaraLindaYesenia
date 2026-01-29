@@ -7,7 +7,7 @@ import seguridad.model.Dto.PedidoResponse;
 public interface CarritoService {
 	//crea pedido con estado 'CARRITO'
 	Pedido createCarrito(Integer idUsuario);
-	Pedido añadirItem(Integer idUsuario, CarritoItemRequest item);
+	Pedido addItem(Integer idUsuario, CarritoItemRequest item);
 	Pedido updateItem(Integer idUsuario, CarritoItemRequest item);
 	Pedido deleteItem(Integer idUsuario, Integer idProducto);
 	//checkout
