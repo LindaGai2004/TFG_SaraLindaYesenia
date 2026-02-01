@@ -1,5 +1,7 @@
 package seguridad.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -27,8 +29,8 @@ public class PedidoServiceImpl implements PedidoService {
 	@Autowired
 	private DetallePedidoRepository dprepo;
 	
-	private static final double IVA_LIBRO = 0.04;
-	private static final double IVA_PAPELERIA = 0.21;
+	private static final BigDecimal IVA_LIBRO = BigDecimal.valueOf(0.04);
+	private static final BigDecimal IVA_PAPELERIA = BigDecimal.valueOf(0.21);
 
 	@Override
 	public Pedido findById(Integer idPedido) {
@@ -70,45 +72,51 @@ public class PedidoServiceImpl implements PedidoService {
 		
 		List<DetallePedido> detalles = dprepo.findByPedido_IdPedido(idPedido);
 		
-		double subtotal = 0;
-		double ivaTotal = 0;
+		BigDecimal subtotal = BigDecimal.ZERO;
+		BigDecimal ivaTotal = BigDecimal.ZERO;
 		
 		List<PedidoItemResponse> items = new ArrayList<>();
 		
 		for (DetallePedido d: detalles) {
-			double totalPorItem = d.getPrecioUnidad()* d.getCantidad();
-			subtotal += totalPorItem;
-			double iva;
+			BigDecimal precioUnidad = BigDecimal.valueOf(d.getPrecioUnidad());
+		    BigDecimal cantidad = BigDecimal.valueOf(d.getCantidad());
+			BigDecimal totalPorItem = precioUnidad.multiply(cantidad);
+			subtotal = subtotal.add(totalPorItem);
 			
-			if(d.getProducto() instanceof Libro) {
-				iva = totalPorItem*IVA_LIBRO;
-			}else {
-				iva = totalPorItem*IVA_PAPELERIA;
-			}
-			ivaTotal += iva;
+			BigDecimal iva;
 			
-			PedidoItemResponse item = new PedidoItemResponse(
-				    d.getProducto().getNombreProducto(),
-				    d.getCantidad(),
-				    d.getPrecioUnidad(),
-				    totalPorItem
-				);
-			items.add(item);	
+			if (d.getProducto() instanceof Libro) {
+	            iva = totalPorItem.multiply(IVA_LIBRO);
+	        } else {
+	            iva = totalPorItem.multiply(IVA_PAPELERIA);
+	        }
+			
+			ivaTotal = ivaTotal.add(iva);
+			
+			items.add(new PedidoItemResponse(
+	                d.getProducto().getNombreProducto(),
+	                d.getCantidad(),
+	                d.getPrecioUnidad(),
+	                totalPorItem.doubleValue()
+	        ));
 		}
-		double total = subtotal + ivaTotal;
-		return new PedidoResponse(
-				pedido.getIdPedido(),
-				pedido.getFechaVenta(),
-				"MASTERCARD",
-				pedido.getEstado(),
-				subtotal,
-				ivaTotal,
-				total,
-				pedido.getUsuario().getNombre(),
-				pedido.getUsuario().getDireccion(),
-				pedido.getUsuario().getEmail(),
-				items
-				);
+		subtotal = subtotal.setScale(2, RoundingMode.HALF_UP);
+	    ivaTotal = ivaTotal.setScale(2, RoundingMode.HALF_UP);
+	    BigDecimal total = subtotal.add(ivaTotal);
+
+	    return new PedidoResponse(
+	            pedido.getIdPedido(),
+	            pedido.getFechaVenta(),
+	            "MASTERCARD",
+	            pedido.getEstado(),
+	            subtotal.doubleValue(),
+	            ivaTotal.doubleValue(),
+	            total.doubleValue(),
+	            pedido.getUsuario().getNombre(),
+	            pedido.getUsuario().getDireccion(),
+	            pedido.getUsuario().getEmail(),
+	            items
+	    );
 	}
 
 }
