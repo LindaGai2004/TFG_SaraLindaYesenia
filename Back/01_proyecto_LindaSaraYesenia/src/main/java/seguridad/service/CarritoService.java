@@ -12,4 +12,6 @@ public interface CarritoService {
 	Pedido deleteItem(Integer idUsuario, Integer idProducto);
 	//checkout
 	PedidoResponse confirmarCarrito(Integer idUsuario);
+	
+	PedidoResponse getCarritoActivo(Integer idUsuario);
 }

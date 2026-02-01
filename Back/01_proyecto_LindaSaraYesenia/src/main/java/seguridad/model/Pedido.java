@@ -37,8 +37,9 @@ public class Pedido implements Serializable{
 	@Column(name = "fecha_venta")
 	private LocalDate fechaVenta;
 	
-	@Enumerated(EnumType.STRING)
-	private EstadoPedido estado;
+	 @Enumerated(EnumType.STRING)
+	 @Column(name = "estado_pedido")
+	 private EstadoPedido estado;
 	
 	//Esto es nuevo
 	@Column(name="total")

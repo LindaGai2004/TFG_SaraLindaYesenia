@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import seguridad.model.DetallePedido;
 import seguridad.model.EstadoPedido;
 import seguridad.model.EstadoProducto;
@@ -17,7 +19,7 @@ import seguridad.repository.DetallePedidoRepository;
 import seguridad.repository.PedidoRepository;
 import seguridad.repository.ProductoRepository;
 import seguridad.repository.UsuarioRepository;
-
+@Service
 public class CarritoServiceImpl implements CarritoService {
 
 	@Autowired
@@ -137,6 +139,7 @@ public class CarritoServiceImpl implements CarritoService {
 	}
 
 	@Override
+	@Transactional //Si algun paso falla no se actualiza el stock ni se confirma el pedido
 	public PedidoResponse confirmarCarrito(Integer idUsuario) {
 		//Get carrito activo (Pedido en estado 'CARRITO')
 		Pedido carrito = prepo.findByUsuario_IdUsuarioAndEstado(idUsuario, EstadoPedido.CARRITO)
@@ -173,6 +176,12 @@ public class CarritoServiceImpl implements CarritoService {
 		
 		prepo.save(carrito);
 		return pserv.resumenPedido(carrito.getIdPedido());
+	}
+	@Override
+	public PedidoResponse getCarritoActivo(Integer idUsuario) {
+		 Pedido carrito = prepo.findByUsuario_IdUsuarioAndEstado(idUsuario, EstadoPedido.CARRITO)
+			        .orElseThrow(() -> new RuntimeException("No hay carrito activo"));
+		  return pserv.resumenPedido(carrito.getIdPedido());
 	}
 
 }
