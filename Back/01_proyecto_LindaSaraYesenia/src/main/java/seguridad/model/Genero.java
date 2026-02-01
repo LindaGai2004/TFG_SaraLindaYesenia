@@ -24,12 +24,12 @@ public class Genero implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id_libro")
+	@Column(name = "id_genero")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idLibro;
+	private Integer idGenero;
 	
-	@Column(name = "genero_libro")
-	private String generoLibro;
+	@Column(name = "nombre_genero")
+	private String nombreGenero;
 	
 	
 	

@@ -70,13 +70,14 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
            
             // las rutas no necesita verificar
-            .requestMatchers("/api/login", "/registro", "/todos", "/actuator/health","/todos/productos", "/pedidos/**").permitAll()
+            .requestMatchers("/api/login", "/registro", "/todos", "/actuator/health","/todos/productos").permitAll()
            
             //las rutas hay que verificar
             //Crear usuario -> admin y jefe se permite crear usaurio
             .requestMatchers("/admin/crear").hasAnyRole("ADMON","JEFE")
             //nuevo requestMatchers para ruta pedidos
             .requestMatchers("/pedidos/**").authenticated()
+            .requestMatchers("/carrito/**").authenticated()
             //las rutas de rol que requiere autenticacion
             .requestMatchers("/rol/**").authenticated()
             .anyRequest().authenticated()

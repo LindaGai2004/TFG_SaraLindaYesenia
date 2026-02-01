@@ -46,7 +46,7 @@ public class Libro extends Producto implements Serializable{
 	private Integer numeroPagina;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_libro")
+	@JoinColumn(name = "id_genero")
 	private Genero genero;
 	
 	@ManyToOne

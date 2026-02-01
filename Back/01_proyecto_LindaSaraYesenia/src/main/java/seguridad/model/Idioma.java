@@ -27,7 +27,7 @@ public class Idioma implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idIdioma;
 	
-	@Column(name = "idioma_libro")
-	private String idiomaLibro;
+	@Column(name = "nombre_idioma")
+	private String nombreIdioma;
 
 }

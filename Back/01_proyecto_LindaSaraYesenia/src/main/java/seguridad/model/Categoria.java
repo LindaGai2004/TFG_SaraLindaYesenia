@@ -25,12 +25,12 @@ public class Categoria implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "id_papeleria")
+	@Column(name = "id_categoria")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idPapeleria;
+	private Integer idCategoria;
 	
-	@Column(name = "categoria_papeleria")
-	private String categoriaPapeleria;
+	@Column(name = "nombre_categoria")
+	private String nombreCategoria;
 
 	
 	

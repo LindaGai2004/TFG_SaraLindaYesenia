@@ -26,7 +26,7 @@ import seguridad.service.PedidoService;
 @RestController
 @RequestMapping("/pedidos")
 @CrossOrigin(origins = "*")
-//Asume que la orden ya sera 'REALIZADO'
+//Asume que la orden ya se ha'REALIZADO'
 public class PedidoRestController {
 	@Autowired
 	private PedidoService pserv;
@@ -35,23 +35,16 @@ public class PedidoRestController {
 	@Autowired
 	private UsuarioRepository urepo;
 	
-	@PostMapping("/checkout")
-	@PreAuthorize("hasAnyRole('CLIENTE')")
-	public ResponseEntity<?> confirmarPedido(){
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-
-        Usuario usuario = urepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        PedidoResponse dto = cserv.confirmarCarrito(usuario.getIdUsuario());
-        return ResponseEntity.ok(dto);
-	}
 	//Historial de pedidos por usuario
-	@GetMapping("/usuario/{idUsuario}")
+	@GetMapping("/usuario/")
 	@PreAuthorize("hasRole('CLIENTE')")
-	public ResponseEntity<?> pedidosPorUsuario(@PathVariable Integer idUsuario){
-		List<Pedido> pedidosUsuario = pserv.findByIdUsuario(idUsuario);
+	public ResponseEntity<?> pedidosPorUsuario(){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuario usuario = (Usuario) auth.getPrincipal();
+		List<PedidoResponse> pedidosUsuario = pserv.findByIdUsuario(usuario.getIdUsuario())
+				 	.stream()
+	                .map(p -> pserv.resumenPedido(p.getIdPedido()))
+	                .collect(Collectors.toList());
 		return ResponseEntity.ok(pedidosUsuario);
 	}
 	//Resumen del pedido
@@ -75,10 +68,7 @@ public class PedidoRestController {
 	@PreAuthorize("hasAnyRole('CLIENTE')")
 	public ResponseEntity<?> modificarEstado(@PathVariable Integer idPedido, @PathVariable EstadoPedido estado){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-
-        Usuario usuario = urepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Usuario usuario = (Usuario) auth.getPrincipal();
 
         Pedido pedido = pserv.updateEstado(idPedido, estado, usuario.getIdUsuario());
         return ResponseEntity.ok(pedido);
