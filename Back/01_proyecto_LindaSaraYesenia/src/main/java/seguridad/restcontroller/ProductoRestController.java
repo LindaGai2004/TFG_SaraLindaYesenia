@@ -54,6 +54,16 @@ public class ProductoRestController {
 
 	}
 	
-
+	@PutMapping("{idProducto}/destacado")
+	@PreAuthorize("hasRole('ADMON', 'JEFE', 'TRABAJADOR')")
+	public ResponseEntity<?> elegirDestacado(@PathVariable Integer idProducto){
+		Producto producto = productoService.escogerDestacado(idProducto);
+		return ResponseEntity.ok(producto);
+	}
+	@GetMapping("/destacado")
+	public ResponseEntity<?> mostrarDestacado(){
+		Producto producto = productoService.getProductoDestacado();
+		return ResponseEntity.ok(producto);
+	}
 
 }

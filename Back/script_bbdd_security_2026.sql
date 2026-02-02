@@ -51,8 +51,8 @@ CREATE TABLE productos (
     stock int not null,
     estado_producto ENUM('DISPONIBLE', 'AGOTADO') not null,
     fecha_alta date not null,
-    costo_real double not null
-
+    costo_real double not null,
+	destacado boolean default false
 );
 
 CREATE TABLE idioma(

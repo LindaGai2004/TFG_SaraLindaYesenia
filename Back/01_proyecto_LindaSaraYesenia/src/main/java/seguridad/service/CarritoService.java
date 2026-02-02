@@ -14,4 +14,5 @@ public interface CarritoService {
 	PedidoResponse confirmarCarrito(Integer idUsuario);
 	
 	PedidoResponse getCarritoActivo(Integer idUsuario);
+	//Faltaría un método para impedir que se modifique el carro despues del checkout
 }
