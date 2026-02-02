@@ -16,8 +16,8 @@ import seguridad.model.DetallePedido;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Libro;
 import seguridad.model.Pedido;
-import seguridad.model.Dto.PedidoItemResponse;
-import seguridad.model.Dto.PedidoResponse;
+import seguridad.model.dto.PedidoItemResponse;
+import seguridad.model.dto.PedidoResponse;
 import seguridad.repository.PedidoRepository;
 import seguridad.repository.DetallePedidoRepository;
 @Service

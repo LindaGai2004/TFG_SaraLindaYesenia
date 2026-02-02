@@ -69,10 +69,4 @@ public abstract class Producto implements Serializable{
 		this.fechaAlta = fechaAlta;
 		this.costoReal = costoReal;
 	}
-	
-	
-	
-	
-	
-	
 }

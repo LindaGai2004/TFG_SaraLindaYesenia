@@ -34,7 +34,7 @@ public class Libro extends Producto implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	
-	private Long ISBN;
+	private String ISBN;
 	
 	private String editorial;
 	
@@ -54,7 +54,7 @@ public class Libro extends Producto implements Serializable{
 	private Idioma idioma;
 
 	public Libro(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
-			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal, Long iSBN, String editorial,
+			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal, String iSBN, String editorial,
 			LocalDate fechaPublicacion, String autor, Integer numeroPagina, Genero genero, Idioma idioma) {
 		super(idProducto, nombreProducto, descripcion, precio, stock, estadoProducto, fechaAlta, costoReal);
 		ISBN = iSBN;
@@ -65,15 +65,8 @@ public class Libro extends Producto implements Serializable{
 		this.genero = genero;
 		this.idioma = idioma;
 	}
-
 	
 	
-
-
-
-
-
-
 	
 }
 

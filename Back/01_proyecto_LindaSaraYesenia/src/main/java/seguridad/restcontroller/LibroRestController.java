@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Libro;
@@ -23,17 +24,12 @@ import seguridad.service.LibroService;
 @RequestMapping("/libros")
 public class LibroRestController {
 
-    private final PerfilRepository perfilRepository;
+    private PerfilRepository perfilRepository;
+    
 
 	@Autowired
 	private LibroService libroService;
 
-
-    LibroRestController(PerfilRepository perfilRepository) {
-        this.perfilRepository = perfilRepository;
-    }
-
-	
 	@GetMapping("/todos")
 	public ResponseEntity<?> todos(){
 		List<Libro> libro = libroService.findAll();
@@ -55,7 +51,8 @@ public class LibroRestController {
 		libro.setIdProducto(idProducto);
 		Libro modificado = libroService.updateLibro(libro);
 		if(modificado == null) {
-			return ResponseEntity.status(404).build();
+			return ResponseEntity.status(404).body("Libro con id : " + idProducto + " no existe");
+
 		}
 		return ResponseEntity.ok(modificado);
 		
@@ -67,6 +64,16 @@ public class LibroRestController {
 		Libro creado = libroService.insertarLibro(libro);
 		return ResponseEntity.ok(creado);
 	}
+
+	@GetMapping("/buscar")
+	public ResponseEntity<?> buscarLibro(@RequestParam String texto){
+		List<Libro> lista = libroService.buscadorLibro(texto);
+		if(lista.isEmpty()) {
+			return ResponseEntity.ok("No hay LIBRO que coincidan con la busqueda");
+		}
+		return ResponseEntity.ok(lista);
+	}
+
 
 
 

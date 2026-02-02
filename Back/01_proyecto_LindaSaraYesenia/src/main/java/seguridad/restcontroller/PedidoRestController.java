@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 import seguridad.model.Usuario;
-import seguridad.model.Dto.PedidoResponse;
+import seguridad.model.dto.PedidoResponse;
 import seguridad.repository.UsuarioRepository;
 import seguridad.service.CarritoService;
 import seguridad.service.PedidoService;

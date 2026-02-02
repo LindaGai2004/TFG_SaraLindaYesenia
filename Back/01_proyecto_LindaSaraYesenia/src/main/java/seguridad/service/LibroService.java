@@ -11,4 +11,6 @@ public interface LibroService {
 	Libro insertarLibro(Libro libro);
 	Libro updateLibro(Libro libro);
 
+	List<Libro> buscadorLibro (String texto);
+	
 }

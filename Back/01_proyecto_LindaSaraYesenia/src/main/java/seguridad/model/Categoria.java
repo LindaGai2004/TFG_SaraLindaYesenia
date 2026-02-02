@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@EqualsAndHashCode(of = "idPapeleria")
+@EqualsAndHashCode(of = "idCategoria")
 @Entity
 @Table(name = "categoria")
 public class Categoria implements Serializable{
@@ -31,8 +31,5 @@ public class Categoria implements Serializable{
 	
 	@Column(name = "nombre_categoria")
 	private String nombreCategoria;
-
-	
-	
 
 }

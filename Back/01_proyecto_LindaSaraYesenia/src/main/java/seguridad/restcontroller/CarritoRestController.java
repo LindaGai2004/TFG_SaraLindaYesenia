@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Pedido;
 import seguridad.model.Usuario;
-import seguridad.model.Dto.CarritoItemRequest;
-import seguridad.model.Dto.PedidoResponse;
+import seguridad.model.dto.CarritoItemRequest;
+import seguridad.model.dto.PedidoResponse;
 import seguridad.repository.ProductoRepository;
 import seguridad.repository.UsuarioRepository;
 import seguridad.service.CarritoService;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Libro;
@@ -37,10 +38,14 @@ public class PapeleriaRestController {
 		return ResponseEntity.ok(pap);
 	}*/
 
-	@PostMapping("/modificarPapeleria")
+	@PostMapping("/modificarPapeleria/{idProducto}")
 	@PreAuthorize("hasRole('ADMON')")
-	public ResponseEntity<?> modificar(@RequestBody Papeleria papeleria) {
+	public ResponseEntity<?> modificar(@PathVariable Integer idProducto,@RequestBody Papeleria papeleria) {
+		papeleria.setIdProducto(idProducto);
 		Papeleria modificado = papeleriaService.updatePapeleria(papeleria);
+		if(modificado == null) {
+			return ResponseEntity.status(404).body("Libro con id : " + idProducto + " no existe");
+		}
 		return ResponseEntity.ok(modificado);
 	}
 	
@@ -49,6 +54,15 @@ public class PapeleriaRestController {
 	public ResponseEntity<?> insertar(@RequestBody Papeleria papeleria) {
 		Papeleria creado = papeleriaService.insertPapeleria(papeleria);
 		return ResponseEntity.ok(creado);
+	}
+	
+	@GetMapping("/buscar")
+	public ResponseEntity<?> buscarPapeleria(@RequestParam String texto){
+		List<Papeleria> lista = papeleriaService.buscardorPapeleria(texto);
+		if(lista.isEmpty()) {
+			return ResponseEntity.ok("No hay PAPELERIA que coincidan con la busqueda");
+		}
+		return ResponseEntity.ok(lista);
 	}
 
 }
