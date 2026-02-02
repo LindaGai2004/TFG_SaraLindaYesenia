@@ -53,6 +53,8 @@ public abstract class Producto implements Serializable{
 	private LocalDate fechaAlta;
 	@Column(name = "costo_real")
 	private Double costoReal;
+	@Column(nullable = false)
+	boolean destacado; //para libro del mes 
 	
 	
 	public Producto(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,

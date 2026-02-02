@@ -14,6 +14,6 @@ import seguridad.model.Usuario;
 public interface ProductoRepository extends JpaRepository<Producto, Integer>{
 
 	List<Producto> findByNombreProductoContainingIgnoreCase ( String nombreProducto );
-
+	Optional<Producto> libroDestacado();
 	
 }
