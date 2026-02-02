@@ -12,7 +12,7 @@ create table usuarios(
 	nombre varchar(100),
 	apellidos varchar(200),
 	enabled int,
-	FECHA_REGISTRO date,
+	fecha_registro date,
     fecha_nacimiento date,
     direccion varchar(200),
     email varchar(45) not null unique,
@@ -22,8 +22,8 @@ create table usuarios(
 
 create table pedidos(
 	id_pedido int auto_increment primary key,
-    fecha_venta date not null,
-    estado ENUM ('REALIZADO', 'CANCELADO', 'DEVUELTO'),
+    fecha_venta date,
+    estado_pedido ENUM ('CARRITO','REALIZADO','CANCELADO','DEVUELTO'),
     total DECIMAL(12,2) NOT NULL,
     id_usuario int,
     foreign key (id_usuario) references usuarios(id_usuario)
@@ -117,14 +117,14 @@ values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 ('ROLE_JEFE');
 
 
-INSERT INTO usuarios (username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento,direccion, email, id_perfil)values
+INSERT INTO usuarios (username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, id_perfil)values
 ('tomas', '{noop}tomasin', 'Tomas', 'Escu',1,'2025-11-05','1960-11-02','madrid', 'tomas@ifp.com',1),
 ('sarita', '{noop}sarita', 'Sara', 'Baras',2,'2024-02-05','1999-03-16','sevilla', 'sara@ifp.com',2),
 ('eva', '{noop}evita', 'Eva', 'Goma',1,'2000-01-02','1978-05-24','cordoba', 'eva@ifp.com',3),
 ('ramon', '{noop}ramoncin', 'Ramon', 'González',1,'2014-07-07','1996-06-04','madrid','ramon@ifp.com', 4);
 
 
-INSERT INTO pedidos (fecha_venta, estado, total, id_usuario) VALUES
+INSERT INTO pedidos (fecha_venta, estado_pedido, total, id_usuario) VALUES
 ('2024-01-15','REALIZADO',72.48,1),
 ('2024-02-20','REALIZADO',53.50,2),
 ('2024-03-10','REALIZADO',46.20,1),
@@ -180,11 +180,11 @@ INSERT INTO categoria (nombre_categoria)VALUES
 
 
 INSERT INTO idioma (nombre_idioma) VALUES
-('español'),
-("inglés"),
-("francés"),
-("chino"),
-("italiano");
+('Español'),
+('Inglés'),
+('Francés'),
+('Chino'),
+('Italiano');
 
 -- ============================================
 -- PARTE 1: 100 PRODUCTOS (50 libros + 50 papelería)
