@@ -13,5 +13,7 @@ public interface PapeleriaService {
 	Papeleria insertPapeleria(Papeleria papeleria);
 
 	Papeleria updatePapeleria(Papeleria papeleria);
+	
+	List<Papeleria> buscardorPapeleria (String texto);
 
 }

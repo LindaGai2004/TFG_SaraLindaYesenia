@@ -4,8 +4,8 @@ import java.util.List;
 
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
-import seguridad.model.Dto.CarritoItemRequest;
-import seguridad.model.Dto.PedidoResponse;
+import seguridad.model.dto.CarritoItemRequest;
+import seguridad.model.dto.PedidoResponse;
 
 public interface PedidoService {
 	

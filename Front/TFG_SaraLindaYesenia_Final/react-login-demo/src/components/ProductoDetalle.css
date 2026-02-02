@@ -1,0 +1,146 @@
+/* ================================
+   CONTENEDOR PRINCIPAL
+================================ */
+.detalle-producto {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    padding: 40px;
+    align-items: start;
+}
+  
+/* ================================
+    COLUMNA IZQUIERDA
+================================ */
+.detalle-columna-izquierda {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+  
+/* Imagen principal */
+.detalle-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+  
+/* Miniaturas */
+.detalle-miniaturas {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+  
+.detalle-miniaturas img {
+    width: 45px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+  
+.detalle-miniaturas img:hover {
+    transform: scale(1.08);
+}
+  
+/* ================================
+    COLUMNA DERECHA
+================================ */
+.detalle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+  
+.detalle-info h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+  
+.detalle-autor {
+    font-size: 1.1rem;
+    color: #555;
+}
+  
+.detalle-precio {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+  
+  /* ================================
+     CONTROL DE CANTIDAD
+     ================================ */
+  .detalle-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .detalle-cantidad button {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    background-color: #eee;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .detalle-cantidad button:hover {
+    background-color: #ddd;
+  }
+  
+  .detalle-cantidad span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 32px;
+    text-align: center;
+  }
+  
+  /* ================================
+     BOTONES
+     ================================ */
+  .detalle-botones {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .detalle-botones button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .detalle-botones .carrito {
+    background-color: black;
+    color: white;
+  }
+  
+  .detalle-botones .comprar {
+    background-color: white;
+    color: black;
+  }
+  
+  .detalle-botones button:hover {
+    opacity: 0.9;
+  }
+  
+  /* ================================
+     DESCRIPCIÓN
+     ================================ */
+  .detalle-descripcion {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+    margin-top: 10px;
+  }
