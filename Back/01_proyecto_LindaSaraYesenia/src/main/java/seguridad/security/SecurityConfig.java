@@ -70,9 +70,21 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
            
             // las rutas no necesita verificar
-            .requestMatchers("/api/login", "/registro", "/todos", "/actuator/health","/todos/productos", "/libros/todos", "/papelerias/todos", "/productos/filtrar").permitAll()
+            .requestMatchers(
+            	    "/api/login",
+            	    "/registro",
+            	    "/todos",
+            	    "/actuator/health",
+            	    "/todos/productos",
+            	    "/libros/todos",
+            	    "/papelerias/todos",
+            	    "/productos/**",
+            	    "/generos/**",
+            	    "/idiomas/**",
+            	    "/categorias/**",
+            	    "/marcas/**"
+            	).permitAll()
            
-
             //las rutas hay que verificar
             //Crear usuario -> admin y jefe se permite crear usaurio
             .requestMatchers("/admin/crear").hasAnyRole("ADMON","JEFE")
@@ -82,7 +94,7 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         )
 
-        .httpBasic(httpBasic -> httpBasic.disable())
+        .httpBasic(Customizer.withDefaults())
 
         .formLogin(form -> form.disable())
 

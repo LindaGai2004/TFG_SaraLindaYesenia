@@ -174,7 +174,6 @@ INSERT INTO categoria (nombre_categoria)VALUES
 ('Bella Artes'),
 ('Calculadoras y maquinas de oficina'),
 ('Archivo y clasificacion'),
-('Romance'),
 ('Estuches'),
 ('Escritura escolar');
 
@@ -321,13 +320,13 @@ INSERT INTO libros
 (4,'9788439721116','Debolsillo','1985-09-01','Gabriel García Márquez',368,4,1),
 (5,'9788420423459','Alianza','1866-01-01','Fiódor Dostoyevski',671,5,1),
 (6,'9788439722223','RBA','1963-06-28','Julio Cortázar',736,6,1),
-(7,'9788401029876','Plaza & Janés','1982-01-01','Isabel Allende',448,7,1),
+(7,'9788401029876','Plaza & Janés','1982-01-01','Isabel Allende',448,7,3),
 (8,'9788408144444','Plaza & Janés','1989-10-01','Ken Follett',1076,8,4),
 (9,'9788439723333','Seix Barral','1948-01-01','Ernesto Sabato',160,9,1),
 (10,'9788432223334','Seix Barral','1963-01-01','Mario Vargas Llosa',480,10,1),
 
 (11,'9788439724445','FCE','1955-03-19','Juan Rulfo',124,12,1),
-(12,'9788439725556','Debolsillo','1989-01-01','Laura Esquivel',256,11,1),
+(12,'9788439725556','Debolsillo','1989-01-01','Laura Esquivel',256,11,4),
 (13,'9788408172174','Planeta','2008-04-17','Carlos Ruiz Zafón',672,13,1),
 (14,'9788439722224','Sudamericana','1981-01-01','Gabriel García Márquez',144,14,5),
 (15,'9788439726667','Seix Barral','1985-01-01','Patrick Süskind',320,15,1),
@@ -339,7 +338,7 @@ INSERT INTO libros
 (20,'9788439730001','Debolsillo','1965-08-01','Frank Herbert',688,20,1),
 
 (21,'9788439731112','Minotauro','1954-07-29','J.R.R. Tolkien',1216,6,1),
-(22,'9788401333444','Salamandra','1997-06-26','J.K. Rowling',256,6,1),
+(22,'9788401333444','Salamandra','1997-06-26','J.K. Rowling',256,6,5),
 (23,'9788439732223','Destino','1950-10-16','C.S. Lewis',816,6,1),
 (24,'9788439733334','Minotauro','1937-09-21','J.R.R. Tolkien',310,6,1),
 (25,'9788439734445','RBA','2003-08-26','Christopher Paolini',544,6,1),
@@ -351,7 +350,7 @@ INSERT INTO libros
 (30,'9788439739990','Anaya','1819-01-01','Walter Scott',624,12,2),
 
 (31,'9788439740001','Salamandra','1943-04-06','Antoine de Saint-Exupéry',96,8,1),
-(32,'9788439740002','Alfaguara','1988-10-01','Roald Dahl',248,8,1),
+(32,'9788439740002','Alfaguara','1988-10-01','Roald Dahl',248,8,2),
 (33,'9788439740003','Alfaguara','1964-01-01','Roald Dahl',192,8,5),
 (34,'9788439740004','Kalandraka','1963-01-01','Maurice Sendak',48,8,1),
 (35,'9788439740005','Bruño','1999-01-01','Julia Donaldson',32,8,1),
@@ -359,7 +358,7 @@ INSERT INTO libros
 (36,'9788439740006','Nube de Tinta','2012-01-10','John Green',304,9,1),
 (37,'9788439740007','RBA','2008-09-14','Suzanne Collins',384,9,1),
 (38,'9788439740008','RBA','2011-04-25','Veronica Roth',432,9,1),
-(39,'9788439740009','Debolsillo','2005-10-05','Stephenie Meyer',512,11,1),
+(39,'9788439740009','Debolsillo','2005-10-05','Stephenie Meyer',512,11,2),
 (40,'9788439740010','Salamandra','2005-06-28','Rick Riordan',416,9,1),
 
 (41,'9788439740011','Planeta','1934-01-01','Agatha Christie',256,10,4),
@@ -372,7 +371,7 @@ INSERT INTO libros
 (47,'9788439740017','Alianza','1847-10-16','Charlotte Brontë',624,11,1),
 (48,'9788439740018','Alianza','1847-12-01','Emily Brontë',416,11,1),
 (49,'9788439740019','Alianza','1811-01-01','Jane Austen',384,11,1),
-(50,'9780061122415','Editorial Planeta','1988-01-01','Paulo Coelho',208,3,1);
+(50,'9780061122415','Editorial Planeta','1988-01-01','Paulo Coelho',208,3,2);
 
 INSERT INTO marca (nombre_marca) VALUES
 ('Genérica'),
@@ -487,13 +486,13 @@ INSERT INTO papeleria (id_producto, id_marca, id_categoria) VALUES
 (95,39,10),
 
 -- Estuches
-(96,40,12),
-(97,41,12),
-(98,25,12),
+(96,40,11),
+(97,41,11),
+(98,25,11),
 
 -- Escritura escolar
-(99,42,13),
-(100,43,13);
+(99,42,12),
+(100,43,12);
 
 
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unidad) VALUES
