@@ -59,7 +59,7 @@ public class ProductoServiceImpl implements ProductoService{
 
 	@Override
 	public Producto getProductoDestacado() {
-		return productoRepository.libroDestacado()
+		return productoRepository.findByDestacadoTrue()
 				.orElseThrow(()-> new RuntimeException("No hay producto destacado"));
 	}
 
@@ -70,7 +70,10 @@ public class ProductoServiceImpl implements ProductoService{
 		Producto nuevo = productoRepository.findById(idProducto)
 				.orElseThrow(()-> new RuntimeException("No existe el producto"));
 		
-		Optional<Producto> actual= productoRepository.libroDestacado();
+		if (!(nuevo instanceof Libro)) {
+			throw new RuntimeException("Solo se puede destacar libros");
+		}
+		Optional<Producto> actual= productoRepository.findByDestacadoTrue();
 		if (actual.isPresent()) {
 			Producto anterior = actual.get();
 			anterior.setDestacado(false);
