@@ -55,11 +55,6 @@ CREATE TABLE productos (
 	destacado boolean default false
 );
 
-<<<<<<< HEAD
-=======
-);
-
->>>>>>> main
 CREATE TABLE idioma(
 	id_idioma int auto_increment primary key not null,
 	nombre_idioma varchar(50) not null
@@ -246,7 +241,8 @@ INSERT INTO productos
 ('Estudio en escarlata','Novela policiaca','LIBRO',13.90,35,'AGOTADO','2024-02-16',9.00),
 ('El código Da Vinci','Thriller contemporáneo','LIBRO',21.90,30,'DISPONIBLE','2024-02-17',15.50),
 ('Las crónicas de Narnia','Saga de fantasía','LIBRO',29.90,25,'DISPONIBLE','2024-02-18',21.00),
-('El alquimista','Novela de Paulo Coelho sobre sueños y destino','LIBRO',18.90,40,'DISPONIBLE','2024-02-19',12.50);
+('Underwater','Novela de Serena Delmar que explora emociones profundas y el autodescubrimiento','LIBRO',21.00,30,'DISPONIBLE','2022-01-01',14.00);
+
 
 -- ========== 50 PAPELERÍA ==========
 INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stock, estado_producto, fecha_alta, costo_real) VALUES
@@ -325,21 +321,13 @@ INSERT INTO libros
 (4,'9788439721116','Debolsillo','1985-09-01','Gabriel García Márquez',368,4,1),
 (5,'9788420423459','Alianza','1866-01-01','Fiódor Dostoyevski',671,5,1),
 (6,'9788439722223','RBA','1963-06-28','Julio Cortázar',736,6,1),
-<<<<<<< HEAD
-(7,'9788401029876','Plaza & Janés','1982-01-01','Isabel Allende',448,7,1),
-=======
 (7,'9788401029876','Plaza & Janés','1982-01-01','Isabel Allende',448,7,3),
->>>>>>> main
 (8,'9788408144444','Plaza & Janés','1989-10-01','Ken Follett',1076,8,4),
 (9,'9788439723333','Seix Barral','1948-01-01','Ernesto Sabato',160,9,1),
 (10,'9788432223334','Seix Barral','1963-01-01','Mario Vargas Llosa',480,10,1),
 
 (11,'9788439724445','FCE','1955-03-19','Juan Rulfo',124,12,1),
-<<<<<<< HEAD
-(12,'9788439725556','Debolsillo','1989-01-01','Laura Esquivel',256,11,1),
-=======
 (12,'9788439725556','Debolsillo','1989-01-01','Laura Esquivel',256,11,4),
->>>>>>> main
 (13,'9788408172174','Planeta','2008-04-17','Carlos Ruiz Zafón',672,13,1),
 (14,'9788439722224','Sudamericana','1981-01-01','Gabriel García Márquez',144,14,5),
 (15,'9788439726667','Seix Barral','1985-01-01','Patrick Süskind',320,15,1),
@@ -363,11 +351,7 @@ INSERT INTO libros
 (30,'9788439739990','Anaya','1819-01-01','Walter Scott',624,12,2),
 
 (31,'9788439740001','Salamandra','1943-04-06','Antoine de Saint-Exupéry',96,8,1),
-<<<<<<< HEAD
-(32,'9788439740002','Alfaguara','1988-10-01','Roald Dahl',248,8,1),
-=======
 (32,'9788439740002','Alfaguara','1988-10-01','Roald Dahl',248,8,2),
->>>>>>> main
 (33,'9788439740003','Alfaguara','1964-01-01','Roald Dahl',192,8,5),
 (34,'9788439740004','Kalandraka','1963-01-01','Maurice Sendak',48,8,1),
 (35,'9788439740005','Bruño','1999-01-01','Julia Donaldson',32,8,1),
@@ -385,10 +369,10 @@ INSERT INTO libros
 (45,'9788439740015','Planeta','1988-01-01','Thomas Harris',368,15,1),
 
 (46,'9788439740016','Alianza','1813-01-28','Jane Austen',432,11,1),
-(47,'9788439740017','Alianza','1847-10-16','Charlotte Brontë',624,11,1),
+(47,'9788439740017','Alianza','1847-10-16','Charlotte Bronte',624,11,1),
 (48,'9788439740018','Alianza','1847-12-01','Emily Brontë',416,11,1),
 (49,'9788439740019','Alianza','1811-01-01','Jane Austen',384,11,1),
-(50,'9780061122415','Editorial Planeta','1988-01-01','Paulo Coelho',208,3,2);
+(50,'9781234567890','Independiente','2022-01-01','Serena Delmar',320,9,1);
 
 INSERT INTO marca (nombre_marca) VALUES
 ('Genérica'),
