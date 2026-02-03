@@ -1,4 +1,4 @@
-/* GRID DE 3 COLUMNAS */
+/* Grid de 6 columnas */
 .producto-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -6,7 +6,6 @@
   padding: 1rem;
 }
 
-/* TARJETA */
 .producto-card {
   background: #fff;
   border-radius: 12px;
@@ -20,7 +19,15 @@
   transform: translateY(-5px);
 }
 
-/* IMAGEN */
+/* Zona donde se hace click (imagen + info) */
+.producto-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  position: relative;
+  z-index: 1; /* debajo del botón de carrito */
+}
+
 .producto-imagen img {
   width: 100%;
   height: 200px;
@@ -40,6 +47,7 @@
   padding: 0;
   opacity: 0;
   transition: opacity 0.2s ease;
+  z-index: 3; /* por encima del link */
 }
 
 .producto-card:hover .favorito-btn {
@@ -52,10 +60,39 @@
   object-fit: contain;
 }
 
-.favorito-icon {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
+/* BOTÓN CARRITO */
+.carrito-overlay-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 42px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  /* Centrado del texto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 2; /* por encima del link, pero debajo del favorito */
+}
+
+.producto-card:hover .carrito-overlay-btn {
+  opacity: 1;
+}
+
+.carrito-overlay-btn:active {
+  transform: translateX(-50%) scale(0.97);
 }
 
 /* INFO */
@@ -81,7 +118,6 @@
   font-size: 1.1rem;
 }
 
-/* SIN RESULTADOS */
 .sin-resultados {
   padding: 2rem;
   font-size: 1.2rem;
