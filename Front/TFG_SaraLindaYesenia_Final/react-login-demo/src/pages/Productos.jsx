@@ -56,7 +56,7 @@ export default function Productos() {
             <main className="resultados">
                 <div className="resultados-header">
                     <select value={orden} onChange={(e) => setOrden(e.target.value)}>
-                        <option value="">Sin orden</option>
+                        <option value="">Ordenar por: </option>
                         <option value="alfbAsc">Alfabéticamente: a - z</option>
                         <option value="alfbDesc">Alfabéticamente: z - a</option>
                         <option value="precioAsc">Precio: Menor a mayor</option>

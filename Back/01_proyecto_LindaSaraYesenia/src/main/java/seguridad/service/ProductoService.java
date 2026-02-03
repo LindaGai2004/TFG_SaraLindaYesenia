@@ -9,6 +9,7 @@ public interface ProductoService {
 	List<Producto> findAll();
 	
 	Producto findOne(Integer idproducto);
+	
 	int deleteById (Integer idProducto);
 	
 	List<Producto> buscardorProducto (String texto);

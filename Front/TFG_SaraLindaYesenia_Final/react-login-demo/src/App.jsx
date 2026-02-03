@@ -17,14 +17,18 @@ import './App.css';
 
 export default function App() {
   const location = useLocation();
+
+  // Rutas donde NO quieres mostrar la navbar
   const hideNavbarRoutes = ['/cliente'];
   const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   return (
     <>
       {shouldShowNavbar && <NavBar />}
+
       <main className={shouldShowNavbar ? 'app-content with-navbar' : 'app-content'}>
         <Routes>
+
           {/* Rutas públicas */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -91,6 +95,7 @@ export default function App() {
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
+
         </Routes>
       </main>
     </>

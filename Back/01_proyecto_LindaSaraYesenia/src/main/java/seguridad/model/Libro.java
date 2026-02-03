@@ -66,7 +66,5 @@ public class Libro extends Producto implements Serializable{
 		this.idioma = idioma;
 	}
 	
-	
-	
 }
 
