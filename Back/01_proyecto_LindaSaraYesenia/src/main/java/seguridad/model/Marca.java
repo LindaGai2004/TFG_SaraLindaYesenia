@@ -28,4 +28,26 @@ public class Marca implements Serializable {
 	
 	@Column(name = "nombre_marca")
 	private String nombreMarca;
+
+	public int getIdMarca() {
+		return idMarca;
+	}
+
+	public void setIdMarca(int idMarca) {
+		this.idMarca = idMarca;
+	}
+
+	public String getNombreMarca() {
+		return nombreMarca;
+	}
+
+	public void setNombreMarca(String nombreMarca) {
+		this.nombreMarca = nombreMarca;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
 }
