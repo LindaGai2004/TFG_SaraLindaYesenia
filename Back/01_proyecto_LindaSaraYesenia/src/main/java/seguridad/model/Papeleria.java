@@ -33,6 +33,32 @@ public class Papeleria extends Producto implements Serializable {
 	@JoinColumn (name = "id_categoria")
 	private Categoria categoria;
 
+	
+	public Marca getMarca() {
+		return marca;
+	}
+
+
+	public void setMarca(Marca marca) {
+		this.marca = marca;
+	}
+
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
 	public Papeleria(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
 			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal, Marca marca, Categoria categoria) {
 		super(idProducto, nombreProducto, descripcion, precio, stock, estadoProducto, fechaAlta, costoReal);
