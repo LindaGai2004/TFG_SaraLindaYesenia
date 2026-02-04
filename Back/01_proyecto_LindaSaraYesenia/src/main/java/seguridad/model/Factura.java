@@ -39,4 +39,39 @@ public class Factura implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_pedido")
 	private Pedido pedido;
+	public Integer getIdFactura() {
+		return idFactura;
+	}
+	public void setIdFactura(Integer idFactura) {
+		this.idFactura = idFactura;
+	}
+	public String getNumFactura() {
+		return numFactura;
+	}
+	public void setNumFactura(String numFactura) {
+		this.numFactura = numFactura;
+	}
+	public LocalDate getFechaFactura() {
+		return fechaFactura;
+	}
+	public void setFechaFactura(LocalDate fechaFactura) {
+		this.fechaFactura = fechaFactura;
+	}
+	public Double getPrecioTotal() {
+		return precioTotal;
+	}
+	public void setPrecioTotal(Double precioTotal) {
+		this.precioTotal = precioTotal;
+	}
+	public Pedido getPedido() {
+		return pedido;
+	}
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
 }

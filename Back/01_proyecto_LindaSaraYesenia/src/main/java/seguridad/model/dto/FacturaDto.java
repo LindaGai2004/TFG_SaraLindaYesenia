@@ -15,7 +15,7 @@ import seguridad.model.Factura;
 @NoArgsConstructor
 @Data
 @Builder
-class FacturaDto {
+public class FacturaDto {
 	private Integer idFactura;
 	private String numFactura;
 	private LocalDate fechaFactura;

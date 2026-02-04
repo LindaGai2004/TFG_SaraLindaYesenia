@@ -11,7 +11,12 @@ public interface ProductoService {
 	
 	List<Producto> findAll();
 	
+<<<<<<< HEAD
 	Producto findOne(Integer idProducto);
+=======
+	Producto findOne(Integer idproducto);
+	
+>>>>>>> main
 	int deleteById (Integer idProducto);
 
 	//Para mostrar el producto destacado en Home
