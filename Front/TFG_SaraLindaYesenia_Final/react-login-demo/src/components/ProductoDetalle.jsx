@@ -16,16 +16,18 @@ export default function ProductoDetalle() {
           nombre: data.nombreProducto,
           descripcion: data.descripcion,
           precio: data.precio,
-          tipo: data.tipoProducto,
+          tipo: data.tipo,
 
           // LIBRO
           autor: data.autor || null,
           isbn: data.isbn || null,
           numeroPaginas: data.numeroPaginas || null,
-          idioma: data.idioma?.nombreIdioma || null,
+          idioma: data.idioma || null,
+          resumen: data.resumen || null,
 
           // PAPELERÍA
-          marca: data.marca?.nombreMarca || null,
+          marca: data.marca || null,
+          categoria: data.categoria || null,
 
           imagen: data.imagen || "/lector1.jpg",
           miniaturas: [
@@ -90,6 +92,13 @@ export default function ProductoDetalle() {
         {/* DESCRIPCIÓN */}
         <p className="detalle-descripcion">{producto.descripcion}</p>
 
+        {/* RESUMEN SOLO SI ES LIBRO */}
+        {producto.tipo === "LIBRO" && producto.resumen && (
+          <p className="detalle-resumen">
+            <strong>Resumen:</strong> {producto.resumen}
+          </p>
+        )}
+
         {/* DETALLES SEGÚN TIPO */}
         <div className="detalle-extra">
           {producto.tipo === "LIBRO" && (
@@ -105,6 +114,7 @@ export default function ProductoDetalle() {
             <>
               <h3>Detalles del producto</h3>
               <p><strong>Marca:</strong> {producto.marca}</p>
+              <p><strong>Categoría:</strong> {producto.categoria}</p>
             </>
           )}
         </div>
