@@ -17,16 +17,11 @@ function MiCarrito() {
     const delivery = 2.00;
     const iva = subtotal * 0.21;
     const total = subtotal + iva;
-    useEffect(() => {
+useEffect(() => {
   if (cartItems.length === 0) {
-    addToCart({
-      id_producto: 1,
-      nombre: 'Test Book',
-      precio: 10
-    });
+    addToCart(1, 1);
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+}, [cartItems, addToCart]);
     return (
            <div className="cart-page">
             <button className="cart-back-btn" onClick={() => navigate(-1)}>
@@ -54,7 +49,7 @@ function MiCarrito() {
                                     <div className="cart-item-author">Jordan Avery</div>
                                     <strong className="cart-item-name">{item.nombre}</strong>
                                     <div className="cart-item-price">
-                                        €{item.precio.toFixed(2)}
+                                        €{(item.precio??0).toFixed(2)}
                                         <span className="cart-item-price-old">€20.00</span>
                                     </div>
                                 </div>

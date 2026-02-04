@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar_dashboard';
 import Header from '../components/Header_dashboard';
 import Dashboard from './Dashboard/Dashboard';
-import Productos from './Dashboard/Productos';
+import Productos from './Dashboard/ProductosDashboard';
 import Clientes from './Dashboard/Clientes';
 import Jefes from './Dashboard/Jefes';
 import Trabajadores from './Dashboard/Trabajadores';
