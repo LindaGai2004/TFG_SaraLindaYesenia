@@ -108,82 +108,72 @@ public class ProductoServiceImpl implements ProductoService{
 	
 	
 	@Override
-	public List<Producto> filtrar(String tipo, String idioma, String genero, String marca, String categoria, Double precio, String estado) {
+	public List<Producto> filtrar(String tipo, String idioma, String genero,
+	                              String marca, String categoria, Double precio, String estado) {
 
-		System.out.println("---- FILTROS RECIBIDOS ----");
-		System.out.println("tipo = " + tipo);
-		System.out.println("idioma = " + idioma);
-		System.out.println("genero = " + genero);
-		System.out.println("marca = " + marca);
-		System.out.println("categoria = " + categoria);
-		System.out.println("precio = " + precio);
-		System.out.println("estado = " + estado);
-		System.out.println("----------------------------");
-
-		
 	    List<Producto> resultado = new ArrayList<>();
 
 	    boolean filtrarLibros = "libro".equalsIgnoreCase(tipo);
 	    boolean filtrarPapeleria = "papeleria".equalsIgnoreCase(tipo);
 
-	    // SI NO HAY TIPO → DEVOLVER TODOS
+	    // Si NO hay tipo, cargamos TODOS los productos
 	    if (!filtrarLibros && !filtrarPapeleria) {
-	        return productoRepository.findAll();
+	        resultado.addAll(productoRepository.findAll());
 	    }
 
-	    // FILTRO PARA LIBROS
+	    // Si hay tipo libro, cargamos solo libros
+	    if (filtrarLibros) {
+	        resultado.addAll(libroRepo.findAll());
+	    }
+
+	    // Si hay tipo papelería, cargamos solo papelería
+	    if (filtrarPapeleria) {
+	        resultado.addAll(papeleriaRepo.findAll());
+	    }
+
+	    // FILTROS COMUNES (se aplican SIEMPRE)
+	    if (precio != null) {
+	        resultado.removeIf(p -> p.getPrecio() > precio);
+	    }
+
+	    if (estado != null && !estado.isEmpty()) {
+	        resultado.removeIf(p -> !p.getEstadoProducto().name().equalsIgnoreCase(estado));
+	    }
+
+	    // FILTROS PARA LIBROS
 	    if (filtrarLibros) {
 
-	        List<Libro> libros = libroRepo.findAll();
-
 	        if (idioma != null && !idioma.isEmpty()) {
-	            libros.removeIf(l -> l.getIdioma() == null ||
-	                    !l.getIdioma().getNombreIdioma().equalsIgnoreCase(idioma));
+	            resultado.removeIf(p -> !(p instanceof Libro) ||
+	                    ((Libro)p).getIdioma() == null ||
+	                    !((Libro)p).getIdioma().getNombreIdioma().equalsIgnoreCase(idioma));
 	        }
 
 	        if (genero != null && !genero.isEmpty()) {
-	            libros.removeIf(l -> l.getGenero() == null ||
-	                    !l.getGenero().getNombreGenero().equalsIgnoreCase(genero));
+	            resultado.removeIf(p -> !(p instanceof Libro) ||
+	                    ((Libro)p).getGenero() == null ||
+	                    !((Libro)p).getGenero().getNombreGenero().equalsIgnoreCase(genero));
 	        }
-
-	        if (precio != null) {
-	            libros.removeIf(l -> l.getPrecio() > precio);
-	        }
-
-	        if (estado != null && !estado.isEmpty()) {
-	            libros.removeIf(l -> !l.getEstadoProducto().name().equalsIgnoreCase(estado));
-	        }
-
-	        resultado.addAll(libros);
 	    }
 
-	    // FILTRO PARA PAPELERÍA
+	    // FILTROS PARA PAPELERÍA
 	    if (filtrarPapeleria) {
 
-	        List<Papeleria> pap = papeleriaRepo.findAll();
-
 	        if (marca != null && !marca.isEmpty()) {
-	            pap.removeIf(p -> p.getMarca() == null ||
-	                    !p.getMarca().getNombreMarca().equalsIgnoreCase(marca));
+	            resultado.removeIf(p -> !(p instanceof Papeleria) ||
+	                    ((Papeleria)p).getMarca() == null ||
+	                    !((Papeleria)p).getMarca().getNombreMarca().equalsIgnoreCase(marca));
 	        }
 
 	        if (categoria != null && !categoria.isEmpty()) {
-	            pap.removeIf(p -> p.getCategoria() == null ||
-	                    !p.getCategoria().getNombreCategoria().equalsIgnoreCase(categoria));
+	            resultado.removeIf(p -> !(p instanceof Papeleria) ||
+	                    ((Papeleria)p).getCategoria() == null ||
+	                    !((Papeleria)p).getCategoria().getNombreCategoria().equalsIgnoreCase(categoria));
 	        }
-
-	        if (precio != null) {
-	            pap.removeIf(p -> p.getPrecio() > precio);
-	        }
-
-	        if (estado != null && !estado.isEmpty()) {
-	            pap.removeIf(p -> !p.getEstadoProducto().name().equalsIgnoreCase(estado));
-	        }
-
-	        resultado.addAll(pap);
 	    }
 
 	    return resultado;
 	}
+
 
 }

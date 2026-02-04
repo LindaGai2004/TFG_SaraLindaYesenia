@@ -1,6 +1,5 @@
 package seguridad.model;
 
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -57,6 +56,91 @@ public abstract class Producto implements Serializable{
 	boolean destacado; //para libro del mes 
 	
 	
+	public Integer getIdProducto() {
+		return idProducto;
+	}
+
+
+	public void setIdProducto(Integer idProducto) {
+		this.idProducto = idProducto;
+	}
+
+
+	public String getNombreProducto() {
+		return nombreProducto;
+	}
+
+
+	public void setNombreProducto(String nombreProducto) {
+		this.nombreProducto = nombreProducto;
+	}
+
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+	public Double getPrecio() {
+		return precio;
+	}
+
+
+	public void setPrecio(Double precio) {
+		this.precio = precio;
+	}
+
+
+	public Integer getStock() {
+		return stock;
+	}
+
+
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
+
+
+	public EstadoProducto getEstadoProducto() {
+		return estadoProducto;
+	}
+
+
+	public void setEstadoProducto(EstadoProducto estadoProducto) {
+		this.estadoProducto = estadoProducto;
+	}
+
+
+	public LocalDate getFechaAlta() {
+		return fechaAlta;
+	}
+
+
+	public void setFechaAlta(LocalDate fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+
+	public Double getCostoReal() {
+		return costoReal;
+	}
+
+
+	public void setCostoReal(Double costoReal) {
+		this.costoReal = costoReal;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
 	public Producto(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
 			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal) {
 		super();

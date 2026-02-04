@@ -1,4 +1,5 @@
 import "./ProductoLista.css";
+import { Link } from "react-router-dom";
 
 export default function ProductoLista({ productos }) {
 
@@ -11,37 +12,46 @@ export default function ProductoLista({ productos }) {
       {productos.map((p) => (
         <div key={p.idProducto} className="producto-card">
 
-          {/* Imagen */}
-          <div className="producto-imagen">
-            <img
-              src={p.imagen || "https://via.placeholder.com/200x200?text=Producto"}
-              alt={p.nombre}
-            />
-          </div>
+          {/* ZONA CLICABLE QUE ABRE EL DETALLE */}
+          <Link to={`/producto/${p.idProducto}`} className="producto-link">
+
+            {/* Imagen */}
+            <div className="producto-imagen">
+              <img
+                src={p.imagen || "https://via.placeholder.com/200x200?text=Producto"}
+                alt={p.nombreProducto}
+              />
+            </div>
+
+            {/* Información */}
+            <div className="producto-info">
+              <h3 className="producto-titulo">{p.nombreProducto}</h3>
+
+              {p.autor && (
+                <p className="producto-sub">{p.autor}</p>
+              )}
+
+              {!p.autor && p.categoria && p.marca && (
+                <p className="producto-sub">
+                  {p.categoria.nombreCategoria} · {p.marca.nombreMarca}
+                </p>
+              )}
+
+              <p className="producto-precio">{p.precio} €</p>
+            </div>
+
+          </Link>
 
           {/* Icono de favorito */}
-          <button className="favorito-btn">
-            <img src="/corazon.jpg" alt="Favorito" className="favorito-icon"/>
-          </button>
+          <Link to="/favoritos" className="favorito-btn">
+            <img src="/corazon.jpg" alt="Favorito" className="favorito-icon" />
+          </Link>
 
-          {/* Información */}
-          <div className="producto-info">
-            <h3 className="producto-titulo">{p.nombreProducto}</h3>
+          {/* Botón Añadir al carrito */}
+          <Link to="/MiCarrito" className="carrito-overlay-btn">
+            Añadir al carrito
+          </Link>
 
-            {/* Si es libro */}
-            {p.autor && (
-              <p className="producto-sub">{p.autor}</p>
-            )}
-
-            {/* Si es papelería */}
-            {!p.autor && p.categoria && p.marca && (
-              <p className="producto-sub">
-                {p.categoria.nombreCategoria} · {p.marca.nombreMarca}
-              </p>
-            )}
-
-            <p className="producto-precio">{p.precio} €</p>
-          </div>
         </div>
       ))}
     </div>
