@@ -74,3 +74,45 @@ export async function apiDelete(path) {
     throw error;
   }
 }
+
+/*
+export const librosAPI = {
+  // 获取所有图书
+  getAll: async () => {
+    // 👇【填写路由】例如: '/api/libros' 或 '/libros'
+    return await apiGet('/libros/todos');
+  },
+
+  // 创建图书
+  create: async (libro) => {
+    // 👇【填写路由】
+    return await apiPost('/libros/altaLibro', libro);
+  },
+
+  // 更新图书
+  update: async (id, libro) => {
+    // 👇【填写路由】
+    return await apiPut(`/libros/modificarLibro/${idProducto}`, libro);
+  },
+
+  // 删除图书
+  delete: async (id) => {
+    // 👇【填写路由】
+    return await apiDelete(`/eliminar/${idProducto}`);
+  },
+
+  // 搜索图书
+  search: async (query) => {
+    // 👇【填写路由】
+    return await apiGet(`/libros/buscar?query=${encodeURIComponent(query)}`);
+  },
+};*/
+
+
+export default {
+  apiGet,
+  apiPost,
+  apiPut,
+  apiDelete,
+/*  libros: librosAPI,*/
+};

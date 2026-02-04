@@ -1,0 +1,100 @@
+import { useState, useMemo } from 'react';
+import { Search, Plus, Edit, Trash2 } from 'lucide-react';
+import Modal from '../../components/Modal_dashboard';
+
+export default function Trabajadores({ trabajadores, onAddTrabajador, onEditTrabajador, onDeleteTrabajador }) {
+  const [search, setSearch] = useState('');
+  const [formModal, setFormModal] = useState(null);
+
+  const filtered = useMemo(() => 
+    trabajadores.filter(t =>
+      `${t.nombre} ${t.apellidos} ${t.email} ${t.username}`.toLowerCase().includes(search.toLowerCase())
+    ), [trabajadores, search]
+  );
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <h2 className="text-xl font-bold text-primary">Trabajadores</h2>
+        </div>
+        <button onClick={() => setFormModal({ type: 'add' })} className="btn btn-primary">
+          <Plus size={14} /> Añadir
+        </button>
+      </div>
+
+      <div className="search-wrapper mb-4">
+        <Search size={15} className="search-icon" />
+        <input placeholder="Buscar por nombre, apellidos, email, username..." value={search} onChange={e => setSearch(e.target.value)} className="input-field search-input" />
+      </div>
+
+      <div className="table-wrapper">
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Nombre</th>
+              <th>Apellidos</th>
+              <th>Email</th>
+              <th>Username</th>
+              <th>Dirección</th>
+              <th>Fecah registro</th>
+              <th>Fecah nacimiento</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map(t => (
+              <tr key={t.id}>
+                <td><div className="table-avatar bg-blue-light">👤</div></td>
+                <td className="text-xs font-semibold text-primary">{t.nombre}</td>
+                <td className="text-xs text-primary">{t.apellidos}</td>
+                <td className="text-xs text-secondary">{t.email}</td>
+                <td className="text-xs text-secondary">{t.username}</td>
+                <td className="text-xs text-secondary">{t.direccion}</td>
+                <td className="text-xs text-secondary">{t.fechaRegistro}</td>
+                <td className="text-xs text-secondary">{t.fechaNacimiento}</td>
+                <td>
+                  <div className="table-actions">
+                    <button onClick={() => setFormModal({ type: 'edit', data: t })} className="btn-icon edit">
+                      <Edit size={13} color="#3b82f6" />
+                    </button>
+                    <button onClick={() => onDeleteTrabajador(t.id)} className="btn-icon delete">
+                      <Trash2 size={13} color="#ef4444" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {formModal && (
+        <Modal open width="max-w-lg" onClose={() => setFormModal(null)} title={formModal.type === 'add' ? '➕ 添加员工' : '✏️ 编辑员工'}>
+          <StaffForm initial={formModal.data} onSave={d => { formModal.type === 'add' ? onAddTrabajador(d) : onEditTrabajador(formModal.data.id, d); setFormModal(null); }} />
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+function StaffForm({ initial, onSave }) {
+  const [form, setForm] = useState(initial || { nombre: '', apellidos: '', email: '', username: '', direccion: '', fechaRegistro: '', fechaNacimiento: '' });
+  const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
+
+  return (
+    <div className="space-y-3">
+      <div className="form-row">
+        <div className="form-group"><label className="form-label">Nombre</label><input value={form.nombre} onChange={e => set('nombre', e.target.value)} className="input-field" /></div>
+        <div className="form-group"><label className="form-label">Apellidos</label><input value={form.apellidos} onChange={e => set('apellido', e.target.value)} className="input-field" /></div>
+      </div>
+      <div className="form-group"><label className="form-label">Email</label><input value={form.email} onChange={e => set('email', e.target.value)} className="input-field" /></div>
+      <div className="form-group"><label className="form-label">Usernema</label><input value={form.username} onChange={e => set('username', e.target.value)} className="input-field" /></div>
+      <div className="form-group"><label className="form-label">Dirección</label><input value={form.direccion} onChange={e => set('telefono', e.target.value)} className="input-field" /></div>
+      <div className="form-group"><label className="form-label">Fecha registro</label><input type="date" value={form.fechaRegistro} onChange={e => set('fecha_ingreso', e.target.value)} className="input-field" /></div>
+      <div className="form-group"><label className="form-label">Fecha nacimiento</label><input type="date" value={form.fechaNacimiento} onChange={e => set('fecha_ingreso', e.target.value)} className="input-field" /></div>
+      <button onClick={() => onSave(form)} className="btn btn-primary w-full mt-2">{initial ? 'Guardar' : 'Añadir'}</button>
+    </div>
+  );
+}

@@ -17,16 +17,20 @@ import './App.css';
 
 export default function App() {
   const location = useLocation();
-
-  // Rutas donde NO quieres mostrar la navbar
-  const hideNavbarRoutes = ['/cliente'];
-  const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
+  const hideNavbarPaths = [  
+    '/administrador',
+    '/jefe',
+    '/trabajador',
+    '/cliente',
+    '/success'];
+    const shouldShowNavbar = !hideNavbarPaths.some(path =>
+      location.pathname.startsWith(path)
+    );
 
   return (
     <>
-      {shouldShowNavbar && <NavBar />}
-
-      <main className={shouldShowNavbar ? 'app-content with-navbar' : 'app-content'}>
+    {shouldShowNavbar && <NavBar />}
+    <main className={shouldShowNavbar ? 'app-content with-navbar' : 'app-content'}>
         <Routes>
 
           {/* Rutas públicas */}

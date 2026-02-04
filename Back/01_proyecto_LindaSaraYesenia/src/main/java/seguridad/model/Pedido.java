@@ -37,8 +37,9 @@ public class Pedido implements Serializable{
 	@Column(name = "fecha_venta")
 	private LocalDate fechaVenta;
 	
-	@Enumerated(EnumType.STRING)
-	private EstadoPedido estado;
+	 @Enumerated(EnumType.STRING)
+	 @Column(name = "estado_pedido")
+	 private EstadoPedido estado;
 	
 	//Esto es nuevo
 	@Column(name="total")
@@ -47,6 +48,51 @@ public class Pedido implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
+
+	public int getIdPedido() {
+		return idPedido;
+	}
+
+	public void setIdPedido(int idPedido) {
+		this.idPedido = idPedido;
+	}
+
+	public LocalDate getFechaVenta() {
+		return fechaVenta;
+	}
+
+	public void setFechaVenta(LocalDate fechaVenta) {
+		this.fechaVenta = fechaVenta;
+	}
+
+	public EstadoPedido getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoPedido estado) {
+		this.estado = estado;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 	
 	//Esto no se aunpreguntar)
 	//@OneToMany(mappedBy = "pedido")

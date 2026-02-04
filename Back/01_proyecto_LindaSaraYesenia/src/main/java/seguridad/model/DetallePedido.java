@@ -40,6 +40,51 @@ public class DetallePedido implements Serializable {
 	private Integer cantidad;
 	
 	@Column(name = "precio_unidad")
-	private Double precioUnidad; 
+	private Double precioUnidad;
 
+	public Long getIdDetallePedido() {
+		return idDetallePedido;
+	}
+
+	public void setIdDetallePedido(Long idDetallePedido) {
+		this.idDetallePedido = idDetallePedido;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+	public Integer getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public Double getPrecioUnidad() {
+		return precioUnidad;
+	}
+
+	public void setPrecioUnidad(Double precioUnidad) {
+		this.precioUnidad = precioUnidad;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	} 
+
+	
 }
