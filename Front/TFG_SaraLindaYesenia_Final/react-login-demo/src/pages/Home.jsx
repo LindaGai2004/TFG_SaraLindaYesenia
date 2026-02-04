@@ -1,8 +1,9 @@
 import './Home.css';
 import { useState, useRef, useEffect, } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth }  from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { ChevronLeft, ChevronRight, Search, User, ShoppingCart, Headphones, AlertTriangle } from 'lucide-react';
+import { apiPost } from '../api/api';
 // Componente estar en pantalla
 function useOnScreen(ref) {
   const [isIntersecting, setIntersecting] = useState(false);
@@ -54,7 +55,7 @@ function Contador({ final, visible }) {
 export default function Home() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  
+
   // Generos
   useEffect(() => {
     // función del carrusel de géneros
@@ -81,7 +82,7 @@ export default function Home() {
     }
 
     function toggleUI(i) {
-      cards.forEach((c, k) => c.toggleAttribute("active", k === i));
+      cards.forEach((c, k) => c.toggleAttribute("data-active", k === i));
       prev.disabled = i === 0;
       next.disabled = i === cards.length - 1;
     }
@@ -148,7 +149,19 @@ export default function Home() {
 
   {/*Botón de incrementar*/ }
   const [cantidad, setCantidad] = useState(1);
-
+  async function handleAddToCart(item) {
+    if (!user) {
+      alert("Debes iniciar sesión");
+      return;
+    }
+    try {
+      await apiPost("/carrito/add", item);
+      alert("Producto añadido");
+    } catch (e) {
+      console.error(e);
+      alert("Error al añadir producto");
+    }
+  }
   const incrementarCantidad = () => {
     setCantidad(cantidad + 1);
   };
@@ -239,7 +252,7 @@ export default function Home() {
         </div>
       </div>
 
-     {/* Sección géneros */}
+      {/* Sección géneros */}
       <div className="generos-bloque">
         <div className="cabecera">
           <h2 className="titulo-seccion">Para cada estado de ánimo</h2>
@@ -247,48 +260,48 @@ export default function Home() {
 
         <div className="carrusel">
           <div className="pista" id="track">
-            <article className="tarjeta" active>
-              <img src="/tarjetaFondo1.jpg" alt="Fantasia1" className="tarjeta-fondo"/>
+            <article className="tarjeta" data-active>
+              <img src="/tarjetaFondo1.jpg" alt="Fantasia1" className="tarjeta-fondo" />
               <div className="tarjeta-contenido">
-                  <h3 className="tarjeta-titulo">Fantasía</h3>
-                  <p className="tarjeta-descripcion">Escápate a mundos imaginados.</p>
-                  <button className="tarjeta-boton">Ver</button>
+                <h3 className="tarjeta-titulo">Fantasía</h3>
+                <p className="tarjeta-descripcion">Escápate a mundos imaginados.</p>
+                <button className="tarjeta-boton">Ver</button>
               </div>
             </article>
 
             <article className="tarjeta">
-              <img src="/tarjetaFondo2.jpg" alt="Misterio1" className="tarjeta-fondo"/>
+              <img src="/tarjetaFondo2.jpg" alt="Misterio1" className="tarjeta-fondo" />
               <div className="tarjeta-contenido">
-                  <h3 className="tarjeta-titulo">Misterio</h3>
-                  <p className="tarjeta-descripcion">Historias que te mantienen en vilo.</p>
-                  <button className="tarjeta-boton">Ver</button>
+                <h3 className="tarjeta-titulo">Misterio</h3>
+                <p className="tarjeta-descripcion">Historias que te mantienen en vilo.</p>
+                <button className="tarjeta-boton">Ver</button>
               </div>
             </article>
 
             <article className="tarjeta">
-              <img src="/tarjetaFondo3.jpg" alt="Romance1" className="tarjeta-fondo"/>
+              <img src="/tarjetaFondo3.jpg" alt="Romance1" className="tarjeta-fondo" />
               <div className="tarjeta-contenido">
-                  <h3 className="tarjeta-titulo">Romance</h3>
-                  <p className="tarjeta-descripcion">Lecturas para sentir y conectar.</p>
-                  <button className="tarjeta-boton">Ver</button>
+                <h3 className="tarjeta-titulo">Romance</h3>
+                <p className="tarjeta-descripcion">Lecturas para sentir y conectar.</p>
+                <button className="tarjeta-boton">Ver</button>
               </div>
             </article>
 
             <article className="tarjeta">
-              <img src="/tarjetaFondo4.jpg" alt="Ciencia ficción 1" className="tarjeta-fondo"/>
+              <img src="/tarjetaFondo4.jpg" alt="Ciencia ficción 1" className="tarjeta-fondo" />
               <div className="tarjeta-contenido">
-                  <h3 className="tarjeta-titulo">Ciencia ficción</h3>
-                  <p className="tarjeta-descripcion">Ideas que miran al futuro.</p>
-                  <button className="tarjeta-boton">Ver</button>
+                <h3 className="tarjeta-titulo">Ciencia ficción</h3>
+                <p className="tarjeta-descripcion">Ideas que miran al futuro.</p>
+                <button className="tarjeta-boton">Ver</button>
               </div>
             </article>
 
             <article className="tarjeta">
-              <img src="/tarjetaFondo5.jpg" alt="No ficción 1" className="tarjeta-fondo"/>
+              <img src="/tarjetaFondo5.jpg" alt="No ficción 1" className="tarjeta-fondo" />
               <div className="tarjeta-contenido">
-                  <h3 className="tarjeta-titulo">No ficción</h3>
-                  <p className="tarjeta-descripcion">Aprende con historias reales.</p>
-                  <button className="tarjeta-boton">Ver</button>
+                <h3 className="tarjeta-titulo">No ficción</h3>
+                <p className="tarjeta-descripcion">Aprende con historias reales.</p>
+                <button className="tarjeta-boton">Ver</button>
               </div>
             </article>
           </div>
@@ -296,7 +309,7 @@ export default function Home() {
 
         <div className="controles">
           <button id="prev" className="btn-nav" aria-label="Anterior">
-            <ChevronLeft size={20} /> 
+            <ChevronLeft size={20} />
           </button>
           <button id="next" className="btn-nav" aria-label="Siguiente"><ChevronRight size={20} /> </button>
         </div>
@@ -532,7 +545,17 @@ export default function Home() {
                 <button className="simbolo-cantidad" onClick={incrementarCantidad}>+</button>
               </div>
 
-              <button className="boton-carrito" onClick={() => addToCart(libro.idProducto, cantidad)}>AÑADIR AL CARRITO</button>
+              <button
+                className="boton-carrito"
+                onClick={() =>
+                  handleAddToCart({
+                    idProducto: 1,
+                    cantidad: cantidad
+                  })
+                }
+              >
+                AÑADIR AL CARRITO
+              </button>
             </div>
 
             <button className="boton-comprar-ahora">COMPRAR AHORA</button>
