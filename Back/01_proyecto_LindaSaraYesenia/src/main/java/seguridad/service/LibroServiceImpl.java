@@ -38,13 +38,16 @@ public class LibroServiceImpl implements LibroService {
 			
 		Libro existente = findOne(libro.getIdProducto());
 		if(existente != null) {
-			
+
 			//Campos heredados de producto
 			existente.setNombreProducto(libro.getNombreProducto());
 			existente.setDescripcion(libro.getDescripcion());
 			existente.setPrecio(libro.getPrecio());
 			existente.setStock(libro.getStock());
 			existente.setEstadoProducto(libro.getEstadoProducto());
+
+			existente.setFechaAlta(libro.getFechaAlta());
+
 			
 			if (libro.getFechaAlta() != null) {
 			    existente.setFechaAlta(libro.getFechaAlta());
@@ -62,8 +65,11 @@ public class LibroServiceImpl implements LibroService {
 			existente.setIdioma(libro.getIdioma());
 	
 			return libroRepo.save(existente);
+
+		}else {
+			
+			return null;
 		}
-		return null;
 	}
 	@Override
 	public List<Libro> buscadorLibro(String texto) {
@@ -79,8 +85,7 @@ public class LibroServiceImpl implements LibroService {
 		resultado.addAll(porAutor);
 		
 		return new ArrayList<>(resultado);
+
 	}
-
-
 
 }

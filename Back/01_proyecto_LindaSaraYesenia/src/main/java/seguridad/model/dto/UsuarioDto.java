@@ -1,8 +1,7 @@
-package seguridad.model.Dto;
+package seguridad.model.dto;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

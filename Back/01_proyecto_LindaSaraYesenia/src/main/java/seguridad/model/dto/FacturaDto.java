@@ -1,4 +1,4 @@
-package seguridad.model.Dto;
+package seguridad.model.dto;
 
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import seguridad.model.Factura;
 @NoArgsConstructor
 @Data
 @Builder
-class FacturaDto {
+public class FacturaDto {
 	private Integer idFactura;
 	private String numFactura;
 	private LocalDate fechaFactura;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,8 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import seguridad.model.Producto;
 import seguridad.model.Libro;
 import seguridad.model.Papeleria;
+
+import seguridad.model.Producto;
+import seguridad.model.Usuario;
+import seguridad.model.dto.FiltroProductoDto;
+
 import seguridad.repository.LibroRepository;
 import seguridad.repository.PapeleriaRespository;
+
 import seguridad.service.ProductoService;
 
 @RestController
@@ -30,6 +37,27 @@ public class ProductoRestController {
 
     @Autowired
     private LibroRepository libroRepo;
+
+
+	
+	
+	@PutMapping("{idProducto}/destacado")
+	@PreAuthorize("hasAnyRole('ADMON', 'JEFE', 'TRABAJADOR')")
+	public ResponseEntity<?> elegirDestacado(@PathVariable Integer idProducto){
+		Producto producto = productoService.escogerDestacado(idProducto);
+		return ResponseEntity.ok(producto);
+	}
+	
+	@GetMapping("/destacado")
+	public ResponseEntity<?> mostrarDestacado(){
+		Producto producto = productoService.getProductoDestacado();
+		return ResponseEntity.ok(producto);
+	}
+
+
+
+
+
 
     @Autowired
     private PapeleriaRespository papeleriaRepo;
@@ -112,3 +140,4 @@ public class ProductoRestController {
     }
 
 }
+

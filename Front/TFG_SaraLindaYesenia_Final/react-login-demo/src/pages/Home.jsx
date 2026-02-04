@@ -532,7 +532,7 @@ export default function Home() {
                 <button className="simbolo-cantidad" onClick={incrementarCantidad}>+</button>
               </div>
 
-              <button className="boton-carrito">AÑADIR AL CARRITO</button>
+              <button className="boton-carrito" onClick={() => addToCart(libro.idProducto, cantidad)}>AÑADIR AL CARRITO</button>
             </div>
 
             <button className="boton-comprar-ahora">COMPRAR AHORA</button>
