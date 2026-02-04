@@ -37,9 +37,7 @@ public class ProductoRestController {
 
     @Autowired
     private LibroRepository libroRepo;
-
-
-	
+    
 	
 	@PutMapping("{idProducto}/destacado")
 	@PreAuthorize("hasAnyRole('ADMON', 'JEFE', 'TRABAJADOR')")
@@ -53,10 +51,6 @@ public class ProductoRestController {
 		Producto producto = productoService.getProductoDestacado();
 		return ResponseEntity.ok(producto);
 	}
-
-
-
-
 
 
     @Autowired
@@ -94,9 +88,8 @@ public class ProductoRestController {
         return ResponseEntity.ok(lista);
     }
 
-    // ============================
-    // OBTENER PRODUCTO POR ID (CON INSTANCEOF)
-    // ============================
+    
+    // Obtener producto por ID
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerProductoPorId(@PathVariable Integer id) {
 
@@ -108,21 +101,46 @@ public class ProductoRestController {
             return ResponseEntity.status(404).body("Producto no encontrado");
         }
 
-        // Si es un LIBRO
-        if (base instanceof Libro) {
-            Libro libro = libroRepo.findById(id).orElse(null);
-            return ResponseEntity.ok(libro);
+        // Intentamos cargar libro y papelería por id_producto
+        Libro libro = libroRepo.findById(id).orElse(null);
+        Papeleria pap = papeleriaRepo.findById(id).orElse(null);
+
+        // 📚 Si existe libro con ese id → es LIBRO
+        if (libro != null) {
+            return ResponseEntity.ok(new Object() {
+                public final Integer idProducto = base.getIdProducto();
+                public final String nombreProducto = base.getNombreProducto();
+                public final String descripcion = base.getDescripcion();
+                public final Double precio = base.getPrecio();
+
+                public final String tipo = "LIBRO";
+                public final String autor = libro.getAutor();
+                public final String isbn = libro.getISBN();
+                public final Integer numeroPaginas = libro.getNumeroPagina();
+                public final String idioma = (libro.getIdioma() != null ? libro.getIdioma().getNombreIdioma() : null);
+                public final String resumen = libro.getResumen();
+            });
         }
 
-        // Si es PAPELERÍA
-        if (base instanceof Papeleria) {
-            Papeleria pap = papeleriaRepo.findById(id).orElse(null);
-            return ResponseEntity.ok(pap);
+        // ✏ Si existe papelería con ese id → es PAPELERIA
+        if (pap != null) {
+            return ResponseEntity.ok(new Object() {
+                public final Integer idProducto = base.getIdProducto();
+                public final String nombreProducto = base.getNombreProducto();
+                public final String descripcion = base.getDescripcion();
+                public final Double precio = base.getPrecio();
+
+                public final String tipo = "PAPELERIA";
+                public final String marca = (pap.getMarca() != null ? pap.getMarca().getNombreMarca() : null);
+                public final String categoria = (pap.getCategoria() != null ? pap.getCategoria().getNombreCategoria() : null);
+            });
         }
 
-        // Si por alguna razón no es ninguno (muy raro)
+        // Si no es ni libro ni papelería (caso raro)
         return ResponseEntity.ok(base);
     }
+
+
 
     @DeleteMapping("/eliminar/{idProducto}")
     @PreAuthorize("hasRole('ADMON')")
