@@ -17,32 +17,31 @@ export default function AdminConfig({ admin, onUpdateAdmin }) {
   const handleSave = async () => {
     try {
       await onUpdateAdmin(form);
-      alert('✅ 数据保存成功');
+      alert('✅ Exito');
     } catch (error) {
-      alert('❌ 保存失败');
+      alert('❌ Error');
     }
   };
 
   return (
     <div className="max-w-md">
-      <h2 className="text-xl font-bold text-primary mb-1">我的账户</h2>
-      <p className="text-xs text-secondary mb-5">修改管理员数据</p>
+      <h2 className="text-xl font-bold text-primary mb-1">Mi cuenta</h2>
 
       <div className="rounded-2xl border bg-white p-5" style={{ borderColor: '#e2e8f0' }}>
         <div className="flex items-center gap-4 mb-5 pb-5" style={{ borderBottom: '1px solid #f1f5f9' }}>
           <div className="w-14 h-14 rounded-full flex items-center justify-center text-2xl bg-green-light">👨‍💼</div>
           <div>
             <p className="font-bold text-primary">{form?.nombre} {form?.apellidos}</p>
-            <p className="text-xs text-secondary">管理员</p>
+            <p className="text-xs text-secondary">Administrador</p>
           </div>
         </div>
 
         <div className="space-y-3">
           {[
-            ['姓名', 'nombre'],
-            ['姓氏', 'apellidos'],
-            ['邮箱', 'email'],
-            ['用户名', 'username'],
+            ['Nombre', 'nombre'],
+            ['Apellidos', 'apellidos'],
+            ['Email', 'email'],
+            ['Username', 'username'],
             ['Contraseña', 'password'],
             ['Dirección', 'direccion'],
           ].map(([label, key]) => (
@@ -54,7 +53,7 @@ export default function AdminConfig({ admin, onUpdateAdmin }) {
         </div>
 
         <button onClick={handleSave} className="btn btn-primary w-full mt-5">
-          保存修改
+          Guardar
         </button>
       </div>
     </div>

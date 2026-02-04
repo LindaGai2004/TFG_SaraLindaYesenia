@@ -51,8 +51,8 @@ CREATE TABLE productos (
     stock int not null,
     estado_producto ENUM('DISPONIBLE', 'AGOTADO') not null,
     fecha_alta date not null,
-    costo_real double not null
-
+    costo_real double not null,
+	destacado boolean default false
 );
 
 CREATE TABLE idioma(
@@ -241,7 +241,8 @@ INSERT INTO productos
 ('Estudio en escarlata','Novela policiaca','LIBRO',13.90,35,'AGOTADO','2024-02-16',9.00),
 ('El código Da Vinci','Thriller contemporáneo','LIBRO',21.90,30,'DISPONIBLE','2024-02-17',15.50),
 ('Las crónicas de Narnia','Saga de fantasía','LIBRO',29.90,25,'DISPONIBLE','2024-02-18',21.00),
-('El alquimista','Novela de Paulo Coelho sobre sueños y destino','LIBRO',18.90,40,'DISPONIBLE','2024-02-19',12.50);
+('Underwater','Novela de Serena Delmar que explora emociones profundas y el autodescubrimiento','LIBRO',21.00,30,'DISPONIBLE','2022-01-01',14.00);
+
 
 -- ========== 50 PAPELERÍA ==========
 INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stock, estado_producto, fecha_alta, costo_real) VALUES
@@ -368,10 +369,10 @@ INSERT INTO libros
 (45,'9788439740015','Planeta','1988-01-01','Thomas Harris',368,15,1),
 
 (46,'9788439740016','Alianza','1813-01-28','Jane Austen',432,11,1),
-(47,'9788439740017','Alianza','1847-10-16','Charlotte Brontë',624,11,1),
+(47,'9788439740017','Alianza','1847-10-16','Charlotte Bronte',624,11,1),
 (48,'9788439740018','Alianza','1847-12-01','Emily Brontë',416,11,1),
 (49,'9788439740019','Alianza','1811-01-01','Jane Austen',384,11,1),
-(50,'9780061122415','Editorial Planeta','1988-01-01','Paulo Coelho',208,3,2);
+(50,'9781234567890','Independiente','2022-01-01','Serena Delmar',320,9,1);
 
 INSERT INTO marca (nombre_marca) VALUES
 ('Genérica'),
