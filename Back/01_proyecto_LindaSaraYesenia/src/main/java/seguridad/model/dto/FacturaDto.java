@@ -1,4 +1,4 @@
-package seguridad.model.Dto;
+package seguridad.model.dto;
 
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
