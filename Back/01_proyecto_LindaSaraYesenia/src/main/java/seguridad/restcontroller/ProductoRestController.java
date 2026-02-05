@@ -105,7 +105,7 @@ public class ProductoRestController {
         Libro libro = libroRepo.findById(id).orElse(null);
         Papeleria pap = papeleriaRepo.findById(id).orElse(null);
 
-        // 📚 Si existe libro con ese id → es LIBRO
+        // Si existe libro con ese id es LIBRO
         if (libro != null) {
             return ResponseEntity.ok(new Object() {
                 public final Integer idProducto = base.getIdProducto();
@@ -122,7 +122,7 @@ public class ProductoRestController {
             });
         }
 
-        // ✏ Si existe papelería con ese id → es PAPELERIA
+        // Si existe papelería con ese id es PAPELERIA
         if (pap != null) {
             return ResponseEntity.ok(new Object() {
                 public final Integer idProducto = base.getIdProducto();
@@ -158,4 +158,3 @@ public class ProductoRestController {
     }
 
 }
-

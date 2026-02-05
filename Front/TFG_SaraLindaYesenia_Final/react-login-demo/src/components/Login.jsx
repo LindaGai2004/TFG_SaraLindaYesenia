@@ -12,7 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // --- Navbar visible/oculto al hacer scroll (igual que en Home) ---
+  // Navbar visible/oculto al hacer scroll (igual que en Home)
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const scrollTimeout = useRef(null);
@@ -86,7 +86,7 @@ export default function Login() {
   return (
     <div className="pagina-login">
 
-      {/* --- FORMULARIO --- */}
+      {/* FORMULARIO */}
       <div className="login-contenedor">
         <form onSubmit={onSubmit}>
           <h2 className="titulo-login">Iniciar sesión</h2>
@@ -114,6 +114,8 @@ export default function Login() {
             ¿No tienes cuenta? <span>  </span><Link to="/register">Regístrate aquí</Link>
           </p>
 
+          
+
           {error && <p className="error">{error}</p>}
 
           <button type="submit" className="login-boton">
@@ -122,7 +124,7 @@ export default function Login() {
         </form>
       </div>
 
-      {/* --- FOOTER --- */}
+      {/* FOOTER */}
       <footer className="footer">
         <div className="contenedor-footer">
           <div className="columna-footer">
@@ -163,7 +165,7 @@ export default function Login() {
 
         <div className="footer-final">
           <p className="texto-final-footer">
-            © 2025 Archives - Todos los derechos reservados. Desarrollado por Sara, Linda y Yesenia.
+            © 2026 Archives - Todos los derechos reservados. Desarrollado por Sara, Linda y Yesenia.
           </p>
         </div>
       </footer>
