@@ -74,7 +74,4 @@ public class LibroRestController {
 		return ResponseEntity.ok(lista);
 	}
 
-
-
-
 }
