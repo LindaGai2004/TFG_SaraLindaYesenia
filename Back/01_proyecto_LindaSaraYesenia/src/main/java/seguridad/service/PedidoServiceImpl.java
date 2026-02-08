@@ -32,7 +32,6 @@ public class PedidoServiceImpl implements PedidoService {
 	private static final BigDecimal IVA_LIBRO = BigDecimal.valueOf(0.04);
 	private static final BigDecimal IVA_PAPELERIA = BigDecimal.valueOf(0.21);
 
-	@Override
 	public Pedido findById(Integer idPedido) {
 		return prepo.findById(idPedido).orElse(null);
 	}
@@ -81,10 +80,13 @@ public class PedidoServiceImpl implements PedidoService {
 			BigDecimal precioUnidad = BigDecimal.valueOf(d.getPrecioUnidad());
 		    BigDecimal cantidad = BigDecimal.valueOf(d.getCantidad());
 			BigDecimal totalPorItem = precioUnidad.multiply(cantidad);
-			subtotal = subtotal.add(totalPorItem);
+			subtotal = subtotal.add(totalPorItem);//sin iva
 			
 			BigDecimal iva;
-			
+			String autor = null;
+			if (d.getProducto() instanceof Libro libro) {
+	            autor = libro.getAutor();
+	        }
 			if (d.getProducto() instanceof Libro) {
 	            iva = totalPorItem.multiply(IVA_LIBRO);
 	        } else {
@@ -94,7 +96,9 @@ public class PedidoServiceImpl implements PedidoService {
 			ivaTotal = ivaTotal.add(iva);
 			
 			items.add(new PedidoItemResponse(
+					d.getProducto().getIdProducto(),
 	                d.getProducto().getNombreProducto(),
+	                autor,
 	                d.getCantidad(),
 	                d.getPrecioUnidad(),
 	                totalPorItem.doubleValue()
