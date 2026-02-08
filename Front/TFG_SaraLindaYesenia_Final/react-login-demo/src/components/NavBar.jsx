@@ -50,7 +50,7 @@ function NavBar({isVisible=true}) {
           {/* Separador vertical */}
           <div className="separador"></div>
 
-          {/* Login */}
+          {/* Login: Aquí si el usuario ya está logueado no debería volver a pedir q se loguee de nuevo (!!) */}
           <Link to="/login" className="accion">
             <User size={24} />
           </Link>

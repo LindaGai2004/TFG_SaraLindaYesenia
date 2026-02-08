@@ -549,7 +549,7 @@ export default function Home() {
                 className="boton-carrito"
                 onClick={() =>
                   handleAddToCart({
-                    idProducto: 1,
+                    idProducto: 50,
                     cantidad: cantidad
                   })
                 }

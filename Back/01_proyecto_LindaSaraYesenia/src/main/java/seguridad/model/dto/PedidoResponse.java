@@ -5,13 +5,17 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 //Lo que envía el back
 public class PedidoResponse {
 	private Integer idPedido;

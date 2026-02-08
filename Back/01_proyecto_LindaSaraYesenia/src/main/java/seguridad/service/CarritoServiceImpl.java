@@ -149,30 +149,28 @@ public class CarritoServiceImpl implements CarritoService {
 		if (detalles.isEmpty()) {
 	        throw new RuntimeException("El carrito está vacío");
 	    }
-		//Calcular total
-		double total = 0.0;
+		//Aca no calculamos total pq eso se hace en ResumenPedido
 		for (DetallePedido d: detalles) {
 			Producto producto = d.getProducto();
 			int cantidad = d.getCantidad();
 			//Verificar Stock
 			if(producto.getStock() < cantidad) {
 				 throw new RuntimeException(
-		                    "No hay stock para " + producto.getNombreProducto());
+		                    "¡No hay stock para " + producto.getNombreProducto() + "!");
 			}
 			//Actualizar stock
 			producto.setStock(producto.getStock() - cantidad);
-			//Actualizar estado producto if stock=0
+			//Actualizar ESTADO producto if stock=0
 			if(producto.getStock() == 0) {
 				producto.setEstadoProducto(EstadoProducto.AGOTADO);
 			}
+			
 			porepo.save(producto);
-			total += d.getPrecioUnidad() * cantidad;
 			
 		}
 		//Pedido realizado con total
 		carrito.setEstado(EstadoPedido.REALIZADO);
 		carrito.setFechaVenta(LocalDate.now());
-		carrito.setTotal(total);
 		
 		prepo.save(carrito);
 		return pserv.resumenPedido(carrito.getIdPedido());
@@ -180,7 +178,7 @@ public class CarritoServiceImpl implements CarritoService {
 	@Override
 	public PedidoResponse getCarritoActivo(Integer idUsuario) {
 		 Pedido carrito = prepo.findByUsuario_IdUsuarioAndEstado(idUsuario, EstadoPedido.CARRITO)
-			        .orElseThrow(() -> new RuntimeException("No hay carrito activo"));
+			        .orElseGet(() ->createCarrito(idUsuario));
 		  return pserv.resumenPedido(carrito.getIdPedido());
 	}
 

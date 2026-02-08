@@ -1,9 +1,12 @@
-import { useCart }  from "../context/CartContext";
-import { useAuth }  from "../context/AuthContext";
-
+import { useNavigate, useLocation } from "react-router-dom";
 import './ResumenPedido.css';
 
 function ResumenPedido() {
+  const { state: pedido } = useLocation();
+  const navigate = useNavigate();
+  if (!pedido) {
+    return <p>No hay info del pedido</p>;
+  }
   return (
     <div className="order-success-page">
 
@@ -25,14 +28,14 @@ function ResumenPedido() {
 
           <div className="order-customer-row">
             <span className="label">Nombre</span>
-            <span className="value">Jane Smith</span>
+            <span className="value">{pedido.nombre}</span>
           </div>
 
           <div className="order-customer-row">
             <span className="label">Dirección</span>
-            <span className="value">Calle Eduardo Barreiros, 122, Madrid</span>
+            <span className="value">{pedido.direccion}</span>
           </div>
-
+          {/* agregar tlf o no*/}
           <div className="order-customer-row">
             <span className="label">Teléfono</span>
             <span className="value">+34 614242991</span>
@@ -40,11 +43,11 @@ function ResumenPedido() {
 
           <div className="order-customer-row">
             <span className="label">Email</span>
-            <span className="value">jane.smith@gmail.com</span>
+            <span className="value">{pedido.email}</span>
           </div>
         </div>
 
-        <button className="order-back-btn">
+        <button className="order-back-btn" onClick={() => navigate("/productos")}>
           Regresar a la tienda
         </button>
       </section>
@@ -59,12 +62,12 @@ function ResumenPedido() {
         <div className="order-meta">
           <div className="order-meta-item">
             <span className="meta-label">Fecha</span>
-            <span className="meta-value">07 Ene 2026</span>
+            <span className="meta-value">{pedido.fechaVenta}</span>
           </div>
 
           <div className="order-meta-item">
             <span className="meta-label">Nro. de Orden</span>
-            <span className="meta-value">024-125478956</span>
+            <span className="meta-value">{pedido.idPedido}</span>
           </div>
 
           <div className="order-meta-item">
@@ -74,20 +77,22 @@ function ResumenPedido() {
         </div>
 
         <div className="order-items">
+          {pedido.items.map(item => (
+            <div className="order-item" key={item.idProducto}>
+              <div className="order-item-image"></div>
 
-          <div className="order-item">
-            <div className="order-item-image"></div>
-
-            <div className="order-item-info">
-              <div className="order-item-author">Jordan Avery</div>
-              <div className="order-item-name">Sinister Solitude Book</div>
-              <div className="order-item-price">
-                $10.00 <span className="old-price">$20.00</span>
+              <div className="order-item-info">
+                <div className="order-item-author">{item.autor}</div>
+                <div className="order-item-name">{item.nombreProducto}</div>
+                <div className="order-item-price">
+                  €{item.precioUnidad.toFixed(2)}
+                </div>
               </div>
-            </div>
 
-            <div className="order-item-total">$10.00</div>
-          </div>
+              <div className="order-item-total">€{item.totalPorItem.toFixed(2)}</div>
+            </div>
+          ))}
+
 
           {/* Repeat order-item for each product */}
         </div>
@@ -95,22 +100,22 @@ function ResumenPedido() {
         <div className="order-totals">
           <div className="order-total-row">
             <span>Subtotal</span>
-            <span>$20.00</span>
+            <span>€{pedido.subtotal.toFixed(2)}</span>
           </div>
 
           <div className="order-total-row">
             <span>Delivery</span>
-            <span>$2.00</span>
+            <span>€2.00</span>
           </div>
 
           <div className="order-total-row">
             <span>IVA</span>
-            <span>$5.00</span>
+            <span>€{pedido.iva.toFixed(2)}</span>
           </div>
 
           <div className="order-total-row total">
             <span>Total</span>
-            <span>$27.00</span>
+            <span>€{(pedido.total + 2.00).toFixed(2)}</span>
           </div>
         </div>
 

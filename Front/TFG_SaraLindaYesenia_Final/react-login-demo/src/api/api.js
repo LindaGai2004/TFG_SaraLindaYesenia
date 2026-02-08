@@ -6,7 +6,7 @@ export async function apiGet(path) {
   try {
     const res = await fetch(`${BASE_URL}${path}`, {
       method: 'GET',
-      credentials: 'include', // 🔹 importante
+      credentials: 'include', // importante
       headers: { 'Content-Type': 'application/json' },
     });
     if (!res.ok) {
