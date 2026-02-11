@@ -107,6 +107,14 @@ public class Libro extends Producto implements Serializable{
 	public void setNumeroPagina(Integer numeroPagina) {
 		this.numeroPagina = numeroPagina;
 	}
+	
+	public String getResumen() {
+	    return resumen;
+	}
+
+	public void setResumen(String resumen) {
+	    this.resumen = resumen;
+	}
 
 	public Genero getGenero() {
 		return genero;
@@ -127,7 +135,5 @@ public class Libro extends Producto implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
 }
 
