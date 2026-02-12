@@ -37,13 +37,11 @@ public class LibroRestController {
 		return ResponseEntity.ok(libro);
 	}
 	
-	/*
-	//buscar uno por id
 	@GetMapping("/{idProducto}")
 	public ResponseEntity<?> obtenerLibro(@PathVariable Integer idProducto) {
-		Libro libro = libroService.findOne(idProducto);
-		return ResponseEntity.ok(libro);
-	}*/
+	    Libro libro = libroService.findOne(idProducto);
+	    return ResponseEntity.ok(libro);
+	}
 	
 	@PutMapping("/modificarLibro/{idProducto}")
 	@PreAuthorize("hasRole('ADMON')")

@@ -1,5 +1,6 @@
 create database tfg_2026;
 use tfg_2026;
+
 create table perfiles( 
 	id_perfil int not null auto_increment primary key,
 	nombre varchar(250) not null
@@ -59,7 +60,6 @@ CREATE TABLE idioma(
 	id_idioma int auto_increment primary key not null,
 	nombre_idioma varchar(50) not null
 );
-
 
 create table libros(
     id_producto int not null primary key,
@@ -367,56 +367,102 @@ INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stoc
 INSERT INTO libros
 (id_producto, ISBN, editorial, fecha_publicacion, autor, numero_paginas, id_genero, id_idioma, resumen) VALUES
 (1,'9780000000011','Planeta','2001-05-12','Jane Austen',432,1,1,
-'Una historia que examina con delicadeza las tensiones sociales y emocionales de una época marcada por las apariencias y los prejuicios. A través de diálogos brillantes y personajes inolvidables, la novela revela cómo el orgullo y la primera impresión pueden distorsionar la verdad, mientras el amor y la madurez ofrecen una segunda oportunidad para comprender al otro.'),
+'Una historia que examina con delicadeza las tensiones sociales y emocionales de una época marcada por las apariencias y los prejuicios. A través de diálogos brillantes y personajes inolvidables, la novela revela cómo el orgullo y 
+la primera impresión pueden distorsionar la verdad, mientras el amor y la madurez ofrecen una segunda oportunidad para comprender al otro. Con una mirada irónica y profundamente humana, la autora retrata las expectativas sociales, 
+los conflictos familiares y la búsqueda de la felicidad en un mundo donde cada gesto tiene un significado oculto. La obra combina romance, crítica social y humor inteligente para mostrar que, incluso en los entornos más rígidos, 
+el corazón encuentra su propio camino.'),
 (2,'9780000000012','Alfaguara','1998-03-22','Harper Lee',384,2,2,
-'Un relato que combina inocencia y crudeza para mostrar cómo la justicia puede verse distorsionada por el miedo y la desigualdad. Narrada desde la mirada de una niña que intenta comprender el mundo adulto, la historia expone el racismo, la compasión y la valentía moral en un pueblo donde la verdad lucha por abrirse paso.'),
+'Un relato que combina inocencia y crudeza para mostrar cómo la justicia puede verse distorsionada por el miedo y la desigualdad. Narrada desde la mirada de una niña que intenta comprender el mundo adulto, la historia expone el 
+racismo, la compasión y la valentía moral en un pueblo donde la verdad lucha por abrirse paso. A medida que la protagonista observa los conflictos de su comunidad, descubre que la bondad puede surgir en los lugares más inesperados 
+y que la empatía es una fuerza capaz de desafiar los prejuicios más arraigados. La novela es un retrato conmovedor de la pérdida de la inocencia y del poder transformador de la integridad.'),
 (3,'9780000000013','Salamandra','2005-11-10','George Orwell',328,3,3,
-'Una visión inquietante de un futuro donde la libertad se diluye bajo un sistema que controla cada pensamiento y cada gesto. La novela retrata un régimen que manipula la información, reescribe la historia y vigila cada aspecto de la vida, mostrando cómo el miedo y la propaganda pueden moldear la realidad hasta borrar la identidad individual.'),
+'Una visión inquietante de un futuro donde la libertad se diluye bajo un sistema que controla cada pensamiento y cada gesto. La novela retrata un régimen que manipula la información, reescribe la historia y vigila cada aspecto de 
+la vida, mostrando cómo el miedo y la propaganda pueden moldear la realidad hasta borrar la identidad individual. A través de su protagonista, atrapado entre la obediencia y el deseo de rebelarse, la obra explora la fragilidad de 
+la verdad y la resistencia del espíritu humano. Es una advertencia poderosa sobre los peligros del totalitarismo y la importancia de preservar la libertad de pensamiento.'),
 (4,'9780000000014','Anagrama','1999-07-18','George Orwell',144,4,4,
-'Una fábula que revela cómo el poder puede corromper incluso las causas más nobles cuando la ambición supera a la ética. A través de animales que buscan construir una sociedad justa, la historia muestra cómo los ideales pueden ser manipulados y transformados en herramientas de opresión cuando unos pocos se apropian del liderazgo.'),
+'Una fábula que revela cómo el poder puede corromper incluso las causas más nobles cuando la ambición supera a la ética. A través de animales que buscan construir una sociedad justa, la historia muestra cómo los ideales pueden ser 
+manipulados y transformados en herramientas de opresión cuando unos pocos se apropian del liderazgo. La narración, tan sencilla como profunda, expone la fragilidad de los sistemas políticos y la facilidad con la que la esperanza 
+puede convertirse en tiranía. Es una reflexión mordaz sobre la naturaleza del poder y la traición de los principios revolucionarios.'),
 (5,'9780000000015','Minotauro','2003-02-14','Fiódor Dostoyevski',672,5,5,
-'Un viaje profundo a la mente humana donde la culpa, el miedo y la moralidad se enfrentan en un conflicto devastador. La novela explora las consecuencias psicológicas de un crimen, revelando cómo la conciencia, la redención y el sufrimiento se entrelazan en la búsqueda desesperada de sentido y perdón.'),
+'Un viaje profundo a la mente humana donde la culpa, el miedo y la moralidad se enfrentan en un conflicto devastador. La novela explora las consecuencias psicológicas de un crimen, revelando cómo la conciencia, la redención y el 
+sufrimiento se entrelazan en la búsqueda desesperada de sentido y perdón. A través de personajes atormentados y situaciones límite, la obra examina la lucha interna entre el bien y el mal, así como la posibilidad de encontrar luz 
+incluso en los rincones más oscuros del alma. Es un retrato magistral de la complejidad humana y de la necesidad de redención.'),
 (6,'9780000000016','Penguin Random House','2007-09-03','Fiódor Dostoyevski',824,6,1,
-'Una obra monumental que explora la fe, la duda y los lazos familiares en un mundo lleno de contradicciones. A través de personajes complejos y debates filosóficos intensos, la historia profundiza en la naturaleza del bien y del mal, mostrando cómo cada individuo lucha con sus propias sombras internas.'),
+'Una obra monumental que explora la fe, la duda y los lazos familiares en un mundo lleno de contradicciones. A través de personajes complejos y debates filosóficos intensos, la historia profundiza en la naturaleza del bien y del 
+mal, mostrando cómo cada individuo lucha con sus propias sombras internas. La trama, marcada por conflictos morales y pasiones desbordadas, invita a reflexionar sobre la responsabilidad, la libertad y el destino. Es una de las 
+obras más profundas de la literatura universal, capaz de cuestionar las certezas más arraigadas.'),
 (7,'9780000000017','Debolsillo','2010-04-27','León Tolstói',1225,7,2,
-'Una epopeya que entrelaza destinos personales con los grandes acontecimientos históricos que transforman naciones enteras. La novela combina batallas, intrigas políticas y dramas íntimos para mostrar cómo el amor, el honor y la ambición se ven afectados por el paso implacable de la historia.'),
+'Una epopeya que entrelaza destinos personales con los grandes acontecimientos históricos que transforman naciones enteras. La novela combina batallas, intrigas políticas y dramas íntimos para mostrar cómo el amor, el honor y la 
+ambición se ven afectados por el paso implacable de la historia. A través de un amplio elenco de personajes, la obra retrata la fragilidad humana frente al caos de la guerra y la búsqueda de sentido en tiempos de incertidumbre. 
+Es un retrato monumental de la vida, la muerte y la fuerza del espíritu humano.'),
 (8,'9780000000018','Plaza & Janés','2004-08-19','León Tolstói',864,8,3,
-'Una historia intensa donde la pasión y las normas sociales chocan, revelando las consecuencias de seguir los dictados del corazón. La protagonista lucha entre el deseo y el deber, enfrentándose a una sociedad que castiga cualquier desviación de sus estrictas expectativas.'),
+'Una historia intensa donde la pasión y las normas sociales chocan, revelando las consecuencias de seguir los dictados del corazón. La protagonista lucha entre el deseo y el deber, enfrentándose a una sociedad que castiga 
+cualquier desviación de sus estrictas expectativas. La novela explora la complejidad del amor, la maternidad, la infidelidad y la identidad personal, mostrando cómo las decisiones íntimas pueden convertirse en tormentas públicas. 
+Es un retrato profundo de la condición humana y de la búsqueda de autenticidad en un mundo lleno de juicios.'),
 (9,'9780000000019','Lumen','1997-12-05','Gustave Flaubert',392,9,4,
-'Un retrato íntimo de una mujer atrapada entre sus deseos y las limitaciones de una sociedad que no le permite soñar. La novela muestra cómo la búsqueda de emociones intensas puede llevar a decisiones que transforman la vida, mientras la realidad se impone con una fuerza implacable.'),
+'Un retrato íntimo de una mujer atrapada entre sus deseos y las limitaciones de una sociedad que no le permite soñar. La novela muestra cómo la búsqueda de emociones intensas puede llevar a decisiones que transforman la vida, 
+mientras la realidad se impone con una fuerza implacable. A través de una prosa elegante y minuciosa, la historia revela la tensión entre la fantasía y la rutina, y cómo la insatisfacción puede convertirse en una prisión 
+emocional. Es una obra que cuestiona las expectativas sociales y la fragilidad de los anhelos humanos.'),
 (10,'9780000000020','RBA','2002-06-30','Oscar Wilde',256,10,5,
-'Una reflexión sobre la belleza, la corrupción y el precio que se paga por ignorar las consecuencias de los propios actos. A través de un pacto simbólico, la historia muestra cómo la obsesión por la juventud eterna puede destruir el alma mientras el exterior permanece intacto.'),
+'Una reflexión sobre la belleza, la corrupción y el precio que se paga por ignorar las consecuencias de los propios actos. A través de un pacto simbólico, la historia muestra cómo la obsesión por la juventud eterna puede destruir 
+el alma mientras el exterior permanece intacto. La novela explora la dualidad entre apariencia y realidad, así como la influencia del hedonismo y la manipulación moral. Es una obra provocadora que invita a cuestionar la 
+superficialidad y la decadencia de una sociedad obsesionada con la imagen.'),
 (11,'9780000000021','Planeta','2008-03-11','Gabriel García Márquez',496,11,1,
-'Una saga familiar donde lo mágico y lo cotidiano se entrelazan para mostrar la fragilidad del tiempo y la memoria. Con un estilo poético y envolvente, la novela recorre generaciones marcadas por el amor, la soledad y los ciclos inevitables del destino.'),
+'Una saga familiar donde lo mágico y lo cotidiano se entrelazan para mostrar la fragilidad del tiempo y la memoria. Con un estilo poético y envolvente, la novela recorre generaciones marcadas por el amor, la soledad y los ciclos 
+inevitables del destino. A través de un universo lleno de símbolos y acontecimientos extraordinarios, la historia revela cómo los errores y las pasiones se repiten una y otra vez. Es una obra que captura la esencia de la vida 
+latinoamericana y la fuerza de la imaginación.'),
 (12,'9780000000022','Alfaguara','2006-10-09','Gabriel García Márquez',368,12,2,
-'Un relato que celebra la persistencia del amor incluso cuando los años transforman cuerpos, vidas y esperanzas. La historia sigue a dos amantes que, tras décadas de separación, descubren que los sentimientos pueden sobrevivir al paso del tiempo y renacer con una fuerza inesperada.'),
+'Un relato que celebra la persistencia del amor incluso cuando los años transforman cuerpos, vidas y esperanzas. La historia sigue a dos amantes que, tras décadas de separación, descubren que los sentimientos pueden sobrevivir 
+al paso del tiempo y renacer con una fuerza inesperada. La novela explora la paciencia, la obsesión y la ternura, mostrando cómo el amor adopta formas distintas a lo largo de la vida. Es una oda a la esperanza y a la capacidad 
+humana de reinventarse.'),
 (13,'9780000000023','Salamandra','2012-01-17','Isabel Allende',448,13,3,
-'Una historia que mezcla política, emociones y espiritualidad para retratar generaciones marcadas por la fuerza del destino. La novela combina realismo mágico y drama familiar para mostrar cómo los secretos, las pérdidas y las pasiones moldean la vida de quienes buscan su lugar en el mundo.'),
+'Una historia que mezcla política, emociones y espiritualidad para retratar generaciones marcadas por la fuerza del destino. La novela combina realismo mágico y drama familiar para mostrar cómo los secretos, las pérdidas y las 
+pasiones moldean la vida de quienes buscan su lugar en el mundo. A través de personajes intensos y atmósferas vibrantes, la obra revela la importancia de la memoria y la resiliencia. Es un viaje emocional que conecta lo íntimo 
+con lo histórico.'),
 (14,'9780000000024','Anagrama','2000-09-25','Julio Cortázar',600,14,4,
-'Una novela que rompe las reglas tradicionales y convierte la lectura en un juego lleno de caminos posibles. Con una estructura innovadora, invita al lector a explorar múltiples interpretaciones mientras los personajes se mueven entre lo real y lo imaginario.'),
+'Una novela que rompe las reglas tradicionales y convierte la lectura en un juego lleno de caminos posibles. Con una estructura innovadora, invita al lector a explorar múltiples interpretaciones mientras los personajes se mueven 
+entre lo real y lo imaginario. La obra desafía la lógica narrativa y propone una experiencia literaria única, donde cada elección abre nuevas perspectivas. Es un homenaje a la libertad creativa y a la experimentación literaria.'),
 (15,'9780000000025','Minotauro','1995-04-03','Juan Rulfo',124,15,5,
-'Un relato breve y poderoso donde las voces del pasado resuenan en un pueblo marcado por la ausencia y el misterio. La obra captura la esencia de la soledad y la desolación, mostrando cómo los recuerdos pueden convertirse en fantasmas que nunca abandonan a quienes los escuchan.'),
+'Un relato breve y poderoso donde las voces del pasado resuenan en un pueblo marcado por la ausencia y el misterio. La obra captura la esencia de la soledad y la desolación, mostrando cómo los recuerdos pueden convertirse en 
+fantasmas que nunca abandonan a quienes los escuchan. Con un estilo poético y evocador, la historia revela la profundidad emocional de un mundo suspendido entre la vida y la muerte. Es una obra que deja una huella imborrable.'),
 (16,'9780000000026','Penguin Random House','2011-07-14','Jorge Luis Borges',224,16,1,
-'Una colección de relatos que desafían la lógica y exploran mundos donde el tiempo, el lenguaje y la realidad se entrelazan. Cada historia invita a reflexionar sobre los laberintos de la mente humana y las infinitas posibilidades del pensamiento.'),
+'Una colección de relatos que desafían la lógica y exploran mundos donde el tiempo, el lenguaje y la realidad se entrelazan. Cada historia invita a reflexionar sobre los laberintos de la mente humana y las infinitas posibilidades 
+del pensamiento. Con su estilo preciso y filosófico, el autor construye universos que cuestionan la percepción y la identidad. Es una obra que celebra la imaginación y el poder del intelecto.'),
 (17,'9780000000027','Debolsillo','2009-02-28','Mario Vargas Llosa',480,17,2,
-'Una crítica social que revela la dureza de un entorno militar y la complejidad de las relaciones humanas. La novela muestra cómo la disciplina extrema, la violencia y la búsqueda de identidad pueden moldear a quienes crecen bajo estructuras rígidas.'),
+'Una crítica social que revela la dureza de un entorno militar y la complejidad de las relaciones humanas. La novela muestra cómo la disciplina extrema, la violencia y la búsqueda de identidad pueden moldear a quienes crecen 
+bajo estructuras rígidas. A través de conflictos internos y tensiones colectivas, la obra explora la fragilidad emocional y la necesidad de pertenencia. Es un retrato contundente de la adolescencia y del impacto de la autoridad.'),
 (18,'9780000000028','Plaza & Janés','1996-11-08','Ernesto Sabato',160,18,3,
-'Una mirada profunda a la mente de un hombre consumido por la obsesión y la incapacidad de conectar con el mundo. La historia explora la fragilidad emocional y la oscuridad interior que pueden surgir cuando la realidad se vuelve insoportable.'),
+'Una mirada profunda a la mente de un hombre consumido por la obsesión y la incapacidad de conectar con el mundo. La historia explora la fragilidad emocional y la oscuridad interior que pueden surgir cuando la realidad se vuelve 
+insoportable. Con una narrativa intensa y psicológica, la obra revela los abismos de la conciencia humana y la lucha por encontrar sentido en medio del caos. Es un viaje perturbador hacia los límites de la percepción.'),
 (19,'9780000000029','Lumen','2013-05-21','Laura Esquivel',256,19,4,
-'Una historia donde los sentimientos se expresan a través de sabores, gestos y tradiciones que marcan cada capítulo. La novela combina magia, pasión y costumbres familiares para mostrar cómo el amor puede manifestarse en los detalles más cotidianos.'),
+'Una historia donde los sentimientos se expresan a través de sabores, gestos y tradiciones que marcan cada capítulo. La novela combina magia, pasión y costumbres familiares para mostrar cómo el amor puede manifestarse en los 
+detalles más cotidianos. A través de una protagonista que vive entre el deber y el deseo, la obra revela la fuerza de las emociones reprimidas y la importancia de la libertad personal. Es un relato lleno de sensibilidad y 
+simbolismo.'),
 (20,'9780000000030','RBA','2001-01-29','Roberto Bolaño',672,20,5,
-'Un viaje literario que sigue a jóvenes poetas en su búsqueda de identidad, libertad y un lugar en el mundo. A través de encuentros, pérdidas y descubrimientos, la novela retrata la intensidad de una generación que vive entre la incertidumbre y el deseo de trascender.'),
+'Un viaje literario que sigue a jóvenes poetas en su búsqueda de identidad, libertad y un lugar en el mundo. A través de encuentros, pérdidas y descubrimientos, la novela retrata la intensidad de una generación que vive entre la 
+incertidumbre y el deseo de trascender. Con un estilo fragmentado y vibrante, la obra captura la energía de la juventud y la necesidad de encontrar una voz propia. Es una exploración apasionada de la creación artística y del 
+sentido de pertenencia.'),
 
 (21,'9780000000031','Planeta','2002-05-12','J.R.R. Tolkien',1216,21,1,
-'Una epopeya que sigue la lucha entre fuerzas antiguas mientras un grupo diverso emprende un viaje que definirá el destino de su mundo. A través de paisajes míticos, alianzas improbables y amenazas que resurgen desde las sombras, la historia explora el valor, la amistad y el sacrificio que exige enfrentarse al mal en su forma más pura.'),
+'Una epopeya que sigue la lucha entre fuerzas antiguas mientras un grupo diverso emprende un viaje que definirá el destino de su mundo. A través de paisajes míticos, alianzas improbables y amenazas que resurgen desde las sombras, 
+la historia explora el valor, la amistad y el sacrificio que exige enfrentarse al mal en su forma más pura. Con una narrativa rica en simbolismo y tradición, la obra muestra cómo incluso los seres más humildes pueden influir en 
+el curso de la historia cuando la oscuridad amenaza con consumirlo todo. Es un relato sobre esperanza, resistencia y la fuerza que nace de la unidad.'),
 (22,'9780000000032','Alfaguara','1999-03-22','J.R.R. Tolkien',310,22,2,
-'Una aventura que comienza en la tranquilidad de un hogar y se transforma en un viaje lleno de peligros, magia y descubrimientos. El protagonista, arrancado de su rutina, se ve obligado a confrontar criaturas desconocidas y desafíos que pondrán a prueba su ingenio, su coraje y su capacidad para aceptar un destino que nunca imaginó.'),
+'Una aventura que comienza en la tranquilidad de un hogar y se transforma en un viaje lleno de peligros, magia y descubrimientos. El protagonista, arrancado de su rutina, se ve obligado a confrontar criaturas desconocidas y 
+desafíos que pondrán a prueba su ingenio, su coraje y su capacidad para aceptar un destino que nunca imaginó. A medida que avanza, descubre que el mundo es más vasto y complejo de lo que creía, y que incluso los actos más 
+pequeños pueden tener consecuencias inmensas. Es una historia sobre crecimiento, valentía y la inesperada grandeza que puede surgir de lo cotidiano.'),
 (23,'9780000000033','Salamandra','2001-11-10','J.K. Rowling',320,23,3,
-'La historia de un niño que descubre un mundo oculto donde la magia convive con desafíos que pondrán a prueba su valentía. Entre amistades nuevas, misterios que se esconden en cada pasillo y secretos que rodean su propio origen, el protagonista aprende que el valor no consiste en no tener miedo, sino en enfrentarlo.'),
+'La historia de un niño que descubre un mundo oculto donde la magia convive con desafíos que pondrán a prueba su valentía. Entre amistades nuevas, misterios que se esconden en cada pasillo y secretos que rodean su propio origen, 
+el protagonista aprende que el valor no consiste en no tener miedo, sino en enfrentarlo. La novela combina humor, emoción y aventura para mostrar cómo la amistad, la lealtad y la curiosidad pueden iluminar incluso los momentos 
+más oscuros. Es el inicio de un viaje que transformará su vida para siempre.'),
 (24,'9780000000034','Anagrama','2003-07-18','J.K. Rowling',352,1,4,
-'Una nueva amenaza surge en Hogwarts, revelando secretos que conectan el pasado con los peligros del presente. Mientras el protagonista intenta comprender su papel en un conflicto que crece en las sombras, la historia profundiza en la lealtad, la identidad y el peso de las decisiones que pueden cambiar el rumbo del mundo mágico.'),
+'Una nueva amenaza surge en Hogwarts, revelando secretos que conectan el pasado con los peligros del presente. Mientras el protagonista intenta comprender su papel en un conflicto que crece en las sombras, la historia profundiza 
+en la lealtad, la identidad y el peso de las decisiones que pueden cambiar el rumbo del mundo mágico. Con giros inesperados, tensiones crecientes y revelaciones que desafían todo lo conocido, la novela muestra cómo el coraje y 
+la verdad pueden abrirse paso incluso cuando la oscuridad parece invencible.'),
 (25,'9780000000035','Minotauro','2005-02-14','George R.R. Martin',694,2,5,
-'Un relato donde la ambición y la traición moldean un mundo en el que cada decisión puede significar vida o muerte. Entre intrigas políticas, alianzas frágiles y personajes que luchan por sobrevivir en un entorno despiadado, la historia muestra cómo el poder puede convertirse en una carga tan peligrosa como irresistible.'),
+'Un relato donde la ambición y la traición moldean un mundo en el que cada decisión puede significar vida o muerte. Entre intrigas políticas, alianzas frágiles y personajes que luchan por sobrevivir en un entorno despiadado, la 
+historia muestra cómo el poder puede convertirse en una carga tan peligrosa como irresistible. Con una narrativa cruda y realista, la novela revela la complejidad de los deseos humanos y la fragilidad de la moral en tiempos de 
+conflicto. Es un retrato implacable de un mundo donde nadie está a salvo.'),
 (26,'9780000000036','Penguin Random House','1998-09-03','C.S. Lewis',768,3,1,
 'Una saga que combina fantasía, valores humanos y criaturas míticas para narrar un viaje lleno de significado. A través de reinos encantados, batallas simbólicas y encuentros con seres extraordinarios, la obra invita a reflexionar sobre la fe, la valentía y la importancia de creer en aquello que no siempre se puede ver.'),
 (27,'9780000000037','Debolsillo','2007-04-27','Robert Jordan',832,4,2,
