@@ -5,10 +5,7 @@ import "./ProductoDetalle.css";
 export default function ProductoDetalle() {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
-  const [cantidad, setCantidad] = useState(1);
-  const [relacionados, setRelacionados] = useState([]);
   const [expandido, setExpandido] = useState(false);
-  const scrollRef = useRef(null);
 
   useEffect(() => {
     fetch(`http://localhost:9001/productos/${id}`)
@@ -76,114 +73,127 @@ export default function ProductoDetalle() {
 
   if (!producto) return <p>Cargando...</p>;
 
-  const resumenCorto =
-    producto.resumen && producto.resumen.length > 250
-      ? producto.resumen.slice(0, 250) + "..."
-      : producto.resumen;
+  const resumenCorto = producto.resumen && producto.resumen.length > 250 ? producto.resumen.slice(0, 250) + "..." : producto.resumen;
 
   return (
     <div className="detalle-producto">
-
-      {/* COLUMNA IZQUIERDA */}
-      <div className="col-izquierda">
-        <img src={producto.imagen} className="detalle-imagen" alt={producto.nombre} />
-
-        <div className="detalle-miniaturas">
-          {producto.miniaturas.map((mini, index) => (
-            <img
-              key={index}
-              src={mini}
-              alt="miniatura"
-              onClick={() => setProducto({ ...producto, imagen: mini })}
-            />
-          ))}
+  
+      {/* ============================
+          PRIMERA FILA (más estrecha)
+      ============================ */}
+      <div className="fila-superior dos-columnas">
+  
+        {/* COLUMNA IZQUIERDA */}
+        <div className="col-izquierda">
+          <div className="imagen-principal">
+            <img src={producto.imagen} className="detalle-imagen" alt={producto.nombre} />
+          </div>
+  
+          <div className="detalle-miniaturas">
+            {producto.miniaturas.map((mini, index) => (
+              <img
+                key={index}
+                src={mini}
+                alt="miniatura"
+                onClick={() => setProducto({ ...producto, imagen: mini })}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* COLUMNA CENTRAL */}
-      <div className="col-central">
-        <h2>{producto.nombre}</h2>
-
-        {producto.autor && <p className="detalle-autor">{producto.autor}</p>}
-
-        <p className="detalle-descripcion">{producto.descripcion}</p>
-
-        {/* RESUMEN CON LEER MÁS / LEER MENOS */}
-        {producto.resumen && (
-          <div className="detalle-resumen-container">
-
-            <p className="detalle-resumen">
-              {expandido ? producto.resumen : resumenCorto}
-            </p>
-
-            {producto.resumen.length > 250 && (
-              <button
-                className="btn-leer-mas"
-                onClick={() => setExpandido(!expandido)}
-              >
-                {expandido ? "Leer menos" : "Leer más"}
+  
+        {/* COLUMNA DERECHA */}
+        <div className="col-derecha-editorial">
+  
+          {/* TÍTULO + AUTOR + PRECIO */}
+          <div className="editorial-header">
+            <h1 className="titulo-editorial">{producto.nombre}</h1>
+            {producto.autor && <p className="autor-editorial">{producto.autor}</p>}
+            <p className="precio-editorial">{producto.precio} €</p>
+          </div>
+  
+          {/* DESCRIPCIÓN */}
+          <p className="descripcion-editorial">{producto.descripcion}</p>
+  
+          {/* BOTONES EN UNA FILA (PRINCIPAL IZQUIERDA + ICONOS DERECHA) */}
+          <div className="editorial-botones-fila">
+  
+            {/* BOTÓN PRINCIPAL A LA IZQUIERDA */}
+            <button className="btn-cesta-editorial">Añadir a la cesta</button>
+  
+            {/* ICONOS A LA DERECHA */}
+            <div className="botones-iconos">
+              <button className="btn-icono">
+                <img src="/corazon.jpg" alt="Guardar" />
               </button>
-            )}
+  
+              <button className="btn-icono">
+                <img src="/compartir.jpg" alt="Compartir" />
+              </button>
+            </div>
+  
           </div>
-        )}
-
-        <hr />
-
-        <div className="detalle-extra">
-          {producto.tipo === "LIBRO" && (
-            <>
-              <p><strong>ISBN:</strong> {producto.isbn}</p>
-              <p><strong>Longitud de impresión:</strong> {producto.numeroPaginas}</p>
-              <p><strong>Idioma:</strong> {producto.idioma}</p>
-              <p><strong>Editorial:</strong> {producto.editorial}</p>
-              <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
-              <p><strong>Género:</strong> {producto.genero}</p>
-            </>
-          )}
-
-          {producto.tipo === "PAPELERIA" && (
-            <>
-              <h3>Detalles del producto</h3>
-              <p><strong>Marca:</strong> {producto.marca}</p>
-              <p><strong>Categoría:</strong> {producto.categoria}</p>
-            </>
-          )}
+  
         </div>
       </div>
-
-      {/* COLUMNA DERECHA */}
-      <div className="col-derecha">
-        <div className="card-compra">
-
-          {/* PRECIO */}
-          <p className="precio-card">{producto.precio} €</p>
-
-          {/* BOTÓN PRINCIPAL */}
-          <button className="btn-cesta btn-grande">Añadir a la cesta</button>
-
-          {/* INFORMACIÓN DE ENVÍO Y GARANTÍA */}
-          <div className="info-envio">
-            <p className="envio-item">Disponible en días</p>
-            <p className="envio-item">Envío gratis a partir de 20 €</p>
-            <p className="envio-item">Devolución gratuita 30 días</p>
-            <p className="envio-item">Pago 100% seguro</p>
+  
+      {/* ============================
+          SEGUNDA FILA
+      ============================ */}
+      <div className="fila-inferior">
+  
+        {/* COLUMNA IZQUIERDA */}
+        <div className="col-inferior-izq">
+  
+          <h2 className="titulo-seccion">Resumen</h2>
+  
+          <p className="texto-resumen">
+            {expandido ? producto.resumen : resumenCorto}
+          </p>
+  
+          {producto.resumen && producto.resumen.length > 250 && (
+            <button
+              className="btn-leer-mas"
+              onClick={() => setExpandido(!expandido)}
+            >
+              {expandido ? "Leer menos" : "Leer más"}
+            </button>
+          )}
+  
+          {/* AUTOR */}
+          <div className="autor-box">
+            <img
+              src=""
+              alt="Autor"
+              className="autor-foto"
+            />
+  
+            <div className="autor-info">
+              <p className="autor-nombre">{producto.autor || "Autor desconocido"}</p>
+              <a className="autor-link">Ver más información</a>
+            </div>
           </div>
-
-          {/* BOTONES SECUNDARIOS EN DOS COLUMNAS */}
-          <div className="botones-dos-columnas">
-            <button className="btn-favoritos">Guardar</button>
-            <button className="btn-carrito">Compartir</button>
-          </div>
-
-          <hr />
-
-          {/* MÉTODOS DE PAGO */}
-          <p className="envio-item">Métodos de pago: Visa · PayPal · Bizum</p>
-          <p className="envio-item">Recogida en tienda disponible</p>
-
+  
         </div>
+  
+        {/* COLUMNA DERECHA */}
+        <div className="col-inferior-der">
+  
+          <h2 className="titulo-seccion">Detalles</h2>
+  
+          <div className="detalles-grid">
+  
+            <p><strong>Editorial:</strong> {producto.editorial}</p>
+            <p><strong>Idioma:</strong> {producto.idioma}</p>
+            <p><strong>ISBN:</strong> {producto.isbn}</p>
+            <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
+            <p><strong>Género:</strong> {producto.genero}</p>
+  
+          </div>
+  
+        </div>
+  
       </div>
-
+  
     </div>
-  );
+  );  
 }
