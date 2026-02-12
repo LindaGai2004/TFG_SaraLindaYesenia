@@ -444,15 +444,25 @@ incertidumbre y el deseo de trascender. Con un estilo fragmentado y vibrante, la
 sentido de pertenencia.'),
 
 (21,'9780000000031','Planeta','2002-05-12','J.R.R. Tolkien',1216,21,1,
-'Una epopeya que sigue la lucha entre fuerzas antiguas mientras un grupo diverso emprende un viaje que definirá el destino de su mundo. A través de paisajes míticos, alianzas improbables y amenazas que resurgen desde las sombras, la historia explora el valor, la amistad y el sacrificio que exige enfrentarse al mal en su forma más pura.'),
+'Una epopeya que sigue la lucha entre fuerzas antiguas mientras un grupo diverso emprende un viaje que definirá el destino de su mundo. A través de paisajes míticos, alianzas improbables y amenazas que resurgen desde las sombras, 
+la historia explora el valor, la amistad y el sacrificio que exige enfrentarse al mal en su forma más pura. Con una narrativa rica en simbolismo y tradición, la obra muestra cómo incluso los seres más humildes pueden influir en 
+el curso de la historia cuando la oscuridad amenaza con consumirlo todo. Es un relato sobre esperanza, resistencia y la fuerza que nace de la unidad.'),
 (22,'9780000000032','Alfaguara','1999-03-22','J.R.R. Tolkien',310,22,2,
-'Una aventura que comienza en la tranquilidad de un hogar y se transforma en un viaje lleno de peligros, magia y descubrimientos. El protagonista, arrancado de su rutina, se ve obligado a confrontar criaturas desconocidas y desafíos que pondrán a prueba su ingenio, su coraje y su capacidad para aceptar un destino que nunca imaginó.'),
+'Una aventura que comienza en la tranquilidad de un hogar y se transforma en un viaje lleno de peligros, magia y descubrimientos. El protagonista, arrancado de su rutina, se ve obligado a confrontar criaturas desconocidas y 
+desafíos que pondrán a prueba su ingenio, su coraje y su capacidad para aceptar un destino que nunca imaginó. A medida que avanza, descubre que el mundo es más vasto y complejo de lo que creía, y que incluso los actos más 
+pequeños pueden tener consecuencias inmensas. Es una historia sobre crecimiento, valentía y la inesperada grandeza que puede surgir de lo cotidiano.'),
 (23,'9780000000033','Salamandra','2001-11-10','J.K. Rowling',320,23,3,
-'La historia de un niño que descubre un mundo oculto donde la magia convive con desafíos que pondrán a prueba su valentía. Entre amistades nuevas, misterios que se esconden en cada pasillo y secretos que rodean su propio origen, el protagonista aprende que el valor no consiste en no tener miedo, sino en enfrentarlo.'),
+'La historia de un niño que descubre un mundo oculto donde la magia convive con desafíos que pondrán a prueba su valentía. Entre amistades nuevas, misterios que se esconden en cada pasillo y secretos que rodean su propio origen, 
+el protagonista aprende que el valor no consiste en no tener miedo, sino en enfrentarlo. La novela combina humor, emoción y aventura para mostrar cómo la amistad, la lealtad y la curiosidad pueden iluminar incluso los momentos 
+más oscuros. Es el inicio de un viaje que transformará su vida para siempre.'),
 (24,'9780000000034','Anagrama','2003-07-18','J.K. Rowling',352,1,4,
-'Una nueva amenaza surge en Hogwarts, revelando secretos que conectan el pasado con los peligros del presente. Mientras el protagonista intenta comprender su papel en un conflicto que crece en las sombras, la historia profundiza en la lealtad, la identidad y el peso de las decisiones que pueden cambiar el rumbo del mundo mágico.'),
+'Una nueva amenaza surge en Hogwarts, revelando secretos que conectan el pasado con los peligros del presente. Mientras el protagonista intenta comprender su papel en un conflicto que crece en las sombras, la historia profundiza 
+en la lealtad, la identidad y el peso de las decisiones que pueden cambiar el rumbo del mundo mágico. Con giros inesperados, tensiones crecientes y revelaciones que desafían todo lo conocido, la novela muestra cómo el coraje y 
+la verdad pueden abrirse paso incluso cuando la oscuridad parece invencible.'),
 (25,'9780000000035','Minotauro','2005-02-14','George R.R. Martin',694,2,5,
-'Un relato donde la ambición y la traición moldean un mundo en el que cada decisión puede significar vida o muerte. Entre intrigas políticas, alianzas frágiles y personajes que luchan por sobrevivir en un entorno despiadado, la historia muestra cómo el poder puede convertirse en una carga tan peligrosa como irresistible.'),
+'Un relato donde la ambición y la traición moldean un mundo en el que cada decisión puede significar vida o muerte. Entre intrigas políticas, alianzas frágiles y personajes que luchan por sobrevivir en un entorno despiadado, la 
+historia muestra cómo el poder puede convertirse en una carga tan peligrosa como irresistible. Con una narrativa cruda y realista, la novela revela la complejidad de los deseos humanos y la fragilidad de la moral en tiempos de 
+conflicto. Es un retrato implacable de un mundo donde nadie está a salvo.'),
 (26,'9780000000036','Penguin Random House','1998-09-03','C.S. Lewis',768,3,1,
 'Una saga que combina fantasía, valores humanos y criaturas míticas para narrar un viaje lleno de significado. A través de reinos encantados, batallas simbólicas y encuentros con seres extraordinarios, la obra invita a reflexionar sobre la fe, la valentía y la importancia de creer en aquello que no siempre se puede ver.'),
 (27,'9780000000037','Debolsillo','2007-04-27','Robert Jordan',832,4,2,

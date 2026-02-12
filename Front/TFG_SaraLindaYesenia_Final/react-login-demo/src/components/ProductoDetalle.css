@@ -1,85 +1,175 @@
-/* CONTENEDOR PRINCIPAL */
-.detalle-producto {
+/* ================================
+   PRIMERA FILA
+================================ */
+.fila-superior {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+}
+
+.fila-superior.dos-columnas {
   display: grid;
-  grid-template-columns: 300px 2fr 370px;
+  grid-template-columns: 280px 1fr;
   gap: 40px;
-  width: 100%;
-  padding: 40px 250px;
 }
 
 
+/* ================================
+   SEGUNDA FILA
+================================ */
+.fila-inferior {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px 10px;
+}
 
-/* COLUMNA IZQUIERDA*/
+
+/* ================================
+   COLUMNA IZQUIERDA (IMAGEN)
+================================ */
 .col-izquierda {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
 }
 
 .detalle-imagen {
   width: 100%;
-  border-radius: 10px;
+  max-width: 220px;
+  border-radius: 12px;
 }
 
+/* MINIATURAS */
 .detalle-miniaturas {
   display: flex;
   gap: 10px;
-  justify-content: center;
+  margin-top: 15px;
 }
 
 .detalle-miniaturas img {
-  width: 45px;
-  height: 60px;
+  width: 55px;
+  height: 75px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: 0.2s;
 }
 
 .detalle-miniaturas img:hover {
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
 
-
-/* COLUMNA CENTRAL */
-.col-central {
+/* ================================
+   COLUMNA DERECHA (INFO)
+================================ */
+.col-derecha-editorial {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
-.col-central h2 {
-  font-size: 2rem;
+/* TÍTULO + AUTOR + PRECIO */
+.editorial-header {
+  text-align: left;
+}
+
+.titulo-editorial {
+  font-size: 2.7rem;
   margin: 0;
+  font-weight: 700;
 }
 
-.detalle-autor {
+.autor-editorial {
   font-size: 1.1rem;
-  color: #555;
+  margin-top: 5px;
 }
 
-.detalle-descripcion,
-.detalle-resumen {
-  font-size: 1rem;
-  line-height: 1.5;
+.precio-editorial {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* DESCRIPCIÓN */
+.descripcion-editorial {
+  font-size: 1.05rem;
+  line-height: 1.6;
   color: #333;
 }
 
-hr {
+
+/* ================================
+   BOTONES EN UNA FILA
+================================ */
+.editorial-botones-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0 25px 0;
+}
+
+/* Contenedor de iconos */
+.botones-iconos {
+  display: flex;
+  gap: 12px;
+}
+
+/* BOTÓN PRINCIPAL */
+.btn-cesta-editorial {
+  width: 160px;
+  padding: 10px;
+  background: black;
+  color: white;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-cesta-editorial:hover {
+  opacity: 0.5;
+}
+
+/* BOTONES DE ICONO */
+.btn-icono {
+  width: 48px;
+  height: 48px;
+  background: #eee;
   border: none;
-  border-top: 1px solid #ccc;
-  margin: 20px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.btn-icono:hover {
+  background: #ddd;
+}
+
+.btn-icono img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+
+/* ================================
+  RESUMEN
+================================ */
+.editorial-resumen p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #444;
 }
 
 .btn-leer-mas {
   background: none;
   border: none;
-  color: #0077cc;
+  color: #184763;
   font-weight: bold;
   cursor: pointer;
-  padding: 0;
-  margin-top: 5px;
+  margin-top: 8px;
 }
 
 .btn-leer-mas:hover {
@@ -87,86 +177,104 @@ hr {
 }
 
 
-
-/* COLUMNA DERECHA*/
-.col-derecha {
-  display: flex;
-  justify-content: center;
-}
-
-.card-compra {
-  background: #f2f2f2;
-  padding: 20px;
-  border-radius: 12px;
-  width: 100%;
-  text-align: center;
-}
-
-/* Precio */
-.precio-card {
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
-/* Botón principal (comprar)*/
-.btn-grande {
-  width: 100%;
-  padding: 14px;
-  margin: 15px 0;
-  font-size: 1.1rem;
-  background: black;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.btn-grande:hover {
-  opacity: 0.9;
-}
-
-/* Envío/garantía */
-.info-envio {
-  text-align: left;
-  margin: 15px 0 20px 0;
-  line-height: 1.5;
-}
-
-.envio-item {
-  font-size: 0.95rem;
+/* ================================
+   FICHA TÉCNICA
+================================ */
+.ficha-editorial p {
+  margin: 6px 0;
+  font-size: 1rem;
   color: #333;
+}
+
+
+/* ================================
+   INFO DE ENVÍO
+================================ */
+.info-envio-editorial p {
+  font-size: 0.9rem;
+  color: #555;
   margin: 4px 0;
 }
 
-/* Botones secundarios */
-.botones-dos-columnas {
+/* ================================
+   SEGUNDA FILA
+================================ */
+.fila-inferior {
+  max-width: 1100px;
+  margin: 40px auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 50px;
+  padding: 20px 10px;
 }
 
-.botones-dos-columnas button {
-  padding: 12px;
-  font-size: 0.95rem;
-  border-radius: 6px;
+/* TÍTULOS DE SECCIÓN */
+.titulo-seccion {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* ================================
+  COLUMNA IZQUIERDA
+================================ */
+.col-inferior-izq {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.texto-resumen {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+/* AUTOR */
+.autor-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.autor-foto {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.autor-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.autor-nombre {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.autor-link {
+  font-size: 0.9rem;
+  color: #184763;
   cursor: pointer;
-  transition: 0.2s ease;
 }
 
-/* Estilos individuales */
-.btn-carrito {
-  background: #ddd;
-  border: none;
+.autor-link:hover {
+  text-decoration: underline;
 }
 
-.btn-favoritos {
-  background: white;
-  border: 1px solid #aaa;
+/* ================================
+   COLUMNA DERECHA (DETALLES)
+================================ */
+.col-inferior-der {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.btn-carrito:hover,
-.btn-favoritos:hover {
-  opacity: 0.9;
+.detalles-grid p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #333;
 }
