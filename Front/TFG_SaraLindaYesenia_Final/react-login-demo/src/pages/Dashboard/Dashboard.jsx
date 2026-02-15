@@ -7,14 +7,14 @@ export default function Dashboard({
   books, 
   stationery, 
   clients , 
-  orders, 
-  monthlyData 
+  pedidos, 
+  mensual 
 }) {
   const [popup, setPopup] = useState(null);
 
-  // 计算总收入
-  const totalGanancia = monthlyData.length > 0 
-    ? monthlyData[monthlyData.length - 1] 
+  // 计算总收入 ??
+  const totalGanancia = mensual.length > 0 
+    ? mensual[mensual.length - 1] 
     : { libros: 0, stationery: 0 };
   const total = totalGanancia.libros + totalGanancia.stationery;
 
@@ -95,7 +95,7 @@ export default function Dashboard({
               <ArrowUpRight size={13} color="#f59e0b" />
             </div>
           </div>
-          <div className="stat-card-value">{orders?.length}</div>
+          <div className="stat-card-value">{pedidos?.length}</div>
           <div className="stat-card-footer">
             <div className="stat-card-trend-icon">
               <ArrowUpRight size={9} color="#2d6a4f" />
@@ -126,10 +126,10 @@ export default function Dashboard({
           </div>
         </div>
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={monthlyData}>
+          <LineChart data={mensual}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
             <XAxis 
-              dataKey="month" 
+              dataKey="mes" 
               tick={{ fontSize: 11, fill: '#94a3b8' }} 
               axisLine={false} 
               tickLine={false} 
@@ -238,7 +238,7 @@ export default function Dashboard({
               </thead>
               <tbody>
                 {clients.map(c => {
-                  const pedCnt = orders.filter(o => o.id_cliente === c.id).length;
+                  const pedCnt = pedidos.filter(o => o.id_cliente === c.id).length;
                   return (
                     <tr key={c.id}>
                       <td>
@@ -265,31 +265,35 @@ export default function Dashboard({
         </Modal>
       );
     }
-
     // 产品弹窗
     if (type === 'products-popup') {
+      const allProducts = [
+      ...books.map(b => ({ ...b, tipoProducto: 'Libro' })),
+      ...stationery.map(s => ({ ...s, tipoProducto: 'Papeleria' }))
+      ];
       return (
-        <Modal 
-          open 
-          width="max-w-md" 
-          onClose={() => setPopup(null)} 
-          title="📦 Productos"
-        >
-          <div className="flex gap-3 mt-2">
-            <div className="flex-1 rounded-xl p-4 text-center bg-green-light">
-              <p className="text-3xl font-bold text-success">{books?.length}</p>
-              <p className="text-xs mt-1 text-success">📚 Libros</p>
-              <p className="text-xs mt-1 text-success">
-                Stock: {books.filter(b => b.stock)?.length}
-              </p>
-            </div>
-            <div className="flex-1 rounded-xl p-4 text-center bg-blue-light">
-              <p className="text-3xl font-bold text-blue">{stationery?.length}</p>
-              <p className="text-xs mt-1 text-blue">📎 Papelerias</p>
-              <p className="text-xs mt-1 text-blue">
-                Stock: {stationery.filter(s => s.estado === 'DISPONIBLE').length}
-              </p>
-            </div>
+        <Modal open width="max-w-4xl" onClose={() => setPopup(null)} title="📦 Productos">
+          <div className="table-wrapper">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allProducts.map(p => (
+                  <tr key={p.id}>
+                    <td>{p.nombreProducto}</td>
+                    <td>{p.stock}</td>
+                    <td>{p.estadoProducto}</td>
+                    <td>{p.tipoProducto}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </Modal>
       );
@@ -303,8 +307,8 @@ export default function Dashboard({
         'Completado': { bg: '#d1fae5', color: '#065f46' },
         'Cancelado': { bg: '#fee2e2', color: '#991b1b' }
       };
-      const counts = orders.reduce((a, o) => { 
-        a[o.estado] = (a[o.estado] || 0) + 1; 
+      const counts = pedidos.reduce((a, o) => { 
+        a[o.estadoPedido] = (a[o.estadoPedido] || 0) + 1; 
         return a; 
       }, {});
       
@@ -316,7 +320,7 @@ export default function Dashboard({
           title="🛒 Pedidos"
         >
           <div className="text-3xl font-bold mb-3 text-green">
-            {orders.length} Pedidos
+            {pedidos?.length} Pedidos
           </div>
           {Object.entries(counts).map(([estado, count]) => (
             <div 
@@ -339,9 +343,9 @@ export default function Dashboard({
           >
             <span className="text-xs font-semibold text-secondary">Total</span>
             <span className="text-sm font-bold text-green">
-              ${orders
-                .filter(o => o.estado !== 'Cancelado')
-                .reduce((s, o) => s + o.precio_total, 0)
+              ${pedidos
+                .filter(o => o.estadoPedido !== 'Cancelado')
+                .reduce((s, o) => s + o.total, 0)
                 .toFixed(2)}
             </span>
           </div>

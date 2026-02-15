@@ -34,8 +34,8 @@ export default function Productos({
   const filteredBooks = useMemo(() => books.filter(b => {
     if (prodSearch && !`${b.nombre} ${b.autor} ${b.isbn} ${b.editorial}`.toLowerCase().includes(prodSearch.toLowerCase())) return false;
     if (prodEstado !== 'Todos' && b.estado !== prodEstado) return false;
-    if (bookIdioma !== 'Todos' && b.idioma !== bookIdioma) return false;
-    if (bookGenero !== 'Todos' && b.genero !== bookGenero) return false;
+    if (bookIdioma !== 'Todos' && b.idioma?.nombreIdioma !== bookIdioma) return false;
+    if (bookGenero !== 'Todos' && b.genero?.nombreGenero !== bookGenero) return false;
     if (bookPrecio === 'Bajo' && b.precio > 15) return false;
     if (bookPrecio === 'Medio' && (b.precio <= 15 || b.precio > 25)) return false;
     if (bookPrecio === 'Alto' && b.precio <= 25) return false;
@@ -123,10 +123,20 @@ export default function Productos({
             <option value="Inglés">Ingles</option>
           </select>
           <select value={bookGenero} onChange={e => setBookGenero(e.target.value)} className="input-field filter-select">
-            <option value="Todos">Genero: TOdos</option>
-            {[...new Set(books.map(b => b.genero))].map(g => (
-              <option key={g} value={g}>{g}</option>
-            ))}
+          <option value="Todos">Genero: Todos</option>
+
+          {/**SIN REPETIR */}
+            {books
+              .map(b => b.genero)
+              .filter(Boolean)
+              .reduce((acc, curr) => {
+                if (!acc.find(g => g.idGenero === curr.idGenero)) acc.push(curr);
+                return acc;
+              }, [])
+              .map(g => (
+                <option key={g.idGenero} value={g.nombreGenero}>{g.nombreGenero}</option>
+              ))}
+
           </select>
           <select value={bookPrecio} onChange={e => setBookPrecio(e.target.value)} className="input-field filter-select">
             <option value="Todos">Precios: todos</option>
@@ -139,15 +149,29 @@ export default function Productos({
         {prodCategory === 'Papeleria' && <>
           <select value={papMarca} onChange={e => setPapMarca(e.target.value)} className="input-field filter-select">
             <option value="Todos">Marcas: Todos</option>
-            {[...new Set(stationery.map(s => s.marca?.nombreMarca))].map(m => (
-              <option key={m + index} value={m}>{m}</option>
-            ))}
+            {stationery
+              .map(s => s.marca)
+              .filter(Boolean)
+              .reduce((acc, curr) => {
+                if (!acc.find(c => c.idMarca === curr.idMarca)) acc.push(curr);
+                return acc;
+              }, [])
+              .map(s => (
+                <option key={s.idMarca} value={s.nombreMarca}>{s.nombreMarca}</option>
+              ))}
           </select>
           <select value={papCategoria} onChange={e => setPapCategoria(e.target.value)} className="input-field filter-select">
             <option value="Todos">Categorias: todos</option>
-            {[...new Set(stationery.map(s => s.categoria?.nombreCategoria))].map(c => (
-              <option key={c + index} value={c}>{c}</option>
-            ))}
+            {stationery
+              .map(s => s.categoria)
+              .filter(Boolean)
+              .reduce((acc, curr) => {
+                if (!acc.find(c => c.idCategoria === curr.idCategoria)) acc.push(curr);
+                return acc;
+              }, [])
+              .map(s => (
+                <option key={s.idCategoria} value={s.nombreCategoria}>{s.nombreCategoria}</option>
+              ))}
           </select>
           <select value={papPrecio} onChange={e => setPapPrecio(e.target.value)} className="input-field filter-select">
             <option value="Todos">Precios: Todos</option>
@@ -285,9 +309,9 @@ export default function Productos({
           {[
             ['ISBN', data.isbn],
             ['Editorial', data.editorial],
-            ['Lenguaje', data.nombreIdioma],
-            ['Genero', data.genero],
-            ['Precio', `$${data.precio.toFixed(2)}`],
+            ['Idioma', data.idioma?.nombreIdioma],
+            ['Genero', data.genero?.nombreGenero],
+            ['Precio', `$${(data.precio ?? 0).toFixed(2)}`],
             ['Estado', data.estadoProducto],
           ].map(([k, v]) => (
             <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderTop: '1px solid #f1f5f9' }}>
@@ -373,7 +397,7 @@ function AddProductModal({ onClose, onAddBook, onAddStationery }) {
 function ProductForm({ type, initial, onSave }) {
   const isBook = type === 'book';
   const [form, setForm] = useState(initial || (isBook
-    ? { nombreProducto: '', autor: '', isbn: '', editorial: '', precio: '', idioma: '', genero: '', estadoProducto: '' }
+    ? { nombreProducto: '', autor: '', isbn: '', editorial: '', precio: '', nombreIdioma: '', nombreGenero: '', estadoProducto: '' }
     : { nombreProducto: '', nombreMarca: '', categoria: '', precio: '', estadoProducto: '' }
   ));
   const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
@@ -407,20 +431,28 @@ function ProductForm({ type, initial, onSave }) {
             </div>
             <div className="form-group">
               <label className="form-label">Idioma</label>
-              <select value={form.idioma?.nombreIdioma} onChange={e => set('idioma', e.target.value)} className="input-field">
-                <option value="Español">Español</option>
-                <option value="Inglés">Ingles</option>
+              <select  value={form.idioma ?.nombreIdioma?? ''}  onChange={e =>  
+              {const selected = books.map(b => b.idioma).find(x => x.idIdioma === parseInt(e.target.value));
+                set('idioma', selected);}} className="input-field">
+                  <option value="">Todos</option>
+                {[...new Set(books.map(b => b.idioma))].map(i => (
+                  <option key={i.idIdioma} value={i.idIdioma}>{i.nombreIdioma}</option>
+                ))}
               </select>
             </div>
           </div>
           <div className="form-row">
             <div className="form-group">
               <label className="form-label">Genero</label>
-              <select value={form.genero?.nombreGenro} onChange={e => set('genero', e.target.value)} className="input-field">
-                {['Ficción', 'Distopía', 'Histórica', 'Fantasía', 'Sci-Fi'].map(g => (
-                  <option key={g} value={g}>{g}</option>
-                ))}
-              </select>
+              <select value={form.genero ?.idGenero?? ''} onChange={e => {
+                const selected = books.map(b => b.genero).find(g => g.idGenero === parseInt(e.target.value));
+                set('genero', selected);
+              }} className="input-field" >
+              <option value="">Todos</option>
+              {[...new Set(books.map(b => b.genero))].map(g => (
+                <option key={g.idGenero} value={g.idGenero}>{g.nombreGenero}</option>   
+              ))}
+            </select>
             </div>
             <div className="form-group">
               <label className="form-label">Estado</label>
@@ -439,7 +471,7 @@ function ProductForm({ type, initial, onSave }) {
           </div>
           <div className="form-group">
             <label className="form-label">Marca</label>
-            <input value={form.marca?.nombreMarca} onChange={e => set('marca', e.target.value)} className="input-field" />
+            <input value={form.marca?.nombreMarca} onChange={e => set('nombreMarca', e.target.value)} className="input-field" />
           </div>
           <div className="form-row">
             <div className="form-group">
