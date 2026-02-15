@@ -2,6 +2,7 @@ package seguridad.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -57,13 +58,18 @@ public class Usuario implements UserDetails, Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_perfil")
 	private Perfil perfil;
-
 	
+	@ManyToMany
+	@JoinTable(
+	    name = "favoritos",
+	    joinColumns = @JoinColumn(name = "id_usuario"),
+	    inverseJoinColumns = @JoinColumn(name = "id_producto")
+	)
+	private List<Producto> favoritos = new ArrayList<>();
 	
 	public Integer getIdUsuario() {
 		return idUsuario;
 	}
-
 
 
 	public void setIdUsuario(Integer idUsuario) {
@@ -76,11 +82,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 
 
 	public String getPassword() {
@@ -88,11 +92,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 
 
 	public String getNombre() {
@@ -100,11 +102,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 
 
 	public String getApellidos() {
@@ -112,11 +112,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
-
 
 
 	public int getEnabled() {
@@ -124,17 +122,14 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
 	}
 
 
-
 	public LocalDate getFechaRegistro() {
 		return fechaRegistro;
 	}
-
 
 
 	public void setFechaRegistro(LocalDate fechaRegistro) {
@@ -154,11 +149,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public String getDireccion() {
 		return direccion;
 	}
-
 
 
 	public void setDireccion(String direccion) {
@@ -172,11 +165,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 
 	public Perfil getPerfil() {
@@ -184,11 +175,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
-
 
 
 	@Override
@@ -196,26 +185,13 @@ public class Usuario implements UserDetails, Serializable{
 		// Spring espera "ROLE_ADMIN", "ROLE_USER", etc.
         return List.of(new SimpleGrantedAuthority(perfil.getNombre()));
 	}
-	
-	@Override
-	public boolean isAccountNonExpired() {
-	    return true;
-	}
 
-	@Override
-	public boolean isAccountNonLocked() {
-	    return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-	    return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-	    return this.enabled == 1;
+	public List<Producto> getFavoritos() {
+		return favoritos;
 	}
 	
-
+	public void setFavoritos(List<Producto> favoritos) {
+	    this.favoritos = favoritos;
+	}
+	
 }
