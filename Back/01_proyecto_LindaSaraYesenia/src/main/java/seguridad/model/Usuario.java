@@ -2,6 +2,7 @@ package seguridad.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -57,13 +58,18 @@ public class Usuario implements UserDetails, Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_perfil")
 	private Perfil perfil;
-
 	
+	@ManyToMany
+	@JoinTable(
+	    name = "favoritos",
+	    joinColumns = @JoinColumn(name = "id_usuario"),
+	    inverseJoinColumns = @JoinColumn(name = "id_producto")
+	)
+	private List<Producto> favoritos = new ArrayList<>();
 	
 	public Integer getIdUsuario() {
 		return idUsuario;
 	}
-
 
 
 	public void setIdUsuario(Integer idUsuario) {
@@ -71,11 +77,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public String getUsername() {
 		return username;
 	}
-
 
 
 	public void setUsername(String username) {
@@ -83,11 +87,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public String getPassword() {
 		return password;
 	}
-
 
 
 	public void setPassword(String password) {
@@ -95,11 +97,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public String getNombre() {
 		return nombre;
 	}
-
 
 
 	public void setNombre(String nombre) {
@@ -107,11 +107,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public String getApellidos() {
 		return apellidos;
 	}
-
 
 
 	public void setApellidos(String apellidos) {
@@ -119,11 +117,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public int getEnabled() {
 		return enabled;
 	}
-
 
 
 	public void setEnabled(int enabled) {
@@ -131,11 +127,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public LocalDate getFechaRegistro() {
 		return fechaRegistro;
 	}
-
 
 
 	public void setFechaRegistro(LocalDate fechaRegistro) {
@@ -155,11 +149,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public String getDireccion() {
 		return direccion;
 	}
-
 
 
 	public void setDireccion(String direccion) {
@@ -173,11 +165,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 
 	public Perfil getPerfil() {
@@ -185,11 +175,9 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
-
 
 
 	@Override
@@ -197,8 +185,11 @@ public class Usuario implements UserDetails, Serializable{
 		// Spring espera "ROLE_ADMIN", "ROLE_USER", etc.
         return List.of(new SimpleGrantedAuthority(perfil.getNombre()));
 	}
-	
-	
-	
 
+
+	public List<Producto> getFavoritos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
