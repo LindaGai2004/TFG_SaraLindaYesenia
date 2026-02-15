@@ -1,7 +1,17 @@
 import "./ProductoLista.css";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function ProductoLista({ productos }) {
+
+  const [favoritos, setFavoritos] = useState({});
+
+  const toggleFavorito = (id) => {
+    setFavoritos((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   if (!productos || productos.length === 0) {
     return <p className="sin-resultados">No hay productos que coincidan con la búsqueda.</p>;
@@ -44,7 +54,15 @@ export default function ProductoLista({ productos }) {
 
           {/* Icono de favorito */}
           <Link to="/favoritos" className="favorito-btn">
-            <img src="/corazon.jpg" alt="Favorito" className="favorito-icon" />
+            <img
+              src={favoritos[p.idProducto] ? "/corazon-lleno.png" : "/corazon.jpg"}
+              alt="Favorito"
+              className="favorito-icon"
+              onClick={(e) => {
+                e.preventDefault(); // evita que te lleve a /favoritos
+                toggleFavorito(p.idProducto);
+              }}
+            />
           </Link>
 
           {/* Botón Añadir al carrito */}
