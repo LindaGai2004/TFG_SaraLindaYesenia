@@ -51,7 +51,7 @@ export default function Sidebar({ currentPage, onNavigate, onLogout }) {
               const Icon = item.icon;
               const isActive = currentPage === item.id;
               
-              if (item.onlyClient && user?.rol !== "CLIENTE") {
+              if (item.onlyClient && Users?.rol !== "CLIENTE") {
                 return null;
               }
               

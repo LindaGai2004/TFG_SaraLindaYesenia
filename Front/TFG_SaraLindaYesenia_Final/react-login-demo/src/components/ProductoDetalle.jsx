@@ -96,7 +96,9 @@ export default function ProductoDetalle() {
 
     const fetchFavorito = async () => {
       try {
-        const res = await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos`);
+        const res = await fetch(`http://localhost:9001/usuarios/favoritos`, {
+  credentials: "include"
+});
         const data = await res.json();
 
         const encontrado = data.some(f => f.idProducto === producto.id);
@@ -114,15 +116,17 @@ export default function ProductoDetalle() {
   const toggleFavorito = async () => {
     try {
       if (esFavorito) {
-        await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${producto.id}`, {
-          method: "DELETE"
+        await fetch(`http://localhost:9001/usuarios/favoritos/${producto.id}`, {
+          method: "DELETE",
+          credentials: "include"
         });
 
         setMensaje("Eliminado de favoritos");
 
       } else {
-        await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${producto.id}`, {
-          method: "POST"
+        await fetch(`http://localhost:9001/usuarios/favoritos/${producto.id}`, {
+          method: "POST",
+          credentials: "include"
         });
 
         setMensaje("Añadido a favoritos");

@@ -160,7 +160,7 @@ export default function Dashboard({
             />
             <Line 
               type="monotone" 
-              dataKey="stationery" 
+              dataKey="papeleria" 
               stroke="#c6a96c" 
               strokeWidth={2.5} 
               dot={{ r: 3, fill: '#c6a96c' }} 

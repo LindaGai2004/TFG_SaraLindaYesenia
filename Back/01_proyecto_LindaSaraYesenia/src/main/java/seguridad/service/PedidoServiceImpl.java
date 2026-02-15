@@ -135,23 +135,24 @@ public class PedidoServiceImpl implements PedidoService {
         List<Pedido> pedidos = prepo.findAll();
         Map<Integer, IngresoMensualDto> map = new HashMap<>();
        
-        for (Pedido pedido : pedidos) {
-            int mes = pedido.getFechaVenta().getMonthValue(); // 1-12
+        for (Pedido p : pedidos) {
 
-            IngresoMensualDto dto = map.getOrDefault(mes, new IngresoMensualDto(mes, 0, 0));
-            
-            List<DetallePedido> detalles = dprepo.findByPedido(pedido);
-            
-            for (DetallePedido detalle : detalles) {
-                if (detalle.getProducto() instanceof Libro) {
-                    dto.addLibros(detalle.getPrecioUnidad());
-                } else if (detalle.getProducto() instanceof Papeleria) {
-                    dto.addPapeleria(detalle.getPrecioUnidad());
+            if (p.getFechaVenta() != null) {
+            	int mes = p.getFechaVenta().getMonthValue();
+                IngresoMensualDto dto = map.getOrDefault(mes, new IngresoMensualDto(mes, 0, 0));
+                
+                List<DetallePedido> detalles = dprepo.findByPedido(p);
+                
+                for (DetallePedido detalle : detalles) {
+                    if (detalle.getProducto() instanceof Libro) {
+                        dto.addLibros(detalle.getPrecioUnidad());
+                    } else if (detalle.getProducto() instanceof Papeleria) {
+                        dto.addPapeleria(detalle.getPrecioUnidad());
+                    }
                 }
-            }
 
-            map.put(mes, dto);
-        }
+                map.put(mes, dto);
+            }}
 
         return map.values().stream()
                   .sorted(Comparator.comparingInt(IngresoMensualDto::getMes))
