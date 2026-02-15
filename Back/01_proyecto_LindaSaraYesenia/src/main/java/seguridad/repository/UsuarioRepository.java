@@ -11,7 +11,8 @@ import seguridad.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 	
 	Optional<Usuario> findByEmail(String email);
-	Usuario findByEmailAndPassword(String email, String password);
+	//Ya no se compara contraseñas manualmente
+//	Usuario findByEmailAndPassword(String email, String password);
 	List<Usuario> findByPerfil_IdPerfil(int  idPerfil);
 	
 	boolean existsByEmail(String email);

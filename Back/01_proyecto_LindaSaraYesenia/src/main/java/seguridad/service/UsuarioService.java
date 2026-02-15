@@ -2,10 +2,12 @@ package seguridad.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import seguridad.model.Rol;
 import seguridad.model.Usuario;
 
-public interface UsuarioService {
+public interface UsuarioService extends UserDetailsService{
 	
 	Usuario findById(Integer idUsuario);
 	Usuario findByEmail(String email);
@@ -22,7 +24,7 @@ public interface UsuarioService {
 	
 	Usuario updateUsuario(Usuario usuario);
 	
-	String normalizePassword(String raw);
+//	String normalizePassword(String raw);
 	
 	 List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
 
