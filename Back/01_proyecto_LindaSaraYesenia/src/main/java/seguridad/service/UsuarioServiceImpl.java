@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.security.core.userdetails.UserDetails;
 	import org.springframework.security.core.userdetails.UserDetailsService;
 	import org.springframework.security.core.userdetails.UsernameNotFoundException;
-	import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 	
 	import seguridad.model.Perfil;
 	import seguridad.model.Usuario;
@@ -24,7 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 	
 	@Autowired
 	    private PerfilRepository perfilRepository;
-	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	
 	@Override
@@ -77,12 +79,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 	       throw new RuntimeException("Password requerida");
 	   }
 	   //el service se asegura de añadir {noop} si hace falta
-	   String password = usuario.getPassword();
-	   if (!password.startsWith("{noop}")) {
-	       usuario.setPassword("{noop}" + password);
-	   } else {
-	       usuario.setPassword(password);
-	   }
+//	   String password = usuario.getPassword();
+//	   if (!password.startsWith("{noop}")) {
+//	       usuario.setPassword("{noop}" + password);
+//	   } else {
+//	       usuario.setPassword(password);
+//	   }
+	   usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 	
 	   usuario.setFechaRegistro(LocalDate.now());
 	
@@ -114,13 +117,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 		       throw new RuntimeException("Password requerida");
 		   }
 		   //el service se asegura de añadir {noop} si hace falta
-		   String password = usuario.getPassword();
-		   if (!password.startsWith("{noop}")) {
-		       usuario.setPassword("{noop}" + password);
-		   } else {
-		       usuario.setPassword(password);
-		   }
-		
+//		   String password = usuario.getPassword();
+//		   if (!password.startsWith("{noop}")) {
+//		       usuario.setPassword("{noop}" + password);
+//		   } else {
+//		       usuario.setPassword(password);
+//		   }
+		   usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
 		   usuario.setFechaRegistro(LocalDate.now());
 		
 		   if (usuario.getDireccion() == null)
@@ -165,18 +169,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 	//MODIFICAR
 	@Override
 	public Usuario updateUsuario(Usuario usuario) {
-
-	   return usuarioRepository.save(usuario);
-	}
-	
-	public String normalizePassword(String raw) {
-		  if (raw == null)
-		   
-		   return null;
-		String cleaned = raw.replace("{noop}", "").trim();
-		   
-		   return "{noop}" + cleaned;
+		//return usuarioRepository.save(usuario);
+		Usuario existe = usuarioRepository.findById(usuario.getIdUsuario())
+				.orElseThrow(()-> new RuntimeException("Usuario no existe"));
+		existe.setNombre(usuario.getNombre());
+		existe.setApellidos(usuario.getApellidos());
+		existe.setDireccion(usuario.getDireccion());
+		existe.setEmail(usuario.getEmail());
+		//La contraseña se recodifica si se modifica por el usuario
+		if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
+			existe.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		}
+		return usuarioRepository.save(existe);
+	}
+	//ahora con contraseñas encriptadas esto ya no se necesita
+//	public String normalizePassword(String raw) {
+//		  if (raw == null)
+//		   
+//		   return null;
+//		String cleaned = raw.replace("{noop}", "").trim();
+//		   
+//		   return "{noop}" + cleaned;
+//		}
 
 	//BUSCAR POR NOMBRE, USERMANE, ETC
 	@Override
@@ -195,8 +209,4 @@ import org.springframework.beans.factory.annotation.Autowired;
 	    return new ArrayList<>(resultado);
 	}
 
-
-
-	
-	
-	}
+}
