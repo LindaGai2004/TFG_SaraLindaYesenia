@@ -188,8 +188,11 @@ public class Usuario implements UserDetails, Serializable{
 
 
 	public List<Producto> getFavoritos() {
-		// TODO Auto-generated method stub
-		return null;
+		return favoritos;
+	}
+	
+	public void setFavoritos(List<Producto> favoritos) {
+	    this.favoritos = favoritos;
 	}
 	
 }

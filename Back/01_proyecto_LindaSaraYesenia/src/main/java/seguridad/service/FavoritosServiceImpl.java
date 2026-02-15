@@ -28,7 +28,7 @@ public class FavoritosServiceImpl implements FavoritosService {
     }
 
     @Override
-    public void addFavorito(Integer idUsuario, Integer idProducto) {
+    public void añadirFavorito(Integer idUsuario, Integer idProducto) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -42,7 +42,7 @@ public class FavoritosServiceImpl implements FavoritosService {
     }
 
     @Override
-    public void removeFavorito(Integer idUsuario, Integer idProducto) {
+    public void eliminarFavorito(Integer idUsuario, Integer idProducto) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 

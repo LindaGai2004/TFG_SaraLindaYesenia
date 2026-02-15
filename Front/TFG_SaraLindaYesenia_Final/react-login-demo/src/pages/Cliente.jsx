@@ -8,11 +8,12 @@ export default function Portfolio() {
   const [isDark, setIsDark] = useState(false);
   const { user, logout } = useAuth();
 
+  // estado para cambiar entre HOME y FAVORITOS
   const [page, setPage] = useState("home");
 
   return (
     <div className={`app-container ${isDark ? 'dark' : ''} discover-page`}>
-      
+
       {/* Header */}
       <div className="app-header">
         <div className="app-header-left">
@@ -30,14 +31,18 @@ export default function Portfolio() {
         </div>
 
         <div className="app-header-right">
-          <button className="mode-switch" title="Switch Theme" onClick={() => setIsDark(!isDark)}>
+          <button
+            className="mode-switch"
+            title="Switch Theme"
+            onClick={() => setIsDark(!isDark)}
+          >
             <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" width="24" height="24" viewBox="0 0 24 24">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
           </button>
 
           <button className="add-btn" title="Add New Project">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
@@ -57,8 +62,10 @@ export default function Portfolio() {
         </div>
       </div>
 
+      {/* Content */}
       <div className="app-content">
 
+        {/* Sidebar */}
         <div className="app-sidebar">
 
           {/* HOME */}
@@ -72,12 +79,15 @@ export default function Portfolio() {
             </svg>
           </a>
 
-          {/* FAVORITOS */}
+          {/*FAVORITOS */}
           <a 
             className={`app-sidebar-link ${page === "favoritos" ? "active" : ""}`}
             onClick={() => setPage("favoritos")}
           >
-            ❤️
+            <img
+              src={esFavorito ? "/corazon-lleno.png" : "/corazon.jpg"}
+              alt="Favorito"
+            />
           </a>
 
           <a className="app-sidebar-link">
@@ -121,20 +131,82 @@ export default function Portfolio() {
               <div className="book-section">
                 <h3>Book Recommendation</h3>
                 <div className="book-grid">
-                  {/* tus cards originales */}
+
+                  <div className="book-card">
+                    <img src="public/nyt_explorer_cities_towns_ju_gb_3d_08704_1812121406_id_1169059.png" alt="The Psychology of Money" />
+                    <p>The Psychology of Money</p>
+                    <span>Morgan Housel</span>
+                  </div>
+
+                  <div className="book-card">
+                    <img src="public/nyt_explorer_road_rail_trail_ju_gb_3d_08703_1812121401_id_1168992.png" alt="Company of One" />
+                    <p>Company of One</p>
+                    <span>Paul Jarvis</span>
+                  </div>
+
+                  <div className="book-card">
+                    <img src="public/nyt_36h_europe_3rd_ed_va_gb_3d_04693_1901291641_id_1238055.png" alt="Company of One" />
+                    <p>Company of One</p>
+                    <span>Paul Jarvis</span>
+                  </div>
+
+                  <div className="book-card">
+                    <img src="public/bailey_ce_gb_3d_jagger_03173_1903061128_id_1243530.png" alt="Company of One" />
+                    <p>Company of One</p>
+                    <span>Paul Jarvis</span>
+                  </div>
+
                 </div>
               </div>
 
               <div className="book-category-section">
-                {/* tus categorías originales */}
+                <div className="category-header">
+                  <h3>Book Category</h3>
+                  <a href="#" className="view-all">View all</a>
+                </div>
+
+                <div className="category-grid">
+
+                  <div className="category-card">
+                    <div className="category-image">
+                      <img src="/arte.png" alt="arte" />
+                    </div>
+                    <p className="category-name">Arte</p>
+                    <div className='rectangulo'></div>
+                  </div>
+
+                  <div className="category-card">
+                    <div className="category-image">
+                      <img src="/clasic.png" alt="clasic" />
+                    </div>
+                    <p className="category-name">Classics</p>
+                    <div className='rectangulo'></div>
+                  </div>
+
+                  <div className="category-card">
+                    <div className="category-image">
+                      <img src="/style.png" alt="Business" />
+                    </div>
+                    <p className="category-name">Style,Food & Travel</p>
+                    <div className='rectangulo'></div>
+                  </div>
+
+                  <div className="category-card">
+                    <div className="category-image">
+                      <img src="/international_houses_ju_int_3d_01179_1809061137_id_1194761.png" alt="Self Improvement" />
+                    </div>
+                    <p className="category-name">Architecture & Design</p>
+                    <div className='rectangulo'></div>
+                  </div>
+
+                </div>
               </div>
             </>
           )}
 
-          {/* FAVORITOS */}
           {page === "favoritos" && <Favoritos />}
-        </div>
 
+        </div>
       </div>
     </div>
   );
