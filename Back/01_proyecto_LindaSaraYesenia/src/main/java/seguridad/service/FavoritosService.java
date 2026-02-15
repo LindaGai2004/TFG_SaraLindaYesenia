@@ -8,7 +8,7 @@ public interface FavoritosService {
 
     List<Producto> getFavoritos(Integer idUsuario);
 
-    void addFavorito(Integer idUsuario, Integer idProducto);
+    void añadirFavorito(Integer idUsuario, Integer idProducto);
 
-    void removeFavorito(Integer idUsuario, Integer idProducto);
+    void eliminarFavorito(Integer idUsuario, Integer idProducto);
 }

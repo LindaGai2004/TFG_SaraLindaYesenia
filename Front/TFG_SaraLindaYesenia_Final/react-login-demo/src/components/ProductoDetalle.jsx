@@ -12,6 +12,9 @@ export default function ProductoDetalle() {
   const { user } = useAuth();
   const [esFavorito, setEsFavorito] = useState(false);
 
+  // estado para la notificación
+  const [mensaje, setMensaje] = useState("");
+
   // Cargar producto
   useEffect(() => {
     fetch(`http://localhost:9001/productos/${id}`)
@@ -114,11 +117,19 @@ export default function ProductoDetalle() {
         await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${producto.id}`, {
           method: "DELETE"
         });
+
+        setMensaje("Eliminado de favoritos");
+
       } else {
         await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${producto.id}`, {
           method: "POST"
         });
+
+        setMensaje("Añadido a favoritos");
       }
+
+      // Ocultar mensaje después de 2 segundos
+      setTimeout(() => setMensaje(""), 2000);
 
       setEsFavorito(!esFavorito);
 
@@ -136,6 +147,8 @@ export default function ProductoDetalle() {
 
   return (
     <div className="detalle-producto">
+
+      {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
       {/* FILA 1 */}
       <div className="fila-superior dos-columnas">

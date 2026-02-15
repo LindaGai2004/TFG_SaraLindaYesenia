@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { imagenesLibros, imagenesPapeleria } from "../../data/imagenes";
 
 export default function Favoritos() {
   const { user } = useAuth();
@@ -11,7 +12,6 @@ export default function Favoritos() {
     const fetchFavoritos = async () => {
       try {
         const res = await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos`);
-
         const data = await res.json();
         setFavoritos(data);
       } catch (error) {
@@ -22,18 +22,18 @@ export default function Favoritos() {
     };
 
     fetchFavoritos();
-  }, [user.id]);
+  }, [user.idUsuario]);
 
   // Eliminar favorito
   const removeFavorito = async (idProducto) => {
     try {
       await fetch(
-        `http://localhost:9001/clientes/${user.id}/favoritos/${idProducto}`,
+        `http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${idProducto}`,
         { method: "DELETE" }
       );
 
-      // Actualizar lista en pantalla
-      setFavoritos(prev => prev.filter(f => f.id !== idProducto));
+      setFavoritos(prev => prev.filter(f => f.idProducto !== idProducto));
+
     } catch (error) {
       console.error("Error eliminando favorito:", error);
     }
@@ -45,52 +45,96 @@ export default function Favoritos() {
 
   return (
     <div className="favoritos-container" style={{ padding: "20px" }}>
-      <h2 style={{ marginBottom: "15px" }}>Mis Favoritos</h2>
+      <h2 style={{ marginBottom: "20px" }}>Mis Favoritos</h2>
 
       {favoritos.length === 0 ? (
         <p>No tienes productos en favoritos todavía.</p>
       ) : (
-        <div className="favoritos-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-          gap: "20px"
-        }}>
-          {favoritos.map(fav => (
-            <div 
-              key={fav.id} 
-              className="favorito-card"
-              style={{
-                background: "#fff",
-                borderRadius: "10px",
-                padding: "10px",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                textAlign: "center"
-              }}
-            >
-              <img 
-                src={fav.imagen || "/placeholder.png"} 
-                alt={fav.nombre} 
-                style={{ width: "100%", borderRadius: "8px" }}
-              />
+        <div className="favoritos-lista" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          {favoritos.map(fav => {
 
-              <p style={{ marginTop: "10px", fontWeight: "bold" }}>{fav.nombre}</p>
+            // RECONSTRUIR IMAGEN SEGÚN TIPO
+            let imagen = "";
 
-              <button 
-                onClick={() => removeFavorito(fav.id)}
+            if (fav.tipo_producto === "LIBRO") {
+              imagen = imagenesLibros[fav.idProducto]?.portada;
+            }
+
+            if (fav.tipo_producto === "PAPELERIA") {
+              imagen = imagenesPapeleria[fav.idProducto];
+            }
+
+            return (
+              <div 
+                key={fav.idProducto}
+                className="favorito-card"
                 style={{
-                  marginTop: "10px",
-                  background: "#ff4d4d",
-                  color: "white",
-                  border: "none",
-                  padding: "6px 10px",
-                  borderRadius: "6px",
-                  cursor: "pointer"
+                  display: "flex",
+                  background: "#fff",
+                  borderRadius: "12px",
+                  padding: "15px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                  alignItems: "center",
+                  gap: "20px"
                 }}
               >
-                Quitar
-              </button>
-            </div>
-          ))}
+                {/* COLUMNA IZQUIERDA: IMAGEN */}
+                <div style={{ width: "120px", height: "160px", overflow: "hidden", borderRadius: "8px" }}>
+                  <img 
+                    src={imagen}
+                    alt={fav.nombreProducto}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </div>
+
+                {/* COLUMNA DERECHA */}
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ margin: "0 0 5px 0" }}>{fav.nombreProducto}</h3>
+
+                  <p style={{ margin: "0 0 10px 0", color: "#555" }}>
+                    {fav.tipo_producto === "LIBRO"
+                      ? fav.autor || "Autor desconocido"
+                      : fav.marca?.nombreMarca || "Marca desconocida"}
+                  </p>
+
+                  <p style={{ fontWeight: "bold", marginBottom: "15px" }}>
+                    {fav.precio} €
+                  </p>
+
+                  {/* BOTONES */}
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                      style={{
+                        background: "#007bff",
+                        color: "white",
+                        border: "none",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Añadir al carrito
+                    </button>
+
+                    <button
+                      onClick={() => removeFavorito(fav.idProducto)}
+                      style={{
+                        background: "#ff4d4d",
+                        color: "white",
+                        border: "none",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Eliminar de favoritos
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
