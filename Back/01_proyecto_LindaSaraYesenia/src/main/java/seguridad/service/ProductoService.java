@@ -13,6 +13,7 @@ public interface ProductoService {
 	
 
 	Producto findOne(Integer idProducto);
+
 	int deleteById (Integer idProducto);
 
 	//Para mostrar el producto destacado en Home
