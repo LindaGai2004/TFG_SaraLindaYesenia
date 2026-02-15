@@ -38,6 +38,9 @@ public class ProductoRestController {
     @Autowired
     private LibroRepository libroRepo;
     
+    @Autowired
+    private PapeleriaRespository papeleriaRepo;
+
 	
 	@PutMapping("{idProducto}/destacado")
 	@PreAuthorize("hasAnyRole('ADMON', 'JEFE', 'TRABAJADOR')")
@@ -51,10 +54,6 @@ public class ProductoRestController {
 		Producto producto = productoService.getProductoDestacado();
 		return ResponseEntity.ok(producto);
 	}
-
-
-    @Autowired
-    private PapeleriaRespository papeleriaRepo;
 
     @GetMapping("/todos")
     public ResponseEntity<?> todos() {
@@ -87,9 +86,9 @@ public class ProductoRestController {
         }
         return ResponseEntity.ok(lista);
     }
-
     
     // Obtener producto por ID
+
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerProductoPorId(@PathVariable Integer id) {
 
@@ -157,4 +156,9 @@ public class ProductoRestController {
         return ResponseEntity.status(500).body("Error al eliminar");
     }
 
+
+	
+
+
 }
+

@@ -25,7 +25,7 @@ create table pedidos(
 	id_pedido int auto_increment primary key,
     fecha_venta date,
     estado_pedido ENUM ('CARRITO','REALIZADO','CANCELADO','DEVUELTO'),
-    total DECIMAL(12,2) NOT NULL,
+    total DECIMAL(12,2) NOT NULL, -- total pedido
     id_usuario int,
     foreign key (id_usuario) references usuarios(id_usuario)
 );
@@ -96,8 +96,8 @@ create table detalle_pedido(
 	id_detalle_pedido int primary key auto_increment not null,
 	id_pedido int not null,
     id_producto int not null,
-    cantidad int not null,
-    precio_unidad dec(12,2) not null,
+    cantidad int not null, -- cantidad de un pedido
+    precio_unidad dec(12,2) not null, -- precio de cada unidad del producto
     foreign key (id_pedido) references pedidos(id_pedido),
     foreign key (id_producto) references productos(id_producto),
     unique (id_pedido, id_producto)
@@ -137,6 +137,8 @@ INSERT INTO pedidos (fecha_venta, estado_pedido, total, id_usuario) VALUES
 ('2024-07-22','DEVUELTO',98.11,3),
 ('2024-08-30','REALIZADO',67.12,4),
 ('2024-09-15','REALIZADO',38.92,1),
+('2024-10-10','CANCELADO',23.55,2),
+('2024-11-10','CANCELADO',23.55,2),
 ('2024-12-10','CANCELADO',23.55,2);
 
 
@@ -755,8 +757,10 @@ INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unidad) VAL
 (8, 30, 2, 4.00),
 (9, 31, 1, 35.00),
 (9, 32, 1, 32.00),
-(9, 33, 1, 38.00),
-(10, 40, 1, 27.00);
+(9, 55, 1, 38.00),
+(10, 60, 1, 2.80),
+(11, 97, 7, 8.90),
+(12, 61, 3, 4.50);
 
 
 INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUES
