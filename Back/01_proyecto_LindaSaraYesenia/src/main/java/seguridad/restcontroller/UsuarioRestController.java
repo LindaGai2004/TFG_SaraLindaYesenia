@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +18,6 @@ import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioDto;
 import seguridad.repository.PerfilRepository;
-import seguridad.security.JwtService;
 import seguridad.service.UsuarioService;
 
 @RestController
@@ -35,12 +33,7 @@ public class UsuarioRestController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    @Autowired
-    private JwtService jwtService;
-    
+   
     // Mostrar todos los usuarios
     @GetMapping("/todos")
     public ResponseEntity<?> todos() {
@@ -54,42 +47,27 @@ public class UsuarioRestController {
 
     //LOGIN
     @PostMapping("/api/login")
-//    public ResponseEntity<?> login(@RequestBody Usuario usuario, HttpServletRequest request) {
-//        try {
-//            Authentication auth = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getPassword())
-//            );
-//            SecurityContextHolder.getContext().setAuthentication(auth);
-//            
-           //JTW reemplaza esto ⬇
-//          HttpSession session = request.getSession(true);
-//          session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+    public ResponseEntity<?> login(@RequestBody Usuario usuario, HttpServletRequest request) {
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getPassword())
+            );
+           
 
-//            Usuario user = (Usuario) auth.getPrincipal();
-//            user.setPassword(null);
-//
-//            return ResponseEntity.ok(user);
-//            
-//        } catch (Exception e) { //no funciona
-//            return ResponseEntity.status(401).body("Credenciales inválidas");
-//        }
-    public ResponseEntity<?> login(@RequestBody Usuario usuario){
-    	//Autenticar usuario
-    	try {
-			Authentication auth = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-						usuario.getEmail(),
-						usuario.getPassword()));
-			Usuario user = (Usuario) auth.getPrincipal();
-			//si credenciales son válidas generar token
-			String token = jwtService.generateToken(user.getEmail());
-			//devolver el token al front y guardar en localStorage
-			return ResponseEntity.ok(Map.of(
-					"token", token, "email", user.getEmail(), "rol", user.getPerfil().getIdPerfil()));
-		} catch (Exception e) {
-			return ResponseEntity.status(401).body("Credenciales inválidas");
-		}
-    
+            SecurityContextHolder.getContext().setAuthentication(auth);
+           
+
+            HttpSession session = request.getSession(true);
+            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+            Usuario user = (Usuario) auth.getPrincipal();
+            user.setPassword(null);
+
+            return ResponseEntity.ok(user);
+            
+        } catch (Exception e) { //no funciona
+            return ResponseEntity.status(401).body("Credenciales inválidas");
+        }
     }
 
    
@@ -202,9 +180,7 @@ public class UsuarioRestController {
         if (usuario.getUsername() != null) objetivo.setUsername(usuario.getUsername());
 
         if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
-//            objetivo.setPassword(usuarioService.normalizePassword(usuario.getPassword()));
-        	  //ahora con contraseña codificada
-        	  objetivo.setPassword(passwordEncoder.encode(usuario.getPassword()));
+            objetivo.setPassword(usuarioService.normalizePassword(usuario.getPassword()));
         }
 
         if (usuario.getNombre() != null) objetivo.setNombre(usuario.getNombre());

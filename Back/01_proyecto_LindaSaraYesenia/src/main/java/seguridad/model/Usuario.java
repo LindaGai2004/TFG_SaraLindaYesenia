@@ -71,7 +71,6 @@ public class Usuario implements UserDetails, Serializable{
 	}
 
 
-
 	public String getUsername() {
 		return username;
 	}
@@ -198,7 +197,25 @@ public class Usuario implements UserDetails, Serializable{
         return List.of(new SimpleGrantedAuthority(perfil.getNombre()));
 	}
 	
-	
+	@Override
+	public boolean isAccountNonExpired() {
+	    return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+	    return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+	    return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+	    return this.enabled == 1;
+	}
 	
 
 }

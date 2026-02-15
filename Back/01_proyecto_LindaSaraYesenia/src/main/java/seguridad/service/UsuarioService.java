@@ -24,7 +24,7 @@ public interface UsuarioService extends UserDetailsService{
 	
 	Usuario updateUsuario(Usuario usuario);
 	
-//	String normalizePassword(String raw);
+	String normalizePassword(String raw);
 	
 	 List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
 

@@ -121,10 +121,10 @@ values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 
 INSERT INTO usuarios 
 (username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, id_perfil) VALUES
-('tomas', '{bcrypt}$2a$10$OWwNYpOntjleM6FDMF7C/uew5Uiw8Cg4VZ5WHtg4W2RcgAw9EdkAa', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
-('sarita', '{bcrypt}$2a$10$KAUFG297Wj0Ck88SQgeCUe0eEH4zVKmdnP/Yw5SJCYR9ltgTuBSRu', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
-('eva', '{bcrypt}$2a$10$pkLMCdnZK6GuvnlaiioyEO6m.Rh6DehTZirAvmgHA2Ips9vn5UnwG', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
-('ramon', '{bcrypt}$2a$10$aBo9jtO7KyYVjV88xE9oWu9pfzJcwSIdRc3d8W7N6tKoeCVjpkTR6', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
+('tomas', '{noop}tomasin', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
+('sarita', '{noop}sarita', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
+('eva', '{noop}evita', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
+('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
 
 
 INSERT INTO pedidos (fecha_venta, estado_pedido, total, id_usuario) VALUES
