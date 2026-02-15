@@ -123,7 +123,7 @@ public class PedidoServiceImpl implements PedidoService {
 	            pedido.getUsuario().getEmail(),
 	            items
 	    );
-	}
+	}*/
 
 	
 	@Override
