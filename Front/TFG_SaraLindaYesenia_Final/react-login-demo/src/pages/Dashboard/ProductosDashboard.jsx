@@ -140,9 +140,9 @@ export default function Productos({
           </select>
           <select value={bookPrecio} onChange={e => setBookPrecio(e.target.value)} className="input-field filter-select">
             <option value="Todos">Precios: todos</option>
-            <option value="Bajo">低 (&lt;$15)</option>
-            <option value="Medio">中 ($15-25)</option>
-            <option value="Alto">高 (&gt;$25)</option>
+            <option value="Bajo">Bajo (&lt;$15)</option>
+            <option value="Medio">Medio ($15-25)</option>
+            <option value="Alto">Alto (&gt;$25)</option>
           </select>
         </>}
 
@@ -175,9 +175,9 @@ export default function Productos({
           </select>
           <select value={papPrecio} onChange={e => setPapPrecio(e.target.value)} className="input-field filter-select">
             <option value="Todos">Precios: Todos</option>
-            <option value="Bajo">低 (&lt;$5)</option>
-            <option value="Medio">中 ($5-20)</option>
-            <option value="Alto">高 (&gt;$20)</option>
+            <option value="Bajo">Bajo (&lt;$5)</option>
+            <option value="Medio">Medio ($5-20)</option>
+            <option value="Alto">Alto (&gt;$20)</option>
           </select>
         </>}
       </div>

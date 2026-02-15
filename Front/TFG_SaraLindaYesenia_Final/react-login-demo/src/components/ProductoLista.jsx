@@ -16,7 +16,9 @@ export default function ProductoLista({ productos }) {
   useEffect(() => {
     const fetchFavoritos = async () => {
       try {
-        const res = await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos`);
+        const res = await fetch(`http://localhost:9001/usuarios/favoritos`, {
+          credentials: "include"
+        });
         const data = await res.json();
 
         // Convertimos la lista en un diccionario { idProducto: true }
@@ -38,16 +40,18 @@ export default function ProductoLista({ productos }) {
     try {
       if (esFavorito) {
         // ELIMINAR FAVORITO
-        await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${idProducto}`, {
-          method: "DELETE"
+        await fetch(`http://localhost:9001/usuarios/favoritos/${idProducto}`, {
+          method: "DELETE",
+          credentials: "include"
         });
 
         setMensaje("Eliminado de favoritos");
 
       } else {
         // AÑADIR FAVORITO
-        await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${idProducto}`, {
-          method: "POST"
+        await fetch(`http://localhost:9001/usuarios/favoritos/${idProducto}`, {
+          method: "POST",
+          credentials: "include"
         });
 
         setMensaje("Añadido a favoritos");
@@ -114,17 +118,13 @@ export default function ProductoLista({ productos }) {
             </Link>
 
             {/* Icono de favorito */}
-            <Link to="/favoritos" className="favorito-btn">
+            <button className="favorito-btn" onClick={() => toggleFavorito(p.idProducto)}>
               <img
                 src={favoritos[p.idProducto] ? "/corazon-lleno.png" : "/corazon.jpg"}
                 alt="Favorito"
                 className="favorito-icon"
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleFavorito(p.idProducto);
-                }}
               />
-            </Link>
+            </button>
 
             {/* Botón Añadir al carrito */}
             <Link to="/MiCarrito" className="carrito-overlay-btn">

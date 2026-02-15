@@ -31,8 +31,8 @@ export default function Pedidos({ pedidos, clients, onCancelPedido }) {
 
   return (
     <div>
-      <h2 className="text-xl font-bold text-primary mb-1">订单管理</h2>
-      <p className="text-xs text-secondary mb-4">订单历史 · 只读 · 24小时内可取消</p>
+      <h2 className="text-xl font-bold text-primary mb-1">Gestión de pedidos</h2>
+      <p className="text-xs text-secondary mb-4">Pedidos historicos: cancelables dentro de 24 horas</p>
 
       <div className="mb-4">
         <select value={pedidoEstado} onChange={e => setPedidoEstado(e.target.value)} className="input-field filter-select">
@@ -80,7 +80,7 @@ export default function Pedidos({ pedidos, clients, onCancelPedido }) {
                         <XCircle size={11} /> Cancelar
                       </button>
                     ) : o.estado !== 'Cancelado' && (
-                      <span className="flex items-center gap-1 text-xs text-muted"><Clock size={10} /> 已过期</span>
+                      <span className="flex items-center gap-1 text-xs text-muted"><Clock size={10} /> Pedido Caducado</span>
                     )}
                   </td>
                 </tr>
@@ -89,11 +89,11 @@ export default function Pedidos({ pedidos, clients, onCancelPedido }) {
           </tbody>
         </table>
       </div>
-      <p className="text-xs mt-3 text-muted">⏰ 订单只能在前24小时内取消</p>
+      <p className="text-xs mt-3 text-muted">⏰ Los pedidos solo se puede cancelar dentro de las primeras 24 horas.</p>
 
       {popup?.type === 'pedido' && (
         
-        <Modal open width="max-w-lg" onClose={() => setPopup(null)} title="🛒 订单详情">
+        <Modal open width="max-w-lg" onClose={() => setPopup(null)} title="🛒 Detalle del pedido">
           <div className="flex items-center justify-between mb-3">
             <span className="text-lg font-bold text-green">#{popup.data.idPedido}</span>
             <span className="text-xs font-bold px-3 py-0.5 rounded-full" style={statusStyle[popup.data.estadoPedido]}>{popup.data.estadoPedido}</span>
@@ -106,12 +106,12 @@ export default function Pedidos({ pedidos, clients, onCancelPedido }) {
             </div>
           </div>
           {[
-            ['日期', new Date(popup.data.fechaVenta).toLocaleString()],
-            ['总价', `$${(popup.data.total??0).toFixed(2)}`],
+            ['Fecha Compra', new Date(popup.data.fechaVenta).toLocaleString()],
+            ['Precio Total', `$${(popup.data.total??0).toFixed(2)}`],
           ].map(([k, v]) => (
             <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderTop: '1px solid #f1f5f9' }}>
               <span className="text-secondary">{k}</span>
-              <span className={`font-semibold ${k === '总价' ? 'text-green' : 'text-primary'}`}>{v}</span>
+              <span className={`font-semibold ${k === 'Precio Total' ? 'text-green' : 'text-primary'}`}>{v}</span>
             </div>
           ))}
           <h5 className="text-xs font-bold mt-4 mb-2 text-secondary">Pruductos</h5>
@@ -125,7 +125,7 @@ export default function Pedidos({ pedidos, clients, onCancelPedido }) {
           ))}
           {canCancel(popup.data.fechaVenta) && popup.data.estado !== 'Cancelado' && (
             <button onClick={() => { onCancelPedido(popup.data.idPedido); setPopup(null); }} className="mt-4 w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold transition hover:opacity-80" style={{ background: '#fee2e2', color: '#991b1b' }}>
-              <XCircle size={14} /> 取消订单 (24小时内)
+              <XCircle size={14} /> Cancelar Pedido (Dentro de 24 horas)
             </button>
           )}
           

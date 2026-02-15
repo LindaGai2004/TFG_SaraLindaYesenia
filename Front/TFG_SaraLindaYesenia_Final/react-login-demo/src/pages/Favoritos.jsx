@@ -8,27 +8,37 @@ export default function Favoritos() {
   const [loading, setLoading] = useState(true);
 
   // Cargar favoritos del backend
-  useEffect(() => {
-    const fetchFavoritos = async () => {
-      try {
-        const res = await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos`);
-        const data = await res.json();
-        setFavoritos(data);
-      } catch (error) {
-        console.error("Error cargando favoritos:", error);
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  const fetchFavoritos = async () => {
+    try {
+      const res = await fetch("http://localhost:9001/usuarios/favoritos", {
+        credentials: "include"
+      });
+
+      if (!res.ok) {
+        console.error("Error status:", res.status);
+        setFavoritos([]);
+        return;
       }
-    };
 
-    fetchFavoritos();
-  }, [user.idUsuario]);
+      const data = await res.json();
+      setFavoritos(data);
 
+    } catch (error) {
+      console.error("Error cargando favoritos:", error);
+      setFavoritos([]);
+    } finally {
+      setLoading(false);   // 👈 👈 👈 ESTO FALTABA
+    }
+  };
+
+  fetchFavoritos();
+}, []);
   // Eliminar favorito
   const removeFavorito = async (idProducto) => {
     try {
       await fetch(
-        `http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${idProducto}`,
+        `http://localhost:9001/usuarios/favoritos/${idProducto}`,
         { method: "DELETE" }
       );
 
@@ -65,7 +75,7 @@ export default function Favoritos() {
             }
 
             return (
-              <div 
+              <div
                 key={fav.idProducto}
                 className="favorito-card"
                 style={{
@@ -80,7 +90,7 @@ export default function Favoritos() {
               >
                 {/* COLUMNA IZQUIERDA: IMAGEN */}
                 <div style={{ width: "120px", height: "160px", overflow: "hidden", borderRadius: "8px" }}>
-                  <img 
+                  <img
                     src={imagen}
                     alt={fav.nombreProducto}
                     style={{ width: "100%", height: "100%", objectFit: "cover" }}

@@ -1,36 +1,51 @@
 package seguridad.restcontroller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import seguridad.model.Producto;
+import seguridad.model.Usuario;
+import seguridad.repository.UsuarioRepository;
 import seguridad.service.FavoritosService;
 
 @RestController
 @RequestMapping("/usuarios")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class FavoritosRestController {
 
-    @Autowired
-    private FavoritosService favoritosService;
+	@Autowired
+	private FavoritosService favoritosService;
+	@Autowired
+	private UsuarioRepository urepo;
+	@GetMapping("/favoritos")
+	public List<Producto> getFavoritos(Authentication authentication) {
+	    Usuario usuario = (Usuario) authentication.getPrincipal();
+	    return favoritosService.getFavoritos(usuario.getIdUsuario());
+	}
 
-    @GetMapping("/{idUsuario}/favoritos")
-    public List<Producto> getFavoritos(@PathVariable Integer idUsuario) {
-        return favoritosService.getFavoritos(idUsuario);
-    }
+	@PostMapping("/favoritos/{idProducto}")
+	public ResponseEntity<?> addFavorito(@PathVariable Integer idProducto,
+	                                     Authentication authentication) {
 
-    @PostMapping("/{idUsuario}/favoritos/{idProducto}")
-    public ResponseEntity<?> addFavorito(@PathVariable Integer idUsuario, @PathVariable Integer idProducto) {
-        favoritosService.añadirFavorito(idUsuario, idProducto);
-        return ResponseEntity.ok("Añadido a favoritos");
-    }
+	    Usuario usuario = (Usuario) authentication.getPrincipal();
 
-    @DeleteMapping("/{idUsuario}/favoritos/{idProducto}")
-    public ResponseEntity<?> removeFavorito(@PathVariable Integer idUsuario, @PathVariable Integer idProducto) {
-        favoritosService.eliminarFavorito(idUsuario, idProducto);
-        return ResponseEntity.ok("Eliminado de favoritos");
-    }
+	    favoritosService.añadirFavorito(usuario.getIdUsuario(), idProducto);
+
+	    return ResponseEntity.ok(Map.of("message", "Añadido"));
+	}
+
+	@DeleteMapping("/favoritos/{idProducto}")
+	public ResponseEntity<?> removeFavorito(@PathVariable Integer idProducto,
+            Authentication authentication) {
+	    Usuario usuario = (Usuario) authentication.getPrincipal();
+
+		favoritosService.añadirFavorito(usuario.getIdUsuario(), idProducto);
+
+	    return ResponseEntity.ok(Map.of("message", "Eliminado"));
+	}
 }

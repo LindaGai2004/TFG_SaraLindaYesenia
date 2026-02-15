@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from "react-router-dom";
-import Favoritos from "./Dashboard/Favoritos";
+import Favoritos from "./Favoritos";
 import './Cliente.css';
 
 export default function Portfolio() {
@@ -85,7 +85,7 @@ export default function Portfolio() {
             onClick={() => setPage("favoritos")}
           >
             <img
-              src={esFavorito ? "/corazon-lleno.png" : "/corazon.jpg"}
+              src={page==="favoritos" ? "/corazon-lleno.png" : "/corazon.jpg"}
               alt="Favorito"
             />
           </a>

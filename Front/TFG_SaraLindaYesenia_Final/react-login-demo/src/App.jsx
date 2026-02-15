@@ -14,6 +14,7 @@ import ResumenPedido from './pages/ResumenPedido';
 import Productos from './pages/Productos';
 import ProductoDetalle from './components/ProductoDetalle';
 import './App.css';
+import Portfolio from './pages/Cliente';
 
 export default function App() {
   const location = useLocation();
@@ -74,7 +75,7 @@ export default function App() {
             path="/cliente"
             element={
               <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
-                <Cliente />
+                <Portfolio />
               </ProtectedRoute>
             }
           />
