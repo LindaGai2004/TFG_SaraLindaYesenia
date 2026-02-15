@@ -14,7 +14,7 @@ import { apiGet } from "../api/api";
 
 
 function App() {
-  // ═══ STATE ═══════════════════════════════════════════════════════════════
+  // STATE
   const [page, setPage] = useState('dashboard');
   const [loading, setLoading] = useState(true);
   
@@ -271,7 +271,6 @@ function App() {
   const PageComponent = pageComponents[page];
 
   
-
   // ═══ RENDER ══════════════════════════════════════════════════════════════
   if (loading) {
     return (
