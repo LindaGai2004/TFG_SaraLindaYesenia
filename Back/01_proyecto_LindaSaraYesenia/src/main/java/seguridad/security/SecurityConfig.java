@@ -1,7 +1,6 @@
 package seguridad.security;
 
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,23 +17,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import seguridad.service.UsuarioService;
-
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//Se ha actualizado de autenticacion session-based(HttpSession+cookies) a autenticacion STATELESS (JWT)
-//Para no tener dependencia de cookies y mejorar arquitectura de REST APIs
-//Ahora cada request debe enviar Authorization: Bearer <token>
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-	
+
+
     @Bean //cors -> Define las reglas de cors
     public CorsConfigurationSource corsConfigurationSource() {
    
@@ -63,14 +58,12 @@ public class SecurityConfig {
 			    }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider) throws Exception {
         http
         .csrf(csrf -> csrf.disable())
         .cors(Customizer.withDefaults()) //activa cors
-//        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-        //cambiar seguridad a STATELESS(no se crea sesion HTTP)
-        //cada request debe tener un token valido
-        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+       
         .authorizeHttpRequests(auth -> auth
        
         // navegador pregunta a back options, y options con permitAll
@@ -102,9 +95,8 @@ public class SecurityConfig {
             .requestMatchers("/rol/**").authenticated()
             .anyRequest().authenticated()
         )
-        //ya no usamos esto
-//        .httpBasic(Customizer.withDefaults())
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
+        .httpBasic(Customizer.withDefaults())
 
         .formLogin(form -> form.disable())
 
