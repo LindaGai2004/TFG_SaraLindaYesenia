@@ -5,6 +5,7 @@ import java.util.List;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 import seguridad.model.dto.CarritoItemRequest;
+import seguridad.model.dto.IngresoMensualDto;
 import seguridad.model.dto.PedidoResponse;
 
 public interface PedidoService {
@@ -19,4 +20,8 @@ public interface PedidoService {
 	
 	//Resumen de pedido. Devuelve DTO
 	PedidoResponse resumenPedido(Integer idPedido);
+	
+	//
+    List<IngresoMensualDto> getIngresosMensuales();
+    double getTotalIngreso();
 }

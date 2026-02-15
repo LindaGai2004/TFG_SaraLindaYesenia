@@ -5,7 +5,11 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +19,9 @@ import org.springframework.web.server.ResponseStatusException;
 import seguridad.model.DetallePedido;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Libro;
+import seguridad.model.Papeleria;
 import seguridad.model.Pedido;
+import seguridad.model.dto.IngresoMensualDto;
 import seguridad.model.dto.PedidoItemResponse;
 import seguridad.model.dto.PedidoResponse;
 import seguridad.repository.PedidoRepository;
@@ -117,6 +123,42 @@ public class PedidoServiceImpl implements PedidoService {
 	            pedido.getUsuario().getEmail(),
 	            items
 	    );
+	}
+
+	
+	@Override
+	public List<IngresoMensualDto> getIngresosMensuales() {
+        List<Pedido> pedidos = prepo.findAll();
+        Map<Integer, IngresoMensualDto> map = new HashMap<>();
+       
+        for (Pedido pedido : pedidos) {
+            int mes = pedido.getFechaVenta().getMonthValue(); // 1-12
+
+            IngresoMensualDto dto = map.getOrDefault(mes, new IngresoMensualDto(mes, 0, 0));
+            
+            List<DetallePedido> detalles = dprepo.findByPedido(pedido);
+            
+            for (DetallePedido detalle : detalles) {
+                if (detalle.getProducto() instanceof Libro) {
+                    dto.addLibros(detalle.getPrecioUnidad());
+                } else if (detalle.getProducto() instanceof Papeleria) {
+                    dto.addPapeleria(detalle.getPrecioUnidad());
+                }
+            }
+
+            map.put(mes, dto);
+        }
+
+        return map.values().stream()
+                  .sorted(Comparator.comparingInt(IngresoMensualDto::getMes))
+                  .collect(Collectors.toList());
+	}
+
+	@Override
+	public double getTotalIngreso() {
+        return getIngresosMensuales().stream()
+                .mapToDouble(IngresoMensualDto::getTotal)
+                .sum();
 	}
 
 }

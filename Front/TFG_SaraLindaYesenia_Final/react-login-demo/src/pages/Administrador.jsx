@@ -12,6 +12,7 @@ import api from '../api/api';
 import './Administrador.css';
 import { apiGet } from "../api/api";
 
+
 function App() {
   // ═══ STATE ═══════════════════════════════════════════════════════════════
   const [page, setPage] = useState('dashboard');
@@ -23,9 +24,11 @@ function App() {
   const [clients, setClients] = useState([]);
   const [jefes, setJefes] = useState([]);
   const [trabajadores, setTrabajadores] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [monthlyData, setMonthlyData] = useState([]);
+  const [pedidos, setPedidos] = useState([]);
+  const [mensual, setMensual] = useState([]);
+  const [mensualTotal, setMensualTotal] = useState(0);
   const [admin, setAdmin] = useState(null);
+
 
   // ═══ FETCH DATA FROM BACKEND ═════════════════════════════════════════════
   useEffect(() => {
@@ -49,17 +52,24 @@ function App() {
       const ClienteData = await apiGet("/rol/2");
       const JefeData = await apiGet("/rol/3");
       const TrabajadorData = await apiGet("/rol/4");
+      const PedidosData = await apiGet("/pedidos/todos");
+      const MensualData = await apiGet("/pedidos/mensual");
+      const MensualTotalData = await apiGet("/pedidos/mensual/total")
 
       setAdmin(adminList[0] || {});
       setBooks(LibroData);
       setStationery(PapeleriaData);
       setClients(ClienteData);
       setJefes(JefeData);
-      setTrabajadores(TrabajadorData)
+      setTrabajadores(TrabajadorData);
+      setPedidos(PedidosData);
+      setMensual(MensualData);
+      setMensualTotal(MensualTotalData);
+
 
 /*
       setPedidos(pedidosData);
-      setMonthlyData(gananciaData);*/
+      serMensual(gananciaData);*/
     } catch (error) {
       console.error('Error fetching data:', error);
       // Aquí podrías mostrar una notificación de error al usuario
@@ -216,12 +226,12 @@ function App() {
   };
 
   // --- PEDIDOS ---
-  const cancelOrder = async (id) => {
+  const cancelPedido = async (id) => {
     try {
       await api.pedidos.cancel(id);
       setPedidos(prev => prev.map(o => o.id === id ? { ...o, estado: 'Cancelado' } : o));
     } catch (error) {
-      console.error('Error canceling order:', error);
+      console.error('Error canceling Pedido:', error);
       throw error;
     }
   };
@@ -254,11 +264,12 @@ function App() {
     clientes: Clientes,
     jefes: Jefes,
     trabajadores: Trabajadores,
-    orders: Pedidos,
+    pedidos: Pedidos,
     admin: AdminConfig,
   };
-
+ 
   const PageComponent = pageComponents[page];
+
   
 
   // ═══ RENDER ══════════════════════════════════════════════════════════════
@@ -295,8 +306,8 @@ function App() {
               clients={clients}
               jefes={jefes}
               trabajadores={trabajadores}
-              orders={orders}
-              monthlyData={monthlyData}
+              pedidos={pedidos}
+              mensual={mensual}
               admin={admin}
               onAddBook={addBook}
               onEditBook={editBook}
@@ -312,7 +323,7 @@ function App() {
               onAddTrabajador={addTrabajador}
               onEditTrabajador={editTrabajador}
               onDeleteTrabajador={deleteTrabajador}
-              onCancelOrder={cancelOrder}
+              onCancelPedido={cancelPedido}
               onUpdateAdmin={updateAdmin}
             />
           </div>
