@@ -1,17 +1,60 @@
 import "./ProductoLista.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export default function ProductoLista({ productos }) {
 
   const [favoritos, setFavoritos] = useState({});
+  const { user } = useAuth();
 
-  const toggleFavorito = (id) => {
-    setFavoritos((prev) => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
+  // Cargar favoritos reales del backend al iniciar
+  useEffect(() => {
+    const fetchFavoritos = async () => {
+      try {
+        const res = await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos`);
+        const data = await res.json();
+
+        // Convertimos la lista en un diccionario { idProducto: true }
+        const favMap = {};
+        data.forEach(f => favMap[f.idProducto] = true);
+
+        setFavoritos(favMap);
+      } catch (error) {
+        console.error("Error cargando favoritos:", error);
+      }
+    };
+
+    fetchFavoritos();
+  }, [user.idUsuario]);
+
+  const toggleFavorito = async (idProducto) => {
+    const esFavorito = favoritos[idProducto];
+
+    try {
+      if (esFavorito) {
+        // ELIMINAR FAVORITO
+        await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${idProducto}`, {
+          method: "DELETE"
+        });
+      } else {
+        // AÑADIR FAVORITO
+        await fetch(`http://localhost:9001/usuarios/${user.idUsuario}/favoritos/${idProducto}`, {
+          method: "POST"
+        });
+      }
+
+      // Actualizar icono en pantalla
+      setFavoritos(prev => ({
+        ...prev,
+        [idProducto]: !prev[idProducto]
+      }));
+
+    } catch (error) {
+      console.error("Error al actualizar favorito:", error);
+    }
   };
+
 
   if (!productos || productos.length === 0) {
     return <p className="sin-resultados">No hay productos que coincidan con la búsqueda.</p>;
@@ -59,7 +102,7 @@ export default function ProductoLista({ productos }) {
               alt="Favorito"
               className="favorito-icon"
               onClick={(e) => {
-                e.preventDefault(); // evita que te lleve a /favoritos
+                e.preventDefault();
                 toggleFavorito(p.idProducto);
               }}
             />
