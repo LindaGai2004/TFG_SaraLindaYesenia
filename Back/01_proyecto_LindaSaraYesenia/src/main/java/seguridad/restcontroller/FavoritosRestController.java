@@ -24,13 +24,13 @@ public class FavoritosRestController {
 
     @PostMapping("/{idUsuario}/favoritos/{idProducto}")
     public ResponseEntity<?> addFavorito(@PathVariable Integer idUsuario, @PathVariable Integer idProducto) {
-        favoritosService.addFavorito(idUsuario, idProducto);
+        favoritosService.añadirFavorito(idUsuario, idProducto);
         return ResponseEntity.ok("Añadido a favoritos");
     }
 
     @DeleteMapping("/{idUsuario}/favoritos/{idProducto}")
     public ResponseEntity<?> removeFavorito(@PathVariable Integer idUsuario, @PathVariable Integer idProducto) {
-        favoritosService.removeFavorito(idUsuario, idProducto);
+        favoritosService.eliminarFavorito(idUsuario, idProducto);
         return ResponseEntity.ok("Eliminado de favoritos");
     }
 }
