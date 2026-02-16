@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioDto;
 import seguridad.repository.PerfilRepository;
+import seguridad.security.JwtService;
 import seguridad.service.UsuarioService;
 
 @RestController
@@ -32,8 +34,13 @@ public class UsuarioRestController {
    
     @Autowired
     private AuthenticationManager authenticationManager;
-
+    
+    @Autowired
+    private JwtService jwtService;
    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     // Mostrar todos los usuarios
     @GetMapping("/todos")
     public ResponseEntity<?> todos() {
@@ -52,20 +59,18 @@ public class UsuarioRestController {
             Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getPassword())
             );
-           
-
-            SecurityContextHolder.getContext().setAuthentication(auth);
-           
-
-            HttpSession session = request.getSession(true);
-            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+            //anterior
+            //SecurityContextHolder.getContext().setAuthentication(auth);
+            //HttpSession session = request.getSession(true);
+            //session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
             Usuario user = (Usuario) auth.getPrincipal();
+            //para no devolver la contrasena hashead al front
             user.setPassword(null);
-
-            return ResponseEntity.ok(user);
+            String token = jwtService.generarToken(user.getEmail());
+            return ResponseEntity.ok(Map.of("token", token, "user", user));
             
-        } catch (Exception e) { //no funciona
+        } catch (Exception e) { 
             return ResponseEntity.status(401).body("Credenciales inválidas");
         }
     }
@@ -180,7 +185,7 @@ public class UsuarioRestController {
         if (usuario.getUsername() != null) objetivo.setUsername(usuario.getUsername());
 
         if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
-            objetivo.setPassword(usuarioService.normalizePassword(usuario.getPassword()));
+            objetivo.setPassword(usuario.getPassword());
         }
 
         if (usuario.getNombre() != null) objetivo.setNombre(usuario.getNombre());
