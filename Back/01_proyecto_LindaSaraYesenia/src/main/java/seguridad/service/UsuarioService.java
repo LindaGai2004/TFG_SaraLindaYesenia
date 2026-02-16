@@ -20,7 +20,8 @@ public interface UsuarioService extends UserDetailsService{
 
 	List<Usuario> findByPerfil(int idPerfil);
 	int deleteById(Integer idUsuario);
-	String normalizePassword(String raw);
+	//anterior
+	//String normalizePassword(String raw);
 	List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
 
 }

@@ -185,15 +185,16 @@ import org.springframework.stereotype.Service;
 		}
 		return usuarioRepository.save(existente);
 	}
-	
-	public String normalizePassword(String raw) {
-		  if (raw == null)
-		   
-		   return null;
-		String cleaned = raw.replace("{noop}", "").trim();
-		   
-		   return "{noop}" + cleaned;
-		}
+
+//anterior con {noop}
+//	public String normalizePassword(String raw) {
+//		  if (raw == null)
+//		   
+//		   return null;
+//		String cleaned = raw.replace("{noop}", "").trim();
+//		   
+//		   return "{noop}" + cleaned;
+//		}
 
 	//BUSCAR POR NOMBRE, USERMANE, ETC
 	@Override
