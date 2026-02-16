@@ -3,6 +3,7 @@ package seguridad.security;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
@@ -12,7 +13,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-	private static final String SUPERSECRET = "AlumnoIFP";
+	private static final String SUPERSECRET = "WT52]z2xvf]r+bq?P3Xu9Hn-HQxTQ03H";
 	
 	private Key getSignKey() {
 		return Keys.hmacShaKeyFor(SUPERSECRET.getBytes());
@@ -24,6 +25,7 @@ public class JwtService {
 				.setIssuedAt(new Date())
 				//duracion de una hora
 				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 *60))
+				//32 bytes
 				.signWith(getSignKey(), SignatureAlgorithm.HS256)
 				.compact();
 	}
@@ -43,8 +45,8 @@ public class JwtService {
 		return extractAllClaims(token).getExpiration().before(new Date());
 	}
 	//Validar token
-	public boolean isTokenValid(String token, String email) {
+	public boolean isTokenValid(String token, UserDetails userDetails) {
 		final String username = extractUsername(token);
-		return username.equals(email) && !isTokenExpired(token);
+		return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
 	}
 }

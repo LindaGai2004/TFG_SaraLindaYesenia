@@ -63,7 +63,7 @@ public class SecurityConfig {
 			    }
     //Configuración de Seguridad principal
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
         http
         .csrf(csrf -> csrf.disable())
         .cors(Customizer.withDefaults()) //activa cors
@@ -101,6 +101,8 @@ public class SecurityConfig {
         )
         //ya no usamos hhtpBasic
         //.httpBasic(Customizer.withDefaults())
+        //activar jwt
+        .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
         .formLogin(form -> form.disable())
         .exceptionHandling(ex -> ex.authenticationEntryPoint(
         		new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
