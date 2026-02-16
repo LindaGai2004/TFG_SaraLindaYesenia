@@ -480,3 +480,16 @@ INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUE
 ('FAC-2024-006', '2024-06-18', 34.00, 6),
 ('FAC-2024-008', '2024-08-30', 52.90, 8),
 ('FAC-2024-009', '2024-09-15', 105.00, 9);
+
+UPDATE usuarios
+SET password = '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG'
+WHERE email = 'sara@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC'
+WHERE email = 'tomas@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq'
+WHERE email = 'eva@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe'
+WHERE email = 'ramon@ifp.com';

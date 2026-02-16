@@ -16,16 +16,11 @@ public interface UsuarioService extends UserDetailsService{
 	
 	Usuario registrarCliente(Usuario usuario);
 	Usuario registrarUsuarios(Usuario usuario);
-	
-	
-	List<Usuario> findByPerfil(int idPerfil);
-	
-	int deleteById(Integer idUsuario);
-	
 	Usuario updateUsuario(Usuario usuario);
-	
+
+	List<Usuario> findByPerfil(int idPerfil);
+	int deleteById(Integer idUsuario);
 	String normalizePassword(String raw);
-	
-	 List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
+	List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
 
 }
