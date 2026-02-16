@@ -1,10 +1,17 @@
 
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:9001';
-
+function getAuthHeader() {
+  const stored = localStorage.getItem('user');
+  if (!stored) return {};
+  const parsed = JSON.parse(stored);
+  return parsed?.token ? { 'Authorization': `Bearer ${parsed.token}` } : {};
+}
 export async function apiGet(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
-    credentials: 'include'
+      headers: {
+      ...getAuthHeader()
+    }
   });
 
   if (!res.ok) {
@@ -18,9 +25,11 @@ export async function apiGet(path) {
 export async function apiPost(path, body = null) {
   const res = await fetch(`${BASE_URL}${path}`, {
     method: 'POST',
-    credentials: 'include',
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
-    body: body ? JSON.stringify(body) : null,
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeader()
+    },
+    body: body ? JSON.stringify(body) : null
   });
 
   if (!res.ok) {
@@ -36,15 +45,18 @@ export async function apiPut(path, body) {
   try {
     const res = await fetch(`${BASE_URL}${path}`, {
       method: 'PUT',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeader()
+      },
+      body: JSON.stringify(body)
     });
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(errorText || `Error PUT ${path}`);
+      const text = await res.text();
+      throw new Error(text || `Error PUT ${path}`);
     }
-    return await res.json();
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
   } catch (error) {
     console.error('PUT request failed:', error);
     throw error;
@@ -54,7 +66,10 @@ export async function apiPut(path, body) {
 export async function apiDelete(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
     method: 'DELETE',
-    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeader()
+    }
   });
 
   if (!res.ok) {
