@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import seguridad.model.DetallePedido;
 import seguridad.model.EstadoPedido;
 import seguridad.model.EstadoProducto;
+import seguridad.model.Factura;
 import seguridad.model.Pedido;
 import seguridad.model.Producto;
 import seguridad.model.Usuario;
@@ -32,6 +33,8 @@ public class CarritoServiceImpl implements CarritoService {
 	private DetallePedidoRepository dprepo;
     @Autowired
     private PedidoService pserv;
+	@Autowired
+	private FacturaService fserv;
 	
 	// Estado = 'CARRITO'
 	// Solo puede haber un carrito por usuario
@@ -149,6 +152,7 @@ public class CarritoServiceImpl implements CarritoService {
 		if (detalles.isEmpty()) {
 	        throw new RuntimeException("El carrito está vacío");
 	    }
+		double total = 0.0;
 		//Aca no calculamos total pq eso se hace en ResumenPedido
 		for (DetallePedido d: detalles) {
 			Producto producto = d.getProducto();
@@ -158,6 +162,7 @@ public class CarritoServiceImpl implements CarritoService {
 				 throw new RuntimeException(
 		                    "¡No hay stock para " + producto.getNombreProducto() + "!");
 			}
+			total += d.getPrecioUnidad() * cantidad;
 			//Actualizar stock
 			producto.setStock(producto.getStock() - cantidad);
 			//Actualizar ESTADO producto if stock=0
@@ -169,10 +174,21 @@ public class CarritoServiceImpl implements CarritoService {
 			
 		}
 		//Pedido realizado con total
+		carrito.setTotal(total);
 		carrito.setEstado(EstadoPedido.REALIZADO);
 		carrito.setFechaVenta(LocalDate.now());
 		
 		prepo.save(carrito);
+		//generar factura
+		Factura factura = fserv.generarFactura(carrito);
+		//enviar email aqui
+		//crear carrito nuevo vacio
+		Pedido nuevoCarrito = new Pedido();
+		nuevoCarrito.setUsuario(carrito.getUsuario());
+		nuevoCarrito.setEstado(EstadoPedido.CARRITO);
+		nuevoCarrito.setTotal(0.0);
+		nuevoCarrito.setFechaVenta(null);
+		prepo.save(nuevoCarrito);
 		return pserv.resumenPedido(carrito.getIdPedido());
 	}
 	@Override
