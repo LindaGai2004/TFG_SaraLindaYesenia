@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { imagenesLibros, imagenesPapeleria } from "../data/imagenes";
+import { apiDelete, apiGet } from "../api/api";
 
 export default function Favoritos() {
   const { user } = useAuth();
@@ -11,39 +12,22 @@ export default function Favoritos() {
 useEffect(() => {
   const fetchFavoritos = async () => {
     try {
-      const res = await fetch("http://localhost:9001/usuarios/favoritos", {
-        credentials: "include"
-      });
-
-      if (!res.ok) {
-        console.error("Error status:", res.status);
-        setFavoritos([]);
-        return;
-      }
-
-      const data = await res.json();
-      setFavoritos(data);
-
+      const data = await apiGet("/usuarios/favoritos");
+      setFavoritos(data||[]);
     } catch (error) {
       console.error("Error cargando favoritos:", error);
       setFavoritos([]);
     } finally {
-      setLoading(false);   // 👈 👈 👈 ESTO FALTABA
+      setLoading(false);  
     }
   };
-
   fetchFavoritos();
 }, []);
   // Eliminar favorito
   const removeFavorito = async (idProducto) => {
     try {
-      await fetch(
-        `http://localhost:9001/usuarios/favoritos/${idProducto}`,
-        { method: "DELETE" }
-      );
-
+      await apiDelete(`/usuarios/favoritos/${idProducto}`);
       setFavoritos(prev => prev.filter(f => f.idProducto !== idProducto));
-
     } catch (error) {
       console.error("Error eliminando favorito:", error);
     }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { imagenesLibros, imagenesPapeleria } from "../data/imagenes.js";
-
+import {apiGet, apiPost, apiDelete} from "../api/api.js";
 export default function ProductoLista({ productos }) {
 
   const [favoritos, setFavoritos] = useState({});
@@ -16,15 +16,10 @@ export default function ProductoLista({ productos }) {
   useEffect(() => {
     const fetchFavoritos = async () => {
       try {
-        const res = await fetch(`http://localhost:9001/usuarios/favoritos`, {
-          credentials: "include"
-        });
-        const data = await res.json();
-
+        const data = await apiGet("usuarios/favoritos");
         // Convertimos la lista en un diccionario { idProducto: true }
         const favMap = {};
         data.forEach(f => favMap[f.idProducto] = true);
-
         setFavoritos(favMap);
       } catch (error) {
         console.error("Error cargando favoritos:", error);
@@ -40,20 +35,11 @@ export default function ProductoLista({ productos }) {
     try {
       if (esFavorito) {
         // ELIMINAR FAVORITO
-        await fetch(`http://localhost:9001/usuarios/favoritos/${idProducto}`, {
-          method: "DELETE",
-          credentials: "include"
-        });
-
+        await apiDelete(`/usuarios/favoritos/${idProducto}`);
         setMensaje("Eliminado de favoritos");
-
       } else {
         // AÑADIR FAVORITO
-        await fetch(`http://localhost:9001/usuarios/favoritos/${idProducto}`, {
-          method: "POST",
-          credentials: "include"
-        });
-
+        await apiPost(`/usuarios/favoritos/${idProducto}`);
         setMensaje("Añadido a favoritos");
       }
 
