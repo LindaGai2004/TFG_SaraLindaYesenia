@@ -40,7 +40,7 @@ public class SecurityConfig {
    
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); //Seguridad -> que permite enviar cookies y headers entre front y back
-        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("http://localhost:*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*"); //todos los method se puede usar
        
