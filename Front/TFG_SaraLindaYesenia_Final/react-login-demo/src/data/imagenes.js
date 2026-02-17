@@ -1,0 +1,58 @@
+// IMÁGENES DE LIBROS
+export const imagenesLibros = {
+  1: { portada: "/imagenes/libros/portadas/1.jpg", miniaturas: ["/libros/miniaturas/1/1.jpg","/libros/miniaturas/1/2.jpg","/libros/miniaturas/1/3.jpg"] },
+  2: { portada: "/libros/portadas/2.jpg", miniaturas: ["/libros/miniaturas/2/1.jpg", "/libros/miniaturas/2/2.jpg"] },
+  3: { portada: "/libros/portadas/3.jpg", miniaturas: ["/libros/miniaturas/3/1.jpg", "/libros/miniaturas/3/2.jpg"] },
+  4: { portada: "/libros/portadas/4.jpg", miniaturas: ["/libros/miniaturas/4/1.jpg", "/libros/miniaturas/4/2.jpg"] },
+  5: { portada: "/libros/portadas/5.jpg", miniaturas: ["/libros/miniaturas/5/1.jpg", "/libros/miniaturas/5/2.jpg"] },
+  6: { portada: "/libros/portadas/6.jpg", miniaturas: ["/libros/miniaturas/6/1.jpg", "/libros/miniaturas/6/2.jpg"] },
+  7: { portada: "/libros/portadas/7.jpg", miniaturas: ["/libros/miniaturas/7/1.jpg", "/libros/miniaturas/7/2.jpg","/libros/miniaturas/7/3.jpg","/libros/miniaturas/7/4.jpg"] },
+  8: { portada: "/libros/portadas/8.jpg", miniaturas: ["/libros/miniaturas/8/1.jpg", "/libros/miniaturas/8/2.jpg"] },
+  9: { portada: "/libros/portadas/9.jpg", miniaturas: ["/libros/miniaturas/9/1.jpg", "/libros/miniaturas/9/2.jpg"] },
+  10: { portada: "/libros/portadas/10.jpg", miniaturas: ["/libros/miniaturas/10/1.jpg", "/libros/miniaturas/10/2.jpg"] },
+  11: { portada: "/libros/portadas/11.jpg", miniaturas: ["/libros/miniaturas/11/1.jpg", "/libros/miniaturas/11/2.jpg"] },
+  12: { portada: "/libros/portadas/12.jpg", miniaturas: ["/libros/miniaturas/12/1.jpg", "/libros/miniaturas/12/2.jpg"] },
+  13: { portada: "/libros/portadas/13.jpg", miniaturas: ["/libros/miniaturas/13/1.jpg", "/libros/miniaturas/13/2.jpg"] },
+  14: { portada: "/libros/portadas/14.jpg", miniaturas: ["/libros/miniaturas/14/1.jpg", "/libros/miniaturas/14/2.jpg"] },
+  15: { portada: "/libros/portadas/15.jpg", miniaturas: ["/libros/miniaturas/15/1.jpg", "/libros/miniaturas/15/2.jpg"] },
+  16: { portada: "/libros/portadas/16.jpg", miniaturas: ["/libros/miniaturas/16/1.jpg", "/libros/miniaturas/16/2.jpg"] },
+  17: { portada: "/libros/portadas/17.jpg", miniaturas: ["/libros/miniaturas/17/1.jpg", "/libros/miniaturas/17/2.jpg"] },
+  18: { portada: "/libros/portadas/18.jpg", miniaturas: ["/libros/miniaturas/18/1.jpg", "/libros/miniaturas/18/2.jpg"] },
+  19: { portada: "/libros/portadas/19.jpg", miniaturas: ["/libros/miniaturas/19/1.jpg", "/libros/miniaturas/19/2.jpg"] },
+  20: { portada: "/libros/portadas/20.jpg", miniaturas: ["/libros/miniaturas/20/1.jpg", "/libros/miniaturas/20/2.jpg"] },
+  21: { portada: "/libros/portadas/21.jpg", miniaturas: ["/libros/miniaturas/21/1.jpg", "/libros/miniaturas/21/2.jpg"] },
+  22: { portada: "/libros/portadas/22.jpg", miniaturas: ["/libros/miniaturas/22/1.jpg", "/libros/miniaturas/22/2.jpg"] },
+  23: { portada: "/libros/portadas/23.jpg", miniaturas: ["/libros/miniaturas/23/1.jpg", "/libros/miniaturas/23/2.jpg"] },
+  24: { portada: "/libros/portadas/24.jpg", miniaturas: ["/libros/miniaturas/24/1.jpg", "/libros/miniaturas/24/2.jpg"] },
+  25: { portada: "/libros/portadas/25.jpg", miniaturas: ["/libros/miniaturas/25/1.jpg", "/libros/miniaturas/25/2.jpg"] },
+  26: { portada: "/libros/portadas/26.jpg", miniaturas: ["/libros/miniaturas/26/1.jpg", "/libros/miniaturas/26/2.jpg"] },
+  27: { portada: "/libros/portadas/27.jpg", miniaturas: ["/libros/miniaturas/27/1.jpg", "/libros/miniaturas/27/2.jpg"] },
+  28: { portada: "/libros/portadas/28.jpg", miniaturas: ["/libros/miniaturas/28/1.jpg", "/libros/miniaturas/28/2.jpg"] },
+  29: { portada: "/libros/portadas/29.jpg", miniaturas: ["/libros/miniaturas/29/1.jpg", "/libros/miniaturas/29/2.jpg"] },
+  30: { portada: "/libros/portadas/30.jpg", miniaturas: ["/libros/miniaturas/30/1.jpg", "/libros/miniaturas/30/2.jpg"] }
+};
+
+// IMÁGENES PAPELERÍA
+
+export const imagenesPapeleria = {
+  1: "/papeleria/portadas/1.jpg",
+  2: "/papeleria/portadas/2.jpg",
+  3: "/papeleria/portadas/3.jpg",
+  4: "/papeleria/portadas/4.jpg",
+  5: "/papeleria/portadas/5.jpg",
+  6: "/papeleria/portadas/6.jpg",
+  7: "/papeleria/portadas/7.jpg",
+  8: "/papeleria/portadas/8.jpg",
+  9: "/papeleria/portadas/9.jpg",
+  10: "/papeleria/portadas/10.jpg",
+  11: "/papeleria/portadas/11.jpg",
+  12: "/papeleria/portadas/12.jpg",
+  13: "/papeleria/portadas/13.jpg",
+  14: "/papeleria/portadas/14.jpg",
+  15: "/papeleria/portadas/15.jpg",
+  16: "/papeleria/portadas/16.jpg",
+  17: "/papeleria/portadas/17.jpg",
+  18: "/papeleria/portadas/18.jpg",
+  19: "/papeleria/portadas/19.jpg",
+  20: "/papeleria/portadas/20.jpg"
+};

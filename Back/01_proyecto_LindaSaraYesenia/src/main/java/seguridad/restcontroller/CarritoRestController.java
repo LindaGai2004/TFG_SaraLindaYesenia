@@ -1,6 +1,5 @@
 package seguridad.restcontroller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,22 +10,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import seguridad.model.Pedido;
 import seguridad.model.Usuario;
 import seguridad.model.dto.CarritoItemRequest;
 import seguridad.model.dto.PedidoResponse;
-import seguridad.repository.ProductoRepository;
-import seguridad.repository.UsuarioRepository;
 import seguridad.service.CarritoService;
-import seguridad.service.ProductoService;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController

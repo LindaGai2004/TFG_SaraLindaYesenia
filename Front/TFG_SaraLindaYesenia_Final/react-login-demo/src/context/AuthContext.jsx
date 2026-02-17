@@ -24,7 +24,11 @@ function normalizeUser(u) {
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  //const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+  const storedUser = localStorage.getItem("user");
+  return storedUser ? JSON.parse(storedUser) : null;
+});
   const [initializing, setInitializing] = useState(true); // <- nuevo: marca que estamos cargando la sesión
 
   // Al arrancar, cargar lo guardado en localStorage (si hay)
@@ -59,10 +63,18 @@ export function AuthProvider({ children }) {
     try {
       const res = await apiPost('/api/login', { email, password });
       // apiPost debe devolver el usuario (JSON) o lanzar error
-      const normalized = normalizeUser(res);
-      setUser(normalized);
-      localStorage.setItem('user', JSON.stringify(normalized));
-      return normalized; // devuelve el user para que Login.jsx pueda redirigir
+      //const normalized = normalizeUser(res);
+      //setUser(normalized);
+      //localStorage.setItem('user', JSON.stringify(normalized));
+      //return normalized; // devuelve el user para que Login.jsx pueda redirigir
+
+      //res ={token,user} Nuevo formato esperado del backend
+      const normalizedUser = normalizeUser(res.user);
+      const authData = {...normalizedUser, token: res.token}; // guardamos token junto al user
+      setUser(authData);
+      localStorage.setItem('user', JSON.stringify(authData));
+      return authData;
+
     } catch (err) {
       console.error('Login error:', err);
       return null;

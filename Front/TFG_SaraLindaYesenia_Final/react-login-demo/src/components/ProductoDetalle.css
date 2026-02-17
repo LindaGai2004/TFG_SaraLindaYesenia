@@ -1,146 +1,280 @@
 /* ================================
-   CONTENEDOR PRINCIPAL
+   PRIMERA FILA
 ================================ */
-.detalle-producto {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 40px;
-    padding: 40px;
-    align-items: start;
+.fila-superior {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
 }
-  
+
+.fila-superior.dos-columnas {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+}
+
+
 /* ================================
-    COLUMNA IZQUIERDA
+   SEGUNDA FILA
 ================================ */
-.detalle-columna-izquierda {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.fila-inferior {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px 10px;
 }
-  
-/* Imagen principal */
+
+
+/* ================================
+   COLUMNA IZQUIERDA (IMAGEN)
+================================ */
+.col-izquierda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .detalle-imagen {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
+  width: 100%;
+  max-width: 220px;
+  border-radius: 12px;
 }
-  
-/* Miniaturas */
+
+/* MINIATURAS */
 .detalle-miniaturas {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-start;
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
 }
-  
+
 .detalle-miniaturas img {
-    width: 45px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+  width: 55px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
 }
-  
+
 .detalle-miniaturas img:hover {
-    transform: scale(1.08);
+  transform: scale(1.05);
 }
-  
+
+
 /* ================================
-    COLUMNA DERECHA
+   COLUMNA DERECHA (INFO)
 ================================ */
-.detalle-info {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.col-derecha-editorial {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-  
-.detalle-info h2 {
-    font-size: 2rem;
-    margin: 0;
+
+/* TÍTULO + AUTOR + PRECIO */
+.editorial-header {
+  text-align: left;
 }
-  
-.detalle-autor {
-    font-size: 1.1rem;
-    color: #555;
+
+.titulo-editorial {
+  font-size: 2.7rem;
+  margin: 0;
+  font-weight: 700;
 }
-  
-.detalle-precio {
-    font-size: 1.5rem;
-    font-weight: bold;
+
+.autor-editorial {
+  font-size: 1.1rem;
+  margin-top: 5px;
 }
-  
-  /* ================================
-     CONTROL DE CANTIDAD
-     ================================ */
-  .detalle-cantidad {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 15px;
-  }
-  
-  .detalle-cantidad button {
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    background-color: #eee;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-  
-  .detalle-cantidad button:hover {
-    background-color: #ddd;
-  }
-  
-  .detalle-cantidad span {
-    font-size: 1.2rem;
-    font-weight: bold;
-    width: 32px;
-    text-align: center;
-  }
-  
-  /* ================================
-     BOTONES
-     ================================ */
-  .detalle-botones {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-  }
-  
-  .detalle-botones button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .detalle-botones .carrito {
-    background-color: black;
-    color: white;
-  }
-  
-  .detalle-botones .comprar {
-    background-color: white;
-    color: black;
-  }
-  
-  .detalle-botones button:hover {
-    opacity: 0.9;
-  }
-  
-  /* ================================
-     DESCRIPCIÓN
-     ================================ */
-  .detalle-descripcion {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #333;
-    margin-top: 10px;
-  }
+
+.precio-editorial {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* DESCRIPCIÓN */
+.descripcion-editorial {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+
+/* ================================
+   BOTONES EN UNA FILA
+================================ */
+.editorial-botones-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0 25px 0;
+}
+
+/* Contenedor de iconos */
+.botones-iconos {
+  display: flex;
+  gap: 12px;
+}
+
+/* BOTÓN PRINCIPAL */
+.btn-cesta-editorial {
+  width: 160px;
+  padding: 10px;
+  background: black;
+  color: white;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-cesta-editorial:hover {
+  opacity: 0.5;
+}
+
+/* BOTONES DE ICONO */
+.btn-icono {
+  width: 48px;
+  height: 48px;
+  background: #eee;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.btn-icono:hover {
+  background: #ddd;
+}
+
+.btn-icono img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+
+/* ================================
+  RESUMEN
+================================ */
+.editorial-resumen p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+.btn-leer-mas {
+  background: none;
+  border: none;
+  color: #184763;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn-leer-mas:hover {
+  text-decoration: underline;
+}
+
+
+/* ================================
+   FICHA TÉCNICA
+================================ */
+.ficha-editorial p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+
+/* ================================
+   INFO DE ENVÍO
+================================ */
+.info-envio-editorial p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 4px 0;
+}
+
+/* ================================
+   SEGUNDA FILA
+================================ */
+.fila-inferior {
+  max-width: 1100px;
+  margin: 40px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  padding: 20px 10px;
+}
+
+/* TÍTULOS DE SECCIÓN */
+.titulo-seccion {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* ================================
+  COLUMNA IZQUIERDA
+================================ */
+.col-inferior-izq {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.texto-resumen {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+/* AUTOR */
+.autor-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.autor-foto {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.autor-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.autor-nombre {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.autor-link {
+  font-size: 0.9rem;
+  color: #184763;
+  cursor: pointer;
+}
+
+.autor-link:hover {
+  text-decoration: underline;
+}
+
+/* ================================
+   COLUMNA DERECHA (DETALLES)
+================================ */
+.col-inferior-der {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detalles-grid p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #333;
+}

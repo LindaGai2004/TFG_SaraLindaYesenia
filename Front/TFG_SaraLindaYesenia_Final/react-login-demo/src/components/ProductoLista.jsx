@@ -1,59 +1,125 @@
 import "./ProductoLista.css";
 import { Link } from "react-router-dom";
-
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { imagenesLibros, imagenesPapeleria } from "../data/imagenes.js";
+import {apiGet, apiPost, apiDelete} from "../api/api.js";
 export default function ProductoLista({ productos }) {
+
+  const [favoritos, setFavoritos] = useState({});
+  const { user } = useAuth();
+
+  // estado para la notificación
+  const [mensaje, setMensaje] = useState("");
+
+  // Cargar favoritos reales del backend al iniciar
+  useEffect(() => {
+    const fetchFavoritos = async () => {
+      try {
+        const data = await apiGet("usuarios/favoritos");
+        // Convertimos la lista en un diccionario { idProducto: true }
+        const favMap = {};
+        data.forEach(f => favMap[f.idProducto] = true);
+        setFavoritos(favMap);
+      } catch (error) {
+        console.error("Error cargando favoritos:", error);
+      }
+    };
+
+    fetchFavoritos();
+  }, [user.idUsuario]);
+
+  const toggleFavorito = async (idProducto) => {
+    const esFavorito = favoritos[idProducto];
+
+    try {
+      if (esFavorito) {
+        // ELIMINAR FAVORITO
+        await apiDelete(`/usuarios/favoritos/${idProducto}`);
+        setMensaje("Eliminado de favoritos");
+      } else {
+        // AÑADIR FAVORITO
+        await apiPost(`/usuarios/favoritos/${idProducto}`);
+        setMensaje("Añadido a favoritos");
+      }
+
+      // Ocultar mensaje después de 2 segundos
+      setTimeout(() => setMensaje(""), 2000);
+
+      // Actualizar icono en pantalla
+      setFavoritos(prev => ({
+        ...prev,
+        [idProducto]: !prev[idProducto]
+      }));
+
+    } catch (error) {
+      console.error("Error al actualizar favorito:", error);
+    }
+  };
 
   if (!productos || productos.length === 0) {
     return <p className="sin-resultados">No hay productos que coincidan con la búsqueda.</p>;
   }
 
   return (
-    <div className="producto-grid">
-      {productos.map((p) => (
-        <div key={p.idProducto} className="producto-card">
+    <>
+      {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
-          {/* ZONA CLICABLE QUE ABRE EL DETALLE */}
-          <Link to={`/producto/${p.idProducto}`} className="producto-link">
+      <div className="producto-grid">
+        {productos.map((p) => (
+          <div key={p.idProducto} className="producto-card">
 
-            {/* Imagen */}
-            <div className="producto-imagen">
+            {/* ZONA CLICABLE QUE ABRE EL DETALLE */}
+            <Link to={`/producto/${p.idProducto}`} className="producto-link">
+
+              {/* Imagen */}
+              <div className="producto-imagen">
+                <img
+                  src={
+                    p.tipo_producto === "LIBRO"
+                      ? imagenesLibros[p.idProducto]?.portada
+                      : imagenesPapeleria[p.idProducto]
+                  }
+                  alt={p.nombreProducto}
+                />
+              </div>
+
+              {/* Información */}
+              <div className="producto-info">
+                <h3 className="producto-titulo">{p.nombreProducto}</h3>
+
+                {p.autor && (
+                  <p className="producto-sub">{p.autor}</p>
+                )}
+
+                {!p.autor && p.categoria && p.marca && (
+                  <p className="producto-sub">
+                    {p.categoria.nombreCategoria} · {p.marca.nombreMarca}
+                  </p>
+                )}
+
+                <p className="producto-precio">{p.precio} €</p>
+              </div>
+
+            </Link>
+
+            {/* Icono de favorito */}
+            <button className="favorito-btn" onClick={() => toggleFavorito(p.idProducto)}>
               <img
-                src={p.imagen || "https://via.placeholder.com/200x200?text=Producto"}
-                alt={p.nombreProducto}
+                src={favoritos[p.idProducto] ? "/corazon-lleno.png" : "/corazon.jpg"}
+                alt="Favorito"
+                className="favorito-icon"
               />
-            </div>
+            </button>
 
-            {/* Información */}
-            <div className="producto-info">
-              <h3 className="producto-titulo">{p.nombreProducto}</h3>
+            {/* Botón Añadir al carrito */}
+            <Link to="/MiCarrito" className="carrito-overlay-btn">
+              Añadir al carrito
+            </Link>
 
-              {p.autor && (
-                <p className="producto-sub">{p.autor}</p>
-              )}
-
-              {!p.autor && p.categoria && p.marca && (
-                <p className="producto-sub">
-                  {p.categoria.nombreCategoria} · {p.marca.nombreMarca}
-                </p>
-              )}
-
-              <p className="producto-precio">{p.precio} €</p>
-            </div>
-
-          </Link>
-
-          {/* Icono de favorito */}
-          <Link to="/favoritos" className="favorito-btn">
-            <img src="/corazon.jpg" alt="Favorito" className="favorito-icon" />
-          </Link>
-
-          {/* Botón Añadir al carrito */}
-          <Link to="/MiCarrito" className="carrito-overlay-btn">
-            Añadir al carrito
-          </Link>
-
-        </div>
-      ))}
-    </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

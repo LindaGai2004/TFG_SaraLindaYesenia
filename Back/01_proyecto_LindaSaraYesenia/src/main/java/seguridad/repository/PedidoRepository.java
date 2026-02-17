@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import seguridad.model.DetallePedido;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 
@@ -15,4 +16,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 	List<Pedido> findByUsuario_IdUsuario(Integer idUsuario);
 	//Ver estado del pedido de un usuario
 	Optional<Pedido> findByUsuario_IdUsuarioAndEstado(Integer idUsuario, EstadoPedido estadoPedido);
+	
+	
 }

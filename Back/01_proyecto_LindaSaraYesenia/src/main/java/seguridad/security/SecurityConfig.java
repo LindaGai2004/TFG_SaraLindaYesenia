@@ -2,7 +2,6 @@ package seguridad.security;
 
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,8 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -28,6 +26,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+// Ya se define en el bean de SecurityFilter
+//    private final AuthenticationProvider authenticationProvider;
+//
+//
+//    SecurityConfig(AuthenticationProvider authenticationProvider) {
+//        this.authenticationProvider = authenticationProvider;
+//    }
 
 
     @Bean //cors -> Define las reglas de cors
@@ -56,67 +61,70 @@ public class SecurityConfig {
 			Spring Security 应用这些规则
 			          */
 			    }
-
+    //Configuración de Seguridad principal
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
         http
         .csrf(csrf -> csrf.disable())
         .cors(Customizer.withDefaults()) //activa cors
-        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-       
+        //anterior
+        //.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authenticationProvider(authProvider)
         .authorizeHttpRequests(auth -> auth
        
         // navegador pregunta a back options, y options con permitAll
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
            
-            // las rutas no necesita verificar
+            // rutas publicas que no necesitan autenticacion
             .requestMatchers(
             	    "/api/login",
             	    "/registro",
             	    "/todos",
             	    "/actuator/health",
             	    "/todos/productos",
-            	    "/libros/todos",
-            	    "/papelerias/todos",
+            	    "/libros/**",
+            	    "/papelerias/**",
             	    "/productos/**",
             	    "/generos/**",
             	    "/idiomas/**",
             	    "/categorias/**",
             	    "/marcas/**"
             	).permitAll()
-           
-            //las rutas hay que verificar
-            //Crear usuario -> admin y jefe se permite crear usaurio
+            //endpoints protegidos por rol
             .requestMatchers("/admin/crear").hasAnyRole("ADMON","JEFE")
-            //nuevo requestMatchers para ruta pedidos
             .requestMatchers("/pedidos/**").authenticated()
             .requestMatchers("/carrito/**").authenticated()
-            //las rutas de rol que requiere autenticacion
             .requestMatchers("/rol/**").authenticated()
+            //otras requests deben ser autenticadas
             .anyRequest().authenticated()
         )
-
-        .httpBasic(Customizer.withDefaults())
-
+        //ya no usamos hhtpBasic
+        //.httpBasic(Customizer.withDefaults())
+        //activar jwt
+        .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
         .formLogin(form -> form.disable())
-
-        .exceptionHandling(ex -> ex.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
+        .exceptionHandling(ex -> ex.authenticationEntryPoint(
+        		new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
 
 
     return http.build();
     }
    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+    //Todas las contraseñas guardadas encriptadas en BBDD
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+    	//anterior
+        //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//    	return new BCryptPasswordEncoder();
+//    }
     //Verificar username y password si esta bien -> buscar en sql
     @Bean
     @SuppressWarnings("unused")
-    AuthenticationProvider authenticationProvider(UserDetailsService uds) {
+    AuthenticationProvider authenticationProvider(UserDetailsService uds, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(uds);
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
     @Bean

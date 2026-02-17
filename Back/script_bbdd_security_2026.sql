@@ -1,5 +1,6 @@
 create database tfg_2026;
 use tfg_2026;
+
 create table perfiles( 
 	id_perfil int not null auto_increment primary key,
 	nombre varchar(250) not null
@@ -24,7 +25,7 @@ create table pedidos(
 	id_pedido int auto_increment primary key,
     fecha_venta date,
     estado_pedido ENUM ('CARRITO','REALIZADO','CANCELADO','DEVUELTO'),
-    total DECIMAL(12,2) NOT NULL,
+    total DECIMAL(12,2) NOT NULL, -- total pedido
     id_usuario int,
     foreign key (id_usuario) references usuarios(id_usuario)
 );
@@ -35,12 +36,10 @@ CREATE TABLE genero (
     nombre_genero varchar(100) not null
 );
 
-
 CREATE TABLE categoria(
 	id_categoria int auto_increment primary key not null,
 	nombre_categoria varchar(100) not null
 );
-
 
 CREATE TABLE productos (
     id_producto int not null auto_increment primary key,
@@ -61,25 +60,24 @@ CREATE TABLE idioma(
 );
 
 create table libros(
-	id_producto int not null primary key,
-	ISBN VARCHAR(13) not null,
-	editorial varchar(50),
-	fecha_publicacion date not null,
-	autor varchar(100) not null,
-	numero_paginas int not null,
-	id_genero int,
+    id_producto int not null primary key,
+    ISBN VARCHAR(13) not null,
+    editorial varchar(50),
+    fecha_publicacion date not null,
+    autor varchar(100) not null,
+    numero_paginas int not null,
+    resumen VARCHAR(1000),
+    id_genero int,
     id_idioma int,
     foreign key (id_genero) references genero (id_genero),  
     foreign key (id_producto) references productos(id_producto),
     foreign key (id_idioma) references idioma(id_idioma)
 );
 
-
 CREATE TABLE marca(
 	id_marca int auto_increment not null primary key,
 	nombre_marca varchar(100) not null
 );
-
 
 CREATE TABLE papeleria (
 	id_producto int primary key not null,
@@ -90,12 +88,20 @@ CREATE TABLE papeleria (
     foreign key (id_marca) references marca(id_marca)
 );
 
+CREATE TABLE favoritos (
+    id_usuario INT NOT NULL,
+    id_producto INT NOT NULL,
+    PRIMARY KEY (id_usuario, id_producto),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
 create table detalle_pedido(
 	id_detalle_pedido int primary key auto_increment not null,
 	id_pedido int not null,
     id_producto int not null,
-    cantidad int not null,
-    precio_unidad dec(12,2) not null,
+    cantidad int not null, -- cantidad de un pedido
+    precio_unidad dec(12,2) not null, -- precio de cada unidad del producto
     foreign key (id_pedido) references pedidos(id_pedido),
     foreign key (id_producto) references productos(id_producto),
     unique (id_pedido, id_producto)
@@ -117,24 +123,12 @@ values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 ('ROLE_JEFE');
 
 
-INSERT INTO usuarios (username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, id_perfil)values
-('tomas', '{noop}tomasin', 'Tomas', 'Escu',1,'2025-11-05','1960-11-02','madrid', 'tomas@ifp.com',1),
-('sarita', '{noop}sarita', 'Sara', 'Baras',2,'2024-02-05','1999-03-16','sevilla', 'sara@ifp.com',2),
-('eva', '{noop}evita', 'Eva', 'Goma',1,'2000-01-02','1978-05-24','cordoba', 'eva@ifp.com',3),
-('ramon', '{noop}ramoncin', 'Ramon', 'González',1,'2014-07-07','1996-06-04','madrid','ramon@ifp.com', 4);
-
-
-INSERT INTO pedidos (fecha_venta, estado_pedido, total, id_usuario) VALUES
-('2024-01-15','REALIZADO',72.48,1),
-('2024-02-20','REALIZADO',53.50,2),
-('2024-03-10','REALIZADO',46.20,1),
-('2024-04-05','CANCELADO',0.00,2),
-('2024-05-12','REALIZADO',27.55,1),
-('2024-06-18','REALIZADO',32.45,2),
-('2024-07-22','DEVUELTO',98.11,3),
-('2024-08-30','REALIZADO',67.12,4),
-('2024-09-15','REALIZADO',38.92,1),
-('2024-12-10','CANCELADO',23.55,2);
+INSERT INTO usuarios 
+(username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, id_perfil) VALUES
+('tomas', '{noop}tomasin', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
+('sarita', '{noop}sarita', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
+('eva', '{noop}evita', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
+('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
 
 
 INSERT INTO genero (nombre_genero)VALUES
@@ -185,66 +179,43 @@ INSERT INTO idioma (nombre_idioma) VALUES
 ('Chino'),
 ('Italiano');
 
--- ============================================
--- PARTE 1: 100 PRODUCTOS (50 libros + 50 papelería)
--- ============================================
 
--- ========== 50 LIBROS ==========
+-- ========== 30 LIBROS ==========
 INSERT INTO productos
 (nombre_producto, descripcion, tipo_producto, precio, stock, estado_producto, fecha_alta, costo_real) VALUES
-('La arquitectura de la felicidad','Ensayo sobre arquitectura y bienestar','LIBRO',18.90,40,'DISPONIBLE','2024-01-01',12.50),
-('Veinte poemas de amor y una canción desesperada','Libro de poesía de Pablo Neruda','LIBRO',14.50,35,'DISPONIBLE','2024-01-02',9.50),
-('Cien años de soledad','Novela del realismo mágico','LIBRO',22.90,50,'AGOTADO','2024-01-03',15.00),
-('La vida es sueño','Obra clásica del teatro español','LIBRO',12.50,30,'DISPONIBLE','2024-01-04',8.00),
-('1984','Novela distópica de ciencia ficción','LIBRO',16.90,45,'DISPONIBLE','2024-01-05',11.00),
-('Harry Potter y la piedra filosofal','Novela de fantasía juvenil','LIBRO',19.90,60,'DISPONIBLE','2024-01-06',13.00),
-('Los pilares de la Tierra','Novela histórica medieval','LIBRO',25.90,40,'DISPONIBLE','2024-01-07',18.00),
-('El principito','Libro infantil clásico','LIBRO',10.90,80,'DISPONIBLE','2024-01-08',6.50),
-('Los juegos del hambre','Novela juvenil distópica','LIBRO',17.50,55,'DISPONIBLE','2024-01-09',12.00),
-('Diez negritos','Novela de misterio policiaco','LIBRO',14.90,45,'AGOTADO','2024-01-10',9.80),
-('Orgullo y prejuicio','Novela romántica clásica','LIBRO',15.90,35,'DISPONIBLE','2024-01-11',10.50),
-('Los tres mosqueteros','Novela de aventuras','LIBRO',18.50,30,'DISPONIBLE','2024-01-12',12.00),
-('Biblia Reina-Valera','Texto sagrado del cristianismo','LIBRO',29.90,25,'AGOTADO','2024-01-13',20.00),
-('Don Quijote de la Mancha','Clásico de la literatura española','LIBRO',26.90,20,'DISPONIBLE','2024-01-14',18.50),
-('El perfume','Novela de terror psicológico','LIBRO',16.50,40,'DISPONIBLE','2024-01-15',11.20),
-('Guía Lonely Planet España','Guía turística actualizada','LIBRO',27.90,30,'DISPONIBLE','2024-01-16',19.00),
-('Historia del arte','Manual ilustrado de arte','LIBRO',34.90,25,'DISPONIBLE','2024-01-17',24.00),
-('Teoría musical básica','Introducción al lenguaje musical','LIBRO',21.90,30,'DISPONIBLE','2024-01-18',15.00),
-('Didáctica moderna','Manual sobre educación actual','LIBRO',23.50,28,'DISPONIBLE','2024-01-19',16.00),
-('Cocina mediterránea','Recetario de cocina tradicional','LIBRO',19.50,45,'AGOTADO','2024-01-20',13.00),
-('Introducción a la programación','Fundamentos de informática','LIBRO',28.90,35,'DISPONIBLE','2024-01-21',20.00),
-('Watchmen','Novela gráfica de superhéroes','LIBRO',24.90,30,'DISPONIBLE','2024-01-22',17.00),
-('Naruto Volumen 1','Manga shōnen japonés','LIBRO',9.90,70,'DISPONIBLE','2024-01-23',6.50),
-('La casa de los espíritus','Novela latinoamericana','LIBRO',18.90,40,'DISPONIBLE','2024-01-24',12.50),
-('El túnel','Novela psicológica argentina','LIBRO',13.90,30,'DISPONIBLE','2024-01-25',9.00),
-('Crimen y castigo','Clásico de la literatura rusa','LIBRO',21.90,25,'AGOTADO','2024-01-26',15.00),
-('Pedro Páramo','Novela breve mexicana','LIBRO',12.90,35,'DISPONIBLE','2024-01-27',8.50),
-('Como agua para chocolate','Novela romántica','LIBRO',15.50,40,'DISPONIBLE','2024-01-28',10.50),
-('Fahrenheit 451','Ciencia ficción distópica','LIBRO',16.90,45,'DISPONIBLE','2024-01-29',11.00),
-('Fundación','Saga clásica de ciencia ficción','LIBRO',17.90,40,'DISPONIBLE','2024-01-30',12.00),
-('Dune','Épica de ciencia ficción','LIBRO',22.90,35,'DISPONIBLE','2024-01-31',16.00),
-('El señor de los anillos','Fantasía épica','LIBRO',39.90,20,'AGOTADO','2024-02-01',28.00),
-('El hobbit','Fantasía clásica','LIBRO',18.50,45,'DISPONIBLE','2024-02-02',12.50),
-('Los miserables','Clásico de la literatura francesa','LIBRO',29.90,18,'AGOTADO','2024-02-03',21.00),
-('Guerra y paz','Novela histórica rusa','LIBRO',34.90,15,'AGOTADO','2024-02-04',25.00),
-('El nombre de la rosa','Misterio histórico','LIBRO',19.90,35,'DISPONIBLE','2024-02-05',13.50),
-('Ivanhoe','Novela de aventuras histórica','LIBRO',16.50,25,'DISPONIBLE','2024-02-06',11.00),
-('Charlie y la fábrica de chocolate','Libro infantil','LIBRO',11.90,50,'DISPONIBLE','2024-02-07',7.50),
-('Matilda','Novela infantil','LIBRO',12.50,45,'DISPONIBLE','2024-02-08',8.00),
-('Bajo la misma estrella','Novela juvenil romántica','LIBRO',16.90,40,'DISPONIBLE','2024-02-09',11.50),
-('Crepúsculo','Romance juvenil fantástico','LIBRO',17.90,35,'DISPONIBLE','2024-02-10',12.00),
-('La chica del tren','Thriller psicológico','LIBRO',18.90,30,'DISPONIBLE','2024-02-11',13.00),
-('El silencio de los corderos','Thriller y terror','LIBRO',19.50,25,'DISPONIBLE','2024-02-12',14.00),
-('Jane Eyre','Novela romántica clásica','LIBRO',15.90,30,'DISPONIBLE','2024-02-13',10.50),
-('Cumbres borrascosas','Novela romántica gótica','LIBRO',16.90,28,'DISPONIBLE','2024-02-14',11.50),
-('Lo que el viento se llevó','Novela romántica histórica','LIBRO',24.90,20,'DISPONIBLE','2024-02-15',17.50),
-('Estudio en escarlata','Novela policiaca','LIBRO',13.90,35,'AGOTADO','2024-02-16',9.00),
-('El código Da Vinci','Thriller contemporáneo','LIBRO',21.90,30,'DISPONIBLE','2024-02-17',15.50),
-('Las crónicas de Narnia','Saga de fantasía','LIBRO',29.90,25,'DISPONIBLE','2024-02-18',21.00),
-('Underwater','Novela de Serena Delmar que explora emociones profundas y el autodescubrimiento','LIBRO',21.00,30,'DISPONIBLE','2022-01-01',14.00);
+('Orgullo y prejuicio','Novela clásica que explora amor, prejuicios y tensiones sociales.','LIBRO',15.90,40,'DISPONIBLE','2024-03-01',10.50),
+('Matar a un ruiseñor','Historia profunda sobre justicia, inocencia y desigualdad racial.','LIBRO',17.50,35,'AGOTADO','2024-03-02',12.00),
+('1984','Distopía que retrata vigilancia extrema y pérdida de libertad.','LIBRO',16.90,50,'DISPONIBLE','2024-03-03',11.20),
+('Rebelión en la granja','Sátira política que critica el abuso de poder y la manipulación.','LIBRO',14.90,45,'AGOTADO','2024-03-04',9.80),
+('Crimen y castigo','Retrato psicológico sobre culpa, moralidad y redención.','LIBRO',18.90,30,'DISPONIBLE','2024-03-05',13.00),
+('Los hermanos Karamázov','Novela filosófica sobre fe, duda y conflictos familiares.','LIBRO',22.50,25,'AGOTADO','2024-03-06',16.00),
+('Guerra y paz','Épica histórica que combina guerra, amor y destino.','LIBRO',24.90,20,'DISPONIBLE','2024-03-07',18.00),
+('Anna Karénina','Drama social que explora pasión, honor y tragedia.','LIBRO',19.90,40,'AGOTADO','2024-03-08',14.00),
+('Madame Bovary','Retrato íntimo sobre deseos, frustración y búsqueda de libertad.','LIBRO',15.50,35,'DISPONIBLE','2024-03-09',10.00),
+('El retrato de Dorian Gray','Historia sobre belleza, corrupción y consecuencias morales.','LIBRO',14.90,50,'AGOTADO','2024-03-10',9.50),
+('Cien años de soledad','Saga familiar marcada por magia, memoria y destino.','LIBRO',21.90,45,'DISPONIBLE','2024-03-11',15.00),
+('El amor en los tiempos del cólera','Relato sobre amor persistente y el paso del tiempo.','LIBRO',18.90,30,'AGOTADO','2024-03-12',12.50),
+('La casa de los espíritus','Historia familiar llena de realismo mágico y emociones profundas.','LIBRO',17.90,40,'DISPONIBLE','2024-03-13',11.50),
+('Rayuela','Novela experimental que invita a una lectura libre y fragmentada.','LIBRO',16.50,35,'AGOTADO','2024-03-14',10.50),
+('Pedro Páramo','Relato breve que mezcla muerte, memoria y voces del pasado.','LIBRO',13.90,50,'DISPONIBLE','2024-03-15',8.50),
+('Ficciones','Colección de relatos que exploran laberintos, símbolos y paradojas.','LIBRO',19.50,25,'AGOTADO','2024-03-16',14.00),
+('La ciudad y los perros','Crítica social ambientada en un colegio militar opresivo.','LIBRO',17.90,30,'DISPONIBLE','2024-03-17',12.00),
+('El túnel','Novela psicológica sobre obsesión, soledad y percepción distorsionada.','LIBRO',14.50,45,'AGOTADO','2024-03-18',9.50),
+('Como agua para chocolate','Historia romántica donde emociones y cocina se entrelazan.','LIBRO',15.90,40,'DISPONIBLE','2024-03-19',10.50),
+('Los detectives salvajes','Viaje literario que explora juventud, poesía y búsqueda personal.','LIBRO',22.90,20,'AGOTADO','2024-03-20',16.50),
 
+('El Señor de los Anillos','Fantasía épica que narra una lucha entre luz y oscuridad.','LIBRO',34.90,25,'DISPONIBLE','2024-03-21',22.00),
+('El Hobbit','Aventura fantástica que sigue el viaje inesperado de un hobbit.','LIBRO',18.50,40,'AGOTADO','2024-03-22',12.50),
+('Harry Potter y la piedra filosofal','Historia juvenil sobre magia, amistad y descubrimiento personal.','LIBRO',19.90,60,'DISPONIBLE','2024-03-23',13.00),
+('Harry Potter y la cámara secreta','Segunda entrega que profundiza en misterios y peligros en Hogwarts.','LIBRO',20.50,55,'AGOTADO','2024-03-24',14.00),
+('Juego de tronos','Intriga política y fantasía en un mundo lleno de traiciones.','LIBRO',24.90,35,'DISPONIBLE','2024-03-25',18.00),
+('Las crónicas de Narnia','Aventura fantástica que mezcla magia, criaturas míticas y valores humanos.','LIBRO',22.90,30,'AGOTADO','2024-03-26',16.00),
+('La rueda del tiempo','Saga épica que explora destino, magia y ciclos eternos.','LIBRO',28.90,20,'DISPONIBLE','2024-03-27',19.50),
+('El nombre del viento','Relato íntimo sobre un joven prodigio marcado por tragedia y talento.','LIBRO',21.90,45,'AGOTADO','2024-03-28',15.00),
+('La historia interminable','Fantasía que une imaginación, aventura y crecimiento personal.','LIBRO',17.90,50,'DISPONIBLE','2024-03-29',11.50),
+('American Gods','Fantasía contemporánea que mezcla mitología y crítica social.','LIBRO',19.90,35,'AGOTADO','2024-03-30',13.50);
 
--- ========== 50 PAPELERÍA ==========
+-- ========== 20 PAPELERÍA ==========
 INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stock, estado_producto, fecha_alta, costo_real) VALUES
 ('Mochila escolar azul', 'Mochila resistente con múltiples compartimentos', 'PAPELERIA', 35.90, 50, 'DISPONIBLE', '2024-03-10', 25.00),
 ('Mochila deportiva Nike', 'Mochila deportiva de alta calidad', 'PAPELERIA', 45.00, 30, 'DISPONIBLE', '2024-03-11', 32.00),
@@ -269,110 +240,119 @@ INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stoc
 ('Etiquetas adhesivas', 'Pack 100 etiquetas decorativas', 'PAPELERIA', 5.50, 65, 'DISPONIBLE', '2024-03-27', 3.80),
 
 ('Papel A4 80g', 'Resma 500 hojas blancas', 'PAPELERIA', 7.50, 200, 'DISPONIBLE', '2024-03-28', 5.20),
-('Papel fotográfico', 'Pack 20 hojas glossy A4', 'PAPELERIA', 12.90, 45, 'DISPONIBLE', '2024-03-29', 9.00),
-('Papel kraft', 'Rollo 10 metros marrón', 'PAPELERIA', 6.90, 55, 'DISPONIBLE', '2024-03-30', 4.80),
-('Cartulinas colores', 'Pack 50 cartulinas A4', 'PAPELERIA', 8.90, 60, 'DISPONIBLE', '2024-03-31', 6.20),
-
-('Pluma estilográfica Parker', 'Pluma de lujo con estuche', 'PAPELERIA', 45.00, 25, 'AGOTADO', '2024-04-01', 32.00),
-('Bolígrafo Montblanc', 'Bolígrafo de alta gama', 'PAPELERIA', 380.00, 10, 'AGOTADO', '2024-04-02', 270.00),
-('Set de plumas caligrafía', 'Kit completo de caligrafía', 'PAPELERIA', 28.50, 30, 'DISPONIBLE', '2024-04-03', 20.00),
-('Portaminas profesional', 'Portaminas metálico 0.5mm', 'PAPELERIA', 15.90, 40, 'DISPONIBLE', '2024-04-04', 11.00),
-
-('Set acuarelas profesional', 'Caja 24 colores acuarela', 'PAPELERIA', 32.90, 35, 'AGOTADO', '2024-04-05', 23.00),
-('Lápices de colores Faber-Castell', 'Caja 48 lápices profesionales', 'PAPELERIA', 28.50, 40, 'DISPONIBLE', '2024-04-06', 20.00),
-('Set rotuladores Copic', 'Set 12 rotuladores para manga', 'PAPELERIA', 55.00, 20, 'AGOTADO', '2024-04-07', 39.00),
-('Sketchbook A4', 'Cuaderno dibujo 100 hojas', 'PAPELERIA', 14.90, 45, 'DISPONIBLE', '2024-04-08', 10.50),
-
-('Témperas escolares', 'Set 12 botes de colores', 'PAPELERIA', 9.90, 60, 'DISPONIBLE', '2024-04-09', 7.00),
-('Kit manualidades infantil', 'Set completo de materiales creativos', 'PAPELERIA', 18.90, 50, 'DISPONIBLE', '2024-04-10', 13.50),
-('Óleo profesional', 'Set 12 tubos colores básicos', 'PAPELERIA', 42.00, 25, 'AGOTADO', '2024-04-11', 30.00),
-('Pinceles artísticos', 'Set 10 pinceles variados', 'PAPELERIA', 24.50, 35, 'DISPONIBLE', '2024-04-12', 17.50),
-
-('Lienzo preparado 50x60', 'Lienzo sobre bastidor', 'PAPELERIA', 16.90, 30, 'DISPONIBLE', '2024-04-13', 12.00),
-('Caballete de madera', 'Caballete plegable profesional', 'PAPELERIA', 68.00, 15, 'AGOTADO', '2024-04-14', 48.00),
-
-('Calculadora científica Casio', 'Calculadora con funciones avanzadas', 'PAPELERIA', 28.90, 50, 'DISPONIBLE', '2024-04-15', 20.50),
-('Calculadora básica', 'Calculadora de escritorio 12 dígitos', 'PAPELERIA', 12.50, 70, 'DISPONIBLE', '2024-04-16', 8.80),
-
-('Destructora de papel', 'Destructora con corte en tiras', 'PAPELERIA', 85.00, 20, 'AGOTADO', '2024-04-17', 60.00),
-('Plastificadora A4', 'Máquina plastificar documentos', 'PAPELERIA', 45.00, 18, 'DISPONIBLE', '2024-04-18', 32.00),
-
-('Archivador palanca A4', 'Archivador lomo 75mm', 'PAPELERIA', 4.50, 150, 'DISPONIBLE', '2024-04-19', 3.20),
-('Carpeta anillas', 'Carpeta 4 anillas tamaño A4', 'PAPELERIA', 3.90, 120, 'DISPONIBLE', '2024-04-20', 2.70),
-('Separadores índice', 'Juego 12 separadores de colores', 'PAPELERIA', 2.90, 100, 'DISPONIBLE', '2024-04-21', 2.00),
-('Cajas archivo', 'Pack 10 cajas cartón A4', 'PAPELERIA', 15.90, 60, 'DISPONIBLE', '2024-04-22', 11.00),
-
-('Fundas portadocumentos', 'Pack 100 fundas transparentes', 'PAPELERIA', 8.50, 80, 'DISPONIBLE', '2024-04-23', 6.00),
-('Estuche triple', 'Estuche 3 compartimentos', 'PAPELERIA', 12.90, 65, 'DISPONIBLE', '2024-04-24', 9.00),
-('Estuche cilíndrico', 'Estuche redondo con cremallera', 'PAPELERIA', 8.90, 85, 'DISPONIBLE', '2024-04-25', 6.20),
-('Portatodo enrollable', 'Estuche enrollable para lápices', 'PAPELERIA', 14.50, 45, 'DISPONIBLE', '2024-04-26', 10.00),
-
-('Bolígrafos BIC azul', 'Pack 10 bolígrafos', 'PAPELERIA', 3.50, 200, 'DISPONIBLE', '2024-04-27', 2.50),
-('Lápices HB', 'Pack 12 lápices grafito', 'PAPELERIA', 4.90, 150, 'DISPONIBLE', '2024-04-28', 3.40);
-
+('Papel fotográfico', 'Pack 20 hojas glossy A4', 'PAPELERIA', 12.90, 45, 'DISPONIBLE', '2024-03-29', 9.00);
 
 
 -- ========== DATOS DE LIBROS ==========
 INSERT INTO libros
-(id_producto, ISBN, editorial, fecha_publicacion, autor, numero_paginas, id_genero, id_idioma) VALUES
-(1,'9788437604947','Cátedra','1605-01-16','Miguel de Cervantes',1216,1,1),
-(2,'9788439722222','Sudamericana','1967-05-30','Gabriel García Márquez',471,2,2),
-(3,'9788408172173','Planeta','2001-04-12','Carlos Ruiz Zafón',576,3,1),
-(4,'9788439721116','Debolsillo','1985-09-01','Gabriel García Márquez',368,4,1),
-(5,'9788420423459','Alianza','1866-01-01','Fiódor Dostoyevski',671,5,1),
-(6,'9788439722223','RBA','1963-06-28','Julio Cortázar',736,6,1),
-(7,'9788401029876','Plaza & Janés','1982-01-01','Isabel Allende',448,7,3),
-(8,'9788408144444','Plaza & Janés','1989-10-01','Ken Follett',1076,8,4),
-(9,'9788439723333','Seix Barral','1948-01-01','Ernesto Sabato',160,9,1),
-(10,'9788432223334','Seix Barral','1963-01-01','Mario Vargas Llosa',480,10,1),
+(id_producto, ISBN, editorial, fecha_publicacion, autor, numero_paginas, id_genero, id_idioma, resumen) VALUES
+(1,'9780000000011','Planeta','2001-05-12','Jane Austen',432,1,1,
+'Una historia que examina con delicadeza las tensiones sociales y emocionales de una época marcada por las apariencias y los prejuicios. A través de diálogos brillantes y personajes inolvidables, la novela revela cómo el orgullo y 
+la primera impresión pueden distorsionar la verdad, mientras el amor y la madurez ofrecen una segunda oportunidad para comprender al otro. Con una mirada irónica y profundamente humana, la autora retrata las expectativas sociales, 
+los conflictos familiares y la búsqueda de la felicidad en un mundo donde cada gesto tiene un significado oculto. La obra combina romance, crítica social y humor inteligente para mostrar que, incluso en los entornos más rígidos, 
+el corazón encuentra su propio camino.'),
+(2,'9780000000012','Alfaguara','1998-03-22','Harper Lee',384,2,2,
+'Un relato que combina inocencia y crudeza para mostrar cómo la justicia puede verse distorsionada por el miedo y la desigualdad. Narrada desde la mirada de una niña que intenta comprender el mundo adulto, la historia expone el 
+racismo, la compasión y la valentía moral en un pueblo donde la verdad lucha por abrirse paso. A medida que la protagonista observa los conflictos de su comunidad, descubre que la bondad puede surgir en los lugares más inesperados 
+y que la empatía es una fuerza capaz de desafiar los prejuicios más arraigados. La novela es un retrato conmovedor de la pérdida de la inocencia y del poder transformador de la integridad.'),
+(3,'9780000000013','Salamandra','2005-11-10','George Orwell',328,3,3,
+'Una visión inquietante de un futuro donde la libertad se diluye bajo un sistema que controla cada pensamiento y cada gesto. La novela retrata un régimen que manipula la información, reescribe la historia y vigila cada aspecto de 
+la vida, mostrando cómo el miedo y la propaganda pueden moldear la realidad hasta borrar la identidad individual. A través de su protagonista, atrapado entre la obediencia y el deseo de rebelarse, la obra explora la fragilidad de 
+la verdad y la resistencia del espíritu humano. Es una advertencia poderosa sobre los peligros del totalitarismo y la importancia de preservar la libertad de pensamiento.'),
+(4,'9780000000014','Anagrama','1999-07-18','George Orwell',144,4,4,
+'Una fábula que revela cómo el poder puede corromper incluso las causas más nobles cuando la ambición supera a la ética. A través de animales que buscan construir una sociedad justa, la historia muestra cómo los ideales pueden ser 
+manipulados y transformados en herramientas de opresión cuando unos pocos se apropian del liderazgo. La narración, tan sencilla como profunda, expone la fragilidad de los sistemas políticos y la facilidad con la que la esperanza 
+puede convertirse en tiranía. Es una reflexión mordaz sobre la naturaleza del poder y la traición de los principios revolucionarios.'),
+(5,'9780000000015','Minotauro','2003-02-14','Fiódor Dostoyevski',672,5,5,
+'Un viaje profundo a la mente humana donde la culpa, el miedo y la moralidad se enfrentan en un conflicto devastador. La novela explora las consecuencias psicológicas de un crimen, revelando cómo la conciencia, la redención y el 
+sufrimiento se entrelazan en la búsqueda desesperada de sentido y perdón. A través de personajes atormentados y situaciones límite, la obra examina la lucha interna entre el bien y el mal, así como la posibilidad de encontrar luz 
+incluso en los rincones más oscuros del alma. Es un retrato magistral de la complejidad humana y de la necesidad de redención.'),
+(6,'9780000000016','Penguin Random House','2007-09-03','Fiódor Dostoyevski',824,6,1,
+'Una obra monumental que explora la fe, la duda y los lazos familiares en un mundo lleno de contradicciones. A través de personajes complejos y debates filosóficos intensos, la historia profundiza en la naturaleza del bien y del 
+mal, mostrando cómo cada individuo lucha con sus propias sombras internas. La trama, marcada por conflictos morales y pasiones desbordadas, invita a reflexionar sobre la responsabilidad, la libertad y el destino. Es una de las 
+obras más profundas de la literatura universal, capaz de cuestionar las certezas más arraigadas.'),
+(7,'9780000000017','Debolsillo','2010-04-27','León Tolstói',1225,7,2,
+'Una epopeya que entrelaza destinos personales con los grandes acontecimientos históricos que transforman naciones enteras. La novela combina batallas, intrigas políticas y dramas íntimos para mostrar cómo el amor, el honor y la 
+ambición se ven afectados por el paso implacable de la historia. A través de un amplio elenco de personajes, la obra retrata la fragilidad humana frente al caos de la guerra y la búsqueda de sentido en tiempos de incertidumbre. 
+Es un retrato monumental de la vida, la muerte y la fuerza del espíritu humano.'),
+(8,'9780000000018','Plaza & Janés','2004-08-19','León Tolstói',864,8,3,
+'Una historia intensa donde la pasión y las normas sociales chocan, revelando las consecuencias de seguir los dictados del corazón. La protagonista lucha entre el deseo y el deber, enfrentándose a una sociedad que castiga 
+cualquier desviación de sus estrictas expectativas. La novela explora la complejidad del amor, la maternidad, la infidelidad y la identidad personal, mostrando cómo las decisiones íntimas pueden convertirse en tormentas públicas. 
+Es un retrato profundo de la condición humana y de la búsqueda de autenticidad en un mundo lleno de juicios.'),
+(9,'9780000000019','Lumen','1997-12-05','Gustave Flaubert',392,9,4,
+'Un retrato íntimo de una mujer atrapada entre sus deseos y las limitaciones de una sociedad que no le permite soñar. La novela muestra cómo la búsqueda de emociones intensas puede llevar a decisiones que transforman la vida, 
+mientras la realidad se impone con una fuerza implacable. A través de una prosa elegante y minuciosa, la historia revela la tensión entre la fantasía y la rutina, y cómo la insatisfacción puede convertirse en una prisión 
+emocional. Es una obra que cuestiona las expectativas sociales y la fragilidad de los anhelos humanos.'),
+(10,'9780000000020','RBA','2002-06-30','Oscar Wilde',256,10,5,
+'Una reflexión sobre la belleza, la corrupción y el precio que se paga por ignorar las consecuencias de los propios actos. A través de un pacto simbólico, la historia muestra cómo la obsesión por la juventud eterna puede destruir 
+el alma mientras el exterior permanece intacto. La novela explora la dualidad entre apariencia y realidad, así como la influencia del hedonismo y la manipulación moral. Es una obra provocadora que invita a cuestionar la 
+superficialidad y la decadencia de una sociedad obsesionada con la imagen.'),
+(11,'9780000000021','Planeta','2008-03-11','Gabriel García Márquez',496,11,1,
+'Una saga familiar donde lo mágico y lo cotidiano se entrelazan para mostrar la fragilidad del tiempo y la memoria. Con un estilo poético y envolvente, la novela recorre generaciones marcadas por el amor, la soledad y los ciclos 
+inevitables del destino. A través de un universo lleno de símbolos y acontecimientos extraordinarios, la historia revela cómo los errores y las pasiones se repiten una y otra vez. Es una obra que captura la esencia de la vida 
+latinoamericana y la fuerza de la imaginación.'),
+(12,'9780000000022','Alfaguara','2006-10-09','Gabriel García Márquez',368,12,2,
+'Un relato que celebra la persistencia del amor incluso cuando los años transforman cuerpos, vidas y esperanzas. La historia sigue a dos amantes que, tras décadas de separación, descubren que los sentimientos pueden sobrevivir 
+al paso del tiempo y renacer con una fuerza inesperada. La novela explora la paciencia, la obsesión y la ternura, mostrando cómo el amor adopta formas distintas a lo largo de la vida. Es una oda a la esperanza y a la capacidad 
+humana de reinventarse.'),
+(13,'9780000000023','Salamandra','2012-01-17','Isabel Allende',448,13,3,
+'Una historia que mezcla política, emociones y espiritualidad para retratar generaciones marcadas por la fuerza del destino. La novela combina realismo mágico y drama familiar para mostrar cómo los secretos, las pérdidas y las 
+pasiones moldean la vida de quienes buscan su lugar en el mundo. A través de personajes intensos y atmósferas vibrantes, la obra revela la importancia de la memoria y la resiliencia. Es un viaje emocional que conecta lo íntimo 
+con lo histórico.'),
+(14,'9780000000024','Anagrama','2000-09-25','Julio Cortázar',600,14,4,
+'Una novela que rompe las reglas tradicionales y convierte la lectura en un juego lleno de caminos posibles. Con una estructura innovadora, invita al lector a explorar múltiples interpretaciones mientras los personajes se mueven 
+entre lo real y lo imaginario. La obra desafía la lógica narrativa y propone una experiencia literaria única, donde cada elección abre nuevas perspectivas. Es un homenaje a la libertad creativa y a la experimentación literaria.'),
+(15,'9780000000025','Minotauro','1995-04-03','Juan Rulfo',124,15,5,
+'Un relato breve y poderoso donde las voces del pasado resuenan en un pueblo marcado por la ausencia y el misterio. La obra captura la esencia de la soledad y la desolación, mostrando cómo los recuerdos pueden convertirse en 
+fantasmas que nunca abandonan a quienes los escuchan. Con un estilo poético y evocador, la historia revela la profundidad emocional de un mundo suspendido entre la vida y la muerte. Es una obra que deja una huella imborrable.'),
+(16,'9780000000026','Penguin Random House','2011-07-14','Jorge Luis Borges',224,16,1,
+'Una colección de relatos que desafían la lógica y exploran mundos donde el tiempo, el lenguaje y la realidad se entrelazan. Cada historia invita a reflexionar sobre los laberintos de la mente humana y las infinitas posibilidades 
+del pensamiento. Con su estilo preciso y filosófico, el autor construye universos que cuestionan la percepción y la identidad. Es una obra que celebra la imaginación y el poder del intelecto.'),
+(17,'9780000000027','Debolsillo','2009-02-28','Mario Vargas Llosa',480,17,2,
+'Una crítica social que revela la dureza de un entorno militar y la complejidad de las relaciones humanas. La novela muestra cómo la disciplina extrema, la violencia y la búsqueda de identidad pueden moldear a quienes crecen 
+bajo estructuras rígidas. A través de conflictos internos y tensiones colectivas, la obra explora la fragilidad emocional y la necesidad de pertenencia. Es un retrato contundente de la adolescencia y del impacto de la autoridad.'),
+(18,'9780000000028','Plaza & Janés','1996-11-08','Ernesto Sabato',160,18,3,
+'Una mirada profunda a la mente de un hombre consumido por la obsesión y la incapacidad de conectar con el mundo. La historia explora la fragilidad emocional y la oscuridad interior que pueden surgir cuando la realidad se vuelve 
+insoportable. Con una narrativa intensa y psicológica, la obra revela los abismos de la conciencia humana y la lucha por encontrar sentido en medio del caos. Es un viaje perturbador hacia los límites de la percepción.'),
+(19,'9780000000029','Lumen','2013-05-21','Laura Esquivel',256,19,4,
+'Una historia donde los sentimientos se expresan a través de sabores, gestos y tradiciones que marcan cada capítulo. La novela combina magia, pasión y costumbres familiares para mostrar cómo el amor puede manifestarse en los 
+detalles más cotidianos. A través de una protagonista que vive entre el deber y el deseo, la obra revela la fuerza de las emociones reprimidas y la importancia de la libertad personal. Es un relato lleno de sensibilidad y 
+simbolismo.'),
+(20,'9780000000030','RBA','2001-01-29','Roberto Bolaño',672,20,5,
+'Un viaje literario que sigue a jóvenes poetas en su búsqueda de identidad, libertad y un lugar en el mundo. A través de encuentros, pérdidas y descubrimientos, la novela retrata la intensidad de una generación que vive entre la 
+incertidumbre y el deseo de trascender. Con un estilo fragmentado y vibrante, la obra captura la energía de la juventud y la necesidad de encontrar una voz propia. Es una exploración apasionada de la creación artística y del 
+sentido de pertenencia.'),
 
-(11,'9788439724445','FCE','1955-03-19','Juan Rulfo',124,12,1),
-(12,'9788439725556','Debolsillo','1989-01-01','Laura Esquivel',256,11,4),
-(13,'9788408172174','Planeta','2008-04-17','Carlos Ruiz Zafón',672,13,1),
-(14,'9788439722224','Sudamericana','1981-01-01','Gabriel García Márquez',144,14,5),
-(15,'9788439726667','Seix Barral','1985-01-01','Patrick Süskind',320,15,1),
-
-(16,'9788420429999','Debolsillo','1949-06-08','George Orwell',352,16,1),
-(17,'9788439727778','Debolsillo','1932-01-01','Aldous Huxley',288,17,1),
-(18,'9788439728889','Minotauro','1953-10-19','Ray Bradbury',256,18,1),
-(19,'9788439729990','Debolsillo','1951-06-01','Isaac Asimov',296,19,3),
-(20,'9788439730001','Debolsillo','1965-08-01','Frank Herbert',688,20,1),
-
-(21,'9788439731112','Minotauro','1954-07-29','J.R.R. Tolkien',1216,6,1),
-(22,'9788401333444','Salamandra','1997-06-26','J.K. Rowling',256,6,5),
-(23,'9788439732223','Destino','1950-10-16','C.S. Lewis',816,6,1),
-(24,'9788439733334','Minotauro','1937-09-21','J.R.R. Tolkien',310,6,1),
-(25,'9788439734445','RBA','2003-08-26','Christopher Paolini',544,6,1),
-
-(26,'9788439735556','Alianza','1862-01-01','Victor Hugo',1488,14,1),
-(27,'9788439736667','Alianza','1869-01-01','León Tolstói',1225,14,1),
-(28,'9788439737778','Debolsillo','1980-01-01','Umberto Eco',592,10,1),
-(29,'9788439738889','Anaya','1844-01-01','Alexandre Dumas',704,12,1),
-(30,'9788439739990','Anaya','1819-01-01','Walter Scott',624,12,2),
-
-(31,'9788439740001','Salamandra','1943-04-06','Antoine de Saint-Exupéry',96,8,1),
-(32,'9788439740002','Alfaguara','1988-10-01','Roald Dahl',248,8,2),
-(33,'9788439740003','Alfaguara','1964-01-01','Roald Dahl',192,8,5),
-(34,'9788439740004','Kalandraka','1963-01-01','Maurice Sendak',48,8,1),
-(35,'9788439740005','Bruño','1999-01-01','Julia Donaldson',32,8,1),
-
-(36,'9788439740006','Nube de Tinta','2012-01-10','John Green',304,9,1),
-(37,'9788439740007','RBA','2008-09-14','Suzanne Collins',384,9,1),
-(38,'9788439740008','RBA','2011-04-25','Veronica Roth',432,9,1),
-(39,'9788439740009','Debolsillo','2005-10-05','Stephenie Meyer',512,11,2),
-(40,'9788439740010','Salamandra','2005-06-28','Rick Riordan',416,9,1),
-
-(41,'9788439740011','Planeta','1934-01-01','Agatha Christie',256,10,4),
-(42,'9788439740012','Planeta','2003-03-18','Dan Brown',688,10,1),
-(43,'9788439740013','Anaya','1887-11-01','Arthur Conan Doyle',188,10,1),
-(44,'9788439740014','Planeta','2013-06-03','Paula Hawkins',496,10,1),
-(45,'9788439740015','Planeta','1988-01-01','Thomas Harris',368,15,1),
-
-(46,'9788439740016','Alianza','1813-01-28','Jane Austen',432,11,1),
-(47,'9788439740017','Alianza','1847-10-16','Charlotte Bronte',624,11,1),
-(48,'9788439740018','Alianza','1847-12-01','Emily Brontë',416,11,1),
-(49,'9788439740019','Alianza','1811-01-01','Jane Austen',384,11,1),
-(50,'9781234567890','Independiente','2022-01-01','Serena Delmar',320,9,1);
+(21,'9780000000031','Planeta','2002-05-12','J.R.R. Tolkien',1216,21,1,
+'Una epopeya que sigue la lucha entre fuerzas antiguas mientras un grupo diverso emprende un viaje que definirá el destino de su mundo. A través de paisajes míticos, alianzas improbables y amenazas que resurgen desde las sombras, 
+la historia explora el valor, la amistad y el sacrificio que exige enfrentarse al mal en su forma más pura. Con una narrativa rica en simbolismo y tradición, la obra muestra cómo incluso los seres más humildes pueden influir en 
+el curso de la historia cuando la oscuridad amenaza con consumirlo todo. Es un relato sobre esperanza, resistencia y la fuerza que nace de la unidad.'),
+(22,'9780000000032','Alfaguara','1999-03-22','J.R.R. Tolkien',310,22,2,
+'Una aventura que comienza en la tranquilidad de un hogar y se transforma en un viaje lleno de peligros, magia y descubrimientos. El protagonista, arrancado de su rutina, se ve obligado a confrontar criaturas desconocidas y 
+desafíos que pondrán a prueba su ingenio, su coraje y su capacidad para aceptar un destino que nunca imaginó. A medida que avanza, descubre que el mundo es más vasto y complejo de lo que creía, y que incluso los actos más 
+pequeños pueden tener consecuencias inmensas. Es una historia sobre crecimiento, valentía y la inesperada grandeza que puede surgir de lo cotidiano.'),
+(23,'9780000000033','Salamandra','2001-11-10','J.K. Rowling',320,23,3,
+'La historia de un niño que descubre un mundo oculto donde la magia convive con desafíos que pondrán a prueba su valentía. Entre amistades nuevas, misterios que se esconden en cada pasillo y secretos que rodean su propio origen, 
+el protagonista aprende que el valor no consiste en no tener miedo, sino en enfrentarlo. La novela combina humor, emoción y aventura para mostrar cómo la amistad, la lealtad y la curiosidad pueden iluminar incluso los momentos 
+más oscuros. Es el inicio de un viaje que transformará su vida para siempre.'),
+(24,'9780000000034','Anagrama','2003-07-18','J.K. Rowling',352,1,4,
+'Una nueva amenaza surge en Hogwarts, revelando secretos que conectan el pasado con los peligros del presente. Mientras el protagonista intenta comprender su papel en un conflicto que crece en las sombras, la historia profundiza 
+en la lealtad, la identidad y el peso de las decisiones que pueden cambiar el rumbo del mundo mágico. Con giros inesperados, tensiones crecientes y revelaciones que desafían todo lo conocido, la novela muestra cómo el coraje y 
+la verdad pueden abrirse paso incluso cuando la oscuridad parece invencible.'),
+(25,'9780000000035','Minotauro','2005-02-14','George R.R. Martin',694,2,5,
+'Un relato donde la ambición y la traición moldean un mundo en el que cada decisión puede significar vida o muerte. Entre intrigas políticas, alianzas frágiles y personajes que luchan por sobrevivir en un entorno despiadado, la 
+historia muestra cómo el poder puede convertirse en una carga tan peligrosa como irresistible. Con una narrativa cruda y realista, la novela revela la complejidad de los deseos humanos y la fragilidad de la moral en tiempos de 
+conflicto. Es un retrato implacable de un mundo donde nadie está a salvo.'),
+(26,'9780000000036','Penguin Random House','1998-09-03','C.S. Lewis',768,3,1,
+'Una saga que combina fantasía, valores humanos y criaturas míticas para narrar un viaje lleno de significado. A través de reinos encantados, batallas simbólicas y encuentros con seres extraordinarios, la obra invita a reflexionar sobre la fe, la valentía y la importancia de creer en aquello que no siempre se puede ver.'),
+(27,'9780000000037','Debolsillo','2007-04-27','Robert Jordan',832,4,2,
+'Una historia que entrelaza destinos y profecías en un universo donde el tiempo fluye en ciclos eternos. Con un elenco amplio y complejo, la novela explora la lucha entre la luz y la sombra, mostrando cómo incluso los actos más pequeños pueden alterar el curso de un mundo que se enfrenta a su propia renovación.'),
+(28,'9780000000038','Plaza & Janés','2010-08-19','Patrick Rothfuss',662,5,3,
+'Un relato íntimo donde un joven prodigio narra su vida marcada por tragedias, aprendizajes y un talento excepcional. A través de recuerdos que mezclan dolor, descubrimiento y una búsqueda incansable de conocimiento, la historia revela cómo se forja una leyenda en un mundo donde la música, la magia y la palabra tienen un poder inmenso.'),
+(29,'9780000000039','Lumen','1996-12-05','Michael Ende',448,6,4,
+'Una aventura que invita a reflexionar sobre imaginación, identidad y el poder de las historias. En un mundo donde la fantasía y la realidad se entrelazan, el protagonista descubre que los relatos pueden transformar no solo el destino de los personajes, sino también el de quienes se atreven a creer en ellos.'),
+(30,'9780000000040','RBA','2004-06-30','Neil Gaiman',624,7,5,
+'Una mezcla de mitología y modernidad que cuestiona la fe, la identidad y el papel de los dioses en un mundo cambiante. La novela explora cómo las creencias evolucionan con el tiempo y cómo las figuras divinas deben adaptarse a una sociedad que ya no las recuerda, mientras fuerzas antiguas y nuevas compiten por sobrevivir.');
 
 INSERT INTO marca (nombre_marca) VALUES
 ('Genérica'),
@@ -419,82 +399,47 @@ INSERT INTO marca (nombre_marca) VALUES
 ('BIC'),
 ('Staedtler');
 
+
 -- ========== DATOS DE PAPELERIA ==========
 INSERT INTO papeleria (id_producto, id_marca, id_categoria) VALUES
--- Mochilas
-(51,1,1),
-(52,2,1),
-(53,3,1),
-(54,4,1),
+(31,1,1),
+(32,2,1),
+(33,3,1),
+(34,4,1),
 
--- Agendas
-(55,5,2),
-(56,6,2),
-(57,7,2),
-(58,8,2),
+(35,5,2),
+(36,6,2),
+(37,7,2),
+(38,8,2),
 
--- Cuadernos, libretas y recambios
-(59,6,3),
-(60,6,3),
-(61,6,3),
-(62,9,3),
-(63,10,3),
-(64,11,3),
+(39,6,3),
+(40,6,3),
+(41,6,3),
+(42,9,3),
+(43,10,3),
+(44,11,3),
 
--- Papelería de regalo
-(65,12,4),
-(66,13,4),
-(67,14,4),
-(68,15,4),
+(45,12,4),
+(46,13,4),
+(47,14,4),
+(48,15,4),
 
--- Papel
-(69,16,5),
-(70,17,5),
-(71,18,5),
-(72,19,5),
+(49,16,5),
+(50,17,5);
 
--- Alta escritura
-(73,20,6),
-(74,21,6),
-(75,22,6),
-(76,23,6),
-
--- Creatividad
-(77,24,7),
-(78,25,7),
-(79,26,7),
-(80,19,7),
-(81,27,7),
-(82,28,7),
-
--- Bellas Artes
-(83,29,8),
-(84,30,8),
-(85,31,8),
-(86,32,8),
-
--- Calculadoras y máquinas de oficina
-(87,33,9),
-(88,34,9),
-(89,35,9),
-(90,36,9),
-
--- Archivo y clasificación
-(91,37,10),
-(92,37,10),
-(93,15,10),
-(94,38,10),
-(95,39,10),
-
--- Estuches
-(96,40,11),
-(97,41,11),
-(98,25,11),
-
--- Escritura escolar
-(99,42,12),
-(100,43,12);
-
+INSERT INTO pedidos (fecha_venta, estado_pedido, total, id_usuario) VALUES
+('2024-01-15','REALIZADO',72.48,1),
+('2024-02-20','REALIZADO',53.50,2),
+('2024-03-10','REALIZADO',46.20,1),
+('2024-04-05','CANCELADO',0.00,2),
+('2024-05-12','REALIZADO',27.55,1),
+('2024-06-18','REALIZADO',32.45,2),
+('2024-07-22','DEVUELTO',98.11,3),
+('2024-08-30','REALIZADO',67.12,4),
+('2024-09-15','REALIZADO',38.92,1),
+('2024-10-10','CANCELADO',23.55,2),
+('2024-11-10','CANCELADO',23.55,2),
+('2024-12-10','CANCELADO',23.55,2);
 
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unidad) VALUES
 (1, 1, 2, 19.99),
@@ -521,8 +466,10 @@ INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unidad) VAL
 (8, 30, 2, 4.00),
 (9, 31, 1, 35.00),
 (9, 32, 1, 32.00),
-(9, 33, 1, 38.00),
-(10, 40, 1, 27.00);
+(9, 50, 1, 38.00),
+(10, 40, 1, 2.80),
+(11, 27, 7, 8.90),
+(12, 23, 3, 4.50);
 
 
 INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUES
@@ -533,3 +480,16 @@ INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUE
 ('FAC-2024-006', '2024-06-18', 34.00, 6),
 ('FAC-2024-008', '2024-08-30', 52.90, 8),
 ('FAC-2024-009', '2024-09-15', 105.00, 9);
+
+UPDATE usuarios
+SET password = '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG'
+WHERE email = 'sara@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC'
+WHERE email = 'tomas@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq'
+WHERE email = 'eva@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe'
+WHERE email = 'ramon@ifp.com';

@@ -5,7 +5,11 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +19,9 @@ import org.springframework.web.server.ResponseStatusException;
 import seguridad.model.DetallePedido;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Libro;
+import seguridad.model.Papeleria;
 import seguridad.model.Pedido;
+import seguridad.model.dto.IngresoMensualDto;
 import seguridad.model.dto.PedidoItemResponse;
 import seguridad.model.dto.PedidoResponse;
 import seguridad.repository.PedidoRepository;
@@ -32,7 +38,6 @@ public class PedidoServiceImpl implements PedidoService {
 	private static final BigDecimal IVA_LIBRO = BigDecimal.valueOf(0.04);
 	private static final BigDecimal IVA_PAPELERIA = BigDecimal.valueOf(0.21);
 
-	@Override
 	public Pedido findById(Integer idPedido) {
 		return prepo.findById(idPedido).orElse(null);
 	}
@@ -81,10 +86,13 @@ public class PedidoServiceImpl implements PedidoService {
 			BigDecimal precioUnidad = BigDecimal.valueOf(d.getPrecioUnidad());
 		    BigDecimal cantidad = BigDecimal.valueOf(d.getCantidad());
 			BigDecimal totalPorItem = precioUnidad.multiply(cantidad);
-			subtotal = subtotal.add(totalPorItem);
+			subtotal = subtotal.add(totalPorItem);//sin iva
 			
 			BigDecimal iva;
-			
+			String autor = null;
+			if (d.getProducto() instanceof Libro libro) {
+	            autor = libro.getAutor();
+	        }
 			if (d.getProducto() instanceof Libro) {
 	            iva = totalPorItem.multiply(IVA_LIBRO);
 	        } else {
@@ -94,7 +102,9 @@ public class PedidoServiceImpl implements PedidoService {
 			ivaTotal = ivaTotal.add(iva);
 			
 			items.add(new PedidoItemResponse(
+					d.getProducto().getIdProducto(),
 	                d.getProducto().getNombreProducto(),
+	                autor,
 	                d.getCantidad(),
 	                d.getPrecioUnidad(),
 	                totalPorItem.doubleValue()
@@ -117,6 +127,43 @@ public class PedidoServiceImpl implements PedidoService {
 	            pedido.getUsuario().getEmail(),
 	            items
 	    );
+	}
+
+	
+	@Override
+	public List<IngresoMensualDto> getIngresosMensuales() {
+        List<Pedido> pedidos = prepo.findAll();
+        Map<Integer, IngresoMensualDto> map = new HashMap<>();
+       
+        for (Pedido p : pedidos) {
+
+            if (p.getFechaVenta() != null) {
+            	int mes = p.getFechaVenta().getMonthValue();
+                IngresoMensualDto dto = map.getOrDefault(mes, new IngresoMensualDto(mes, 0, 0));
+                
+                List<DetallePedido> detalles = dprepo.findByPedido(p);
+                
+                for (DetallePedido detalle : detalles) {
+                    if (detalle.getProducto() instanceof Libro) {
+                        dto.addLibros(detalle.getPrecioUnidad());
+                    } else if (detalle.getProducto() instanceof Papeleria) {
+                        dto.addPapeleria(detalle.getPrecioUnidad());
+                    }
+                }
+
+                map.put(mes, dto);
+            }}
+
+        return map.values().stream()
+                  .sorted(Comparator.comparingInt(IngresoMensualDto::getMes))
+                  .collect(Collectors.toList());
+	}
+
+	@Override
+	public double getTotalIngreso() {
+        return getIngresosMensuales().stream()
+                .mapToDouble(IngresoMensualDto::getTotal)
+                .sum();
 	}
 
 }

@@ -32,7 +32,6 @@ import lombok.ToString;
 public class Libro extends Producto implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
 	
 	private String ISBN;
 	
@@ -44,6 +43,9 @@ public class Libro extends Producto implements Serializable{
 	private String autor;
 	@Column(name = "numero_paginas")
 	private Integer numeroPagina;
+	
+	@Column(length = 1000)
+	private String resumen;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_genero")
@@ -105,6 +107,14 @@ public class Libro extends Producto implements Serializable{
 	public void setNumeroPagina(Integer numeroPagina) {
 		this.numeroPagina = numeroPagina;
 	}
+	
+	public String getResumen() {
+	    return resumen;
+	}
+
+	public void setResumen(String resumen) {
+	    this.resumen = resumen;
+	}
 
 	public Genero getGenero() {
 		return genero;
@@ -125,7 +135,5 @@ public class Libro extends Producto implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
 }
 
