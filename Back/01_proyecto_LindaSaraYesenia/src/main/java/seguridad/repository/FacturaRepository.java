@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import seguridad.model.Factura;
 
 @Repository
-interface FacturaRepository extends JpaRepository<Factura, Integer> {
+public interface FacturaRepository extends JpaRepository<Factura, Integer> {
 	Factura findByPedido_IdPedido(Integer idPedido);
 }
