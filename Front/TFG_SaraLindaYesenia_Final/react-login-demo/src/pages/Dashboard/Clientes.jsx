@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Search, Edit, Trash2 } from 'lucide-react';
 import Modal from '../../components/Modal_dashboard';
 
-export default function Clientes({ clients, orders, onEditClient, onDeleteClient }) {
+export default function Clientes({ clients, pedidos, onEditClient, onDeleteClient }) {
   const [clientSearch, setClientSearch] = useState('');
   const [popup, setPopup] = useState(null);
   const [formModal, setFormModal] = useState(null);
@@ -45,7 +45,7 @@ export default function Clientes({ clients, orders, onEditClient, onDeleteClient
           </thead>
           <tbody>
             {filteredClients.map(c => {
-              const pedCnt = orders.filter(o => o.id_cliente === c.id).length;
+              const pedCnt = pedidos.filter(p => p.id_cliente === c.id).length;
               return (
                 <tr key={c.id} onClick={() => setPopup({ type: 'client', data: c })} className="cursor-pointer">
                   <td>
@@ -97,21 +97,21 @@ export default function Clientes({ clients, orders, onEditClient, onDeleteClient
             </div>
           ))}
           <h5 className="text-xs font-bold mt-4 mb-2 text-secondary">Pedidos</h5>
-          {orders.filter(o => o.id_cliente === popup.data.id).length === 0 ? (
+          {pedidos.filter(p => p.id_cliente === popup.data.id).length === 0 ? (
             <p className="text-xs text-muted">De momento no tienes pedido</p>
           ) : (
-            orders.filter(o => o.id_cliente === popup.data.id).map(o => {
+            pedidos.filter(p => p.id_cliente === popup.data.id).map(p => {
               const statusStyle = {
-                'Pendiente': { bg: '#fef3c7', color: '#92400e' },
-                'En camino': { bg: '#dbeafe', color: '#1d4ed8' },
-                'Completado': { bg: '#d1fae5', color: '#065f46' },
-                'Cancelado': { bg: '#fee2e2', color: '#991b1b' }
-              }[o.estado];
+                'CANCELADO': { bg: '#fef3c7', color: '#92400e' },
+                'CARRITO': { bg: '#dbeafe', color: '#1d4ed8' },
+                'REALIZADO': { bg: '#d1fae5', color: '#065f46' },
+                'DEVUELTO': { bg: '#fee2e2', color: '#991b1b' }
+              }[p.estadoPedido];
               return (
-                <div key={o.id} className="flex items-center justify-between py-2 text-sm" style={{ borderTop: '1px solid #f1f5f9' }}>
-                  <span className="font-semibold text-green">#{o.id}</span>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={statusStyle}>{o.estado}</span>
-                  <span className="font-semibold text-primary">${o.precio_total.toFixed(2)}</span>
+                <div key={p.id} className="flex items-center justify-between py-2 text-sm" style={{ borderTop: '1px solid #f1f5f9' }}>
+                  <span className="font-semibold text-green">#{p.idPedido}</span>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={statusStyle}>{p.estadoPedido}</span>
+                  <span className="font-semibold text-primary">${(p.total??0).toFixed(2)}</span>
                 </div>
               );
             })

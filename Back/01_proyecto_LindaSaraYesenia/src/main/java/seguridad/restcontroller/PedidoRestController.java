@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 import seguridad.model.Usuario;
+import seguridad.model.dto.IngresoMensualDto;
 import seguridad.model.dto.PedidoResponse;
 import seguridad.repository.UsuarioRepository;
 import seguridad.service.CarritoService;
@@ -35,6 +36,19 @@ public class PedidoRestController {
 	@Autowired
 	private UsuarioRepository urepo;
 	
+	//Para Dashboard -> Solo mostrar id_pedido, id_cliente, fecha, total, estado, metodoPago
+	@GetMapping("/todos")
+	@PreAuthorize("hasAnyRole('ADMON', 'JEFE','TRABAJADOR')")
+	public ResponseEntity<?> todos(){
+		List<Pedido> pedidos = pserv.findAll();
+		List<PedidoResponse> respuestas = pedidos.stream()
+				.map(p ->pserv.resumenPedido(p.getIdPedido()))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(respuestas);
+	}
+	
+	
+	
 	//Historial de pedidos por usuario
 	@GetMapping("/usuario/")
 	@PreAuthorize("hasRole('CLIENTE')")
@@ -47,22 +61,28 @@ public class PedidoRestController {
 	                .collect(Collectors.toList());
 		return ResponseEntity.ok(pedidosUsuario);
 	}
-	//Resumen del pedido
-	@GetMapping("/{idPedido}")
-	public ResponseEntity<?> pedidoPorIdPedido(@PathVariable Integer idPedido){
-		PedidoResponse resumen = pserv.resumenPedido(idPedido);
-		return ResponseEntity.ok(resumen);
-	}
-	//Para Dashboard -> Solo mostrar id_pedido, id_cliente, fecha, total, estado, metodoPago
-	@GetMapping
-	@PreAuthorize("hasAnyRole('ADMON', 'JEFE','TRABAJADOR')")
-	public ResponseEntity<?> todos(){
-		List<Pedido> pedidos = pserv.findAll();
-		List<PedidoResponse> respuestas = pedidos.stream()
-				.map(p ->pserv.resumenPedido(p.getIdPedido()))
-				.collect(Collectors.toList());
-		return ResponseEntity.ok(respuestas);
-	}
+	
+
+	
+	 @GetMapping("/mensual")
+	@PreAuthorize("hasRole('ADMON')")
+	    public List<IngresoMensualDto> getMensual() {
+	        return pserv.getIngresosMensuales();
+	    }
+
+	 @GetMapping("/mensual/total")
+	@PreAuthorize("hasRole('ADMON')")
+	 	public double getTotal() {
+	       return pserv.getTotalIngreso();
+	   }
+		//Resumen del pedido
+		@GetMapping("/{idPedido:\\d+}")
+		public ResponseEntity<?> pedidoPorIdPedido(@PathVariable Integer idPedido){
+			PedidoResponse resumen = pserv.resumenPedido(idPedido);
+			return ResponseEntity.ok(resumen);
+		}
+		
+	 
 	//Cambio de Estado
 	@PutMapping("/{idPedido}/estado/{estado}")
 	@PreAuthorize("hasAnyRole('CLIENTE')")
@@ -73,5 +93,6 @@ public class PedidoRestController {
         Pedido pedido = pserv.updateEstado(idPedido, estado, usuario.getIdUsuario());
         return ResponseEntity.ok(pedido);
 	}
+
 	
 }

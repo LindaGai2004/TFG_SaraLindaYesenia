@@ -12,7 +12,7 @@ public interface ProductoService {
 	List<Producto> findAll();
 	
 
-	Producto findOne(Integer idproducto);
+	Producto findOne(Integer idProducto);
 
 	int deleteById (Integer idProducto);
 

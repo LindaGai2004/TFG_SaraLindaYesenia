@@ -1,4 +1,4 @@
-import { BarChart2, BookOpen, ShoppingBag, Users, Settings, LogOut } from 'lucide-react';
+import { BarChart2, BookOpen, ShoppingBag, Users, Settings, LogOut, Heart } from 'lucide-react';
 
 const navSections = [
   {
@@ -26,6 +26,7 @@ const navSections = [
     title: 'CUENTA',
     items: [
       { id: 'admin', label: 'Mi Datos', icon: Settings },
+      { id: 'favoritos', label: 'Favoritos', icon: Heart, onlyClient: true }
     ]
   },
 ];
@@ -49,6 +50,10 @@ export default function Sidebar({ currentPage, onNavigate, onLogout }) {
             {section.items.map((item) => {
               const Icon = item.icon;
               const isActive = currentPage === item.id;
+              
+              if (item.onlyClient && Users?.rol !== "CLIENTE") {
+                return null;
+              }
               
               return (
                 <div key={item.id}>

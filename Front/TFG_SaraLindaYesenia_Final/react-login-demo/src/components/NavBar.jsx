@@ -1,24 +1,24 @@
-import {Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import {Search, User, ShoppingCart, Headphones, AlertTriangle} from 'lucide-react';
+import { Search, User, ShoppingCart, Headphones, AlertTriangle } from 'lucide-react';
 import './NavBar.css';
 
-function NavBar({isVisible=true}) {
-    const navigate = useNavigate();
-    const { user, logout } = useAuth();
+function NavBar({ isVisible = true }) {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
-    function entrarCarrito() {
-        if (!user) {
-            alert('Debes loguearte para ver tu carrito');
-            navigate('/login', 
-              {state:{ from: '/carrito'}}
-            );
-        } else {
-            navigate('/carrito')
-        }
+  function entrarCarrito() {
+    if (!user) {
+      alert('Debes loguearte para ver tu carrito');
+      navigate('/login',
+        { state: { from: '/carrito' } }
+      );
+    } else {
+      navigate('/carrito')
     }
-    return (
-<>
+  }
+  return (
+    <>
       {/* Navegación */}
       <nav className={`barra-navegacion ${isVisible ? 'visible' : ''}`}>
         {/* Enlaces a la izquierda */}
@@ -50,10 +50,27 @@ function NavBar({isVisible=true}) {
           {/* Separador vertical */}
           <div className="separador"></div>
 
-          {/* Login */}
-          <Link to="/login" className="accion">
+          {/* Login: Aquí si el usuario ya está logueado no debería volver a pedir q se loguee de nuevo (!!) */}
+          <div
+            className="accion"
+            onClick={() => {
+              if (!user) {
+                navigate("/login");
+              } else {
+                if (user.perfil?.nombre === "ROLE_CLIENTE") {
+                  navigate("/cliente");
+                } else if (user.perfil?.nombre === "ROLE_ADMON") {
+                  navigate("/administrador");
+                } else if (user.perfil?.nombre === "ROLE_JEFE") {
+                  navigate("/jefe");
+                } else if (user.perfil?.nombre === "ROLE_TRABAJADOR") {
+                  navigate("/trabajador");
+                }
+              }
+            }}
+          >
             <User size={24} />
-          </Link>
+          </div>
 
           {/* Lupa */}
           <div className="accion">
@@ -67,7 +84,7 @@ function NavBar({isVisible=true}) {
         </div>
       </nav>
     </>
-    );
+  );
 }
 
 export default NavBar;
