@@ -35,6 +35,10 @@ public class CarritoServiceImpl implements CarritoService {
     private PedidoService pserv;
 	@Autowired
 	private FacturaService fserv;
+	@Autowired
+	private PdfService pdfServ;
+	@Autowired
+	private EmailService eserv;
 	
 	// Estado = 'CARRITO'
 	// Solo puede haber un carrito por usuario
@@ -181,7 +185,14 @@ public class CarritoServiceImpl implements CarritoService {
 		prepo.save(carrito);
 		//generar factura
 		Factura factura = fserv.generarFactura(carrito);
-		//enviar email aqui
+		try {
+			// generar pdf
+			byte[] pdf = pdfServ.generarPdf(factura);
+			eserv.enviarFacturaAdjunto(carrito.getUsuario().getEmail(), factura, pdf);
+		} catch (Exception e) {
+			throw new RuntimeException("Error generando o enviando la factura", e);
+		}
+		
 		//crear carrito nuevo vacio
 		Pedido nuevoCarrito = new Pedido();
 		nuevoCarrito.setUsuario(carrito.getUsuario());
