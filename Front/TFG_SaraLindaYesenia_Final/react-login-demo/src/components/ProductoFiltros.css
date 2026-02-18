@@ -18,7 +18,7 @@
   .filtro label {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #333;
+    color: #6d96a6;
   }
   
   /* SELECTS */
@@ -32,7 +32,7 @@
   }
   
   .filtro select:focus {
-    border-color: #184763;
+    border-color: #6d96a6;
     outline: none;
   }
   
@@ -56,18 +56,20 @@
   .btn-filtrar {
     width: 100%;
     padding: 0.7rem;
-    background: #9c9a9a;
-    color: white;
+    background: #bfd1e0;
+    color: #6d96a6;
     border: none;
     border-radius: 6px;
     font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
     margin-top: 0.5rem;
     transition: background 0.2s ease;
   }
   
   .btn-filtrar:hover {
-    background: #184763;
+    color: #bfd1e0;
+    background: #6d96a6;
   }  
 
 

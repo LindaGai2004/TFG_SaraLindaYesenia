@@ -262,3 +262,38 @@
     color: #333;
   }
   
+  .notificacion-login {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ffefef;
+  border: 1px solid #ff6b6b;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 9999;
+}
+
+/*---------- NOTIFICACIÓN FAVORITOS ----------*/
+.notificacion-login p {
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  color: #b30000;
+}
+
+.btn-login-aviso {
+  display: inline-block;
+  background: #ff6b6b;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.btn-cerrar-aviso {
+  background: transparent;
+  border: none;
+  color: #444;
+  cursor: pointer;
+}

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import "./ProductoDetalle.css";
 import { useAuth } from "../context/AuthContext";
 import ProductoImagenes from "../components/ProductoImagenes";
+import { apiGet, apiPost, apiDelete } from "../api/api";
+
 
 export default function ProductoDetalle() {
   const { id } = useParams();
@@ -13,6 +15,7 @@ export default function ProductoDetalle() {
   const [esFavorito, setEsFavorito] = useState(false);
 
   const [mensaje, setMensaje] = useState("");
+  const [mostrarLoginAviso, setMostrarLoginAviso] = useState(false);
 
   // Cargar producto base
   useEffect(() => {
@@ -79,21 +82,12 @@ export default function ProductoDetalle() {
 
     const fetchFavorito = async () => {
       try {
-        const res = await fetch(`http://localhost:9001/usuarios/favoritos`, {
-          credentials: "include"
-        });
-
-        if (res.status === 401) {
-          setEsFavorito(false);
-          return;
-        }
-
-        const data = await res.json();
+        const data = await apiGet(`/usuarios/favoritos`);
         const encontrado = data.some(f => f.idProducto === producto.id);
         setEsFavorito(encontrado);
-
       } catch (error) {
         console.error("Error comprobando favorito:", error);
+        setEsFavorito(false); // si hay error, asumimos que no es favorito
       }
     };
 
@@ -102,19 +96,16 @@ export default function ProductoDetalle() {
 
   // Añadir / eliminar favorito
   const toggleFavorito = async () => {
+    if (!user) {
+      setMostrarLoginAviso(true);
+      return;
+    }
+
     try {
       if (esFavorito) {
-        await fetch(`http://localhost:9001/usuarios/favoritos/${producto.id}`, {
-          method: "DELETE",
-          credentials: "include"
-        });
-        setMensaje("Eliminado de favoritos");
+        await apiDelete(`/usuarios/favoritos/${producto.id}`);
       } else {
-        await fetch(`http://localhost:9001/usuarios/favoritos/${producto.id}`, {
-          method: "POST",
-          credentials: "include"
-        });
-        setMensaje("Añadido a favoritos");
+        await apiPost(`/usuarios/favoritos/${producto.id}`);
       }
 
       setTimeout(() => setMensaje(""), 2000);
@@ -134,6 +125,16 @@ export default function ProductoDetalle() {
 
   return (
     <div className="detalle-producto fondo-detalle">
+      
+      {mostrarLoginAviso && (
+        <div className="notificacion-login">
+          <p>Debes iniciar sesión para guardar favoritos.</p>
+          <a href="/login" className="btn-login-aviso">Ir al login</a>
+          <button className="btn-cerrar-aviso" onClick={() => setMostrarLoginAviso(false)}>
+            Cerrar
+          </button>
+        </div>
+      )}
 
       {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
