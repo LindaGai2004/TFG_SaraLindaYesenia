@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./ProductoDetalle.css";
-import { imagenesLibros, imagenesPapeleria } from "../data/imagenes";
 import { useAuth } from "../context/AuthContext";
+import ProductoImagenes from "../components/ProductoImagenes";
 
 export default function ProductoDetalle() {
   const { id } = useParams();
@@ -12,36 +12,20 @@ export default function ProductoDetalle() {
   const { user } = useAuth();
   const [esFavorito, setEsFavorito] = useState(false);
 
-  // estado para la notificación
   const [mensaje, setMensaje] = useState("");
 
-  // Cargar producto
+  // Cargar producto base
   useEffect(() => {
     fetch(`http://localhost:9001/productos/${id}`)
       .then(res => res.json())
       .then(data => {
-
-        let imagen = "";
-        let miniaturas = [];
-
-        if (data.tipo_producto === "LIBRO") {
-          imagen = imagenesLibros[id]?.portada;
-          miniaturas = imagenesLibros[id]?.miniaturas || [];
-        }
-
-        if (data.tipo_producto === "PAPELERIA") {
-          imagen = imagenesPapeleria[id];
-          miniaturas = [imagenesPapeleria[id]];
-        }
-
         const base = {
           id: data.idProducto,
           nombre: data.nombreProducto,
           descripcion: data.descripcion,
           precio: data.precio,
           tipo: data.tipo_producto || data.tipo,
-          imagen: imagen,
-          miniaturas: miniaturas,
+          imagenes: data.imagenes || [],
           autor: null,
           isbn: null,
           numeroPaginas: null,
@@ -56,7 +40,6 @@ export default function ProductoDetalle() {
 
         setProducto(base);
 
-        // Si es libro → cargar detalles
         if (base.tipo === "LIBRO") {
           fetch(`http://localhost:9001/libros/${id}`)
             .then(res => res.json())
@@ -75,7 +58,6 @@ export default function ProductoDetalle() {
             });
         }
 
-        // Si es papelería → cargar detalles
         if (base.tipo === "PAPELERIA") {
           fetch(`http://localhost:9001/papelerias/${id}`)
             .then(res => res.json())
@@ -90,17 +72,23 @@ export default function ProductoDetalle() {
       });
   }, [id]);
 
-  // Cargar si este producto ya es favorito
+  // Cargar si es favorito
   useEffect(() => {
     if (!producto) return;
+    if (!user) return;
 
     const fetchFavorito = async () => {
       try {
         const res = await fetch(`http://localhost:9001/usuarios/favoritos`, {
-  credentials: "include"
-});
-        const data = await res.json();
+          credentials: "include"
+        });
 
+        if (res.status === 401) {
+          setEsFavorito(false);
+          return;
+        }
+
+        const data = await res.json();
         const encontrado = data.some(f => f.idProducto === producto.id);
         setEsFavorito(encontrado);
 
@@ -110,7 +98,7 @@ export default function ProductoDetalle() {
     };
 
     fetchFavorito();
-  }, [producto, user.idUsuario]);
+  }, [producto, user]);
 
   // Añadir / eliminar favorito
   const toggleFavorito = async () => {
@@ -120,21 +108,16 @@ export default function ProductoDetalle() {
           method: "DELETE",
           credentials: "include"
         });
-
         setMensaje("Eliminado de favoritos");
-
       } else {
         await fetch(`http://localhost:9001/usuarios/favoritos/${producto.id}`, {
           method: "POST",
           credentials: "include"
         });
-
         setMensaje("Añadido a favoritos");
       }
 
-      // Ocultar mensaje después de 2 segundos
       setTimeout(() => setMensaje(""), 2000);
-
       setEsFavorito(!esFavorito);
 
     } catch (error) {
@@ -150,54 +133,32 @@ export default function ProductoDetalle() {
       : producto.resumen;
 
   return (
-    <div className="detalle-producto">
+    <div className="detalle-producto fondo-detalle">
 
       {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
       {/* FILA 1 */}
       <div className="fila-superior dos-columnas">
 
-        {/* COLUMNA IZQUIERDA */}
         <div className="col-izquierda">
-          <div className="imagen-principal">
-            <img src={producto.imagen} className="detalle-imagen" alt={producto.nombre} />
-          </div>
-
-          <div className="detalle-miniaturas">
-            {producto.miniaturas.map((mini, index) => (
-              <img
-                key={index}
-                src={mini}
-                alt="miniatura"
-                onClick={() => setProducto({ ...producto, imagen: mini })}
-              />
-            ))}
-          </div>
+          <ProductoImagenes imagenes={producto.imagenes} />
         </div>
 
-        {/* COLUMNA DERECHA */}
         <div className="col-derecha-editorial">
 
-          {/* TÍTULO + AUTOR + PRECIO */}
           <div className="editorial-header">
             <h1 className="titulo-editorial">{producto.nombre}</h1>
             {producto.autor && <p className="autor-editorial">{producto.autor}</p>}
             <p className="precio-editorial">{producto.precio} €</p>
           </div>
 
-          {/* DESCRIPCIÓN */}
           <p className="descripcion-editorial">{producto.descripcion}</p>
 
-          {/* BOTONES */}
           <div className="editorial-botones-fila">
 
-            {/* BOTÓN PRINCIPAL */}
             <button className="btn-cesta-editorial">Añadir a la cesta</button>
 
-            {/* ICONOS */}
             <div className="botones-iconos">
-
-              {/* BOTÓN FAVORITO */}
               <button className="btn-icono" onClick={toggleFavorito}>
                 <img
                   src={esFavorito ? "/corazon-lleno.png" : "/corazon.jpg"}
@@ -208,7 +169,6 @@ export default function ProductoDetalle() {
               <button className="btn-icono">
                 <img src="/compartir.jpg" alt="Compartir" />
               </button>
-
             </div>
 
           </div>
@@ -219,9 +179,7 @@ export default function ProductoDetalle() {
       {/* FILA 2 */}
       <div className="fila-inferior">
 
-        {/* IZQUIERDA */}
         <div className="col-inferior-izq">
-
           <h2 className="titulo-seccion">Resumen</h2>
 
           <p className="texto-resumen">
@@ -239,18 +197,14 @@ export default function ProductoDetalle() {
 
           <div className="autor-box">
             <img src="" alt="Autor" className="autor-foto" />
-
             <div className="autor-info">
               <p className="autor-nombre">{producto.autor || "Autor desconocido"}</p>
               <a className="autor-link">Ver más información</a>
             </div>
           </div>
-
         </div>
 
-        {/* DERECHA */}
         <div className="col-inferior-der">
-
           <h2 className="titulo-seccion">Detalles</h2>
 
           <div className="detalles-grid">
@@ -260,7 +214,6 @@ export default function ProductoDetalle() {
             <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
             <p><strong>Género:</strong> {producto.genero}</p>
           </div>
-
         </div>
 
       </div>

@@ -2,6 +2,9 @@ package seguridad.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
@@ -14,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,7 +60,10 @@ public abstract class Producto implements Serializable{
 	@Column(nullable = false)
 	boolean destacado; //para libro del mes 
 
-	
+	@OneToMany(mappedBy = "producto")
+	@JsonIgnoreProperties("producto")
+	private List<ImagenProducto> imagenes;
+
 	
 	public Producto(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
 			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal) {

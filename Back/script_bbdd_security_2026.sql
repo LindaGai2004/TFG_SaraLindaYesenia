@@ -30,17 +30,6 @@ create table pedidos(
     foreign key (id_usuario) references usuarios(id_usuario)
 );
 
-
-CREATE TABLE genero (
-	id_genero int auto_increment primary key not null,
-    nombre_genero varchar(100) not null
-);
-
-CREATE TABLE categoria(
-	id_categoria int auto_increment primary key not null,
-	nombre_categoria varchar(100) not null
-);
-
 CREATE TABLE productos (
     id_producto int not null auto_increment primary key,
     nombre_producto varchar(100) not null,
@@ -52,6 +41,19 @@ CREATE TABLE productos (
     fecha_alta date not null,
     costo_real double not null,
 	destacado boolean default false
+);
+
+CREATE TABLE imagenes_producto (
+    id_imagen int not null auto_increment primary key,
+    id_producto int not null,
+    tipo ENUM('PRINCIPAL', 'MINIATURA') not null,
+    ruta varchar(255) not null,
+    foreign key (id_producto) references productos(id_producto)
+);
+
+CREATE TABLE genero (
+	id_genero int auto_increment primary key not null,
+    nombre_genero varchar(100) not null
 );
 
 CREATE TABLE idioma(
@@ -77,6 +79,11 @@ create table libros(
 CREATE TABLE marca(
 	id_marca int auto_increment not null primary key,
 	nombre_marca varchar(100) not null
+);
+
+CREATE TABLE categoria(
+	id_categoria int auto_increment primary key not null,
+	nombre_categoria varchar(100) not null
 );
 
 CREATE TABLE papeleria (
@@ -470,6 +477,213 @@ INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unidad) VAL
 (10, 40, 1, 2.80),
 (11, 27, 7, 8.90),
 (12, 23, 3, 4.50);
+
+
+-- ========== DATOS DE LIBRO ==========
+INSERT INTO imagenes_producto (id_producto, tipo, ruta) VALUES
+(1, 'PRINCIPAL', 'libros/1.jpg'),
+(1, 'MINIATURA', 'libros/1_m1.jpg'),
+(1, 'MINIATURA', 'libros/1_m2.jpg'),
+(1, 'MINIATURA', 'libros/1_m3.jpg'),
+
+(2, 'PRINCIPAL', 'libros/2.jpg'),
+(2, 'MINIATURA', 'libros/2_m1.jpg'),
+(2, 'MINIATURA', 'libros/2_m2.jpg'),
+
+(3, 'PRINCIPAL', 'libros/3.jpg'),
+(3, 'MINIATURA', 'libros/3_m1.jpg'),
+(3, 'MINIATURA', 'libros/3_m2.jpg'),
+
+(4, 'PRINCIPAL', 'libros/4.jpg'),
+(4, 'MINIATURA', 'libros/4_m1.jpg'),
+(4, 'MINIATURA', 'libros/4_m2.jpg'),
+
+(5, 'PRINCIPAL', 'libros/5.jpg'),
+(5, 'MINIATURA', 'libros/5_m1.jpg'),
+(5, 'MINIATURA', 'libros/5_m2.jpg'),
+
+(6, 'PRINCIPAL', 'libros/6.jpg'),
+(6, 'MINIATURA', 'libros/6_m1.jpg'),
+(6, 'MINIATURA', 'libros/6_m2.jpg'),
+
+(7, 'PRINCIPAL', 'libros/7.jpg'),
+(7, 'MINIATURA', 'libros/7_m1.jpg'),
+(7, 'MINIATURA', 'libros/7_m2.jpg'),
+
+(8, 'PRINCIPAL', 'libros/8.jpg'),
+(8, 'MINIATURA', 'libros/8_m1.jpg'),
+(8, 'MINIATURA', 'libros/8_m2.jpg'),
+
+(9, 'PRINCIPAL', 'libros/9.jpg'),
+(9, 'MINIATURA', 'libros/9_m1.jpg'),
+(9, 'MINIATURA', 'libros/9_m2.jpg'),
+
+(10, 'PRINCIPAL', 'libros/10.jpg'),
+(10, 'MINIATURA', 'libros/10_m1.jpg'),
+(10, 'MINIATURA', 'libros/10_m2.jpg'),
+
+(11, 'PRINCIPAL', 'libros/11.jpg'),
+(11, 'MINIATURA', 'libros/11_m1.jpg'),
+(11, 'MINIATURA', 'libros/11_m2.jpg'),
+
+(12, 'PRINCIPAL', 'libros/12.jpg'),
+(12, 'MINIATURA', 'libros/12_m1.jpg'),
+(12, 'MINIATURA', 'libros/12_m2.jpg'),
+
+(13, 'PRINCIPAL', 'libros/13.jpg'),
+(13, 'MINIATURA', 'libros/13_m1.jpg'),
+(13, 'MINIATURA', 'libros/13_m2.jpg'),
+
+(14, 'PRINCIPAL', 'libros/14.jpg'),
+(14, 'MINIATURA', 'libros/14_m1.jpg'),
+(14, 'MINIATURA', 'libros/14_m2.jpg'),
+
+(15, 'PRINCIPAL', 'libros/15.jpg'),
+(15, 'MINIATURA', 'libros/15_m1.jpg'),
+(15, 'MINIATURA', 'libros/15_m2.jpg'),
+
+(16, 'PRINCIPAL', 'libros/16.jpg'),
+(16, 'MINIATURA', 'libros/16_m1.jpg'),
+(16, 'MINIATURA', 'libros/16_m2.jpg'),
+
+(17, 'PRINCIPAL', 'libros/17.jpg'),
+(17, 'MINIATURA', 'libros/17_m1.jpg'),
+(17, 'MINIATURA', 'libros/17_m2.jpg'),
+
+(18, 'PRINCIPAL', 'libros/18.jpg'),
+(18, 'MINIATURA', 'libros/18_m1.jpg'),
+(18, 'MINIATURA', 'libros/18_m2.jpg'),
+
+(19, 'PRINCIPAL', 'libros/19.jpg'),
+(19, 'MINIATURA', 'libros/19_m1.jpg'),
+(19, 'MINIATURA', 'libros/19_m2.jpg'),
+
+(20, 'PRINCIPAL', 'libros/20.jpg'),
+(20, 'MINIATURA', 'libros/20_m1.jpg'),
+(20, 'MINIATURA', 'libros/20_m2.jpg'),
+
+(21, 'PRINCIPAL', 'libros/21.jpg'),
+(21, 'MINIATURA', 'libros/21_m1.jpg'),
+(21, 'MINIATURA', 'libros/21_m2.jpg'),
+
+(22, 'PRINCIPAL', 'libros/22.jpg'),
+(22, 'MINIATURA', 'libros/22_m1.jpg'),
+(22, 'MINIATURA', 'libros/22_m2.jpg'),
+
+(23, 'PRINCIPAL', 'libros/23.jpg'),
+(23, 'MINIATURA', 'libros/23_m1.jpg'),
+(23, 'MINIATURA', 'libros/23_m2.jpg'),
+
+(24, 'PRINCIPAL', 'libros/24.jpg'),
+(24, 'MINIATURA', 'libros/24_m1.jpg'),
+(24, 'MINIATURA', 'libros/24_m2.jpg'),
+
+(25, 'PRINCIPAL', 'libros/25.jpg'),
+(25, 'MINIATURA', 'libros/25_m1.jpg'),
+(25, 'MINIATURA', 'libros/25_m2.jpg'),
+
+(26, 'PRINCIPAL', 'libros/26.jpg'),
+(26, 'MINIATURA', 'libros/26_m1.jpg'),
+(26, 'MINIATURA', 'libros/26_m2.jpg'),
+
+(27, 'PRINCIPAL', 'libros/27.jpg'),
+(27, 'MINIATURA', 'libros/27_m1.jpg'),
+(27, 'MINIATURA', 'libros/27_m2.jpg'),
+
+(28, 'PRINCIPAL', 'libros/28.jpg'),
+(28, 'MINIATURA', 'libros/28_m1.jpg'),
+(28, 'MINIATURA', 'libros/28_m2.jpg'),
+
+(29, 'PRINCIPAL', 'libros/29.jpg'),
+(29, 'MINIATURA', 'libros/29_m1.jpg'),
+(29, 'MINIATURA', 'libros/29_m2.jpg'),
+
+(30, 'PRINCIPAL', 'libros/30.jpg'),
+(30, 'MINIATURA', 'libros/30_m1.jpg'),
+(30, 'MINIATURA', 'libros/30_m2.jpg');
+
+
+-- ========== DATOS DE PAPELERÍA ==========
+INSERT INTO imagenes_producto (id_producto, tipo, ruta) VALUES
+(31, 'PRINCIPAL', 'papeleria/31.jpg'),
+(31, 'MINIATURA', 'papeleria/31_m1.jpg'),
+(31, 'MINIATURA', 'papeleria/31_m2.jpg'),
+
+(32, 'PRINCIPAL', 'papeleria/32.jpg'),
+(32, 'MINIATURA', 'papeleria/32_m1.jpg'),
+(32, 'MINIATURA', 'papeleria/32_m2.jpg'),
+
+(33, 'PRINCIPAL', 'papeleria/33.jpg'),
+(33, 'MINIATURA', 'papeleria/33_m1.jpg'),
+(33, 'MINIATURA', 'papeleria/33_m2.jpg'),
+
+(34, 'PRINCIPAL', 'papeleria/34.jpg'),
+(34, 'MINIATURA', 'papeleria/34_m1.jpg'),
+(34, 'MINIATURA', 'papeleria/34_m2.jpg'),
+
+(35, 'PRINCIPAL', 'papeleria/35.jpg'),
+(35, 'MINIATURA', 'papeleria/35_m1.jpg'),
+(35, 'MINIATURA', 'papeleria/35_m2.jpg'),
+
+(36, 'PRINCIPAL', 'papeleria/36.jpg'),
+(36, 'MINIATURA', 'papeleria/36_m1.jpg'),
+(36, 'MINIATURA', 'papeleria/36_m2.jpg'),
+
+(37, 'PRINCIPAL', 'papeleria/37.jpg'),
+(37, 'MINIATURA', 'papeleria/37_m1.jpg'),
+(37, 'MINIATURA', 'papeleria/37_m2.jpg'),
+
+(38, 'PRINCIPAL', 'papeleria/38.jpg'),
+(38, 'MINIATURA', 'papeleria/38_m1.jpg'),
+(38, 'MINIATURA', 'papeleria/38_m2.jpg'),
+
+(39, 'PRINCIPAL', 'papeleria/39.jpg'),
+(39, 'MINIATURA', 'papeleria/39_m1.jpg'),
+(39, 'MINIATURA', 'papeleria/39_m2.jpg'),
+
+(40, 'PRINCIPAL', 'papeleria/40.jpg'),
+(40, 'MINIATURA', 'papeleria/40_m1.jpg'),
+(40, 'MINIATURA', 'papeleria/40_m2.jpg'),
+
+(41, 'PRINCIPAL', 'papeleria/41.jpg'),
+(41, 'MINIATURA', 'papeleria/41_m1.jpg'),
+(41, 'MINIATURA', 'papeleria/41_m2.jpg'),
+
+(42, 'PRINCIPAL', 'papeleria/42.jpg'),
+(42, 'MINIATURA', 'papeleria/42_m1.jpg'),
+(42, 'MINIATURA', 'papeleria/42_m2.jpg'),
+
+(43, 'PRINCIPAL', 'papeleria/43.jpg'),
+(43, 'MINIATURA', 'papeleria/43_m1.jpg'),
+(43, 'MINIATURA', 'papeleria/43_m2.jpg'),
+
+(44, 'PRINCIPAL', 'papeleria/44.jpg'),
+(44, 'MINIATURA', 'papeleria/44_m1.jpg'),
+(44, 'MINIATURA', 'papeleria/44_m2.jpg'),
+
+(45, 'PRINCIPAL', 'papeleria/45.jpg'),
+(45, 'MINIATURA', 'papeleria/45_m1.jpg'),
+(45, 'MINIATURA', 'papeleria/45_m2.jpg'),
+
+(46, 'PRINCIPAL', 'papeleria/46.jpg'),
+(46, 'MINIATURA', 'papeleria/46_m1.jpg'),
+(46, 'MINIATURA', 'papeleria/46_m2.jpg'),
+
+(47, 'PRINCIPAL', 'papeleria/47.jpg'),
+(47, 'MINIATURA', 'papeleria/47_m1.jpg'),
+(47, 'MINIATURA', 'papeleria/47_m2.jpg'),
+
+(48, 'PRINCIPAL', 'papeleria/48.jpg'),
+(48, 'MINIATURA', 'papeleria/48_m1.jpg'),
+(48, 'MINIATURA', 'papeleria/48_m2.jpg'),
+
+(49, 'PRINCIPAL', 'papeleria/49.jpg'),
+(49, 'MINIATURA', 'papeleria/49_m1.jpg'),
+(49, 'MINIATURA', 'papeleria/49_m2.jpg'),
+
+(50, 'PRINCIPAL', 'papeleria/50.jpg'),
+(50, 'MINIATURA', 'papeleria/50_m1.jpg'),
+(50, 'MINIATURA', 'papeleria/50_m2.jpg');
 
 
 INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUES
