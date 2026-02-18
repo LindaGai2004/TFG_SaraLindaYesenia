@@ -86,6 +86,7 @@ public class SecurityConfig {
             	    "/libros/**",
             	    "/papelerias/**",
             	    "/productos/**",
+            	    "/uploads/**",
             	    "/generos/**",
             	    "/idiomas/**",
             	    "/categorias/**",

@@ -1,9 +1,10 @@
-import "./ProductoLista.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { imagenesLibros, imagenesPapeleria } from "../data/imagenes.js";
 import {apiGet, apiPost, apiDelete} from "../api/api.js";
+import "./ProductoLista.css";
+import ProductoImagenes from "./ProductoImagenes";
+
 export default function ProductoLista({ productos }) {
 
   const [favoritos, setFavoritos] = useState({});
@@ -75,15 +76,9 @@ export default function ProductoLista({ productos }) {
 
               {/* Imagen */}
               <div className="producto-imagen">
-                <img
-                  src={
-                    p.tipo_producto === "LIBRO"
-                      ? imagenesLibros[p.idProducto]?.portada
-                      : imagenesPapeleria[p.idProducto]
-                  }
-                  alt={p.nombreProducto}
-                />
+                <ProductoImagenes imagenes={p.imagenes} modo="simple" />
               </div>
+
 
               {/* Información */}
               <div className="producto-info">
