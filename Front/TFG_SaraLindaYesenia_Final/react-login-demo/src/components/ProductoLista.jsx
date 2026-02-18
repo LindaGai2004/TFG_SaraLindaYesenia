@@ -14,10 +14,11 @@ export default function ProductoLista({ productos }) {
 
   // Cargar favoritos reales del backend al iniciar
   useEffect(() => {
+    if (!user) return; // evita el error cuando no estás logueada
+  
     const fetchFavoritos = async () => {
       try {
         const data = await apiGet("usuarios/favoritos");
-        // Convertimos la lista en un diccionario { idProducto: true }
         const favMap = {};
         data.forEach(f => favMap[f.idProducto] = true);
         setFavoritos(favMap);
@@ -25,9 +26,9 @@ export default function ProductoLista({ productos }) {
         console.error("Error cargando favoritos:", error);
       }
     };
-
+  
     fetchFavoritos();
-  }, [user.idUsuario]);
+  }, [user]);  
 
   const toggleFavorito = async (idProducto) => {
     const esFavorito = favoritos[idProducto];
