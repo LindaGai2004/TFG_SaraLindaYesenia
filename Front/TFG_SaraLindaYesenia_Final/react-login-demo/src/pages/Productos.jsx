@@ -45,7 +45,6 @@ export default function Productos() {
         }
     }
 
-
     return (
         <div className="productos-container">
             <aside className="filtros">
