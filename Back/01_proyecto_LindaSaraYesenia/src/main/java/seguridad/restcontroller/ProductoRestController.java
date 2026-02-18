@@ -105,6 +105,7 @@ public class ProductoRestController {
         Papeleria pap = papeleriaRepo.findById(id).orElse(null);
 
         // Si existe libro con ese id es LIBRO
+        
         if (libro != null) {
             return ResponseEntity.ok(new Object() {
                 public final Integer idProducto = base.getIdProducto();
@@ -118,8 +119,10 @@ public class ProductoRestController {
                 public final Integer numeroPaginas = libro.getNumeroPagina();
                 public final String idioma = (libro.getIdioma() != null ? libro.getIdioma().getNombreIdioma() : null);
                 public final String resumen = libro.getResumen();
+                public final List<?> imagenes = base.getImagenes();
             });
         }
+
 
         // Si existe papelería con ese id es PAPELERIA
         if (pap != null) {
@@ -132,13 +135,15 @@ public class ProductoRestController {
                 public final String tipo = "PAPELERIA";
                 public final String marca = (pap.getMarca() != null ? pap.getMarca().getNombreMarca() : null);
                 public final String categoria = (pap.getCategoria() != null ? pap.getCategoria().getNombreCategoria() : null);
+
+                public final List<?> imagenes = base.getImagenes();
             });
         }
+
 
         // Si no es ni libro ni papelería (caso raro)
         return ResponseEntity.ok(base);
     }
-
 
 
     @DeleteMapping("/eliminar/{idProducto}")
@@ -155,10 +160,6 @@ public class ProductoRestController {
 
         return ResponseEntity.status(500).body("Error al eliminar");
     }
-
-
-	
-
 
 }
 

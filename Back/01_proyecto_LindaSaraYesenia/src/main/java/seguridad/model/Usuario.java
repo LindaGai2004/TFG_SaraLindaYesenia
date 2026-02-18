@@ -29,7 +29,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-@AllArgsConstructor @NoArgsConstructor @Data @Builder
+@AllArgsConstructor 
+@NoArgsConstructor 
+@Data 
+@Builder
 @Entity
 @Table(name="USUARIOS")
 public class Usuario implements UserDetails, Serializable{
