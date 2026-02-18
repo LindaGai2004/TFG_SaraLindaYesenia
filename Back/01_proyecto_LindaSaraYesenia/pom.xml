@@ -98,11 +98,16 @@
     		<version>0.11.5</version>
     		<scope>runtime</scope>
 		</dependency>
-		<!-- Para usar OpenPDF -->
+		<!-- Para usar ThymeLeaf -->
 		<dependency>
-    		<groupId>com.github.librepdf</groupId>
-    		<artifactId>openpdf</artifactId>
-    		<version>1.3.30</version>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!-- Dependencia de OpenHTMLtoPDF -->
+		<dependency>
+    		<groupId>com.openhtmltopdf</groupId>
+    		<artifactId>openhtmltopdf-pdfbox</artifactId>
+   			<version>1.0.10</version>
 		</dependency>
 		<!-- Añadir dependencia de mail -->
 		<dependency>
