@@ -116,8 +116,10 @@ export default function ProductoDetalle() {
     try {
       if (esFavorito) {
         await apiDelete(`/usuarios/favoritos/${producto.id}`);
+        setMensaje("Eliminado de favoritos");
       } else {
         await apiPost(`/usuarios/favoritos/${producto.id}`);
+        setMensaje("Añadido a favoritos");
       }
 
       setEsFavorito(!esFavorito);
@@ -136,107 +138,117 @@ export default function ProductoDetalle() {
       : producto.resumen;
 
   return (
-    <div className="detalle-layout">
+    <>
+      {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
-      {/* COLUMNA IZQUIERDA */}
-      <div className="detalle-contenido">
+      <div className="fondo-detalle">
 
-        {/* FILA 1 */}
-        <div className="fila-superior dos-columnas">
-          <div className="col-izquierda">
-            <ProductoImagenes imagenes={producto.imagenes} />
-          </div>
+        <div className="detalle-layout">
 
-          <div className="col-derecha-editorial">
-            <h1 className="titulo-editorial">{producto.nombre}</h1>
-            {producto.autor && <p className="autor-editorial">{producto.autor}</p>}
-            <p className="precio-editorial">{producto.precio} €</p>
+          {/* COLUMNA IZQUIERDA */}
+          <div className="detalle-contenido">
 
-            <p className="descripcion-editorial">{producto.descripcion}</p>
+            {/* FILA 1 */}
+            <div className="fila-superior dos-columnas">
+              <div className="col-izquierda">
+                <ProductoImagenes imagenes={producto.imagenes} />
+              </div>
 
-            <div className="editorial-botones-fila">
-              <button
-                className="btn-cesta-editorial"
-                onClick={() => addToCart(producto.id,1)}
-              >
-                Añadir al carrito
-              </button>
+              <div className="col-derecha-editorial">
+                <h1 className="titulo-editorial">{producto.nombre}</h1>
+                {producto.autor && <p className="autor-editorial">{producto.autor}</p>}
+                <p className="precio-editorial">{producto.precio} €</p>
 
-              <div className="botones-iconos">
-                <button className="btn-icono" onClick={toggleFavorito}>
-                  <img
-                    src={esFavorito ? "/corazon-lleno.png" : "/corazon.jpg"}
-                    alt="Favorito"
-                  />
-                </button>
+                <p className="descripcion-editorial">{producto.descripcion}</p>
 
-                <button className="btn-icono">
-                  <img src="/compartir.jpg" alt="Compartir" />
-                </button>
+                <div className="editorial-botones-fila">
+                  <button
+                    className="btn-cesta-editorial"
+                    onClick={() => {
+                      addToCart(producto.id, 1);
+                      setMensaje("Producto añadido al carrito");
+                      setTimeout(() => setMensaje(""), 2000);
+                    }}
+                  >
+                    Añadir al carrito
+                  </button>
+
+                  <div className="botones-iconos">
+                    <button className="btn-icono" onClick={toggleFavorito}>
+                      <img
+                        src={esFavorito ? "/corazon-lleno.png" : "/corazon.jpg"}
+                        alt="Favorito"
+                      />
+                    </button>
+
+                    <button className="btn-icono">
+                      <img src="/compartir.jpg" alt="Compartir" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* FILA 2 */}
+            <div className="fila-inferior">
+              <div className="col-inferior-izq">
+                <h2 className="titulo-seccion">Resumen</h2>
+
+                <p className="texto-resumen">
+                  {expandido ? producto.resumen : resumenCorto}
+                </p>
+
+                {producto.resumen && producto.resumen.length > 250 && (
+                  <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
+                    {expandido ? "Leer menos" : "Leer más"}
+                  </button>
+                )}
+              </div>
+
+              <div className="col-inferior-der">
+                <h2 className="titulo-seccion">Detalles</h2>
+
+                <div className="detalles-grid">
+                  <p><strong>Editorial:</strong> {producto.editorial}</p>
+                  <p><strong>Idioma:</strong> {producto.idioma}</p>
+                  <p><strong>ISBN:</strong> {producto.isbn}</p>
+                  <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
+                  <p><strong>Género:</strong> {producto.genero}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* FILA 2 */}
-        <div className="fila-inferior">
-          <div className="col-inferior-izq">
-            <h2 className="titulo-seccion">Resumen</h2>
+          {/* COLUMNA DERECHA: RELACIONADOS */}
+          <div className="detalle-relacionados">
+            <h3>Productos relacionados</h3>
 
-            <p className="texto-resumen">
-              {expandido ? producto.resumen : resumenCorto}
-            </p>
+            <div className="relacionados-lista">
+              {relacionados.length === 0 && <p>No hay productos relacionados</p>}
 
-            {producto.resumen && producto.resumen.length > 250 && (
-              <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
-                {expandido ? "Leer menos" : "Leer más"}
-              </button>
-            )}
-          </div>
+              {relacionados.map(r => {
+                const imgPrincipal = r.imagenes?.find(img => img.tipo === "PRINCIPAL")?.ruta;
 
-          <div className="col-inferior-der">
-            <h2 className="titulo-seccion">Detalles</h2>
+                return (
+                  <div
+                    key={r.idProducto}
+                    className="relacionado-item"
+                    onClick={() => window.location.href = `/producto/${r.idProducto}`}
+                  >
+                    <img 
+                      src={`http://localhost:9001/uploads/${imgPrincipal}`} 
+                      alt={r.nombreProducto} 
+                    />
 
-            <div className="detalles-grid">
-              <p><strong>Editorial:</strong> {producto.editorial}</p>
-              <p><strong>Idioma:</strong> {producto.idioma}</p>
-              <p><strong>ISBN:</strong> {producto.isbn}</p>
-              <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
-              <p><strong>Género:</strong> {producto.genero}</p>
+                    <p className="relacionado-nombre">{r.nombreProducto}</p>
+                    <p className="relacionado-precio">{r.precio} €</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
-
-      {/* COLUMNA DERECHA: RELACIONADOS */}
-      <div className="detalle-relacionados">
-        <h3>Productos relacionados</h3>
-
-        <div className="relacionados-lista">
-          {relacionados.length === 0 && <p>No hay productos relacionados</p>}
-
-          {relacionados.map(r => {
-            const imgPrincipal = r.imagenes?.find(img => img.tipo === "PRINCIPAL")?.ruta;
-
-            return (
-              <div
-                key={r.idProducto}
-                className="relacionado-item"
-                onClick={() => window.location.href = `/producto/${r.idProducto}`}
-              >
-                <img 
-                  src={`http://localhost:9001/uploads/${imgPrincipal}`} 
-                  alt={r.nombreProducto} 
-                />
-
-                <p className="relacionado-nombre">{r.nombreProducto}</p>
-                <p className="relacionado-precio">{r.precio} €</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-    </div>
+    </>
   );
 }

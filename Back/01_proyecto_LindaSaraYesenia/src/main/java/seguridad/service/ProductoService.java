@@ -36,4 +36,5 @@ public interface ProductoService {
     List<Producto> relacionadosLibro(String autor, String genero, Integer idActual);
 
     List<Producto> relacionadosPapeleria(String marca, String categoria, Integer idActual);
+    
 }
