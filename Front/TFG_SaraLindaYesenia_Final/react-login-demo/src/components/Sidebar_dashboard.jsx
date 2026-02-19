@@ -26,7 +26,7 @@ const navSections = [
     title: 'CUENTA',
     items: [
       { id: 'admin', label: 'Mi Datos', icon: Settings },
-      { id: 'favoritos', label: 'Favoritos', icon: "/corazon.jpg", onlyClient: true }
+      { id: 'favoritos', label: 'Favoritos', icon: Heart, onlyClient: true }
     ]
   },
 ];

@@ -127,7 +127,7 @@
     background: #bfd1e0;
     color: #6d96a6;
     font-weight: bold;
-    border-radius: 50px;
+    border-radius: 8px;
     border: none;
     font-size: 0.9rem;
     cursor: pointer;
@@ -297,3 +297,82 @@
   color: #444;
   cursor: pointer;
 }
+
+/* ================================
+   COLUMNA DERECHA (RELACIONADOS)
+   ================================ */
+  .detalle-layout {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 20px;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  
+  /* Columna derecha */
+  .detalle-relacionados {
+    padding: 15px;
+    border-radius: 6px;
+    width: 200px;
+    position: sticky;
+    top: 20px;
+  }
+  
+  /* Título */
+  .detalle-relacionados h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #6d96a6;
+    margin-bottom: 15px;
+  }
+  
+  /* Lista vertical */
+  .relacionados-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  
+  /* CARD de producto relacionado */
+  .relacionado-item {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #d0d8dd;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  /* Hover */
+  .relacionado-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  
+  /* Imagen */
+  .relacionado-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
+  /* Nombre */
+  .relacionado-nombre {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #184763;
+  }
+  
+  /* Precio */
+  .relacionado-precio {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #6d96a6;
+  }  
