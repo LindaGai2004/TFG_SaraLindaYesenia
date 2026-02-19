@@ -1,5 +1,3 @@
-
-
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:9001';
 function getAuthHeader() {
   const stored = localStorage.getItem('user');

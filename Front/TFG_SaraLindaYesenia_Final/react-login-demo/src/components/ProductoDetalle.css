@@ -1,14 +1,10 @@
-/* ================================
-   FONDO GENERAL DE TODA LA PÁGINA
-   ================================ */
+/* FONDO GENERAL DE TODA LA PÁGINA */
    .fondo-detalle {
-    background: #f5f3ee;
+    background: #f9f7f4;
     padding: 60px 0;
   }
   
-  /* ================================
-     PRIMERA FILA (IMAGEN + INFO)
-     ================================ */
+  /* PRIMERA FILA (IMAGEN + INFO) */
   .fila-superior {
     max-width: 800px;
     margin: 0 auto 40px auto;
@@ -20,9 +16,7 @@
     gap: 40px;
   }
   
-  /* ================================
-     COLUMNA IZQUIERDA (GALERÍA)
-     ================================ */
+  /* COLUMNA IZQUIERDA (imagenes) -------------------*/
   .col-izquierda {
     display: flex;
     flex-direction: column;
@@ -68,9 +62,7 @@
     border-color: #d60000;
   }
   
-  /* ================================
-     COLUMNA DERECHA (INFO)
-     ================================ */
+  /* COLUMNA DERECHA (INFO) ----------------------------*/
   .col-derecha-editorial {
     display: flex;
     flex-direction: column;
@@ -82,20 +74,21 @@
   }
   
   .titulo-editorial {
-    font-size: 2.7rem;
+    font-size: 50px;
+    font-family: "Cormorant", sans-serif;
     margin: 0;
     font-weight: 700;
     color: #6d96a6;
   }
   
   .autor-editorial {
-    font-size: 1.1rem;
+    font-size: 25px;
     margin-top: 5px;
     color: #6d96a6;
   }
   
   .precio-editorial {
-    font-size: 1.6rem;
+    font-size: 25px;
     font-weight: bold;
     margin-top: 10px;
     color: #6d96a6;
@@ -127,7 +120,7 @@
     background: #bfd1e0;
     color: #6d96a6;
     font-weight: bold;
-    border-radius: 50px;
+    border-radius: 8px;
     border: none;
     font-size: 0.9rem;
     cursor: pointer;
@@ -135,7 +128,7 @@
   
   .btn-cesta-editorial:hover {
     background: #6d96a6;
-    color: #bfd1e0;
+    color: white;
   }
   
   .btn-icono {
@@ -161,9 +154,7 @@
     object-fit: contain;
   }
   
-  /* ================================
-     SEGUNDA FILA (RESUMEN + DETALLES)
-     ================================ */
+  /* SEGUNDA FILA (RESUMEN + DETALLES) */
   .fila-inferior {
     max-width: 1100px;
     margin: 40px auto;
@@ -262,3 +253,138 @@
     color: #333;
   }
   
+  .notificacion-login {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ffefef;
+  border: 1px solid #ff6b6b;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 9999;
+}
+
+/*NOTIFICACIÓN FAVORITOS ---------------------------*/
+.notificacion-login p {
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  color: #b30000;
+}
+
+.btn-login-aviso {
+  display: inline-block;
+  background: #ff6b6b;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.btn-cerrar-aviso {
+  background: transparent;
+  border: none;
+  color: #444;
+  cursor: pointer;
+}
+
+/* COLUMNA DERECHA (RELACIONADOS) -------------------------- */
+  .detalle-layout {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 20px;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Columna derecha */
+  .detalle-relacionados {
+    padding: 15px;
+    border-radius: 6px;
+    width: 200px;
+    position: sticky;
+    top: 20px;
+  }
+  
+  /* Título */
+  .detalle-relacionados h3 {
+    font-size: 30px;
+    font-weight: 700;
+    font-family: "Cormorant", sans-serif;
+    color: #6d96a6;
+    margin-bottom: 15px;
+  }
+  
+  /* Lista vertical */
+  .relacionados-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  
+  /* CARD de producto relacionado */
+  .relacionado-item {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #d0d8dd;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  /* Hover */
+  .relacionado-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  
+  /* Imagen */
+  .relacionado-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
+  /* Nombre */
+  .relacionado-nombre {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #6d96a6;
+  }
+  
+  /* Precio */
+  .relacionado-precio {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #6d96a6;
+  }  
+
+
+/* NOTIFICACIÓN DEL CARRITO*/
+.notificacion-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #6d96a6;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
