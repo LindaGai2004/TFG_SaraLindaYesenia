@@ -2,6 +2,9 @@ package seguridad.security;
 
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -39,11 +42,14 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
    
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true); //Seguridad -> que permite enviar cookies y headers entre front y back
-        config.addAllowedOriginPattern("http://localhost:*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*"); //todos los method se puede usar
-       
+        config.setAllowCredentials(true); //Seguridad -> permite enviar cookies y headers entre front y back
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        //config.addAllowedHeader("*");
+        config.setAllowedHeaders(List.of("*"));
+
+        //config.addAllowedMethod("*"); //todos los method se puede usar
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         // /** -> todas las rutas en controller; para todas las rutas permite 5137
@@ -97,6 +103,7 @@ public class SecurityConfig {
             .requestMatchers("/pedidos/**").authenticated()
             .requestMatchers("/carrito/**").authenticated()
             .requestMatchers("/rol/**").authenticated()
+            .requestMatchers("/api/paypal/**").permitAll()
             //otras requests deben ser autenticadas
             .anyRequest().authenticated()
         )

@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 //Para operaciones de un item del carrito
-public class CarritoItemRequest {
+public class CarritoItemRequestDto {
 	 private Integer idProducto;
 	 private Integer cantidad;
 }
