@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 import {apiGet, apiPost, apiDelete} from "../api/api.js";
 import "./ProductoLista.css";
 import ProductoImagenes from "./ProductoImagenes";
@@ -14,6 +15,8 @@ export default function ProductoLista({ productos }) {
   const [mensaje, setMensaje] = useState("");
 
   const [mostrarLoginAviso, setMostrarLoginAviso] = useState(false);
+
+  const { addToCart } = useCart();
 
   // Cargar favoritos reales del backend al iniciar
   useEffect(() => {
@@ -122,9 +125,18 @@ export default function ProductoLista({ productos }) {
             </button>
 
             {/* Botón Añadir al carrito */}
-            <Link to="/MiCarrito" className="carrito-overlay-btn">
+
+            <button
+              className="carrito-overlay-btn"
+              onClick={() => {
+                addToCart(p.idProducto, 1);
+                setMensaje("Producto añadido al carrito");
+                setTimeout(() => setMensaje(""), 2000);
+              }}
+            >
               Añadir al carrito
-            </Link>
+            </button>
+
 
           </div>
         ))}

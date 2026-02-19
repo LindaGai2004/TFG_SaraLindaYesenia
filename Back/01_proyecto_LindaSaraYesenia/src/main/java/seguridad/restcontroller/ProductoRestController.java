@@ -51,6 +51,7 @@ public class ProductoRestController {
         Producto producto = productoService.getProductoDestacado();
         return ResponseEntity.ok(producto);
     }
+    
 
     // Listar todos
 
@@ -141,6 +142,7 @@ public class ProductoRestController {
 
         return ResponseEntity.ok(base);
     }
+    
 
     // Eliminar
 

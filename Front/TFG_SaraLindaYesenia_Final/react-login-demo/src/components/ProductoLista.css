@@ -93,7 +93,7 @@
   cursor: pointer;
 }
 
-/* BOTÓN CARRITO */
+/*---------- BOTÓN CARRITO ----------*/
 .carrito-overlay-btn {
   position: absolute;
   bottom: 10px;
@@ -158,4 +158,27 @@
 .sin-resultados {
   padding: 2rem;
   font-size: 1.2rem;
+}
+
+
+/*---------- NOTIFICACIÓN CARRITO ----------*/
+.notificacion-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #184763;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
 }

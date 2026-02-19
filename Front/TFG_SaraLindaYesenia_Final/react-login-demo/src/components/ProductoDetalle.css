@@ -1,14 +1,10 @@
-/* ================================
-   FONDO GENERAL DE TODA LA PÁGINA
-   ================================ */
+/* FONDO GENERAL DE TODA LA PÁGINA */
    .fondo-detalle {
-    background: #f5f3ee;
+    background: #f9f7f4;
     padding: 60px 0;
   }
   
-  /* ================================
-     PRIMERA FILA (IMAGEN + INFO)
-     ================================ */
+  /* PRIMERA FILA (IMAGEN + INFO) */
   .fila-superior {
     max-width: 800px;
     margin: 0 auto 40px auto;
@@ -20,9 +16,7 @@
     gap: 40px;
   }
   
-  /* ================================
-     COLUMNA IZQUIERDA (GALERÍA)
-     ================================ */
+  /* COLUMNA IZQUIERDA (imagenes) -------------------*/
   .col-izquierda {
     display: flex;
     flex-direction: column;
@@ -68,9 +62,7 @@
     border-color: #d60000;
   }
   
-  /* ================================
-     COLUMNA DERECHA (INFO)
-     ================================ */
+  /* COLUMNA DERECHA (INFO) ----------------------------*/
   .col-derecha-editorial {
     display: flex;
     flex-direction: column;
@@ -82,20 +74,21 @@
   }
   
   .titulo-editorial {
-    font-size: 2.7rem;
+    font-size: 50px;
+    font-family: "Cormorant", sans-serif;
     margin: 0;
     font-weight: 700;
     color: #6d96a6;
   }
   
   .autor-editorial {
-    font-size: 1.1rem;
+    font-size: 25px;
     margin-top: 5px;
     color: #6d96a6;
   }
   
   .precio-editorial {
-    font-size: 1.6rem;
+    font-size: 25px;
     font-weight: bold;
     margin-top: 10px;
     color: #6d96a6;
@@ -135,7 +128,7 @@
   
   .btn-cesta-editorial:hover {
     background: #6d96a6;
-    color: #bfd1e0;
+    color: white;
   }
   
   .btn-icono {
@@ -161,9 +154,7 @@
     object-fit: contain;
   }
   
-  /* ================================
-     SEGUNDA FILA (RESUMEN + DETALLES)
-     ================================ */
+  /* SEGUNDA FILA (RESUMEN + DETALLES) */
   .fila-inferior {
     max-width: 1100px;
     margin: 40px auto;
@@ -274,7 +265,7 @@
   z-index: 9999;
 }
 
-/*---------- NOTIFICACIÓN FAVORITOS ----------*/
+/*NOTIFICACIÓN FAVORITOS ---------------------------*/
 .notificacion-login p {
   margin: 0 0 10px 0;
   font-weight: 600;
@@ -298,9 +289,7 @@
   cursor: pointer;
 }
 
-/* ================================
-   COLUMNA DERECHA (RELACIONADOS)
-   ================================ */
+/* COLUMNA DERECHA (RELACIONADOS) -------------------------- */
   .detalle-layout {
     display: grid;
     grid-template-columns: 1fr 260px;
@@ -310,7 +299,6 @@
     margin: 0 auto;
     padding: 20px;
   }
-  
   
   /* Columna derecha */
   .detalle-relacionados {
@@ -323,8 +311,9 @@
   
   /* Título */
   .detalle-relacionados h3 {
-    font-size: 1.3rem;
+    font-size: 30px;
     font-weight: 700;
+    font-family: "Cormorant", sans-serif;
     color: #6d96a6;
     margin-bottom: 15px;
   }
@@ -367,7 +356,7 @@
   .relacionado-nombre {
     font-size: 1rem;
     font-weight: 600;
-    color: #184763;
+    color: #6d96a6;
   }
   
   /* Precio */
@@ -376,3 +365,26 @@
     font-weight: bold;
     color: #6d96a6;
   }  
+
+
+/* NOTIFICACIÓN DEL CARRITO*/
+.notificacion-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #6d96a6;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}

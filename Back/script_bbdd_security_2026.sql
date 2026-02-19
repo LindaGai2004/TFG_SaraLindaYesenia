@@ -559,13 +559,13 @@ INSERT INTO imagenes_producto (id_producto, tipo, ruta) VALUES
 (18, 'MINIATURA', 'libros/el_tunel_m1.jpg'),
 (18, 'MINIATURA', 'libros/el_tunel_m2.jpg'),
 
-(19, 'PRINCIPAL', 'libros/19.jpg'),
-(19, 'MINIATURA', 'libros/19_m1.jpg'),
-(19, 'MINIATURA', 'libros/19_m2.jpg'),
+(19, 'PRINCIPAL', 'libros/como_agua_para_chocolate.jpg'),
+(19, 'MINIATURA', 'libros/como_agua_para_chocolate_m1.jpg'),
+(19, 'MINIATURA', 'libros/como_agua_para_chocolate_m2.jpg'),
 
-(20, 'PRINCIPAL', 'libros/20.jpg'),
-(20, 'MINIATURA', 'libros/20_m1.jpg'),
-(20, 'MINIATURA', 'libros/20_m2.jpg'),
+(20, 'PRINCIPAL', 'libros/detectives_salvajes.jpg'),
+(20, 'MINIATURA', 'libros/detectives_salvajes_m1.jpg'),
+(20, 'MINIATURA', 'libros/detectives_salvajes_m2.jpg'),
 
 (21, 'PRINCIPAL', 'libros/21.jpg'),
 (21, 'MINIATURA', 'libros/21_m1.jpg'),

@@ -238,179 +238,17 @@ export default function Home() {
         </video>
 
         <div className="contenido-video">
-          <h1 className="titulo-video">¡Descubre tu nueva lectura!</h1>
-          <p className="subtitulo-video">Miles de títulos, autores, géneros para todos los gustos</p>
+          <h1 className="titulo-video">Tu espacio de lectura y creatividad</h1>
+          <p className="subtitulo-video">
+            Libros, papelería y todo lo que necesitas para inspirarte.
+          </p>
 
-          <div className="buscador-contenedor">
-            <Search className="buscador-logo" />
-            <input
-              type="text"
-              placeholder="Buscar libros, autores..."
-              className="buscador-input"
-            />
-          </div>
+          <a href="/productos" className="btn-hero">
+            Ver catálogo
+          </a>
         </div>
       </div>
 
-      {/* Sección géneros */}
-      <div className="generos-bloque">
-        <div className="cabecera">
-          <h2 className="titulo-seccion">Para cada estado de ánimo</h2>
-        </div>
-
-        <div className="carrusel">
-          <div className="pista" id="track">
-            <article className="tarjeta" data-active>
-              <img src="/tarjetaFondo1.jpg" alt="Fantasia1" className="tarjeta-fondo" />
-              <div className="tarjeta-contenido">
-                <h3 className="tarjeta-titulo">Fantasía</h3>
-                <p className="tarjeta-descripcion">Escápate a mundos imaginados.</p>
-                <button className="tarjeta-boton">Ver</button>
-              </div>
-            </article>
-
-            <article className="tarjeta">
-              <img src="/tarjetaFondo2.jpg" alt="Misterio1" className="tarjeta-fondo" />
-              <div className="tarjeta-contenido">
-                <h3 className="tarjeta-titulo">Misterio</h3>
-                <p className="tarjeta-descripcion">Historias que te mantienen en vilo.</p>
-                <button className="tarjeta-boton">Ver</button>
-              </div>
-            </article>
-
-            <article className="tarjeta">
-              <img src="/tarjetaFondo3.jpg" alt="Romance1" className="tarjeta-fondo" />
-              <div className="tarjeta-contenido">
-                <h3 className="tarjeta-titulo">Romance</h3>
-                <p className="tarjeta-descripcion">Lecturas para sentir y conectar.</p>
-                <button className="tarjeta-boton">Ver</button>
-              </div>
-            </article>
-
-            <article className="tarjeta">
-              <img src="/tarjetaFondo4.jpg" alt="Ciencia ficción 1" className="tarjeta-fondo" />
-              <div className="tarjeta-contenido">
-                <h3 className="tarjeta-titulo">Ciencia ficción</h3>
-                <p className="tarjeta-descripcion">Ideas que miran al futuro.</p>
-                <button className="tarjeta-boton">Ver</button>
-              </div>
-            </article>
-
-            <article className="tarjeta">
-              <img src="/tarjetaFondo5.jpg" alt="No ficción 1" className="tarjeta-fondo" />
-              <div className="tarjeta-contenido">
-                <h3 className="tarjeta-titulo">No ficción</h3>
-                <p className="tarjeta-descripcion">Aprende con historias reales.</p>
-                <button className="tarjeta-boton">Ver</button>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        <div className="controles">
-          <button id="prev" className="btn-nav" aria-label="Anterior">
-            <ChevronLeft size={20} />
-          </button>
-          <button id="next" className="btn-nav" aria-label="Siguiente"><ChevronRight size={20} /> </button>
-        </div>
-      </div>
-
-      {/* Sección mejores libros vendidos */}
-      <div className="seccion-mejores-libros">
-        <h2 className="titulo-mejores">Los mejores libros vendidos</h2>
-
-        <div className="contenedor-libros">
-          {/* Columna 1 */}
-          <div className="columna-libro">
-            <img src="/mejorLibro1.jpg" alt="Libro 1" className="imagen-libro" />
-            <h3 className="nombre-libro">El principito</h3>
-            <button className="boton-comprar">Comprar ahora</button>
-          </div>
-
-          {/* Columna 2 */}
-          <div className="columna-libro">
-            <img src="/mejorLibro2.jpg" alt="Libro 2" className="imagen-libro" />
-            <h3 className="nombre-libro">El arte de la guerra</h3>
-            <button className="boton-comprar">Comprar ahora</button>
-          </div>
-
-          {/* Columna 3 */}
-          <div className="columna-libro">
-            <img src="/mejorLibro3.jpg" alt="Libro 3" className="imagen-libro" />
-            <h3 className="nombre-libro">Harry Potter</h3>
-            <button className="boton-comprar">Comprar ahora</button>
-          </div>
-        </div>
-      </div>
-
-
-      {/* Sección para el lector */}
-      <div className="seccion-lector">
-        <h2 className="titulo-lector">Para el lector</h2>
-
-        <div className="carrusel-contenedor">
-          {/* Flecha izquierda */}
-          <button className="flecha-carrusel izquierda" onClick={scrollLectorIzquierda}>
-            <ChevronLeft size={20} /> {/* flecha muy pequeña */}
-          </button>
-
-          {/* Carrusel */}
-          <div className="carrusel-lector" ref={carruselLectorRef}>
-            <div className="columna-lector">
-              <img src="/lector1.jpg" alt="Libro recomendado 1" className="imagen-lector" />
-              <h3 className="titulo-libro-lector">Los juegos del hambre</h3>
-              <p className="precio-libro">€14.99</p>
-            </div>
-
-            <div className="columna-lector">
-              <img src="/lector2.jpg" alt="Libro recomendado 2" className="imagen-lector" />
-              <h3 className="titulo-libro-lector">Percy Jackson y los dioses del Olimpo</h3>
-              <p className="precio-libro">€12.50</p>
-            </div>
-
-            <div className="columna-lector">
-              <img src="/lector3.jpg" alt="Libro recomendado 3" className="imagen-lector" />
-              <h3 className="titulo-libro-lector">Invisible</h3>
-              <p className="precio-libro">€16.90</p>
-            </div>
-
-            <div className="columna-lector">
-              <img src="/lector4.jpg" alt="Libro recomendado 4" className="imagen-lector" />
-              <h3 className="titulo-libro-lector">Powerless</h3>
-              <p className="precio-libro">€18.00</p>
-            </div>
-
-            <div className="columna-lector">
-              <img src="/lector5.jpg" alt="Libro recomendado 5" className="imagen-lector" />
-              <h3 className="titulo-libro-lector">Bajo la misma estrella</h3>
-              <p className="precio-libro">€15.75</p>
-            </div>
-
-            <div className="columna-lector">
-              <img src="/lector6.jpg" alt="Libro recomendado 6" className="imagen-lector" />
-              <h3 className="titulo-libro-lector">El diario de Greg</h3>
-              <p className="precio-libro">€19.50</p>
-            </div>
-
-            <div className="columna-lector">
-              <img src="/lector7.jpg" alt="Libro recomendado 7" className="imagen-lector" />
-              <h3 className="titulo-libro-lector">Las crónicas de narnia</h3>
-              <p className="precio-libro">€19.50</p>
-            </div>
-
-            <div className="columna-lector">
-              <img src="/lector8.jpg" alt="Libro recomendado 8" className="imagen-lector" />
-              <h3 className="titulo-libro-lector">Don Quijote de la Mancha</h3>
-              <p className="precio-libro">€19.50</p>
-            </div>
-          </div>
-
-          {/* Flecha derecha */}
-          <button className="flecha-carrusel derecha" onClick={scrollLectorDerecha}>
-            <ChevronRight size={20} /> {/* flecha muy pequeña */}
-          </button>
-        </div>
-      </div>
 
       {/* Sección reseñas */}
       <div className="seccion-resenas">
@@ -516,6 +354,7 @@ export default function Home() {
           </button>
         </div>
       </div>
+
 
       {/* Sección libro del mes */}
       <div className="seccion-libro-mes">
@@ -624,69 +463,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="contenedor-footer">
-          {/* Columna 1 */}
-          <div className="columna-footer">
-            <h3 className="titulo-footer">Compañía</h3>
-            <a href="/contacto" className="enlace-footer">Contáctanos</a>
-            <a href="/tarjeta-regalo" className="enlace-footer">Tarjeta regalo</a>
-            <a href="/blog" className="enlace-footer">Blog</a>
-            <a href="/sostenibilidad" className="enlace-footer">Sostenibilidad</a>
-          </div>
-
-          {/* Columna 2 */}
-          <div className="columna-footer">
-            <h3 className="titulo-footer">Ayuda</h3>
-            <a href="/faq" className="enlace-footer">Preguntas frecuentes</a>
-            <a href="/envio" className="enlace-footer">Información de envío</a>
-            <a href="/terminos" className="enlace-footer">Términos de servicio</a>
-            <a href="/devoluciones" className="enlace-footer">Política de devolución</a>
-          </div>
-
-          {/* Columna 3 */}
-          <div className="columna-footer">
-            <h3 className="titulo-footer">Conectar</h3>
-            <div className="logos-footer">
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="/instagram.jpg" alt="Instagram" />
-              </a>
-              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
-                <img src="/tiktok.jpg" alt="Tiktok" />
-              </a>
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="/facebook.jpg" alt="Facebook" />
-              </a>
-              <a href="https://www.pinterest.com" target="_blank" rel="noopener noreferrer">
-                <img src="/pinterest.jpg" alt="Pinterest" />
-              </a>
-            </div>
-          </div>
-
-          {/* Columna 4 */}
-          <div className="columna-footer">
-            <Link
-              to="/"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <h1 className='logo-footer'>Archives</h1>
-            </Link>
-            <p>
-              Descubre nuestra exquisita colección de libros, cuidadosamente seleccionada para ofrecer diversión y entretenimiento.
-              Encuentra las obras perfectas para transformar tu tiempo libre en un oasis de imaginación y conocimiento.
-            </p>
-          </div>
-        </div>
-
-        {/* Pie de página final */}
-        <div className="footer-final">
-          <p className="texto-final-footer">
-            © 2025 Archives - Todos los derechos reservados. Desarrollado por Sara, Linda y Yesenia.
-          </p>
-        </div>
-      </footer>
+      
 
     </div>
   );
