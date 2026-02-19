@@ -97,6 +97,7 @@ public class SecurityConfig {
             .requestMatchers("/pedidos/**").authenticated()
             .requestMatchers("/carrito/**").authenticated()
             .requestMatchers("/rol/**").authenticated()
+            .requestMatchers("/usuarios/favoritos/**").authenticated()
             //otras requests deben ser autenticadas
             .anyRequest().authenticated()
         )

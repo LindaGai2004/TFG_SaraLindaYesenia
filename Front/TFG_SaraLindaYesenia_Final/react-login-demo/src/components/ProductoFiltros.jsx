@@ -4,12 +4,12 @@ import "./ProductoFiltros.css";
 
 export default function ProductoFiltros({ onFiltrar }) {
     const [tipo, setTipo] = useState("");
-    const [precio, setPrecio] = useState("");
+    const [precio, setPrecio] = useState({ min: 0, max: 200 });
     const [estado, setEstado] = useState("");
     const [idioma, setIdioma] = useState("");
-    const [genero, setGenero] = useState("");
+    const [genero, setGenero] = useState([]);
     const [marca, setMarca] = useState("");
-    const [categoria, setCategoria] = useState("");
+    const [categoria, setCategoria] = useState([]);
 
     const [idiomasBD, setIdiomasBD] = useState([]);
     const [generosBD, setGenerosBD] = useState([]);
@@ -32,18 +32,21 @@ export default function ProductoFiltros({ onFiltrar }) {
 
     const aplicarFiltros = () => {
         const filtros = {};
-
+    
         if (tipo) filtros.tipo = tipo;
-        if (precio) filtros.precio = precio;
         if (estado) filtros.estado = estado;
         if (idioma) filtros.idioma = idioma;
-        if (genero) filtros.genero = genero;
+    
+        if (genero.length > 0) filtros.genero = genero;
+    
+        filtros.precioMin = precio.min;
+        filtros.precioMax = precio.max;
+    
         if (marca) filtros.marca = marca;
-        if (categoria) filtros.categoria = categoria;
-
-        // Enviar solo filtros con valor
+        if (categoria.length > 0) filtros.categoria = categoria;
+    
         onFiltrar(filtros);
-    };
+    };    
 
     return (
         <div className="filtros-container">
@@ -75,14 +78,26 @@ export default function ProductoFiltros({ onFiltrar }) {
 
                     <div className="filtro">
                         <label>Género</label>
-                        <select value={genero} onChange={(e) => setGenero(e.target.value)}>
-                            <option value="">Todos</option>
-                            {generosBD.map(g => (
-                                <option key={g.idGenero} value={g.nombreGenero}>
-                                    {g.nombreGenero}
-                                </option>
+                        <div className="genero-checkboxes">
+                            {generosBD.map((g, index) => (
+                            <label key={g.idGenero} className="genero-checkbox">
+                                <input
+                                type="checkbox"
+                                value={g.nombreGenero}
+                                checked={genero.includes(g.nombreGenero)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (e.target.checked) {
+                                    setGenero(prev => [...prev, value]);
+                                    } else {
+                                    setGenero(prev => prev.filter(g => g !== value));
+                                    }
+                                }}
+                                />
+                                {g.nombreGenero}
+                            </label>
                             ))}
-                        </select>
+                        </div>
                     </div>
                 </>
             )}
@@ -104,26 +119,57 @@ export default function ProductoFiltros({ onFiltrar }) {
 
                     <div className="filtro">
                         <label>Categoría</label>
-                        <select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-                            <option value="">Todas</option>
+
+                        <div className="genero-checkboxes">
                             {categoriasBD.map(c => (
-                                <option key={c.idCategoria} value={c.nombreCategoria}>
+                                <label key={c.idCategoria} className="genero-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        value={c.nombreCategoria}
+                                        checked={categoria.includes(c.nombreCategoria)}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (e.target.checked) {
+                                                setCategoria(prev => [...prev, value]);
+                                            } else {
+                                                setCategoria(prev => prev.filter(cat => cat !== value));
+                                            }
+                                        }}
+                                    />
                                     {c.nombreCategoria}
-                                </option>
+                                </label>
                             ))}
-                        </select>
+                        </div>
                     </div>
                 </>
             )}
 
             {/* PRECIO */}
             <div className="filtro">
-                <label>Precio máximo</label>
-                <input
-                    type="number"
-                    value={precio}
-                    onChange={(e) => setPrecio(e.target.value)}
-                />
+                <label>Precio</label>
+
+                <div className="price-slider">
+                    <input
+                    type="range"
+                    min="0"
+                    max="200"
+                    value={precio.min}
+                    onChange={(e) => setPrecio(prev => ({ ...prev, min: Number(e.target.value) }))}
+                    />
+
+                    <input
+                    type="range"
+                    min="0"
+                    max="200"
+                    value={precio.max}
+                    onChange={(e) => setPrecio(prev => ({ ...prev, max: Number(e.target.value) }))}
+                    />
+                </div>
+
+                <div className="price-values">
+                    <span>{precio.min} €</span>
+                    <span>{precio.max} €</span>
+                </div>
             </div>
 
             {/* ESTADO */}

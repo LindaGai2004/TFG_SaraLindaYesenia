@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 import {apiGet, apiPost, apiDelete} from "../api/api.js";
 import "./ProductoLista.css";
 import ProductoImagenes from "./ProductoImagenes";
@@ -13,13 +14,17 @@ export default function ProductoLista({ productos }) {
   // estado para la notificación
   const [mensaje, setMensaje] = useState("");
 
+  const [mostrarLoginAviso, setMostrarLoginAviso] = useState(false);
+
+  const { addToCart } = useCart();
+
   // Cargar favoritos reales del backend al iniciar
   useEffect(() => {
     if (!user) return; // evita el error cuando no estás logueada
   
     const fetchFavoritos = async () => {
       try {
-        const data = await apiGet("usuarios/favoritos");
+        const data = await apiGet("/usuarios/favoritos");
         const favMap = {};
         data.forEach(f => favMap[f.idProducto] = true);
         setFavoritos(favMap);
@@ -32,23 +37,22 @@ export default function ProductoLista({ productos }) {
   }, [user]);  
 
   const toggleFavorito = async (idProducto) => {
+    if (!user) {
+      setMostrarLoginAviso(true);
+      return;
+    }
+
     const esFavorito = favoritos[idProducto];
 
     try {
       if (esFavorito) {
-        // ELIMINAR FAVORITO
         await apiDelete(`/usuarios/favoritos/${idProducto}`);
-        setMensaje("Eliminado de favoritos");
       } else {
-        // AÑADIR FAVORITO
         await apiPost(`/usuarios/favoritos/${idProducto}`);
-        setMensaje("Añadido a favoritos");
       }
 
-      // Ocultar mensaje después de 2 segundos
       setTimeout(() => setMensaje(""), 2000);
 
-      // Actualizar icono en pantalla
       setFavoritos(prev => ({
         ...prev,
         [idProducto]: !prev[idProducto]
@@ -65,6 +69,18 @@ export default function ProductoLista({ productos }) {
 
   return (
     <>
+    {mostrarLoginAviso && (
+      <div className="notificacion-login">
+        <p>Debes iniciar sesión para guardar favoritos.</p>
+        <a href="/login" className="btn-login-aviso">Ir al login</a>
+        <button className="btn-cerrar-aviso" onClick={() => setMostrarLoginAviso(false)}>
+          Cerrar
+        </button>
+      </div>
+    )}
+
+    {mensaje && <div className="notificacion-toast">{mensaje}</div>}
+
       {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
       <div className="producto-grid">
@@ -109,9 +125,18 @@ export default function ProductoLista({ productos }) {
             </button>
 
             {/* Botón Añadir al carrito */}
-            <Link to="/MiCarrito" className="carrito-overlay-btn">
+
+            <button
+              className="carrito-overlay-btn"
+              onClick={() => {
+                addToCart(p.idProducto, 1);
+                setMensaje("Producto añadido al carrito");
+                setTimeout(() => setMensaje(""), 2000);
+              }}
+            >
               Añadir al carrito
-            </Link>
+            </button>
+
 
           </div>
         ))}
