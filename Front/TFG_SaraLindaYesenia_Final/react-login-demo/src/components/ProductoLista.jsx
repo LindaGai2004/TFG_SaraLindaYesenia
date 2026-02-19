@@ -19,7 +19,7 @@ export default function ProductoLista({ productos }) {
   
     const fetchFavoritos = async () => {
       try {
-        const data = await apiGet("usuarios/favoritos");
+        const data = await apiGet("/usuarios/favoritos");
         const favMap = {};
         data.forEach(f => favMap[f.idProducto] = true);
         setFavoritos(favMap);

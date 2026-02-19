@@ -72,7 +72,7 @@ function ResumenPedido() {
 
           <div className="order-meta-item">
             <span className="meta-label">Método de pago</span>
-            <span className="meta-value">Mastercard</span>
+            <span className="meta-value">{pedido.metodoPago}</span>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ function ResumenPedido() {
 
           <div className="order-total-row total">
             <span>Total</span>
-            <span>€{(pedido.total + 2.00).toFixed(2)}</span>
+            <span>€{pedido.total.toFixed(2)}</span>
           </div>
         </div>
 

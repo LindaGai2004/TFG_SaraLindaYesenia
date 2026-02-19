@@ -114,6 +114,12 @@
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+		<!-- Añadir checkout de PayPal (SDK) -->
+		<dependency>
+    		<groupId>com.paypal.sdk</groupId>
+    		<artifactId>checkout-sdk</artifactId>
+    		<version>1.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -15,7 +15,9 @@ import Productos from './pages/Productos';
 import ProductoDetalle from './components/ProductoDetalle';
 import './App.css';
 import Portfolio from './pages/Cliente';
-
+import PaypalSuccess from './pages/PaypalSuccess';
+import PaypalCancel from './pages/PaypalCancel';
+import Checkout from "./pages/Checkout";
 export default function App() {
   const location = useLocation();
   const hideNavbarPaths = [  
@@ -88,7 +90,9 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/paypal/success" element={<PaypalSuccess />} />
 
+          <Route path="/paypal/cancel" element={<PaypalCancel />} />
           <Route
             path="/success"
             element={
@@ -97,7 +101,8 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-
+            <Route path="/checkout/:idPedido" element={<Checkout />} />
+            <Route path="/resumen" element={<ResumenPedido />} />
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
 
