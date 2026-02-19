@@ -2,18 +2,20 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./ProductoDetalle.css";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 import ProductoImagenes from "../components/ProductoImagenes";
 import { apiGet, apiPost, apiDelete } from "../api/api";
-
 
 export default function ProductoDetalle() {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
   const [expandido, setExpandido] = useState(false);
+  const [relacionados, setRelacionados] = useState([]);
 
   const { user } = useAuth();
-  const [esFavorito, setEsFavorito] = useState(false);
+  const { addToCart } = useCart();
 
+  const [esFavorito, setEsFavorito] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [mostrarLoginAviso, setMostrarLoginAviso] = useState(false);
 
@@ -75,26 +77,36 @@ export default function ProductoDetalle() {
       });
   }, [id]);
 
-  // Cargar si es favorito
+  // Cargar productos relacionados
   useEffect(() => {
     if (!producto) return;
-    if (!user) return;
+  
+    let url = "";
+  
+    if (producto.tipo === "LIBRO") {
+      url = `http://localhost:9001/productos/relacionados/libro?autor=${producto.autor}&genero=${producto.genero}&idActual=${producto.id}`;
+    } else if (producto.tipo === "PAPELERIA") {
+      url = `http://localhost:9001/productos/relacionados/papeleria?marca=${producto.marca}&categoria=${producto.categoria}&idActual=${producto.id}`;
+    }
+  
+    fetch(url)
+      .then(res => res.json())
+      .then(data => setRelacionados(data))
+      .catch(err => console.error("Error cargando relacionados:", err));
+  }, [producto]);  
 
-    const fetchFavorito = async () => {
-      try {
-        const data = await apiGet(`/usuarios/favoritos`);
+  // Cargar si es favorito
+  useEffect(() => {
+    if (!producto || !user) return;
+
+    apiGet(`/usuarios/favoritos`)
+      .then(data => {
         const encontrado = data.some(f => f.idProducto === producto.id);
         setEsFavorito(encontrado);
-      } catch (error) {
-        console.error("Error comprobando favorito:", error);
-        setEsFavorito(false); // si hay error, asumimos que no es favorito
-      }
-    };
-
-    fetchFavorito();
+      })
+      .catch(() => setEsFavorito(false));
   }, [producto, user]);
 
-  // Añadir / eliminar favorito
   const toggleFavorito = async () => {
     if (!user) {
       setMostrarLoginAviso(true);
@@ -108,8 +120,8 @@ export default function ProductoDetalle() {
         await apiPost(`/usuarios/favoritos/${producto.id}`);
       }
 
-      setTimeout(() => setMensaje(""), 2000);
       setEsFavorito(!esFavorito);
+      setTimeout(() => setMensaje(""), 2000);
 
     } catch (error) {
       console.error("Error al actualizar favorito:", error);
@@ -124,99 +136,105 @@ export default function ProductoDetalle() {
       : producto.resumen;
 
   return (
-    <div className="detalle-producto fondo-detalle">
-      
-      {mostrarLoginAviso && (
-        <div className="notificacion-login">
-          <p>Debes iniciar sesión para guardar favoritos.</p>
-          <a href="/login" className="btn-login-aviso">Ir al login</a>
-          <button className="btn-cerrar-aviso" onClick={() => setMostrarLoginAviso(false)}>
-            Cerrar
-          </button>
-        </div>
-      )}
+    <div className="detalle-layout">
 
-      {mensaje && <div className="notificacion-toast">{mensaje}</div>}
+      {/* COLUMNA IZQUIERDA */}
+      <div className="detalle-contenido">
 
-      {/* FILA 1 */}
-      <div className="fila-superior dos-columnas">
+        {/* FILA 1 */}
+        <div className="fila-superior dos-columnas">
+          <div className="col-izquierda">
+            <ProductoImagenes imagenes={producto.imagenes} />
+          </div>
 
-        <div className="col-izquierda">
-          <ProductoImagenes imagenes={producto.imagenes} />
-        </div>
-
-        <div className="col-derecha-editorial">
-
-          <div className="editorial-header">
+          <div className="col-derecha-editorial">
             <h1 className="titulo-editorial">{producto.nombre}</h1>
             {producto.autor && <p className="autor-editorial">{producto.autor}</p>}
             <p className="precio-editorial">{producto.precio} €</p>
-          </div>
 
-          <p className="descripcion-editorial">{producto.descripcion}</p>
+            <p className="descripcion-editorial">{producto.descripcion}</p>
 
-          <div className="editorial-botones-fila">
-
-            <button className="btn-cesta-editorial">Añadir a la cesta</button>
-
-            <div className="botones-iconos">
-              <button className="btn-icono" onClick={toggleFavorito}>
-                <img
-                  src={esFavorito ? "/corazon-lleno.png" : "/corazon.jpg"}
-                  alt="Favorito"
-                />
+            <div className="editorial-botones-fila">
+              <button
+                className="btn-cesta-editorial"
+                onClick={() => addToCart(producto.id,1)}
+              >
+                Añadir al carrito
               </button>
 
-              <button className="btn-icono">
-                <img src="/compartir.jpg" alt="Compartir" />
-              </button>
+              <div className="botones-iconos">
+                <button className="btn-icono" onClick={toggleFavorito}>
+                  <img
+                    src={esFavorito ? "/corazon-lleno.png" : "/corazon.jpg"}
+                    alt="Favorito"
+                  />
+                </button>
+
+                <button className="btn-icono">
+                  <img src="/compartir.jpg" alt="Compartir" />
+                </button>
+              </div>
             </div>
+          </div>
+        </div>
 
+        {/* FILA 2 */}
+        <div className="fila-inferior">
+          <div className="col-inferior-izq">
+            <h2 className="titulo-seccion">Resumen</h2>
+
+            <p className="texto-resumen">
+              {expandido ? producto.resumen : resumenCorto}
+            </p>
+
+            {producto.resumen && producto.resumen.length > 250 && (
+              <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
+                {expandido ? "Leer menos" : "Leer más"}
+              </button>
+            )}
           </div>
 
+          <div className="col-inferior-der">
+            <h2 className="titulo-seccion">Detalles</h2>
+
+            <div className="detalles-grid">
+              <p><strong>Editorial:</strong> {producto.editorial}</p>
+              <p><strong>Idioma:</strong> {producto.idioma}</p>
+              <p><strong>ISBN:</strong> {producto.isbn}</p>
+              <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
+              <p><strong>Género:</strong> {producto.genero}</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* FILA 2 */}
-      <div className="fila-inferior">
+      {/* COLUMNA DERECHA: RELACIONADOS */}
+      <div className="detalle-relacionados">
+        <h3>Productos relacionados</h3>
 
-        <div className="col-inferior-izq">
-          <h2 className="titulo-seccion">Resumen</h2>
+        <div className="relacionados-lista">
+          {relacionados.length === 0 && <p>No hay productos relacionados</p>}
 
-          <p className="texto-resumen">
-            {expandido ? producto.resumen : resumenCorto}
-          </p>
+          {relacionados.map(r => {
+            const imgPrincipal = r.imagenes?.find(img => img.tipo === "PRINCIPAL")?.ruta;
 
-          {producto.resumen && producto.resumen.length > 250 && (
-            <button
-              className="btn-leer-mas"
-              onClick={() => setExpandido(!expandido)}
-            >
-              {expandido ? "Leer menos" : "Leer más"}
-            </button>
-          )}
+            return (
+              <div
+                key={r.idProducto}
+                className="relacionado-item"
+                onClick={() => window.location.href = `/producto/${r.idProducto}`}
+              >
+                <img 
+                  src={`http://localhost:9001/uploads/${imgPrincipal}`} 
+                  alt={r.nombreProducto} 
+                />
 
-          <div className="autor-box">
-            <img src="" alt="Autor" className="autor-foto" />
-            <div className="autor-info">
-              <p className="autor-nombre">{producto.autor || "Autor desconocido"}</p>
-              <a className="autor-link">Ver más información</a>
-            </div>
-          </div>
+                <p className="relacionado-nombre">{r.nombreProducto}</p>
+                <p className="relacionado-precio">{r.precio} €</p>
+              </div>
+            );
+          })}
         </div>
-
-        <div className="col-inferior-der">
-          <h2 className="titulo-seccion">Detalles</h2>
-
-          <div className="detalles-grid">
-            <p><strong>Editorial:</strong> {producto.editorial}</p>
-            <p><strong>Idioma:</strong> {producto.idioma}</p>
-            <p><strong>ISBN:</strong> {producto.isbn}</p>
-            <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
-            <p><strong>Género:</strong> {producto.genero}</p>
-          </div>
-        </div>
-
       </div>
 
     </div>

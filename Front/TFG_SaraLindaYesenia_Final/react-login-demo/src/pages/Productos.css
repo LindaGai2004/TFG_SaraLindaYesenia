@@ -37,6 +37,10 @@
   border-right: 1px solid #ccc;
 }
 
+.filtros h3 {
+  color: #6d96a6;
+}
+
 .resultados {
   flex: 1;
 }
