@@ -411,7 +411,7 @@ INSERT INTO marca (nombre_marca) VALUES
 -- ========== DATOS DE PAPELERIA ==========
 INSERT INTO papeleria (id_producto, id_marca, id_categoria, descripcion_larga) VALUES
 (31,1,1,
-'[Ligera y portátil] Mochila escolar para niñas de color liso: 31 x 18 x 45 cm/12.2"x7.1"x17.7" (largo x ancho x alto). Capacidad aproximada: admite un portátil de hasta 15,6 pulgadas. Pesa 750 g, lo que la hace fácil de transportar.
+'[Ligera y portátil] Mochila escolar para niñas de color liso: 31 x 18 x 45 cm/12,2"x7,1"x17,7" (largo x ancho x alto). Capacidad aproximada: admite un portátil de hasta 15,6 pulgadas. Pesa 750 g, lo que la hace fácil de transportar.
 [Gran capacidad y múltiples bolsillos] El bolsillo principal incluye un compartimento para portátil. Incluye un bolsillo para el móvil, un bolsillo con cierre a presión, dos bolsillos frontales con cremallera y un bolsillo trasero con cremallera. También cuenta con dos bolsillos laterales con hebilla ajustable. Espacio suficiente para guardar botellas de agua, paraguas, libros y otros artículos de papelería.
 [Materiales de primera calidad] Fabricada en poliéster compuesto de alta densidad y alta calidad, resistente a la deformación. Cremalleras suaves, cinturón elástico trasero compatible con maletas con ruedas, correas de hombro y asa con costuras reforzadas para transportar objetos pesados.
 [Diseño ergonómico] Correa en forma de S que protege la espalda y la columna vertebral. Los paneles de malla transpirable favorecen la circulación del aire y absorben el sudor para mayor comodidad en los días calurosos. Asa superior de descompresión suave para un agarre fácil y correas de hombro anchas, ajustables y transpirables que brindan mayor comodidad a esta mochila escolar para niñas y alivian la carga de tu hija.
@@ -434,25 +434,25 @@ ESPACIOSA Y LIGERA: Tiradores en los cursores para facilitar su apertura. Doble 
 ERGONOMÍA Y COMODIDAD: Mochila adaptable a carro Safta (Ultraligero y Ruedas PVC). Asa de mano en la parte superior y tarjeta de identificación personal
 RESISTENCIA Y DURABILIDAD: Este producto está especialmente diseñado pensando en su durabilidad, elaborado con materiales de alta resistencia para asegurar que se pueda utilizar en todo tipo de actividades, garantizando su funcionalidad'),
 
-(35,5,2),
-(36,6,2),
-(37,7,2),
-(38,8,2),
+(35,5,2,''),
+(36,6,2,''),
+(37,7,2,''),
+(38,8,2,''),
 
-(39,6,3),
-(40,6,3),
-(41,6,3),
-(42,9,3),
-(43,10,3),
-(44,11,3),
+(39,6,3,''),
+(40,6,3,''),
+(41,6,3,''),
+(42,9,3,''),
+(43,10,3,''),
+(44,11,3,''),
 
-(45,12,4),
-(46,13,4),
-(47,14,4),
-(48,15,4),
+(45,12,4,''),
+(46,13,4,''),
+(47,14,4,''),
+(48,15,4,''),
 
-(49,16,5),
-(50,17,5);
+(49,16,5,''),
+(50,17,5,'');
 
 INSERT INTO pedidos (fecha_venta, estado_pedido, total, id_usuario) VALUES
 ('2024-01-15','REALIZADO',72.48,1),

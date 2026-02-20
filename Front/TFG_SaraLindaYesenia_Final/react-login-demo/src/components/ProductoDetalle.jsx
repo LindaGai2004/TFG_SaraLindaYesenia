@@ -9,7 +9,8 @@ import { apiGet, apiPost, apiDelete } from "../api/api";
 export default function ProductoDetalle() {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
-  const [expandido, setExpandido] = useState(false);
+  const [expandido, setExpandido] = useState(false); // LIBRO
+  const [expandidoPap, setExpandidoPap] = useState(false); // PAPELERÍA
   const [relacionados, setRelacionados] = useState([]);
 
   const { user } = useAuth();
@@ -17,7 +18,9 @@ export default function ProductoDetalle() {
 
   const [esFavorito, setEsFavorito] = useState(false);
   const [mensaje, setMensaje] = useState("");
-  const [mostrarLoginAviso, setMostrarLoginAviso] = useState(false);
+  
+  const [mostrarAvisoFavorito, setMostrarAvisoFavorito] = useState(false);
+  const [mostrarAvisoCarrito, setMostrarAvisoCarrito] = useState(false);
 
   // Cargar producto base
   useEffect(() => {
@@ -40,7 +43,8 @@ export default function ProductoDetalle() {
           fechaPublicacion: null,
           genero: null,
           marca: null,
-          categoria: null
+          categoria: null,
+          descripcionLarga: null
         };
 
         setProducto(base);
@@ -74,27 +78,27 @@ export default function ProductoDetalle() {
                 descripcionLarga: pap.descripcionLarga || null
               }));
             });
-        }        
+        }
       });
   }, [id]);
 
   // Cargar productos relacionados
   useEffect(() => {
     if (!producto) return;
-  
+
     let url = "";
-  
+
     if (producto.tipo === "LIBRO") {
       url = `http://localhost:9001/productos/relacionados/libro?autor=${producto.autor}&genero=${producto.genero}&idActual=${producto.id}`;
     } else if (producto.tipo === "PAPELERIA") {
       url = `http://localhost:9001/productos/relacionados/papeleria?marca=${producto.marca}&categoria=${producto.categoria}&idActual=${producto.id}`;
     }
-  
+
     fetch(url)
       .then(res => res.json())
       .then(data => setRelacionados(data))
       .catch(err => console.error("Error cargando relacionados:", err));
-  }, [producto]);  
+  }, [producto]);
 
   // Cargar si es favorito
   useEffect(() => {
@@ -110,7 +114,7 @@ export default function ProductoDetalle() {
 
   const toggleFavorito = async () => {
     if (!user) {
-      setMostrarLoginAviso(true);
+      setMostrarAvisoFavorito(true);
       return;
     }
 
@@ -133,13 +137,50 @@ export default function ProductoDetalle() {
 
   if (!producto) return <p>Cargando...</p>;
 
+  // Resumen libro
   const resumenCorto =
     producto.resumen && producto.resumen.length > 250
       ? producto.resumen.slice(0, 250) + "..."
       : producto.resumen;
 
+  // Lista papelería
+  const frasesPapeleria = producto.descripcionLarga
+    ? producto.descripcionLarga.split(".").map(f => f.trim()).filter(f => f !== "")
+    : [];
+
   return (
     <>
+      {mostrarAvisoFavorito && (
+        <div className="notificacion-login">
+          <p>Debes iniciar sesión para guardar favoritos.</p>
+
+          <div className="notificacion-botones">
+            <a href="/login" className="btn-login-aviso">Ir al login</a>
+            <button
+              className="btn-cerrar-aviso"
+              onClick={() => setMostrarAvisoFavorito(false)}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {mostrarAvisoCarrito && (
+        <div className="notificacion-login">
+          <p>Debes iniciar sesión para añadir productos al carrito.</p>
+          <div className="notificacion-botones">
+            <a href="/login" className="btn-login-aviso">Ir al login</a>
+            <button 
+              className="btn-cerrar-aviso" 
+              onClick={() => setMostrarAvisoCarrito(false)}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
       {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
       <div className="fondo-detalle">
@@ -166,6 +207,11 @@ export default function ProductoDetalle() {
                   <button
                     className="btn-cesta-editorial"
                     onClick={() => {
+                      if (!user) {
+                        setMostrarAvisoCarrito(true);
+                        return; // evita añadir al carrito sin haberte logueado 
+                      }
+
                       addToCart(producto.id, 1);
                       setMensaje("Producto añadido al carrito");
                       setTimeout(() => setMensaje(""), 2000);
@@ -199,20 +245,36 @@ export default function ProductoDetalle() {
                   {producto.tipo === "LIBRO" ? "Resumen" : "Acerca de este producto"}
                 </h2>
 
-                {/* CONTENIDO CAMBIANTE */}
-                <p className="texto-resumen">
-                  {producto.tipo === "LIBRO"
-                    ? (expandido ? producto.resumen : resumenCorto)
-                    : producto.descripcionLarga || producto.descripcion}
-                </p>
+                {/* LIBRO */}
+                {producto.tipo === "LIBRO" && (
+                  <>
+                    <p className="texto-resumen">
+                      {expandido ? producto.resumen : resumenCorto}
+                    </p>
 
-                {/* BOTÓN LEER MÁS SOLO PARA LIBROS */}
-                {producto.tipo === "LIBRO" &&
-                  producto.resumen &&
-                  producto.resumen.length > 250 && (
-                    <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
-                      {expandido ? "Leer menos" : "Leer más"}
-                    </button>
+                    {producto.resumen && producto.resumen.length > 250 && (
+                      <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
+                        {expandido ? "Leer menos" : "Leer más"}
+                      </button>
+                    )}
+                  </>
+                )}
+
+                {/* PAPELERÍA */}
+                {producto.tipo === "PAPELERIA" && (
+                  <>
+                    <ul className="lista-detalles">
+                      {(expandidoPap ? frasesPapeleria : frasesPapeleria.slice(0, 3)).map((frase, index) => (
+                        <li key={index}>{frase}</li>
+                      ))}
+                    </ul>
+
+                    {frasesPapeleria.length > 3 && (
+                      <button className="btn-leer-mas" onClick={() => setExpandidoPap(!expandidoPap)}>
+                        {expandidoPap ? "Leer menos" : "Leer más"}
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
 

@@ -16,8 +16,9 @@
 
 /* LABELS */
 .filtro label {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 20px;
+  font-family: "Cormorant", sans-serif;
+  font-weight: 700;
   color: #6d96a6;
 }
 
@@ -56,11 +57,11 @@
 .btn-filtrar {
   width: 100%;
   padding: 0.7rem;
-  background: #6d96a6;
+  background: #8daebd;
   color: white;
   border: none;
   border-radius: 6px;
-  border: 1px solid #6d96a6;
+  border: 1px solid #8daebd;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -88,8 +89,8 @@
 }
 
 .btn-filtrar:hover {
-  color: #6d96a6;
-  border-color: #6d96a6;
+  color: #8daebd;
+  border-color: #8daebd;
 }
 
 

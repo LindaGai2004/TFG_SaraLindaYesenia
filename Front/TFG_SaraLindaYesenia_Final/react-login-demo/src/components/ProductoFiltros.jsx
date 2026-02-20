@@ -84,13 +84,13 @@ export default function ProductoFiltros({ onFiltrar }) {
                                     <input
                                         type="checkbox"
                                         value={g.nombreGenero}
-                                        checked={genero.includes(g.nombreGenero)}
+                                        checked={genero[0] === g.nombreGenero}
                                         onChange={(e) => {
                                             const value = e.target.value;
                                             if (e.target.checked) {
-                                                setGenero(prev => [...prev, value]);
+                                                setGenero([value]); // solo uno
                                             } else {
-                                                setGenero(prev => prev.filter(g => g !== value));
+                                                setGenero([]); // ninguno
                                             }
                                         }}
                                     />
@@ -126,13 +126,13 @@ export default function ProductoFiltros({ onFiltrar }) {
                                     <input
                                         type="checkbox"
                                         value={c.nombreCategoria}
-                                        checked={categoria.includes(c.nombreCategoria)}
+                                        checked={categoria[0] === c.nombreCategoria}
                                         onChange={(e) => {
                                             const value = e.target.value;
                                             if (e.target.checked) {
-                                                setCategoria(prev => [...prev, value]);
+                                                setCategoria([value]); // solo una categoría
                                             } else {
-                                                setCategoria(prev => prev.filter(cat => cat !== value));
+                                                setCategoria([]);
                                             }
                                         }}
                                     />
