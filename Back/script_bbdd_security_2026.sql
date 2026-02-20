@@ -136,7 +136,9 @@ INSERT INTO usuarios
 ('tomas', '{noop}tomasin', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
 ('sarita', '{noop}sarita', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
 ('eva', '{noop}evita', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
-('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
+('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4),
+('mmmmm', '{noop}sarita', 'mmm', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'mmm@ifp.com', 2),
+('ttttt', '{noop}sarita', 'ttt', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'ttt@ifp.com', 2);
 
 
 INSERT INTO genero (nombre_genero)VALUES
@@ -221,7 +223,9 @@ INSERT INTO productos
 ('La rueda del tiempo','Saga épica que explora destino, magia y ciclos eternos.','LIBRO',28.90,20,'DISPONIBLE','2024-03-27',19.50),
 ('El nombre del viento','Relato íntimo sobre un joven prodigio marcado por tragedia y talento.','LIBRO',21.90,45,'AGOTADO','2024-03-28',15.00),
 ('La historia interminable','Fantasía que une imaginación, aventura y crecimiento personal.','LIBRO',17.90,50,'DISPONIBLE','2024-03-29',11.50),
-('American Gods','Fantasía contemporánea que mezcla mitología y crítica social.','LIBRO',19.90,35,'AGOTADO','2024-03-30',13.50);
+('American Gods','Fantasía contemporánea que mezcla mitología y crítica social.','LIBRO',19.90,35,'AGOTADO','2024-03-30',13.50),
+
+('Underwater','Fantasía contemporánea que mezcla mitología y crítica social.','LIBRO',19.90,35,'DISPONIBLE','2024-03-30',16.10);
 
 -- ========== 20 PAPELERÍA ==========
 INSERT INTO productos (nombre_producto, descripcion, tipo_producto, precio, stock, estado_producto, fecha_alta, costo_real) VALUES
@@ -360,7 +364,11 @@ conflicto. Es un retrato implacable de un mundo donde nadie está a salvo.'),
 (29,'9780000000039','Lumen','1996-12-05','Michael Ende',448,6,4,
 'Una aventura que invita a reflexionar sobre imaginación, identidad y el poder de las historias. En un mundo donde la fantasía y la realidad se entrelazan, el protagonista descubre que los relatos pueden transformar no solo el destino de los personajes, sino también el de quienes se atreven a creer en ellos.'),
 (30,'9780000000040','RBA','2004-06-30','Neil Gaiman',624,7,5,
-'Una mezcla de mitología y modernidad que cuestiona la fe, la identidad y el papel de los dioses en un mundo cambiante. La novela explora cómo las creencias evolucionan con el tiempo y cómo las figuras divinas deben adaptarse a una sociedad que ya no las recuerda, mientras fuerzas antiguas y nuevas compiten por sobrevivir.');
+'Una mezcla de mitología y modernidad que cuestiona la fe, la identidad y el papel de los dioses en un mundo cambiante. La novela explora cómo las creencias evolucionan con el tiempo y cómo las figuras divinas deben adaptarse a una sociedad que ya no las recuerda, mientras fuerzas antiguas y nuevas compiten por sobrevivir.'),
+
+(31,'9780000000041','Debolsillo','2017-10-09','Jack Donoso',624,7,5,
+'Jack Donoso es un joven y peculiar periodista que está inciando su carrera profesional en la sección de Espectáculos del diario El Patriota, de Ciudad Cándida. Lleva una vida tranquila hasta que, por azares del destino, debe cubrir la nota de la explosión de un automóvil frente al edificio del Ministerio de Obras Públicas. A partir de ese momento, se ve implicado en una intriga política y policiaca que pone en peligro su vida. Esta emocionante novela recupera las características del género policiaco y les añade elementos fantásticos.');
+
 
 INSERT INTO marca (nombre_marca) VALUES
 ('Genérica'),
@@ -410,49 +418,49 @@ INSERT INTO marca (nombre_marca) VALUES
 
 -- ========== DATOS DE PAPELERIA ==========
 INSERT INTO papeleria (id_producto, id_marca, id_categoria, descripcion_larga) VALUES
-(31,1,1,
+(32,1,1,
 '[Ligera y portátil] Mochila escolar para niñas de color liso: 31 x 18 x 45 cm/12,2"x7,1"x17,7" (largo x ancho x alto). Capacidad aproximada: admite un portátil de hasta 15,6 pulgadas. Pesa 750 g, lo que la hace fácil de transportar.
 [Gran capacidad y múltiples bolsillos] El bolsillo principal incluye un compartimento para portátil. Incluye un bolsillo para el móvil, un bolsillo con cierre a presión, dos bolsillos frontales con cremallera y un bolsillo trasero con cremallera. También cuenta con dos bolsillos laterales con hebilla ajustable. Espacio suficiente para guardar botellas de agua, paraguas, libros y otros artículos de papelería.
 [Materiales de primera calidad] Fabricada en poliéster compuesto de alta densidad y alta calidad, resistente a la deformación. Cremalleras suaves, cinturón elástico trasero compatible con maletas con ruedas, correas de hombro y asa con costuras reforzadas para transportar objetos pesados.
 [Diseño ergonómico] Correa en forma de S que protege la espalda y la columna vertebral. Los paneles de malla transpirable favorecen la circulación del aire y absorben el sudor para mayor comodidad en los días calurosos. Asa superior de descompresión suave para un agarre fácil y correas de hombro anchas, ajustables y transpirables que brindan mayor comodidad a esta mochila escolar para niñas y alivian la carga de tu hija.
 [Sorpresa para niñas] Diseño simple de color liso con un encantador llavero, con un toque vibrante y juvenil, ideal para adolescentes que van a la escuela, de compras, citas, viajes, camping, conducir, etc. Se puede usar como mochila escolar, mochila de diario o mochila informal.'),
-(32,2,1,
+(33,2,1,
 'Correas de hombro acolchadas y ajustables
 Gran compartimento principal
 Tejido duradero
 Detalles distintivos de la marca'),
-(33,3,1,
+(34,3,1,
 'Multifuncional: La bolsa para computadora portátil de 17,3 pulgadas proporciona 1 compartimento grande con 5 bolsillos pequeños para guardar sus pertenencias como iPad, bolígrafos, llaves. El compartimento principal puede contener carpetas de archivos grandes y cuadernos. La funda para computadora portátil separada es lo suficientemente grande para transportar computadoras portátiles de 17, 15.6, 15 pulgadas compatibles para Dell, HP, Asus, Lenovo, Toshiba, Acer, Samsung, Sony, MacBook
 Resistente al agua Duradero: Este bolso para hombre está hecho de un material de tela de nailon ligero y de alta calidad. Ofrece una experiencia de textura de gran comodidad y muestra moda y estilo
 Práctico y Seguro: La correa para equipaje facilita sujetar el bolso a tu maleta, mientras que su bolsillo antirrobo oculto garantiza la protección de tus pertenencias más valiosas
 Protección Superior: Un acolchado de espuma de 0,5 cm de grosor con un cierre de pasador de nailon protege su portátil de arañazos y es a prueba de golpes. Bien puede evitar que su computadora portátil se dañe en cualquier momento
 Cómodo y Conveniente: Con un diseño simple y elegante, esta bolsa para computadora portátil con múltiples bolsillos es adecuada para personas de diferentes edades. Como maletín para portátil todo en uno, será el compañero perfecto para hombres, mujeres, profesores y empresarios'),
-(34,4,1,
+(35,4,1,
 'GARANTÍA Y CALIDAD: SPIDER-MAN Oficial mochila infantil escolar para niños en guardería con 2 años de garantía
 DISEÑO ÚNICO: Confeccionada con un material de poliéster muy resistente y cremalleras suaves. Fácil de lavar
 ESPACIOSA Y LIGERA: Tiradores en los cursores para facilitar su apertura. Doble tirador en cremallera principal. Costuras reforzadas
 ERGONOMÍA Y COMODIDAD: Mochila adaptable a carro Safta (Ultraligero y Ruedas PVC). Asa de mano en la parte superior y tarjeta de identificación personal
 RESISTENCIA Y DURABILIDAD: Este producto está especialmente diseñado pensando en su durabilidad, elaborado con materiales de alta resistencia para asegurar que se pueda utilizar en todo tipo de actividades, garantizando su funcionalidad'),
 
-(35,5,2,''),
-(36,6,2,''),
-(37,7,2,''),
-(38,8,2,''),
+(36,5,2,''),
+(37,6,2,''),
+(38,7,2,''),
+(39,8,2,''),
 
-(39,6,3,''),
 (40,6,3,''),
 (41,6,3,''),
-(42,9,3,''),
-(43,10,3,''),
-(44,11,3,''),
+(42,6,3,''),
+(43,9,3,''),
+(44,10,3,''),
+(45,11,3,''),
 
-(45,12,4,''),
-(46,13,4,''),
-(47,14,4,''),
-(48,15,4,''),
+(46,12,4,''),
+(47,13,4,''),
+(48,14,4,''),
+(49,15,4,''),
 
-(49,16,5,''),
-(50,17,5,'');
+(50,16,5,''),
+(51,17,5,'');
 
 INSERT INTO pedidos (fecha_venta, estado_pedido, total, id_usuario) VALUES
 ('2024-01-15','REALIZADO',72.48,1),
@@ -621,118 +629,120 @@ INSERT INTO imagenes_producto (id_producto, tipo, ruta) VALUES
 (29, 'MINIATURA', 'libros/historia_interminable_m1.jpg'),
 (29, 'MINIATURA', 'libros/historia_interminable_m2.jpg'),
 
-(30, 'PRINCIPAL', 'libros/american_gods.jpg');
+(30, 'PRINCIPAL', 'libros/american_gods.jpg'),
+
+(31, 'PRINCIPAL', 'libros/underwater.jpg');
 
 
 -- ========== DATOS DE PAPELERÍA ==========
 INSERT INTO imagenes_producto (id_producto, tipo, ruta) VALUES
-(31, 'PRINCIPAL', 'papeleria/mochila_escolar_azul.jpg'),
-(31, 'MINIATURA', 'papeleria/mochila_escolar_azul_m1.jpg'),
-(31, 'MINIATURA', 'papeleria/mochila_escolar_azul_m2.jpg'),
-(31, 'MINIATURA', 'papeleria/mochila_escolar_azul_m3.jpg'),
-(31, 'MINIATURA', 'papeleria/mochila_escolar_azul_m4.jpg'),
+(32, 'PRINCIPAL', 'papeleria/mochila_escolar_azul.jpg'),
+(32, 'MINIATURA', 'papeleria/mochila_escolar_azul_m1.jpg'),
+(32, 'MINIATURA', 'papeleria/mochila_escolar_azul_m2.jpg'),
+(32, 'MINIATURA', 'papeleria/mochila_escolar_azul_m3.jpg'),
+(32, 'MINIATURA', 'papeleria/mochila_escolar_azul_m4.jpg'),
 
-(32, 'PRINCIPAL', 'papeleria/mochila_deportiva_nike.jpg'),
-(32, 'MINIATURA', 'papeleria/mochila_deportiva_nike_m1.jpg'),
-(32, 'MINIATURA', 'papeleria/mochila_deportiva_nike_m2.jpg'),
-(32, 'MINIATURA', 'papeleria/mochila_deportiva_nike_m2.jpg'),
+(33, 'PRINCIPAL', 'papeleria/mochila_deportiva_nike.jpg'),
+(33, 'MINIATURA', 'papeleria/mochila_deportiva_nike_m1.jpg'),
+(33, 'MINIATURA', 'papeleria/mochila_deportiva_nike_m2.jpg'),
+(33, 'MINIATURA', 'papeleria/mochila_deportiva_nike_m2.jpg'),
 
-(33, 'PRINCIPAL', 'papeleria/mochila_universitaria_gris.jpg'),
-(33, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m1.jpg'),
-(33, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m2.jpg'),
-(33, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m3.jpg'),
-(33, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m4.jpg'),
-(33, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m5.jpg'),
+(34, 'PRINCIPAL', 'papeleria/mochila_universitaria_gris.jpg'),
+(34, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m1.jpg'),
+(34, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m2.jpg'),
+(34, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m3.jpg'),
+(34, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m4.jpg'),
+(34, 'MINIATURA', 'papeleria/mochila_universitaria_gris_m5.jpg'),
 
-(34, 'PRINCIPAL', 'papeleria/mochila_infantil_spiderman.jpg'),
-(34, 'MINIATURA', 'papeleria/mochila_infantil_spiderman_m1.jpg'),
-(34, 'MINIATURA', 'papeleria/mochila_infantil_spiderman_m2.jpg'),
+(35, 'PRINCIPAL', 'papeleria/mochila_infantil_spiderman.jpg'),
+(35, 'MINIATURA', 'papeleria/mochila_infantil_spiderman_m1.jpg'),
+(35, 'MINIATURA', 'papeleria/mochila_infantil_spiderman_m2.jpg'),
 
-(35, 'PRINCIPAL', 'papeleria/agenda_ejecutiva_2025.jpg'),
-(35, 'MINIATURA', 'papeleria/agenda_ejecutiva_2025_m1.jpg'),
-(35, 'MINIATURA', 'papeleria/agenda_ejecutiva_2025_m2.jpg'),
-(35, 'MINIATURA', 'papeleria/agenda_ejecutiva_2025_m3.jpg'),
+(36, 'PRINCIPAL', 'papeleria/agenda_ejecutiva_2025.jpg'),
+(36, 'MINIATURA', 'papeleria/agenda_ejecutiva_2025_m1.jpg'),
+(36, 'MINIATURA', 'papeleria/agenda_ejecutiva_2025_m2.jpg'),
+(36, 'MINIATURA', 'papeleria/agenda_ejecutiva_2025_m3.jpg'),
 
-(36, 'PRINCIPAL', 'papeleria/agenda_escolar_2025.jpg'),
-(36, 'MINIATURA', 'papeleria/agenda_escolar_2025_m1.jpg'),
-(36, 'MINIATURA', 'papeleria/agenda_escolar_2025_m2.jpg'),
-(36, 'MINIATURA', 'papeleria/agenda_escolar_2025_m3.jpg'),
-(36, 'MINIATURA', 'papeleria/agenda_escolar_2025_m4.jpg'),
+(37, 'PRINCIPAL', 'papeleria/agenda_escolar_2025.jpg'),
+(37, 'MINIATURA', 'papeleria/agenda_escolar_2025_m1.jpg'),
+(37, 'MINIATURA', 'papeleria/agenda_escolar_2025_m2.jpg'),
+(37, 'MINIATURA', 'papeleria/agenda_escolar_2025_m3.jpg'),
+(37, 'MINIATURA', 'papeleria/agenda_escolar_2025_m4.jpg'),
 
-(37, 'PRINCIPAL', 'papeleria/agenda_minimalista_2026.jpg'),
-(37, 'MINIATURA', 'papeleria/agenda_minimalista_2026_m1.jpg'),
-(37, 'MINIATURA', 'papeleria/agenda_minimalista_2026_m2.jpg'),
-(37, 'MINIATURA', 'papeleria/agenda_minimalista_2026_m3.jpg'),
-(37, 'MINIATURA', 'papeleria/agenda_minimalista_2026_m4.jpg'),
+(38, 'PRINCIPAL', 'papeleria/agenda_minimalista_2026.jpg'),
+(38, 'MINIATURA', 'papeleria/agenda_minimalista_2026_m1.jpg'),
+(38, 'MINIATURA', 'papeleria/agenda_minimalista_2026_m2.jpg'),
+(38, 'MINIATURA', 'papeleria/agenda_minimalista_2026_m3.jpg'),
+(38, 'MINIATURA', 'papeleria/agenda_minimalista_2026_m4.jpg'),
 
-(38, 'PRINCIPAL', 'papeleria/planificador_mensual.jpg'),
-(38, 'MINIATURA', 'papeleria/planificador_mensual_m1.jpg'),
-(38, 'MINIATURA', 'papeleria/planificador_mensual_m2.jpg'),
-(38, 'MINIATURA', 'papeleria/planificador_mensual_m3.jpg'),
+(39, 'PRINCIPAL', 'papeleria/planificador_mensual.jpg'),
+(39, 'MINIATURA', 'papeleria/planificador_mensual_m1.jpg'),
+(39, 'MINIATURA', 'papeleria/planificador_mensual_m2.jpg'),
+(39, 'MINIATURA', 'papeleria/planificador_mensual_m3.jpg'),
 
-(39, 'PRINCIPAL', 'papeleria/cuaderno_a4_cuadriculado.jpg'),
-(39, 'MINIATURA', 'papeleria/cuaderno_a4_cuadriculado_m1.jpg'),
-(39, 'MINIATURA', 'papeleria/cuaderno_a4_cuadriculado_m2.jpg'),
+(40, 'PRINCIPAL', 'papeleria/cuaderno_a4_cuadriculado.jpg'),
+(40, 'MINIATURA', 'papeleria/cuaderno_a4_cuadriculado_m1.jpg'),
+(40, 'MINIATURA', 'papeleria/cuaderno_a4_cuadriculado_m2.jpg'),
 
-(40, 'PRINCIPAL', 'papeleria/cuaderno_a5_rayado.jpg'),
-(40, 'MINIATURA', 'papeleria/cuaderno_a5_rayado_m1.jpg'),
-(40, 'MINIATURA', 'papeleria/cuaderno_a5_rayado_m2.jpg'),
-(40, 'MINIATURA', 'papeleria/cuaderno_a5_rayado_m3.jpg'),
-(40, 'MINIATURA', 'papeleria/cuaderno_a5_rayado_m4.jpg'),
+(41, 'PRINCIPAL', 'papeleria/cuaderno_a5_rayado.jpg'),
+(41, 'MINIATURA', 'papeleria/cuaderno_a5_rayado_m1.jpg'),
+(41, 'MINIATURA', 'papeleria/cuaderno_a5_rayado_m2.jpg'),
+(41, 'MINIATURA', 'papeleria/cuaderno_a5_rayado_m3.jpg'),
+(41, 'MINIATURA', 'papeleria/cuaderno_a5_rayado_m4.jpg'),
 
-(41, 'PRINCIPAL', 'papeleria/libreta_espiral_a4.jpg'),
-(41, 'MINIATURA', 'papeleria/libreta_espiral_a4_m1.jpg'),
-(41, 'MINIATURA', 'papeleria/libreta_espiral_a4_m2.jpg'),
-(41, 'MINIATURA', 'papeleria/libreta_espiral_a4_m3.jpg'),
-(41, 'MINIATURA', 'papeleria/libreta_espiral_a4_m4.jpg'),
+(42, 'PRINCIPAL', 'papeleria/libreta_espiral_a4.jpg'),
+(42, 'MINIATURA', 'papeleria/libreta_espiral_a4_m1.jpg'),
+(42, 'MINIATURA', 'papeleria/libreta_espiral_a4_m2.jpg'),
+(42, 'MINIATURA', 'papeleria/libreta_espiral_a4_m3.jpg'),
+(42, 'MINIATURA', 'papeleria/libreta_espiral_a4_m4.jpg'),
 
-(42, 'PRINCIPAL', 'papeleria/bloc_notas_adhesivas.jpg'),
-(42, 'MINIATURA', 'papeleria/bloc_notas_adhesivas_m1.jpg'),
-(42, 'MINIATURA', 'papeleria/bloc_notas_adhesivas_m2.jpg'),
-(42, 'MINIATURA', 'papeleria/bloc_notas_adhesivas_m3.jpg'),
+(43, 'PRINCIPAL', 'papeleria/bloc_notas_adhesivas.jpg'),
+(43, 'MINIATURA', 'papeleria/bloc_notas_adhesivas_m1.jpg'),
+(43, 'MINIATURA', 'papeleria/bloc_notas_adhesivas_m2.jpg'),
+(43, 'MINIATURA', 'papeleria/bloc_notas_adhesivas_m3.jpg'),
 
-(43, 'PRINCIPAL', 'papeleria/recambio_hojas_a4.jpg'),
-(43, 'MINIATURA', 'papeleria/recambio_hojas_a4_m1.jpg'),
-(43, 'MINIATURA', 'papeleria/recambio_hojas_a4_m2.jpg'),
+(44, 'PRINCIPAL', 'papeleria/recambio_hojas_a4.jpg'),
+(44, 'MINIATURA', 'papeleria/recambio_hojas_a4_m1.jpg'),
+(44, 'MINIATURA', 'papeleria/recambio_hojas_a4_m2.jpg'),
 
-(44, 'PRINCIPAL', 'papeleria/cuaderno_moleskine.jpg'),
-(44, 'MINIATURA', 'papeleria/cuaderno_moleskine_m1.jpg'),
-(44, 'MINIATURA', 'papeleria/cuaderno_moleskine_m2.jpg'),
-(44, 'MINIATURA', 'papeleria/cuaderno_moleskine_m3.jpg'),
-(44, 'MINIATURA', 'papeleria/cuaderno_moleskine_m4.jpg'),
+(45, 'PRINCIPAL', 'papeleria/cuaderno_moleskine.jpg'),
+(45, 'MINIATURA', 'papeleria/cuaderno_moleskine_m1.jpg'),
+(45, 'MINIATURA', 'papeleria/cuaderno_moleskine_m2.jpg'),
+(45, 'MINIATURA', 'papeleria/cuaderno_moleskine_m3.jpg'),
+(45, 'MINIATURA', 'papeleria/cuaderno_moleskine_m4.jpg'),
 
-(45, 'PRINCIPAL', 'papeleria/tarjetas_felicitacion.jpg'),
-(45, 'MINIATURA', 'papeleria/tarjetas_felicitacion_m1.jpg'),
-(45, 'MINIATURA', 'papeleria/tarjetas_felicitacion_m2.jpg'),
-(45, 'MINIATURA', 'papeleria/tarjetas_felicitacion_m3.jpg'),
+(46, 'PRINCIPAL', 'papeleria/tarjetas_felicitacion.jpg'),
+(46, 'MINIATURA', 'papeleria/tarjetas_felicitacion_m1.jpg'),
+(46, 'MINIATURA', 'papeleria/tarjetas_felicitacion_m2.jpg'),
+(46, 'MINIATURA', 'papeleria/tarjetas_felicitacion_m3.jpg'),
 
-(46, 'PRINCIPAL', 'papeleria/papel_regalo_navideño.jpg'),
-(46, 'MINIATURA', 'papeleria/papel_regalo_navideño_m1.jpg'),
-(46, 'MINIATURA', 'papeleria/papel_regalo_navideño_m2.jpg'),
-(46, 'MINIATURA', 'papeleria/papel_regalo_navideño_m3.jpg'),
+(47, 'PRINCIPAL', 'papeleria/papel_regalo_navideño.jpg'),
+(47, 'MINIATURA', 'papeleria/papel_regalo_navideño_m1.jpg'),
+(47, 'MINIATURA', 'papeleria/papel_regalo_navideño_m2.jpg'),
+(47, 'MINIATURA', 'papeleria/papel_regalo_navideño_m3.jpg'),
 
-(47, 'PRINCIPAL', 'papeleria/sobres_colores.jpg'),
-(47, 'MINIATURA', 'papeleria/sobres_colores_m1.jpg'),
-(47, 'MINIATURA', 'papeleria/sobres_colores_m2.jpg'),
-(47, 'MINIATURA', 'papeleria/sobres_colores_m3.jpg'),
+(48, 'PRINCIPAL', 'papeleria/sobres_colores.jpg'),
+(48, 'MINIATURA', 'papeleria/sobres_colores_m1.jpg'),
+(48, 'MINIATURA', 'papeleria/sobres_colores_m2.jpg'),
+(48, 'MINIATURA', 'papeleria/sobres_colores_m3.jpg'),
 
-(48, 'PRINCIPAL', 'papeleria/etiquetas_adhesivas.jpg'),
-(48, 'MINIATURA', 'papeleria/etiquetas_adhesivas_m1.jpg'),
-(48, 'MINIATURA', 'papeleria/etiquetas_adhesivas_m2.jpg'),
-(48, 'MINIATURA', 'papeleria/etiquetas_adhesivas_m3.jpg'),
-(48, 'MINIATURA', 'papeleria/etiquetas_adhesivas_m4.jpg'),
+(49, 'PRINCIPAL', 'papeleria/etiquetas_adhesivas.jpg'),
+(49, 'MINIATURA', 'papeleria/etiquetas_adhesivas_m1.jpg'),
+(49, 'MINIATURA', 'papeleria/etiquetas_adhesivas_m2.jpg'),
+(49, 'MINIATURA', 'papeleria/etiquetas_adhesivas_m3.jpg'),
+(49, 'MINIATURA', 'papeleria/etiquetas_adhesivas_m4.jpg'),
 
-(49, 'PRINCIPAL', 'papeleria/papel_a4_80g.jpg'),
-(49, 'MINIATURA', 'papeleria/papel_a4_80g_m1.jpg'),
-(49, 'MINIATURA', 'papeleria/papel_a4_80g_m2.jpg'),
-(49, 'MINIATURA', 'papeleria/papel_a4_80g_m3.jpg'),
-(49, 'MINIATURA', 'papeleria/papel_a4_80g_m4.jpg'),
+(50, 'PRINCIPAL', 'papeleria/papel_a4_80g.jpg'),
+(50, 'MINIATURA', 'papeleria/papel_a4_80g_m1.jpg'),
+(50, 'MINIATURA', 'papeleria/papel_a4_80g_m2.jpg'),
+(50, 'MINIATURA', 'papeleria/papel_a4_80g_m3.jpg'),
+(50, 'MINIATURA', 'papeleria/papel_a4_80g_m4.jpg'),
 
-(50, 'PRINCIPAL', 'papeleria/papel_fotografico.jpg'),
-(50, 'MINIATURA', 'papeleria/papel_fotografico_m1.jpg'),
-(50, 'MINIATURA', 'papeleria/papel_fotografico_m2.jpg'),
-(50, 'MINIATURA', 'papeleria/papel_fotografico_m3.jpg'),
-(50, 'MINIATURA', 'papeleria/papel_fotografico_m4.jpg');
+(51, 'PRINCIPAL', 'papeleria/papel_fotografico.jpg'),
+(51, 'MINIATURA', 'papeleria/papel_fotografico_m1.jpg'),
+(51, 'MINIATURA', 'papeleria/papel_fotografico_m2.jpg'),
+(51, 'MINIATURA', 'papeleria/papel_fotografico_m3.jpg'),
+(51, 'MINIATURA', 'papeleria/papel_fotografico_m4.jpg');
 
 
 INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUES

@@ -4,7 +4,7 @@ import Modal from '../../components/Modal_dashboard';
 
 export default function Productos({
   books,
-  stationery,
+  papeleria,
   onAddBook,
   onEditBook,
   onDeleteBook,
@@ -42,7 +42,7 @@ export default function Productos({
     return true;
   }), [books, prodSearch, prodEstado, bookIdioma, bookGenero, bookPrecio]);
 
-  const filteredStationery = useMemo(() => stationery.filter(s => {
+  const filteredStationery = useMemo(() => papeleria.filter(s => {
     if (prodSearch && !`${s.nombreProducto} ${s.marca?.nombreMarca} ${s.categoria?.nombreCategoria}`.toLowerCase().includes(prodSearch.toLowerCase())) return false;
     if (prodEstado !== 'Todos' && s.estado !== prodEstado) return false;
     if (papMarca !== 'Todos' && s.marca?.nombreMarca !== papMarca) return false;
@@ -51,7 +51,7 @@ export default function Productos({
     if (papPrecio === 'Medio' && (s.precio <= 5 || s.precio > 20)) return false;
     if (papPrecio === 'Alto' && s.precio <= 20) return false;
     return true;
-  }), [stationery, prodSearch, prodEstado, papMarca, papCategoria, papPrecio]);
+  }), [papeleria, prodSearch, prodEstado, papMarca, papCategoria, papPrecio]);
 
   const showBooks = prodCategory === 'Todos' || prodCategory === 'Libro';
   const showPap = prodCategory === 'Todos' || prodCategory === 'Papeleria';
@@ -149,7 +149,7 @@ export default function Productos({
         {prodCategory === 'Papeleria' && <>
           <select value={papMarca} onChange={e => setPapMarca(e.target.value)} className="input-field filter-select">
             <option value="Todos">Marcas: Todos</option>
-            {stationery
+            {papeleria
               .map(s => s.marca)
               .filter(Boolean)
               .reduce((acc, curr) => {
@@ -162,7 +162,7 @@ export default function Productos({
           </select>
           <select value={papCategoria} onChange={e => setPapCategoria(e.target.value)} className="input-field filter-select">
             <option value="Todos">Categorias: todos</option>
-            {stationery
+            {papeleria
               .map(s => s.categoria)
               .filter(Boolean)
               .reduce((acc, curr) => {
@@ -261,7 +261,7 @@ export default function Productos({
               </thead>
               <tbody>
                 {filteredStationery.map(s => (
-                  <tr key={s.id} onClick={() => setPopup({ type: 'stationery', data: s })} className="cursor-pointer">
+                  <tr key={s.id} onClick={() => setPopup({ type: 'papeleria', data: s })} className="cursor-pointer">
                     <td className="text-xs font-semibold text-primary">{s.nombreProducto}</td>
                     <td className="text-xs text-secondary">{s.marca?.nombreMarca}</td>
                     <td className="text-xs text-secondary">{s.categoria?.nombreCategoria}</td>
@@ -274,7 +274,7 @@ export default function Productos({
                     <td className="text-xs text-secondary">{s.stock}</td>
                     <td>
                       <div className="table-actions">
-                        <button onClick={e => { e.stopPropagation(); setFormModal({ type: 'edit-stationery', data: s }); }} className="btn-icon edit">
+                        <button onClick={e => { e.stopPropagation(); setFormModal({ type: 'edit-papeleria', data: s }); }} className="btn-icon edit">
                           <Edit size={13} color="#3b82f6" />
                         </button>
                         <button onClick={e => { e.stopPropagation(); onDeleteStationery(s.id); }} className="btn-icon delete">
@@ -325,7 +325,7 @@ export default function Productos({
       );
     }
 
-    if (type === 'stationery') {
+    if (type === 'papeleria') {
       return (
         <Modal open width="max-w-md" onClose={() => setPopup(null)} title="📎 Papelerias">
           <h4 className="font-bold text-base text-primary mb-1">{data.nombreProducto}</h4>
@@ -365,10 +365,10 @@ export default function Productos({
         </Modal>
       );
     }
-    if (type === 'edit-stationery') {
+    if (type === 'edit-papeleria') {
       return (
         <Modal open width="max-w-lg" onClose={() => setFormModal(null)} title="✏️ Editar">
-          <ProductForm type="stationery" initial={data} onSave={d => { onEditStationery(data.id, d); setFormModal(null); }} />
+          <ProductForm type="papeleria" initial={data} onSave={d => { onEditStationery(data.id, d); setFormModal(null); }} />
         </Modal>
       );
     }

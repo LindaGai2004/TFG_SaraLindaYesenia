@@ -10,17 +10,19 @@ import Pedidos from './Dashboard/Pedidos';
 import AdminConfig from './Dashboard/AdminConfig';
 import api from '../api/api';
 import './Administrador.css';
-import { apiGet } from "../api/api";
+import { apiGet, apiPost, apiPut, apiDelete } from "../api/api";
 
 
 function App() {
   // STATE
   const [page, setPage] = useState('dashboard');
   const [loading, setLoading] = useState(true);
+
+  const [notification, setNotification] = useState(null);
   
   // Data from backend
   const [books, setBooks] = useState([]);
-  const [stationery, setStationery] = useState([]);
+  const [papeleria, setPapeleria] = useState([]);
   const [clients, setClients] = useState([]);
   const [jefes, setJefes] = useState([]);
   const [trabajadores, setTrabajadores] = useState([]);
@@ -29,7 +31,13 @@ function App() {
   const [mensualTotal, setMensualTotal] = useState(0);
   const [admin, setAdmin] = useState(null);
 
+    const showNotification = (type, message) => {
+      setNotification({ type, message });
 
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+    };
   // ═══ FETCH DATA FROM BACKEND ═════════════════════════════════════════════
   useEffect(() => {
     fetchAllData();
@@ -50,23 +58,21 @@ function App() {
       const LibroData = await apiGet("/libros/todos");
       const PapeleriaData = await apiGet("/papelerias/todos");
       const ClienteData = await apiGet("/rol/2");
-      const JefeData = await apiGet("/rol/3");
-      const TrabajadorData = await apiGet("/rol/4");
+      const JefeData = await apiGet("/rol/4");
+      const TrabajadorData = await apiGet("/rol/3");
       const PedidosData = await apiGet("/pedidos/todos");
       const MensualData = await apiGet("/pedidos/mensual");
       const MensualTotalData = await apiGet("/pedidos/mensual/total")
 
       setAdmin(adminList[0] || {});
       setBooks(LibroData);
-      setStationery(PapeleriaData);
+      setPapeleria(PapeleriaData);
       setClients(ClienteData);
       setJefes(JefeData);
       setTrabajadores(TrabajadorData);
       setPedidos(PedidosData);
       setMensual(MensualData);
       setMensualTotal(MensualTotalData);
-
-
 /*
       setPedidos(pedidosData);
       serMensual(gananciaData);*/
@@ -112,30 +118,30 @@ function App() {
   };
 
   // --- PAPELERÍA ---
-  const addStationery = async (data) => {
+  const addPapeleria = async (data) => {
     try {
       const newItem = await api.papeleria.create(data);
-      setStationery(prev => [...prev, newItem]);
+      setPapeleria(prev => [...prev, newItem]);
     } catch (error) {
       console.error('Error adding papeleria:', error);
       throw error;
     }
   };
 
-  const editStationery = async (id, data) => {
+  const editPapeleria = async (id, data) => {
     try {
       const updated = await api.papeleria.update(id, data);
-      setStationery(prev => prev.map(s => s.id === id ? updated : s));
+      setPapeleria(prev => prev.map(s => s.id === id ? updated : s));
     } catch (error) {
       console.error('Error updating papeleria:', error);
       throw error;
     }
   };
 
-  const deleteStationery = async (id) => {
+  const deletePapeleria = async (id) => {
     try {
-      await api.stationery.delete(id);
-      setStationery(prev => prev.filter(s => s.id !== id));
+      await api.Papeleria.delete(id);
+      setPapeleria(prev => prev.filter(s => s.id !== id));
     } catch (error) {
       console.error('Error deleting papeleria:', error);
       throw error;
@@ -143,22 +149,24 @@ function App() {
   };
 
   // --- CLIENTES ---
-  const editClient = async (id, data) => {
+  const editClient = async (email, data) => {
     try {
-      const updated = await api.clientes.update(id, data);
-      setClients(prev => prev.map(c => c.id === id ? updated : c));
+      await apiPut(`/usuario/${email}`, data);
+      await fetchAllData();
+      showNotification("success", "Cliente modificado correctamente");
     } catch (error) {
-      console.error('Error updating client:', error);
+      showNotification("error", error.message || "Error al modificar cliente");
       throw error;
     }
   };
 
   const deleteClient = async (id) => {
     try {
-      await api.clientes.delete(id);
-      setClients(prev => prev.filter(c => c.id !== id));
+      await apiDelete(`/usuario/${id}`);
+      await fetchAllData();
+      showNotification("success", "Cliente eliminado correctamente");
     } catch (error) {
-      console.error('Error deleting client:', error);
+      showNotification("error", error.message);
       throw error;
     }
   };
@@ -166,61 +174,75 @@ function App() {
   // --- JEFES ---
   const addJefe = async (data) => {
     try {
-      const newJefe = await api.jefes.create(data);
-      setJefes(prev => [...prev, newJefe]);
-    } catch (error) {
-      console.error('Error adding jefe:', error);
-      throw error;
-    }
+      const body = {
+      ...data,
+      perfil: { idPerfil: 4 } 
+    };
+      await apiPost("/admin/crear", body);
+      await fetchAllData();
+      showNotification("success", "Jefe añadido correctamente");
+  } catch (error) {
+    showNotification("error", error.message || "Error al añadir jefe");
+    throw error;
+  }
   };
 
-  const editJefe = async (id, data) => {
+  const editJefe = async (email, data) => {
     try {
-      const updated = await api.jefes.update(id, data);
-      setJefes(prev => prev.map(j => j.id === id ? updated : j));
+      await apiPut(`/usuario/${email}`, data);
+      await fetchAllData();
+      showNotification("success", "Jefe modificado correctamente");
     } catch (error) {
-      console.error('Error updating jefe:', error);
+      showNotification("error", error.message || "Error al modificar jefe");
       throw error;
     }
   };
 
   const deleteJefe = async (id) => {
     try {
-      await api.jefes.delete(id);
-      setJefes(prev => prev.filter(j => j.id !== id));
+      await apiDelete(`/usuario/${id}`);
+      await fetchAllData();
+      showNotification("success", "Usuario eliminado correctamente");
     } catch (error) {
-      console.error('Error deleting jefe:', error);
+      showNotification("error", error.message);
       throw error;
     }
   };
 
   // --- TRABAJADORES ---
   const addTrabajador = async (data) => {
-    try {
-      const newTrab = await api.trabajadores.create(data);
-      setTrabajadores(prev => [...prev, newTrab]);
-    } catch (error) {
-      console.error('Error adding trabajador:', error);
-      throw error;
-    }
+     try {
+      const body = {
+      ...data,
+      perfil: { idPerfil: 3 } 
+    };
+      await apiPost("/admin/crear", body);
+      await fetchAllData();
+      showNotification("success", "Trabajador añadido correctamente");
+  } catch (error) {
+    showNotification("error", error.message || "Error al añadir trabajador");
+    throw error;
+  }
   };
 
-  const editTrabajador = async (id, data) => {
+  const editTrabajador = async (email, data) => {
     try {
-      const updated = await api.trabajadores.update(id, data);
-      setTrabajadores(prev => prev.map(t => t.id === id ? updated : t));
+      await apiPut(`/usuario/${email}`, data);
+      await fetchAllData();
+      showNotification("success", "Trabajador modificado correctamente");
     } catch (error) {
-      console.error('Error updating trabajador:', error);
+      showNotification("error", error.message || "Error al modificar trabajador");
       throw error;
     }
   };
 
   const deleteTrabajador = async (id) => {
-    try {
-      await api.trabajadores.delete(id);
-      setTrabajadores(prev => prev.filter(t => t.id !== id));
+    try{
+      await apiDelete(`/usuario/${id}`);
+      await fetchAllData();
+      showNotification("success", "Usuario eliminado correctamente");
     } catch (error) {
-      console.error('Error deleting trabajador:', error);
+      showNotification("error", error.message);
       throw error;
     }
   };
@@ -239,10 +261,11 @@ function App() {
   // --- ADMIN ---
   const updateAdmin = async (data) => {
     try {
-      const updated = await api.admin.updatePerfil(data);
-      setAdmin(updated);
+      await apiPut(`/usuario/${data.email}`, data);
+      await fetchAllData();
+      showNotification("success", "Administrador modificado correctamente");
     } catch (error) {
-      console.error('Error updating admin profile:', error);
+      showNotification("error", error.message || "Error al modificar administrador");
       throw error;
     }
   };
@@ -270,7 +293,6 @@ function App() {
  
   const PageComponent = pageComponents[page];
 
-  
   // ═══ RENDER ══════════════════════════════════════════════════════════════
   if (loading) {
     return (
@@ -301,19 +323,20 @@ function App() {
           <div className="main-content-inner">
             <PageComponent
               books={books}
-              stationery={stationery}
+              papeleria={papeleria}
               clients={clients}
               jefes={jefes}
               trabajadores={trabajadores}
               pedidos={pedidos}
               mensual={mensual}
+              mensualTotal={mensualTotal}
               admin={admin}
               onAddBook={addBook}
               onEditBook={editBook}
               onDeleteBook={deleteBook}
-              onAddStationery={addStationery}
-              onEditStationery={editStationery}
-              onDeleteStationery={deleteStationery}
+              onAddPapeleria={addPapeleria}
+              onEditPapeleria={editPapeleria}
+              onDeletePapeleria={deletePapeleria}
               onEditClient={editClient}
               onDeleteClient={deleteClient}
               onAddJefe={addJefe}
@@ -327,9 +350,43 @@ function App() {
             />
           </div>
         </main>
+         {notification && (
+          <div className="modal-overlay active">
+            <div className={`modal-content ${notification.type === "success" ? "modal-success" : "modal-error"}`}>
+              <div style={{ textAlign: "center", padding: "25px" }}>
+                <div
+                  style={{
+                    width: "90px",
+                    height: "90px",
+                    borderRadius: "50%",
+                    backgroundColor:
+                      notification.type === "success" ? "#2d6a4f" : "#DB504A",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto"
+                  }}
+                >
+                  <img
+                    src={notification.type === "success" ? "/tick.png" : "/cruz.png"}
+                    alt="icon"
+                    width="40"
+                  />
+                </div>
+                <h2 style={{ marginTop: "15px" }}>
+                  {notification.type === "success" ? "¡Éxito!" : "Error"}
+                </h2>
+
+                <p>{notification.message}</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
+    
   );
+  
 }
 
 export default App;
