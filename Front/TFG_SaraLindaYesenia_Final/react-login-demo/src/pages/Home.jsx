@@ -1,9 +1,10 @@
 import './Home.css';
 import { useState, useRef, useEffect, } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { ChevronLeft, ChevronRight, Search, User, ShoppingCart, Headphones, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, ChevronRight} from 'lucide-react';
 import { apiPost } from '../api/api';
+
 // Componente estar en pantalla
 function useOnScreen(ref) {
   const [isIntersecting, setIntersecting] = useState(false);
@@ -55,6 +56,10 @@ function Contador({ final, visible }) {
 export default function Home() {
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  const [mostrarAvisoCarrito, setMostrarAvisoCarrito] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+
 
   // Generos
   useEffect(() => {
@@ -228,243 +233,284 @@ export default function Home() {
     };
   }, [lastScrollY]);
 
+  const [libroMes, setLibroMes] = useState(null);
+
+  useEffect(() => {
+    async function cargarLibroMes() {
+      try {
+        const res = await fetch("http://localhost:9001/productos/31");
+        const data = await res.json();
+        setLibroMes(data);
+      } catch (error) {
+        console.error("Error cargando libro del mes:", error);
+      }
+    }
+
+    cargarLibroMes();
+  }, []);
+
+  if (!libroMes) return null;
+
   return (
-
-    <div className='home'>
-      {/* Bloque de video */}
-      <div className="bloque-video">
-        <video className="video-fondo" autoPlay muted loop>
-          <source src="/home-video-2.mp4" type="video/mp4" />
-        </video>
-
-        <div className="contenido-video">
-          <h1 className="titulo-video">Tu espacio de lectura y creatividad</h1>
-          <p className="subtitulo-video">
-            Libros, papelería y todo lo que necesitas para inspirarte.
-          </p>
-
-          <a href="/productos" className="btn-hero">
-            Ver catálogo
-          </a>
-        </div>
-      </div>
-
-
-      {/* Sección reseñas */}
-      <div className="seccion-resenas">
-        <h2 className="titulo-resenas">Lo que dicen nuestros lectores</h2>
-
-        <div className="carrusel-resenas">
-          {/* Flecha izquierda */}
-          <button className="flecha-resenas izquierda" onClick={scrollResenasIzquierda}>
-            <ChevronLeft size={20} />
-          </button>
-
-          {/* Carrusel */}
-          <div className="contenedor-resenas" ref={carruselResenasRef}>
-            {/* Reseña 1 */}
-            <div className="bloque-resena">
-              <h3 className="titulo-libro-resena">El viaje interior</h3>
-              <p className="subtitulo-libro-resena">por Clara Montes</p>
-              <div className="estrellas-resena">★★★★★</div>
-              <p className="texto-resena">
-                “Este libro fue un cambio total para mí. Desde el primer capítulo, me sentí profundamente enganchado.”
-              </p>
-              <div className="info-lector-resena">
-                <img src="/resena1.jpg" alt="Claudia Gar" className="imagen-lector-resena" />
-                <div className="datos-lector-resena">
-                  <p className="nombre-lector-resena">Claudia Gar</p>
-                  <p className="ocupacion-lector-resena">Cliente y Colaborador</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Reseña 2 */}
-            <div className="bloque-resena">
-              <h3 className="titulo-libro-resena">Horizontes lejanos</h3>
-              <p className="subtitulo-libro-resena">por Miguel Ángel Ruiz</p>
-              <div className="estrellas-resena">★★★★</div>
-              <p className="texto-resena">
-                “Como fanática de la ciencia ficción, he leído muchos libros, pero este realmente me transportó a otro mundo.”
-              </p>
-              <div className="info-lector-resena">
-                <img src="/resena2.jpg" alt="Len Brooks" className="imagen-lector-resena" />
-                <div className="datos-lector-resena">
-                  <p className="nombre-lector-resena">Len Brooks</p>
-                  <p className="ocupacion-lector-resena">Consultora de historias</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Reseña 3 */}
-            <div className="bloque-resena">
-              <h3 className="titulo-libro-resena">Ecos del pasado</h3>
-              <p className="subtitulo-libro-resena">por Laura Sánchez</p>
-              <div className="estrellas-resena">★★★★★</div>
-              <p className="texto-resena">
-                “Como amante de la historia, siempre busco ficción bien investigada. Este libro me encantó especialmente.”
-              </p>
-              <div className="info-lector-resena">
-                <img src="/resena3.jpg" alt="Owen Carter" className="imagen-lector-resena" />
-                <div className="datos-lector-resena">
-                  <p className="nombre-lector-resena">Owen Carter</p>
-                  <p className="ocupacion-lector-resena">Editor</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Reseña 4 */}
-            <div className="bloque-resena">
-              <h3 className="titulo-libro-resena">La caída</h3>
-              <p className="subtitulo-libro-resena">por Albert Camus</p>
-              <div className="estrellas-resena">★★★★★</div>
-              <p className="texto-resena">
-                “Me encantan las historias con personajes profundos, y aquí encontré protagonistas que se sienten reales.”
-              </p>
-              <div className="info-lector-resena">
-                <img src="/resena4.jpg" alt="Miriam Delish" className="imagen-lector-resena" />
-                <div className="datos-lector-resena">
-                  <p className="nombre-lector-resena">Miriam Delish</p>
-                  <p className="ocupacion-lector-resena">Colaborador</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Reseña 5 */}
-            <div className="bloque-resena">
-              <h3 className="titulo-libro-resena">Latidos que nunca dije</h3>
-              <p className="subtitulo-libro-resena">por Loren Jinx</p>
-              <div className="estrellas-resena">★★★★★</div>
-              <p className="texto-resena">
-                “Como amante de la poesía, agradezco la belleza del lenguaje y la sensibilidad con la que está escrita.”
-              </p>
-              <div className="info-lector-resena">
-                <img src="/resena5.jpg" alt="John Mark" className="imagen-lector-resena" />
-                <div className="datos-lector-resena">
-                  <p className="nombre-lector-resena">John Mark</p>
-                  <p className="ocupacion-lector-resena">Creador de contenido</p>
-                </div>
-              </div>
-            </div>
+    <>
+      {mostrarAvisoCarrito && (
+        <div className="notificacion-login">
+          <p>Debes iniciar sesión para añadir productos al carrito.</p>
+          <div className="notificacion-botones">
+            <a href="/login" className="btn-login-aviso">Ir al login</a>
+            <button 
+              className="btn-cerrar-aviso" 
+              onClick={() => setMostrarAvisoCarrito(false)}
+            >
+              Cerrar
+            </button>
           </div>
-
-          {/* Flecha derecha */}
-          <button className="flecha-resenas derecha" onClick={scrollResenasDerecha}>
-            <ChevronRight size={20} />
-          </button>
         </div>
-      </div>
+      )}
 
+      {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
-      {/* Sección libro del mes */}
-      <div className="seccion-libro-mes">
-        <h2 className="titulo-libro-mes">El libro del mes </h2>
+      <div className='home'>
+        {/* Bloque de video */}
+        <div className="bloque-video">
+          <video className="video-fondo" autoPlay muted loop>
+            <source src="/home-video-2.mp4" type="video/mp4" />
+          </video>
 
-        <div className="contenido-libro-mes">
-          {/* Columna izquierda: imagen */}
-          <div className="columna-imagen-libro">
-            <img src="/libroDelMes.jpg" alt="Libro del mes" className="imagen-libro-mes" />
-          </div>
-
-          {/* Columna derecha: información */}
-          <div className="columna-info-libro">
-            <h3 className="nombre-libro-mes">Underwater </h3>
-            <p className='autor'>By Serena Delmar</p>
-            <span className="badge-descuento">AHORRA 11€</span>
-
-            <div className="contenedor-precio">
-              <span className="precio-libro-mes">21.00€</span>
-              <span className="precio-original">30.00€</span>
-            </div>
-
-            <div className="acciones-libro">
-              <div className="boton-cantidad">
-                <button className="simbolo-cantidad" onClick={decrementarCantidad}>−</button>
-                <span className="numero-cantidad">{cantidad}</span>
-                <button className="simbolo-cantidad" onClick={incrementarCantidad}>+</button>
-              </div>
-
-              <button
-                className="boton-carrito"
-                onClick={() =>
-                  handleAddToCart({
-                    idProducto: 50,
-                    cantidad: cantidad
-                  })
-                }
-              >
-                AÑADIR AL CARRITO
-              </button>
-            </div>
-
-            <button className="boton-comprar-ahora">COMPRAR AHORA</button>
-
-            <p className="resumen-libro">
-              «Bajo el agua», de Serena Delmar, te sumerge en el misterioso y fascinante mundo submarino. Este libro muestra la extraordinaria belleza de la vida marina y los paisajes submarinos, capturados por el lente de talentosos fotógrafos. Desde vibrantes arrecifes de coral hasta las misteriosas profundidades del océano, «Bajo el agua» ofrece una cautivadora exploración de las maravillas acuáticas del planeta.
+          <div className="contenido-video">
+            <h1 className="titulo-video">Tu espacio de lectura y creatividad</h1>
+            <p className="subtitulo-video">
+              Libros, papelería y todo lo que necesitas para inspirarte.
             </p>
+
+            <a href="/productos" className="btn-hero">
+              Ver catálogo
+            </a>
+          </div>
+        </div>
+
+
+        {/* Sección reseñas */}
+        <div className="seccion-resenas">
+          <h2 className="titulo-resenas">Lo que dicen nuestros lectores</h2>
+
+          <div className="carrusel-resenas">
+            {/* Flecha izquierda */}
+            <button className="flecha-resenas izquierda" onClick={scrollResenasIzquierda}>
+              <ChevronLeft size={20} />
+            </button>
+
+            {/* Carrusel */}
+            <div className="contenedor-resenas" ref={carruselResenasRef}>
+              {/* Reseña 1 */}
+              <div className="bloque-resena">
+                <h3 className="titulo-libro-resena">El viaje interior</h3>
+                <p className="subtitulo-libro-resena">por Clara Montes</p>
+                <div className="estrellas-resena">★★★★★</div>
+                <p className="texto-resena">
+                  “Este libro fue un cambio total para mí. Desde el primer capítulo, me sentí profundamente enganchado.”
+                </p>
+                <div className="info-lector-resena">
+                  <img src="/resena1.jpg" alt="Claudia Gar" className="imagen-lector-resena" />
+                  <div className="datos-lector-resena">
+                    <p className="nombre-lector-resena">Claudia Gar</p>
+                    <p className="ocupacion-lector-resena">Cliente y Colaborador</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reseña 2 */}
+              <div className="bloque-resena">
+                <h3 className="titulo-libro-resena">Horizontes lejanos</h3>
+                <p className="subtitulo-libro-resena">por Miguel Ángel Ruiz</p>
+                <div className="estrellas-resena">★★★★</div>
+                <p className="texto-resena">
+                  “Como fanática de la ciencia ficción, he leído muchos libros, pero este realmente me transportó a otro mundo.”
+                </p>
+                <div className="info-lector-resena">
+                  <img src="/resena2.jpg" alt="Len Brooks" className="imagen-lector-resena" />
+                  <div className="datos-lector-resena">
+                    <p className="nombre-lector-resena">Len Brooks</p>
+                    <p className="ocupacion-lector-resena">Consultora de historias</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reseña 3 */}
+              <div className="bloque-resena">
+                <h3 className="titulo-libro-resena">Ecos del pasado</h3>
+                <p className="subtitulo-libro-resena">por Laura Sánchez</p>
+                <div className="estrellas-resena">★★★★★</div>
+                <p className="texto-resena">
+                  “Como amante de la historia, siempre busco ficción bien investigada. Este libro me encantó especialmente.”
+                </p>
+                <div className="info-lector-resena">
+                  <img src="/resena3.jpg" alt="Owen Carter" className="imagen-lector-resena" />
+                  <div className="datos-lector-resena">
+                    <p className="nombre-lector-resena">Owen Carter</p>
+                    <p className="ocupacion-lector-resena">Editor</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reseña 4 */}
+              <div className="bloque-resena">
+                <h3 className="titulo-libro-resena">La caída</h3>
+                <p className="subtitulo-libro-resena">por Albert Camus</p>
+                <div className="estrellas-resena">★★★★★</div>
+                <p className="texto-resena">
+                  “Me encantan las historias con personajes profundos, y aquí encontré protagonistas que se sienten reales.”
+                </p>
+                <div className="info-lector-resena">
+                  <img src="/resena4.jpg" alt="Miriam Delish" className="imagen-lector-resena" />
+                  <div className="datos-lector-resena">
+                    <p className="nombre-lector-resena">Miriam Delish</p>
+                    <p className="ocupacion-lector-resena">Colaborador</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reseña 5 */}
+              <div className="bloque-resena">
+                <h3 className="titulo-libro-resena">Latidos que nunca dije</h3>
+                <p className="subtitulo-libro-resena">por Loren Jinx</p>
+                <div className="estrellas-resena">★★★★★</div>
+                <p className="texto-resena">
+                  “Como amante de la poesía, agradezco la belleza del lenguaje y la sensibilidad con la que está escrita.”
+                </p>
+                <div className="info-lector-resena">
+                  <img src="/resena5.jpg" alt="John Mark" className="imagen-lector-resena" />
+                  <div className="datos-lector-resena">
+                    <p className="nombre-lector-resena">John Mark</p>
+                    <p className="ocupacion-lector-resena">Creador de contenido</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Flecha derecha */}
+            <button className="flecha-resenas derecha" onClick={scrollResenasDerecha}>
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+
+
+        {/* Sección libro del mes */}
+        <div className="seccion-libro-mes">
+          <h2 className="titulo-libro-mes">El libro del mes</h2>
+
+          <div className="contenido-libro-mes">
+
+            {/* Columna izquierda: imagen */}
+            <div className="columna-imagen-libro">
+              <img
+                src={`http://localhost:9001/uploads/${libroMes.imagenes[0].ruta}`}
+                alt={libroMes.nombreProducto}
+                className="imagen-libro-mes"
+              />
+            </div>
+
+            {/* Columna derecha: información */}
+            <div className="columna-info-libro">
+              <h3 className="nombre-libro-mes">{libroMes.nombreProducto}</h3>
+
+              <p className="autor">{libroMes.autor || "Autor desconocido"}</p>
+
+              <div className="contenedor-precio">
+                <span className="precio-libro-mes">{libroMes.precio}€</span>
+              </div>
+
+              <div className="acciones-libro">
+                <div className="boton-cantidad">
+                  <button className="simbolo-cantidad" onClick={decrementarCantidad}>−</button>
+                  <span className="numero-cantidad">{cantidad}</span>
+                  <button className="simbolo-cantidad" onClick={incrementarCantidad}>+</button>
+                </div>
+
+                <button
+                  className="boton-carrito"
+                  onClick={() => {
+                    if (!user) {
+                      setMostrarAvisoCarrito(true);
+                      return;
+                    }
+
+                    handleAddToCart({
+                      idProducto: libroMes.idProducto,
+                      cantidad: cantidad
+                    });
+
+                    setMensaje("Producto añadido al carrito");
+                    setTimeout(() => setMensaje(""), 2000);
+                  }}
+                >
+                  AÑADIR AL CARRITO
+                </button>
+              </div>
+
+              <p className="resumen-libro">{libroMes.resumen}</p>
+            </div>
+          </div>
+        </div>
+
+
+        {/* Sección extractos */}
+        <div className="seccion-extractos">
+          <h2 className="titulo-extractos">Extractos</h2>
+
+          <div className="contenedor-extractos">
+            {/* Columna 1 */}
+            <div className="columna-extracto">
+              <img src="/extracto1.jpg" alt="Extracto libro 1" className="imagen-extracto" />
+              <h3 className="titulo-libro-extracto">My America</h3>
+              <p className="texto-extracto">"¿Qué significa vivir en un país donde las personas responsables de proteger a sus ciudadanos pueden verse tan a menudo implicadas en sus muertes?”</p>
+              <p className="fecha-extracto">Publicado: 12/05/1955</p>
+            </div>
+
+            {/* Columna 2 */}
+            <div className="columna-extracto">
+              <img src="/extracto2.jpg" alt="Extracto libro 2" className="imagen-extracto" />
+              <h3 className="titulo-libro-extracto">Ricardo Martín</h3>
+              <p className="texto-extracto">Una saga familiar marcada por la magia y la historia.</p>
+              <p className="fecha-extracto">Publicado: 20/07/2023</p>
+            </div>
+
+            {/* Columna 3 */}
+            <div className="columna-extracto">
+              <img src="/extracto3.jpg" alt="Extracto libro 3" className="imagen-extracto" />
+              <h3 className="titulo-libro-extracto">El camino del despertar</h3>
+              <p className="texto-extracto">"El deseo de alcanzar salud, prosperidad y felicidad requiere un cambio profundo en nuestra forma de ser, pues sin esa transformación interior es imposible lograr esas metas."</p>
+              <p className="fecha-extracto">Publicado: 01/09/2023</p>
+            </div>
+          </div>
+        </div>
+
+
+        {/* Sección logros */}
+        <div className="seccion-logros" ref={logrosRef}>
+          <h2 className="titulo-logros">Logros</h2>
+
+          <div className="contenedor-logros">
+            <div className="columna-logro">
+              <Contador final={20000} visible={visible} />
+              <p className="texto-logro">Lectores</p>
+            </div>
+            <div className="columna-logro">
+              <Contador final={15000} visible={visible} />
+              <p className="texto-logro">Libros</p>
+            </div>
+            <div className="columna-logro">
+              <Contador final={98} visible={visible} />
+              <p className="texto-logro">Eventos y firmas</p>
+            </div>
+            <div className="columna-logro">
+              <Contador final={25} visible={visible} />
+              <p className="texto-logro">Premios ganados</p>
+            </div>
           </div>
         </div>
       </div>
-
-
-      {/* Sección extractos */}
-      <div className="seccion-extractos">
-        <h2 className="titulo-extractos">Extractos</h2>
-
-        <div className="contenedor-extractos">
-          {/* Columna 1 */}
-          <div className="columna-extracto">
-            <img src="/extracto1.jpg" alt="Extracto libro 1" className="imagen-extracto" />
-            <h3 className="titulo-libro-extracto">My America</h3>
-            <p className="texto-extracto">"¿Qué significa vivir en un país donde las personas responsables de proteger a sus ciudadanos pueden verse tan a menudo implicadas en sus muertes?”</p>
-            <p className="fecha-extracto">Publicado: 12/05/1955</p>
-          </div>
-
-          {/* Columna 2 */}
-          <div className="columna-extracto">
-            <img src="/extracto2.jpg" alt="Extracto libro 2" className="imagen-extracto" />
-            <h3 className="titulo-libro-extracto">Ricardo Martín</h3>
-            <p className="texto-extracto">Una saga familiar marcada por la magia y la historia.</p>
-            <p className="fecha-extracto">Publicado: 20/07/2023</p>
-          </div>
-
-          {/* Columna 3 */}
-          <div className="columna-extracto">
-            <img src="/extracto3.jpg" alt="Extracto libro 3" className="imagen-extracto" />
-            <h3 className="titulo-libro-extracto">El camino del despertar</h3>
-            <p className="texto-extracto">"El deseo de alcanzar salud, prosperidad y felicidad requiere un cambio profundo en nuestra forma de ser, pues sin esa transformación interior es imposible lograr esas metas."</p>
-            <p className="fecha-extracto">Publicado: 01/09/2023</p>
-          </div>
-        </div>
-      </div>
-
-
-      {/* Sección logros */}
-      <div className="seccion-logros" ref={logrosRef}>
-        <h2 className="titulo-logros">Logros</h2>
-
-        <div className="contenedor-logros">
-          <div className="columna-logro">
-            <Contador final={20000} visible={visible} />
-            <p className="texto-logro">Lectores</p>
-          </div>
-          <div className="columna-logro">
-            <Contador final={15000} visible={visible} />
-            <p className="texto-logro">Libros</p>
-          </div>
-          <div className="columna-logro">
-            <Contador final={98} visible={visible} />
-            <p className="texto-logro">Eventos y firmas</p>
-          </div>
-          <div className="columna-logro">
-            <Contador final={25} visible={visible} />
-            <p className="texto-logro">Premios ganados</p>
-          </div>
-        </div>
-      </div>
-
-      
-
-    </div>
+    </>
   );
 }

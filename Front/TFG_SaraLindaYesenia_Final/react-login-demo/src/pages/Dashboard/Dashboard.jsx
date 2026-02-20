@@ -5,25 +5,30 @@ import Modal from '../../components/Modal_dashboard';
 
 export default function Dashboard({ 
   books, 
-  stationery, 
+  papeleria, 
   clients , 
   pedidos, 
-  mensual 
+  mensual,
+  mensualTotal 
 }) {
   const [popup, setPopup] = useState(null);
 
-  // 计算总收入 ??
-  const totalGanancia = mensual.length > 0 
-    ? mensual[mensual.length - 1] 
-    : { libros: 0, stationery: 0 };
-  const total = totalGanancia.libros + totalGanancia.stationery;
-
-  // 渲染主仪表盘
+  //bucle
+  const totalGanancia = mensual.reduce(
+    (acc, item) => {
+      acc.libros += item.libros || 0;
+      acc.papeleria += item.papeleria || 0;
+      return acc;
+    },
+    { libros: 0, papeleria: 0 }
+  );
+  
+  
   return (
     <div>
-      {/* 4张卡片：总收入 + 客户 + 产品 + 订单 */}
+      {/* Cards*/}
       <div className="dashboard-cards">
-        {/* 总收入卡片 - 绿色 */}
+        {/* Card-total: verde */}
         <div 
           className="stat-card total" 
           onClick={() => setPopup({ type: 'total' })}
@@ -35,16 +40,18 @@ export default function Dashboard({
             </div>
           </div>
           <div className="stat-card-value white-text">
-            {total.toLocaleString()}
+            {Number(mensualTotal ?? 0).toLocaleString()}
+            
           </div>
           <div className="stat-card-footer">
             <div className="stat-card-trend-icon white-bg">
               <ArrowUpRight size={10} color="#fff" />
             </div>
           </div>
+          
         </div>
 
-        {/* 客户卡片 */}
+        {/* Crad-cliente */}
         <div 
           className="stat-card white" 
           onClick={() => setPopup({ type: 'clients-popup' })}
@@ -63,7 +70,7 @@ export default function Dashboard({
           </div>
         </div>
 
-        {/* 产品卡片 */}
+        {/* Card-productos */}
         <div 
           className="stat-card white" 
           onClick={() => setPopup({ type: 'products-popup' })}
@@ -75,7 +82,7 @@ export default function Dashboard({
             </div>
           </div>
           <div className="stat-card-value">
-            {books?.length + stationery?.length}
+            {books?.length + papeleria?.length}
           </div>
           <div className="stat-card-footer">
             <div className="stat-card-trend-icon">
@@ -84,7 +91,7 @@ export default function Dashboard({
           </div>
         </div>
 
-        {/* 订单卡片 */}
+        {/* Card-pedidos */}
         <div 
           className="stat-card white" 
           onClick={() => setPopup({ type: 'orders-popup' })}
@@ -104,7 +111,7 @@ export default function Dashboard({
         </div>
       </div>
 
-      {/* 折线图：图书 vs 文具 */}
+      {/* Grafica */}
       <div className="chart-card">
         <div className="chart-header">
           <h3 className="chart-title">Ganancia</h3>
@@ -169,17 +176,16 @@ export default function Dashboard({
         </ResponsiveContainer>
       </div>
 
-      {/* 弹窗 */}
+      {/* PopUp */}
       {renderPopup()}
     </div>
   );
 
-  // 渲染弹窗内容
   function renderPopup() {
     if (!popup) return null;
     const { type } = popup;
 
-    // 总收入弹窗
+    // PopUp-total
     if (type === 'total') {
       return (
         <Modal 
@@ -197,7 +203,7 @@ export default function Dashboard({
             </div>
             <div className="flex-1 rounded-xl p-3 text-center bg-amber-light">
               <p className="text-xl font-bold" style={{ color: '#92400e' }}>
-                ${totalGanancia.stationery.toLocaleString()}
+                ${totalGanancia.papeleria.toLocaleString()}
               </p>
               <p className="text-xs mt-1" style={{ color: '#92400e' }}>
                 📎 Papelerias
@@ -207,14 +213,14 @@ export default function Dashboard({
           <div className="text-center mt-4 pt-4" style={{ borderTop: '1px solid #f1f5f9' }}>
             <p className="text-xs text-secondary">Total</p>
             <p className="text-2xl font-bold text-primary">
-              ${total.toLocaleString()}
+              ${Number(mensualTotal || 0).toLocaleString()}
             </p>
           </div>
         </Modal>
       );
     }
 
-    // 客户弹窗 - 水平表格
+    // PopUp-clientes
     if (type === 'clients-popup') {
       return (
         <Modal 
@@ -265,11 +271,11 @@ export default function Dashboard({
         </Modal>
       );
     }
-    // 产品弹窗
+    // PopUp-productos
     if (type === 'products-popup') {
       const allProducts = [
       ...books.map(b => ({ ...b, tipoProducto: 'Libro' })),
-      ...stationery.map(s => ({ ...s, tipoProducto: 'Papeleria' }))
+      ...papeleria.map(s => ({ ...s, tipoProducto: 'Papeleria' }))
       ];
       return (
         <Modal open width="max-w-4xl" onClose={() => setPopup(null)} title="📦 Productos">
@@ -299,7 +305,7 @@ export default function Dashboard({
       );
     }
 
-    // 订单弹窗
+    // PopUp-pedidos
     if (type === 'orders-popup') {
       const statusStyle = {
         'Pendiente': { bg: '#fef3c7', color: '#92400e' },

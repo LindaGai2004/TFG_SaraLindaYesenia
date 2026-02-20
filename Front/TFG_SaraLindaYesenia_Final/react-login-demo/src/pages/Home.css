@@ -295,13 +295,10 @@
 .titulo-libro-mes {
   font-size: 48px;
   font-weight: bold;
-  margin-bottom: 20px;
-  font-family: "Cormorant", sans-serif;
-  letter-spacing: -.96px;
-  color: #6d96a6;
-  line-height: 1.16em;
-  text-align: center;
   margin-bottom: 55px;
+  font-family: "Cormorant", serif;
+  color: #6d96a6;
+  text-align: center;
 }
 
 .contenido-libro-mes {
@@ -313,20 +310,14 @@
   margin: 0 auto;
 }
 
-.columna-imagen-libro {
-  position: relative;
-}
-
 .columna-imagen-libro img {
   width: 450px;
   height: 600px;
   object-fit: cover;
-  border-radius: 12px;
   box-shadow: 10px 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-
-
+/* INFO */
 .columna-info-libro {
   max-width: 500px;
   text-align: left;
@@ -334,33 +325,20 @@
 }
 
 .nombre-libro-mes {
-  font-size: 42px;
-  font-weight: 500;
+  font-size: 46px;
+  font-weight: 700;
   margin-bottom: 8px;
   line-height: 1.2;
-  color: #2c2c2c;
-  font-family: "Cormorant", sans-serif;
+  color: #6d96a6;
+  font-family: "Cormorant", serif;
 }
 
 .autor {
   margin-top: 7px;
-  text-align: left;
-  font-weight: 500;
-  color: #666;
-  font-size: 15px;
-  margin-bottom: 15px;
-}
-
-.badge-descuento {
-  display: inline-block;
-  background-color: #f4a261;
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 4px;
-  font-size: 13px;
   font-weight: 600;
-  margin-bottom: 20px;
-  letter-spacing: 0.5px;
+  color: #6d96a6;
+  font-size: 18px;
+  margin-bottom: 15px;
 }
 
 .contenedor-precio {
@@ -368,20 +346,12 @@
 }
 
 .precio-libro-mes {
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 700;
-  color: #2c2c2c;
-  display: inline-block;
-  margin-right: 12px;
+  color: #6d96a6;
 }
 
-.precio-original {
-  font-size: 18px;
-  color: #999;
-  text-decoration: line-through;
-  display: inline-block;
-}
-
+/* ACCIONES */
 .acciones-libro {
   display: flex;
   align-items: stretch;
@@ -389,7 +359,7 @@
   margin-bottom: 32px;
 }
 
-/* Botón de cantidad */
+/* Cantidad */
 .boton-cantidad {
   display: flex;
   align-items: center;
@@ -401,43 +371,32 @@
   padding: 0 16px;
   background-color: #fff;
   color: #2c2c2c;
-  flex-shrink: 0;
 }
 
 .simbolo-cantidad {
   background: none;
   border: none;
   font-size: 20px;
-  font-weight: 400;
   cursor: pointer;
   color: #666;
-  padding: 4px 8px;
-  transition: all 0.2s;
-  margin-top: 0;
+  transition: all 0.2s ease;
 }
 
 .simbolo-cantidad:hover {
   color: #2c2c2c;
-  background: none;
 }
 
-.numero-cantidad {
-  font-size: 16px;
-  font-weight: 500;
-  color: #2c2c2c;
-  min-width: 30px;
-  text-align: center;
-}
-
-/* Botón añadir al carrito */
+/* BOTÓN CARRITO */
 .boton-carrito {
+  position: relative;
+  overflow: hidden;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  color: #2c2c2c;
-  border: 1.5px solid #d4d4d4;
+  background-color: #8daebd;
+  color: white;
+  border: 1.5px solid #8daebd;
   border-radius: 6px;
   height: 52px;
   padding: 0 24px;
@@ -445,41 +404,33 @@
   font-weight: 500;
   cursor: pointer;
   letter-spacing: 0.3px;
-  transition: all 0.3s;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  margin-top: 0 !important;
+  transition: all 0.3s ease;
+}
+
+.boton-carrito::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%; /* Empieza fuera del botón */
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: left 0.4s ease;
+  z-index: 1;/* Debajo del texto */
+}
+
+.boton-carrito:hover::before {
+  left: 0;
+}
+
+.boton-carrito span {
+  position: relative;
+  z-index: 2;
 }
 
 .boton-carrito:hover {
-  background-color: #2c2c2c;
-  color: white;
-  border-color: #2c2c2c;
-}
-
-/* Botón comprar ahora */
-.boton-comprar-ahora {
-  width: 100%;
-  background-color: #2c2c2c;
-  border: 1px solid #2c2c2c;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  height: 52px;
-  font-size: 15px;
-  cursor: pointer;
-  margin-bottom: 32px;
-  letter-spacing: 0.5px;
-  transition: all 0.3s;
-  margin-top: 0px;
-}
-
-.boton-comprar-ahora:hover {
-  background-color: #ffffff;
-  border: 1px solid #2c2c2c;
-  color: #2c2c2c;
-  transform: translateY(-1px);
-  /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
+  color: #8daebd;
+  border-color: #8daebd;
 }
 
 .resumen-libro {
@@ -615,390 +566,52 @@
   margin-top: 8px !important;
 }
 
+/*---------- AVISO DE LOGIN (FAVORITOS / CARRITO) ----------*/
+.notificacion-login {
+  position: fixed;
+  top: 120px;
+  right: 40px;
+  background: #e8f1f5;
+  border: 1px solid #6d96a6;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 7;
+  color: #184763;
+  font-weight: 500;
 
-/*------------------------------------- TABLET -------------------------------------*/
-@media (max-width: 1300px) {
-
-  /*------------------- LOS MEJORES LIBROS -------------------*/
-  .contenedor-libros {
-    gap: 20px;
-    justify-content: center;
-  }
-
-  .columna-libro {
-    flex: 1 1 calc(33.333% - 20px);
-    /* 3 columnas iguales */
-    max-width: none;
-  }
-
-  .imagen-libro {
-    width: 100%;
-    aspect-ratio: 2/3;
-    /* proporción rectangular tipo libro */
-    object-fit: cover;
-    /* recorta manteniendo proporción */
-    border-radius: 8px;
-    margin-bottom: 16px;
-  }
-
-  .nombre-libro {
-    font-size: 18px;
-  }
-
-  .boton-comprar {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
-
-  /*------------------- PARA EL LECTOR -------------------*/
-  .carrusel-lector {
-    max-width: 100%;
-    overflow: hidden;
-    gap: 16px;
-    padding: 20px 0;
-  }
-
-  .columna-lector {
-    flex: 0 0 calc(25% - 16px);
-    /* 4 columnas visibles */
-    margin: 0 8px;
-  }
-
-  .imagen-lector {
-    width: 100%;
-    aspect-ratio: 2/3;
-    /* proporción rectangular tipo libro */
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 16px;
-  }
-
-  /*------------------- RESEÑAS -------------------*/
-  .contenedor-resenas {
-    max-width: 100%;
-    overflow: hidden;
-    /* solo una fila */
-    gap: 16px;
-    padding: 20px 0;
-  }
-
-  .bloque-resena {
-    flex: 0 0 calc(33.333% - 16px);
-    /* 3 columnas visibles */
-    margin: 0 8px;
-  }
-
-  /* flechas siguen circulares */
-  .flecha-resenas {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
-
-  /*------------------- LIBRO DEL MES -------------------*/
-  .seccion-libro-mes {
-    padding: 48px 24px;
-  }
-
-  .contenido-libro-mes {
-    gap: 40px;
-    align-items: flex-start;
-  }
-
-  .columna-imagen-libro img,
-  .imagen-libro-mes {
-    width: 420px;
-    height: auto;
-    aspect-ratio: 2/3;
-    /* proporción tipo libro */
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 8px 16px 32px rgba(0, 0, 0, 0.12);
-  }
-
-  .columna-info-libro {
-    max-width: 480px;
-    padding-top: 8px;
-  }
-
-  .nombre-libro-mes {
-    font-size: 38px;
-  }
-
-  .precio-libro-mes {
-    font-size: 28px;
-  }
-
-  .boton-cantidad {
-    width: 120px;
-    height: 48px;
-  }
-
-  .boton-carrito,
-  .boton-comprar-ahora {
-    height: 48px;
-    font-size: 14px;
-  }
-
-  /*------------------- EXTRACTOS -------------------*/
-  .seccion-extractos {
-    padding: 60px 24px;
-  }
-
-  .contenedor-extractos {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: nowrap;
-    /* una sola fila visible */
-    overflow: hidden;
-    /* ocultar el resto si hay más items */
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 8px;
-  }
-
-  .columna-extracto {
-    flex: 0 0 calc(33.333% - 16px);
-    /* 3 columnas exactas */
-    max-width: calc(33.333% - 16px);
-    text-align: center;
-  }
-
-  .imagen-extracto {
-    width: 100%;
-    aspect-ratio: 4/3;
-    /* rectangular paisaje */
-    object-fit: cover;
-    height: auto;
-    max-height: 320px;
-    margin-bottom: 16px;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.18);
-  }
-
-  .titulo-libro-extracto {
-    font-size: 22px;
-  }
-
-  .texto-extracto {
-    font-size: 15px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
+/* Contenedor de botones */
+.notificacion-botones {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
 
-/*------------------------------------- MÓVIL -------------------------------------*/
-@media (max-width: 700px) {
+/* Botón "Ir al login" */
+.btn-login-aviso {
+  background: #6d96a6;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
 
-  /*------------------- LOS MEJORES LIBROS -------------------*/
-  .contenedor-libros {
-    flex-direction: column;
-    gap: 32px;
-    align-items: center;
-  }
+.btn-login-aviso:hover {
+  background: #184763;
+}
 
-  .columna-libro {
-    width: 100%;
-    max-width: 320px;
-  }
-
-  .imagen-libro {
-    width: 100%;
-    aspect-ratio: 2/3;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 16px;
-  }
-
-  .nombre-libro {
-    font-size: 16px;
-  }
-
-  .boton-comprar {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
-
-  /*------------------- PARA EL LECTOR -------------------*/
-  .carrusel-lector {
-    max-width: 100%;
-    overflow: hidden;
-    gap: 16px;
-    padding: 20px 0;
-  }
-
-  .columna-lector {
-    flex: 0 0 100%;
-    /* 1 columna visible */
-    max-width: 320px;
-    margin: 0 auto;
-  }
-
-  .imagen-lector {
-    width: 100%;
-    aspect-ratio: 2/3;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 16px;
-  }
-
-  /*------------------- RESEÑAS -------------------*/
-  .contenedor-resenas {
-    max-width: 100%;
-    overflow: hidden;
-    /* solo una fila */
-    gap: 16px;
-    padding: 20px 0;
-  }
-
-  .bloque-resena {
-    flex: 0 0 100%;
-    /* 1 reseña visible por fila */
-    max-width: 320px;
-    margin: 0 auto;
-  }
-
-  /* flechas siguen circulares */
-  .flecha-resenas {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
-
-  /*------------------- LIBRO DEL MES -------------------*/
-  .seccion-libro-mes {
-    padding: 36px 18px;
-  }
-
-  .contenido-libro-mes {
-    display: flex;
-    flex-direction: column;
-    /* imagen en una fila, contenido en otra */
-    align-items: center;
-    gap: 20px;
-    max-width: 92%;
-    margin: 0 auto;
-  }
-
-  .columna-imagen-libro {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .columna-imagen-libro img,
-  .imagen-libro-mes {
-    width: 100%;
-    max-width: 360px;
-    /* evita estirar demasiado en móviles grandes */
-    aspect-ratio: 2/3;
-    /* siempre rectangular */
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 8px 16px 32px rgba(0, 0, 0, 0.12);
-  }
-
-  .columna-info-libro {
-    width: 100%;
-    max-width: 720px;
-    text-align: left;
-    padding: 0;
-  }
-
-  .nombre-libro-mes {
-    font-size: 28px;
-    margin-top: 6px;
-  }
-
-  .badge-descuento {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-
-  .contenedor-precio {
-    margin-bottom: 18px;
-  }
-
-  .precio-libro-mes {
-    font-size: 24px;
-  }
-
-  .precio-original {
-    font-size: 16px;
-  }
-
-  .acciones-libro {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  .boton-cantidad {
-    width: 100%;
-    max-width: 160px;
-    justify-content: center;
-    margin: 0 auto;
-  }
-
-  .boton-carrito {
-    width: 100%;
-    flex: none;
-  }
-
-  .boton-comprar-ahora {
-    width: 100%;
-    margin-bottom: 18px;
-  }
-
-  .resumen-libro {
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  /*------------------- EXTRACTOS -------------------*/
-  .seccion-extractos {
-    padding: 48px 18px;
-  }
-
-  .contenedor-extractos {
-    display: flex;
-    flex-direction: column;
-    /* apilar verticalmente */
-    gap: 28px;
-    align-items: center;
-    flex-wrap: nowrap;
-    overflow: visible;
-    padding: 0;
-    max-width: 92%;
-    margin: 0 auto;
-  }
-
-  .columna-extracto {
-    flex: 0 0 100%;
-    max-width: 420px;
-    /* evita que se estire demasiado */
-    width: 100%;
-  }
-
-  .imagen-extracto {
-    width: 100%;
-    aspect-ratio: 4/3;
-    /* mantener forma rectangular paisaje */
-    object-fit: cover;
-    max-height: 320px;
-    margin-bottom: 14px;
-  }
-
-  .titulo-libro-extracto {
-    font-size: 20px;
-  }
-
-  .texto-extracto {
-    font-size: 15px;
-    padding: 0 8px;
-  }
-
-  .fecha-extracto {
-    font-size: 13px;
-    color: #777;
-  }
+/* Botón cerrar */
+.btn-cerrar-aviso {
+  background: transparent;
+  border: none;
+  color: #184763;
+  cursor: pointer;
+  font-weight: 600;
 }

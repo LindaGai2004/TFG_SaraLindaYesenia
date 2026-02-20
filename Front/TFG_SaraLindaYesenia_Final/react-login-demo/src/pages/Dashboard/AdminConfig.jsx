@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 
-export default function AdminConfig({ admin, onUpdateAdmin }) {
+export default function AdminConfig({ 
+  admin, 
+  onUpdateAdmin }) 
+  {
   const [form, setForm] = useState({
     nombre: "",
     apellidos: "",
@@ -8,6 +11,8 @@ export default function AdminConfig({ admin, onUpdateAdmin }) {
     password: "",
     direccion: "",
     email: "",
+    fechaNacimiento: "",
+    fechaRegistro: ""
   });
     useEffect(() => {
     setForm(admin || {});
@@ -15,13 +20,10 @@ export default function AdminConfig({ admin, onUpdateAdmin }) {
   const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
   const handleSave = async () => {
-    try {
-      await onUpdateAdmin(form);
-      alert('✅ Exito');
-    } catch (error) {
-      alert('❌ Error');
-    }
-  };
+  try {
+    await onUpdateAdmin(form);
+  } catch {}
+}
 
   return (
     <div className="max-w-md">
@@ -44,7 +46,10 @@ export default function AdminConfig({ admin, onUpdateAdmin }) {
             ['Username', 'username'],
             ['Contraseña', 'password'],
             ['Dirección', 'direccion'],
+            ['FecahRegistro', 'fechaRegistro'],
+            ['FechaNacimiento', 'fechaNacimiento']
           ].map(([label, key]) => (
+            
             <div key={key} className="form-group">
               <label className="form-label">{label}</label>
               <input value={form[key] || ''} onChange={e => set(key, e.target.value)} className="input-field" />
