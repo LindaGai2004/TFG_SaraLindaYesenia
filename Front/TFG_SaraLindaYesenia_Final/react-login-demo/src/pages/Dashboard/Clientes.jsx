@@ -2,7 +2,12 @@ import { useState, useMemo } from 'react';
 import { Search, Edit, Trash2 } from 'lucide-react';
 import Modal from '../../components/Modal_dashboard';
 
-export default function Clientes({ clients, pedidos, onEditClient, onDeleteClient }) {
+export default function Clientes({ 
+  clients, 
+  pedidos, 
+  onEditClient, 
+  onDeleteClient }) 
+  {
   const [clientSearch, setClientSearch] = useState('');
   const [popup, setPopup] = useState(null);
   const [formModal, setFormModal] = useState(null);
@@ -16,7 +21,7 @@ export default function Clientes({ clients, pedidos, onEditClient, onDeleteClien
   return (
     <div>
       <h2 className="text-xl font-bold text-primary mb-1">Clientes</h2>
-      <p className="text-xs text-secondary mb-4">管理注册客户</p>
+      <p className="text-xs text-secondary mb-4">Gestión los clientes</p>
 
       <div className="search-wrapper mb-4">
         <Search size={15} className="search-icon" />
@@ -39,6 +44,7 @@ export default function Clientes({ clients, pedidos, onEditClient, onDeleteClien
               <th>Usarname</th>
               <th>Dirección</th>
               <th>Fecha registro</th>
+              <th>Fecha nacimiento</th>
               <th>Pedidos</th>
               <th></th>
             </tr>
@@ -57,16 +63,17 @@ export default function Clientes({ clients, pedidos, onEditClient, onDeleteClien
                   <td className="text-xs text-secondary">{c.username}</td>
                   <td className="text-xs text-secondary">{c.direccion}</td>
                   <td className="text-xs text-secondary">{c.fechaRegistro}</td>
+                  <td className="text-xs text-secondary">{c.fechaNacimiento}</td>
                   <td>
                     <span className="badge badge-shipping">{pedCnt}</span>
                   </td>
                   <td>
                     <div className="table-actions">
                       <button onClick={e => { e.stopPropagation(); setFormModal({ type: 'edit', data: c }); }} className="btn-icon edit">
-                        <Edit size={13} color="#2d6a4f" />
+                        <Edit size={16} color="#2d6a4f" />
                       </button>
-                      <button onClick={e => { e.stopPropagation(); onDeleteClient(c.id); }} className="btn-icon delete">
-                        <Trash2 size={13} color="#ef4444" />
+                      <button onClick={e => { e.stopPropagation(); onDeleteClient(c.idUsuario); }} className="btn-icon delete">
+                        <Trash2 size={16} color="#ef4444" />
                       </button>
                     </div>
                   </td>
@@ -122,16 +129,16 @@ export default function Clientes({ clients, pedidos, onEditClient, onDeleteClien
       {/* 编辑客户弹窗 */}
       {formModal?.type === 'edit' && (
         <Modal open width="max-w-lg" onClose={() => setFormModal(null)} title="✏️ Modificar Datos">
-          <ClientForm initial={formModal.data} onSave={d => { onEditClient(formModal.data.id, d); setFormModal(null); }} />
+          <ClientForm initial={formModal.data} onSave={d => { onEditClient(formModal.data.email, d); setFormModal(null); }} />
         </Modal>
       )}
     </div>
   );
 }
 
-// 客户表单
+// List cliente
 function ClientForm({ initial, onSave }) {
-  const [form, setForm] = useState(initial || { nombre: '', apellidos: '', email: '', username: '', direccion: '' });
+  const [form, setForm] = useState(initial || { nombre: '', apellidos: '', email: '', username: '',password: '', direccion: '' ,fechaNacimiento:''});
   const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
   return (
@@ -139,25 +146,61 @@ function ClientForm({ initial, onSave }) {
       <div className="form-row">
         <div className="form-group">
           <label className="form-label">Nombre</label>
-          <input value={form.nombre} onChange={e => set('nombre', e.target.value)} className="input-field" />
+          <input 
+          value={form.nombre} 
+          onChange={e => set('nombre', e.target.value)} 
+          className="input-field" />
         </div>
         <div className="form-group">
           <label className="form-label">Apellidos</label>
-          <input value={form.apellidos} onChange={e => set('apellidos', e.target.value)} className="input-field" />
+          <input 
+          value={form.apellidos} 
+          onChange={e => set('apellidos', e.target.value)} 
+          className="input-field" />
         </div>
       </div>
       <div className="form-group">
         <label className="form-label">Email</label>
-        <input value={form.email} onChange={e => set('email', e.target.value)} className="input-field" />
+        <input 
+        value={form.email} 
+        onChange={e => set('email', e.target.value)} 
+        className="input-field" />
       </div>
       <div className="form-group">
         <label className="form-label">Username</label>
-        <input value={form.username} onChange={e => set('username', e.target.value)} className="input-field" />
+        <input 
+        value={form.username} 
+        onChange={e => set('username', e.target.value)} 
+        className="input-field" />
       </div>
+
+      <div className="form-group">
+        <label className="form-label">Password</label>
+        <input
+          type="password"
+          value={form.password || ''}
+          onChange={e => set('password', e.target.value)}
+          className="input-field"
+          placeholder="Introduce contraseña"
+        />
+      </div>
+
       <div className="form-group">
         <label className="form-label">Dirección</label>
-        <input value={form.direccion} onChange={e => set('telefono', e.target.value)} className="input-field" />
+        <input 
+        value={form.direccion} 
+        onChange={e => set('direccion', e.target.value)} 
+        className="input-field" />
       </div>
+
+      <div className="form-group">
+        <label className="form-label">Fecha nacimiento</label>
+        <input 
+        type="date" 
+        value={form.fechaNacimiento} 
+        onChange={e => set('fechaNacimiento', e.target.value)} 
+        className="input-field" /></div>
+        
       <button onClick={() => onSave(form)} className="btn btn-primary w-full mt-2">
         Guardar
       </button>

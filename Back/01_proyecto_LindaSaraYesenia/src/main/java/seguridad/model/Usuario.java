@@ -10,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -184,13 +186,20 @@ public class Usuario implements UserDetails, Serializable{
 		this.perfil = perfil;
 	}
 
-
+/*
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// Spring espera "ROLE_ADMIN", "ROLE_USER", etc.
         return List.of(new SimpleGrantedAuthority(perfil.getNombre()));
 	}
-
+	*/
+	
+	@Override
+	@JsonIgnore
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+	    return List.of(new SimpleGrantedAuthority(perfil.getNombre()));
+	}
+	
 	public List<Producto> getFavoritos() {
 		return favoritos;
 	}
