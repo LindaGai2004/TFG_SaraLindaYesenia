@@ -89,7 +89,6 @@
  
 }
 
-
 .contenido-video {
   position: absolute;
   top: 50%;
@@ -122,8 +121,8 @@
   display: inline-block;
   margin-top: 20px;
   padding: 12px 28px;
-  background: #bfd1e0;
-  color: #6d96a6;
+  background: #8daebd;
+  color: white;
   font-weight: 600;
   border-radius: 50px;
   text-decoration: none;
@@ -132,8 +131,8 @@
 }
 
 .btn-hero:hover {
-  background: #6d96a6;
-  color: #fff;
+  background: white;
+  color: #8daebd;
 }
 
 
