@@ -48,65 +48,69 @@ function MiCarrito() {
                             <span>Precio</span>
                         </div>
 
-                        {items.map((item, index) => (
-                            <div key={index} className="cart-item">
-                                <div className="cart-item-image"></div>
+                        {items.map((item, index) => {
+                            const imgPrincipal = item.imagenes?.find(img => img.tipo === "PRINCIPAL")?.ruta;
+                            return (
+                                <div key={index} className="cart-item">
+                                    <div className="cart-item-image">
+                                        {imgPrincipal ? (
+                                            <img
+                                                src={`http://localhost:9001/uploads/${imgPrincipal}`}
+                                                alt={item.nombreProducto}
+                                                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }}
+                                            />
+                                        ) : (
+                                            <div className="cart-item-img-placeholder" />
+                                        )}
+                                    </div>
 
-                                <div className="cart-item-info">
-                                    <div className="cart-item-author">{item.autor}</div>
-                                    <strong className="cart-item-name">{item.nombreProducto}</strong>
-                                    <div className="cart-item-price">
-                                        €{item.precioUnidad.toFixed(2)}
+                                    <div className="cart-item-info">
+                                        <div className="cart-item-author">{item.autor}</div>
+                                        <strong className="cart-item-name">{item.nombreProducto}</strong>
+                                        <div className="cart-item-price">€{item.precioUnidad.toFixed(2)}</div>
+                                    </div>
+
+                                    <div className="cart-quantity-controls">
+                                        <button
+                                            onClick={() =>
+                                                apiPut("/carrito/update", {
+                                                    idProducto: item.idProducto,
+                                                    cantidad: item.cantidad - 1
+                                                }).then(() => apiGet("/carrito").then(setCarrito))
+                                            }
+                                            disabled={item.cantidad <= 1}
+                                        >
+                                            −
+                                        </button>
+                                        <span>{item.cantidad}</span>
+                                        <button
+                                            onClick={() =>
+                                                apiPut("/carrito/update", {
+                                                    idProducto: item.idProducto,
+                                                    cantidad: item.cantidad + 1
+                                                }).then(() => apiGet("/carrito").then(setCarrito))
+                                            }
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+
+                                    <button
+                                        className="cart-btn-remove"
+                                        onClick={() =>
+                                            apiDelete(`/carrito/delete/${item.idProducto}`)
+                                                .then(() => apiGet("/carrito").then(setCarrito))
+                                        }
+                                    >
+                                        🗑️
+                                    </button>
+
+                                    <div className="cart-item-subtotal">
+                                        €{item.totalPorItem.toFixed(2)}
                                     </div>
                                 </div>
-
-                                <div className="cart-quantity-controls">
-                                    <button
-                                        onClick={() =>
-                                            apiPut("/carrito/update", {
-                                                idProducto: item.idProducto,
-                                                cantidad: item.cantidad - 1
-
-                                            })
-                                                .then(() => apiGet("/carrito").then(setCarrito))
-                                        }
-                                        disabled={item.cantidad <= 1}
-                                    >
-                                        −
-                                    </button>
-
-                                    <span>{item.cantidad}</span>
-
-                                    <button
-                                        onClick={() =>
-                                            apiPut("/carrito/update", {
-                                                idProducto: item.idProducto,
-                                                cantidad: item.cantidad + 1
-                                            })
-                                                .then(() => apiGet("/carrito").then(setCarrito))
-                                        }
-
-                                    >
-                                        +
-                                    </button>
-
-                                </div>
-
-                                <button
-                                    className="cart-btn-remove"
-                                    onClick={() =>
-                                        apiDelete(`/carrito/delete/${item.idProducto}`)
-                                            .then(() => apiGet("/carrito").then(setCarrito))
-                                    }
-                                >
-                                    🗑️
-                                </button>
-
-                                <div className="cart-item-subtotal">
-                                    €{item.totalPorItem.toFixed(2)}
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                     <div className="cart-summary">
                         <div className="cart-summary-line">
