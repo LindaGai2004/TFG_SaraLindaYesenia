@@ -123,52 +123,6 @@ export default function Login() {
           </button>
         </form>
       </div>
-
-      {/* FOOTER */}
-      <footer className="footer">
-        <div className="contenedor-footer">
-          <div className="columna-footer">
-            <h3 className="titulo-footer">Compañía</h3>
-            <Link to="/contacto" className="enlace-footer">Contáctanos</Link>
-            <Link to="/tarjeta-regalo" className="enlace-footer">Tarjeta regalo</Link>
-            <Link to="/blog" className="enlace-footer">Blog</Link>
-            <Link to="/sostenibilidad" className="enlace-footer">Sostenibilidad</Link>
-          </div>
-
-          <div className="columna-footer">
-            <h3 className="titulo-footer">Ayuda</h3>
-            <Link to="/faq" className="enlace-footer">Preguntas frecuentes</Link>
-            <Link to="/envio" className="enlace-footer">Información de envío</Link>
-            <Link to="/terminos" className="enlace-footer">Términos de servicio</Link>
-            <Link to="/devoluciones" className="enlace-footer">Política de devolución</Link>
-          </div>
-
-          <div className="columna-footer">
-            <h3 className="titulo-footer">Conectar</h3>
-            <div className="logos-footer">
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"><img src="/instagram.jpg" alt="Instagram" /></a>
-              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer"><img src="/tiktok.jpg" alt="Tiktok" /></a>
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img src="/facebook.jpg" alt="Facebook" /></a>
-              <a href="https://www.pinterest.com" target="_blank" rel="noopener noreferrer"><img src="/pinterest.jpg" alt="Pinterest" /></a>
-            </div>
-          </div>
-
-          <div className="columna-footer">
-            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-              <h1 className="logo-footer">Archives</h1>
-            </Link>
-            <p>
-              Descubre nuestra exquisita colección de libros, cuidadosamente seleccionada para ofrecer diversión y entretenimiento.
-            </p>
-          </div>
-        </div>
-
-        <div className="footer-final">
-          <p className="texto-final-footer">
-            © 2026 Archives - Todos los derechos reservados. Desarrollado por Sara, Linda y Yesenia.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
