@@ -34,12 +34,6 @@ public class CarritoServiceImpl implements CarritoService {
 	private DetallePedidoRepository dprepo;
     @Autowired
     private PedidoService pserv;
-	@Autowired
-	private FacturaService fserv;
-	@Autowired
-	private PdfService pdfServ;
-	@Autowired
-	private EmailService eserv;
 
 	/*	  Flujo actual:
 	 * -> EstadoPedido: CARRITO
@@ -48,7 +42,7 @@ public class CarritoServiceImpl implements CarritoService {
 	 * -> capturarPedido()  confirmar con PayPal
 	 * -> EstadoPedido: REALIZADO
 	 * -> Success 
-	 * -> EstadoPedido: CARRITO Se crea nuevo carrito va                                    cio
+	 * -> EstadoPedido: CARRITO Se crea nuevo carrito vacio
 	 * */   
 	
 	// Estado = 'CARRITO'

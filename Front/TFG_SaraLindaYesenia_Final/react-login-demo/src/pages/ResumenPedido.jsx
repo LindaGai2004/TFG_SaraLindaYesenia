@@ -35,12 +35,6 @@ function ResumenPedido() {
             <span className="label">Dirección</span>
             <span className="value">{pedido.direccion}</span>
           </div>
-          {/* agregar tlf o no*/}
-          <div className="order-customer-row">
-            <span className="label">Teléfono</span>
-            <span className="value">+34 614242991</span>
-          </div>
-
           <div className="order-customer-row">
             <span className="label">Email</span>
             <span className="value">{pedido.email}</span>
@@ -77,21 +71,30 @@ function ResumenPedido() {
         </div>
 
         <div className="order-items">
-          {pedido.items.map(item => (
-            <div className="order-item" key={item.idProducto}>
-              <div className="order-item-image"></div>
-
-              <div className="order-item-info">
-                <div className="order-item-author">{item.autor}</div>
-                <div className="order-item-name">{item.nombreProducto}</div>
-                <div className="order-item-price">
-                  €{item.precioUnidad.toFixed(2)}
+          {pedido.items.map(item => {
+            const imgPrincipal = item.imagenes?.find(img => img.tipo === "PRINCIPAL")?.ruta;
+            return (
+              <div className="order-item" key={item.idProducto}>
+                <div className="order-item-image">
+                  {imgPrincipal ? (
+                    <img
+                      src={`http://localhost:9001/uploads/${imgPrincipal}`}
+                      alt={item.nombreProducto}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }}
+                    />
+                  ) : (
+                    <div style={{ width: "100%", height: "100%", background: "#e8e8e4", borderRadius: "8px" }} />
+                  )}
                 </div>
+                <div className="order-item-info">
+                  <div className="order-item-author">{item.autor}</div>
+                  <div className="order-item-name">{item.nombreProducto}</div>
+                  <div className="order-item-price">€{item.precioUnidad.toFixed(2)}</div>
+                </div>
+                <div className="order-item-total">€{item.totalPorItem.toFixed(2)}</div>
               </div>
-
-              <div className="order-item-total">€{item.totalPorItem.toFixed(2)}</div>
-            </div>
-          ))}
+            );
+          })}
 
 
           {/* Repeat order-item for each product */}
