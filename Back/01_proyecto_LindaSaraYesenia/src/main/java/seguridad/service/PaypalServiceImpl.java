@@ -3,6 +3,7 @@ package seguridad.service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,7 @@ public class PaypalServiceImpl implements PaypalService{
                 java.util.List.of(new PurchaseUnitRequest()
                        .amountWithBreakdown(new AmountWithBreakdown()
                             .currencyCode("EUR")
-                            .value(String.format("%.2f", pedido.getTotal()))
+                            .value(String.format(Locale.US, "%.2f", pedido.getTotal()))
              )
            )
         );
