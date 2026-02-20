@@ -3,5 +3,38 @@
 }
 
 .app-content.with-navbar {
-  padding-top: 120px; /* altura del navbar */
+  padding-top:4%; /* altura del navbar */
+}
+/* En App.css o index.css — wrapper que da el fondo gris solo a la derecha */
+.checkout-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 1200px;
+}
+
+.checkout-page-left {
+  background: #fff;
+}
+
+.checkout-page-right {
+  background: #f7f7f5;
+  border-left: 1px solid #e0ddd8;
+}
+
+/* El contenido interior centrado */
+.checkout-wrapper {
+  display: contents; /* deja que los hijos participen en el grid del padre */
+}
+
+.checkout-left {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  width: 100%;
+}
+
+.checkout-right {
+  max-width: 480px;
+  padding: 3rem 2rem;
+  width: 100%;
 }

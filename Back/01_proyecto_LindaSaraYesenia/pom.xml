@@ -98,6 +98,28 @@
     		<version>0.11.5</version>
     		<scope>runtime</scope>
 		</dependency>
+		<!-- Para usar ThymeLeaf -->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!-- Dependencia de OpenHTMLtoPDF -->
+		<dependency>
+    		<groupId>com.openhtmltopdf</groupId>
+    		<artifactId>openhtmltopdf-pdfbox</artifactId>
+   			<version>1.0.10</version>
+		</dependency>
+		<!-- Añadir dependencia de mail -->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<!-- Añadir checkout de PayPal (SDK) -->
+		<dependency>
+    		<groupId>com.paypal.sdk</groupId>
+    		<artifactId>checkout-sdk</artifactId>
+    		<version>1.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

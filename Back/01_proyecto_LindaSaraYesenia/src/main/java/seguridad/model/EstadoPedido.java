@@ -4,5 +4,5 @@ public enum EstadoPedido {
 	REALIZADO,
 	CANCELADO,
 	DEVUELTO,
-	CARRITO
+	CARRITO,
 }

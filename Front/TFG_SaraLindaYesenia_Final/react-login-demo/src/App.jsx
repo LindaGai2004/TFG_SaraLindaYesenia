@@ -9,29 +9,38 @@ import Jefe from './pages/Jefe';
 import Trabajador from './pages/Trabajador';
 import Cliente from './pages/Cliente';
 import MiCarrito from './components/MiCarrito';
-import NavBar from './components/NavBar';
 import ResumenPedido from './pages/ResumenPedido';
 import Productos from './pages/Productos';
 import ProductoDetalle from './components/ProductoDetalle';
-import './App.css';
 import Portfolio from './pages/Cliente';
+import PaypalSuccess from './pages/PaypalSuccess';
+import PaypalCancel from './pages/PaypalCancel';
+import Checkout from "./pages/Checkout";
+
+import NavBar from './components/NavBar';
+import Footer from "./components/Footer";
+import './App.css';
 
 export default function App() {
   const location = useLocation();
-  const hideNavbarPaths = [  
+
+  const hideNavbarPaths = [
     '/administrador',
     '/jefe',
     '/trabajador',
     '/cliente',
-    '/success'];
-    const shouldShowNavbar = !hideNavbarPaths.some(path =>
-      location.pathname.startsWith(path)
-    );
+    '/success'
+  ];
+
+  const shouldShowNavbar = !hideNavbarPaths.some(path =>
+    location.pathname.startsWith(path)
+  );
 
   return (
     <>
-    {shouldShowNavbar && <NavBar />}
-    <main className={shouldShowNavbar ? 'app-content with-navbar' : 'app-content'}>
+      {shouldShowNavbar && <NavBar />}
+
+      <main className={shouldShowNavbar ? 'app-content with-navbar' : 'app-content'}>
         <Routes>
 
           {/* Rutas públicas */}
@@ -88,7 +97,9 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/paypal/success" element={<PaypalSuccess />} />
 
+          <Route path="/paypal/cancel" element={<PaypalCancel />} />
           <Route
             path="/success"
             element={
@@ -97,12 +108,15 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-
+            <Route path="/checkout/:idPedido" element={<Checkout />} />
+            <Route path="/resumen" element={<ResumenPedido />} />
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
 
         </Routes>
       </main>
+
+      <Footer />
     </>
   );
 }

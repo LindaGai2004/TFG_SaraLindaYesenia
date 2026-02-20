@@ -7,6 +7,8 @@ import "./Productos.css";
 export default function Productos() {
     const [productos, setProductos] = useState([]);
     const [orden, setOrden] = useState("");
+    const [paginaActual, setPaginaActual] = useState(1);
+    const productosPorPagina = 18; // 3 filas de 6 productos
 
     const filtrarProductos = async (filtros) => {
         try {
@@ -45,6 +47,12 @@ export default function Productos() {
         }
     }
 
+    const indexInicio = (paginaActual - 1) * productosPorPagina;
+    const indexFin = indexInicio + productosPorPagina;
+
+    const productosPaginados = productosOrdenados.slice(indexInicio, indexFin);
+    const totalPaginas = Math.ceil(productosOrdenados.length / productosPorPagina);
+    
 
     return (
         <div className="productos-container">
@@ -64,7 +72,32 @@ export default function Productos() {
                     </select>
                 </div>
 
-                <ProductoLista productos={productosOrdenados} />
+                <ProductoLista productos={productosPaginados} />
+                <div className="paginacion">
+                    <button
+                        disabled={paginaActual === 1}
+                        onClick={() => setPaginaActual(paginaActual - 1)}
+                    >
+                        ← Anterior
+                    </button>
+
+                    {[...Array(totalPaginas)].map((_, i) => (
+                        <button
+                        key={i}
+                        className={paginaActual === i + 1 ? "pagina-activa" : ""}
+                        onClick={() => setPaginaActual(i + 1)}
+                        >
+                        {i + 1}
+                        </button>
+                    ))}
+
+                    <button
+                        disabled={paginaActual === totalPaginas}
+                        onClick={() => setPaginaActual(paginaActual + 1)}
+                    >
+                        Siguiente →
+                    </button>
+                </div>
             </main>
         </div>
     );

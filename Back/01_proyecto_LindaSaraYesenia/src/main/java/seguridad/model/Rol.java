@@ -6,6 +6,5 @@ public enum Rol {
 	ROLE_CLIENTE,
 	ROLE_TRABAJADOR,
 	ROLE_JEFE
-	
 
 }

@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,21 +55,19 @@ public class UsuarioRestController {
 
     //LOGIN
     @PostMapping("/api/login")
-    public ResponseEntity<?> login(@RequestBody Usuario usuario, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody Usuario loginRequest) {
         try {
             Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getPassword())
-            );
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             //anterior
             //SecurityContextHolder.getContext().setAuthentication(auth);
             //HttpSession session = request.getSession(true);
             //session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
-            Usuario user = (Usuario) auth.getPrincipal();
-            //para no devolver la contrasena hashead al front
-            user.setPassword(null);
-            String token = jwtService.generarToken(user.getEmail());
-            return ResponseEntity.ok(Map.of("token", token, "user", user));
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            String jwt = jwtService.generarToken(userDetails.getUsername());
+            Usuario usuarioBD = usuarioService.findByEmail(userDetails.getUsername());
+            return ResponseEntity.ok(Map.of("token", jwt, "user", usuarioBD));
             
         } catch (Exception e) { 
             return ResponseEntity.status(401).body("Credenciales inválidas");
