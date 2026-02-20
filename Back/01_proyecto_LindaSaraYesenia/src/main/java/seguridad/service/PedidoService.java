@@ -4,9 +4,9 @@ import java.util.List;
 
 import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
-import seguridad.model.dto.CarritoItemRequest;
+import seguridad.model.dto.CarritoItemRequestDto;
 import seguridad.model.dto.IngresoMensualDto;
-import seguridad.model.dto.PedidoResponse;
+import seguridad.model.dto.PedidoResponseDto;
 
 public interface PedidoService {
 	
@@ -17,11 +17,9 @@ public interface PedidoService {
 	//Para admon
 	List<Pedido> findAll();
 	Pedido findById(Integer idPedido);
-	
+	void recalcularTotalPedido(Pedido pedido);
 	//Resumen de pedido. Devuelve DTO
-	PedidoResponse resumenPedido(Integer idPedido);
-	
-	//
+	PedidoResponseDto resumenPedido(Integer idPedido);
     List<IngresoMensualDto> getIngresosMensuales();
     double getTotalIngreso();
 }

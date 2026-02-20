@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 import Favoritos from "./Favoritos";
 import './Cliente.css';
 
@@ -84,10 +85,7 @@ export default function Portfolio() {
             className={`app-sidebar-link ${page === "favoritos" ? "active" : ""}`}
             onClick={() => setPage("favoritos")}
           >
-            <img
-              src={page==="favoritos" ? "/corazon-lleno.png" : "/corazon.jpg"}
-              alt="Favorito"
-            />
+            <Heart size={24} className="sidebar-heart-icon" />
           </a>
 
           <a className="app-sidebar-link">

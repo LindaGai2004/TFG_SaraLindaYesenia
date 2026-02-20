@@ -19,7 +19,7 @@ import seguridad.model.EstadoPedido;
 import seguridad.model.Pedido;
 import seguridad.model.Usuario;
 import seguridad.model.dto.IngresoMensualDto;
-import seguridad.model.dto.PedidoResponse;
+import seguridad.model.dto.PedidoResponseDto;
 import seguridad.repository.UsuarioRepository;
 import seguridad.service.CarritoService;
 import seguridad.service.PedidoService;
@@ -41,21 +41,24 @@ public class PedidoRestController {
 	@PreAuthorize("hasAnyRole('ADMON', 'JEFE','TRABAJADOR')")
 	public ResponseEntity<?> todos(){
 		List<Pedido> pedidos = pserv.findAll();
-		List<PedidoResponse> respuestas = pedidos.stream()
+		List<PedidoResponseDto> respuestas = pedidos.stream()
 				.map(p ->pserv.resumenPedido(p.getIdPedido()))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(respuestas);
 	}
 	
-	
-	
+	//Devolver el pedido en Estado Realizado
+	@GetMapping("/pedidos/{id}")
+	public PedidoResponseDto getPedido(@PathVariable Integer id) {
+	    return pserv.resumenPedido(id);
+	}
 	//Historial de pedidos por usuario
 	@GetMapping("/usuario/")
 	@PreAuthorize("hasRole('CLIENTE')")
 	public ResponseEntity<?> pedidosPorUsuario(){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Usuario usuario = (Usuario) auth.getPrincipal();
-		List<PedidoResponse> pedidosUsuario = pserv.findByIdUsuario(usuario.getIdUsuario())
+		List<PedidoResponseDto> pedidosUsuario = pserv.findByIdUsuario(usuario.getIdUsuario())
 				 	.stream()
 	                .map(p -> pserv.resumenPedido(p.getIdPedido()))
 	                .collect(Collectors.toList());
@@ -78,7 +81,7 @@ public class PedidoRestController {
 		//Resumen del pedido
 		@GetMapping("/{idPedido:\\d+}")
 		public ResponseEntity<?> pedidoPorIdPedido(@PathVariable Integer idPedido){
-			PedidoResponse resumen = pserv.resumenPedido(idPedido);
+			PedidoResponseDto resumen = pserv.resumenPedido(idPedido);
 			return ResponseEntity.ok(resumen);
 		}
 		

@@ -35,7 +35,7 @@ function NavBar({ isVisible = true }) {
         {/* Título en el centro */}
         <div className="titulo-pagina">
           <Link to="/">
-            <h1>Archives</h1>
+            <h1 className="logo-navbar">Archives</h1>
           </Link>
         </div>
 

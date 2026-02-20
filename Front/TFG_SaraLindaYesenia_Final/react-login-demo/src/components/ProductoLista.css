@@ -19,35 +19,39 @@
   transform: translateY(-5px);
 }
 
-/* Zona donde se hace click (imagen + info) */
+/* Zona clicable */
 .producto-link {
   text-decoration: none;
   color: inherit;
   display: block;
   position: relative;
-  z-index: 1; /* debajo del botón de carrito */
+  z-index: 1;
 }
 
-.producto-imagen img {
+/* ----------- IMAGEN PRINCIPAL ----------- */
+.producto-lista-imagen {
   width: 100%;
-  height: 200px;
+  height: 300px;
   object-fit: cover;
   border-radius: 8px;
   background: #eee;
 }
 
-/* FAVORITO */
+/*---------- FAVORITO ----------*/
 .favorito-btn {
+  width: 40px;
+  height: 40px;
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
+  top: 23px;
+  right: 23px;
+  background: #bfd1e0;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
   padding: 0;
   opacity: 0;
-  transition: opacity 0.2s ease;
-  z-index: 3; /* por encima del link */
+  transition: background 0.2s ease;
+  z-index: 3;
 }
 
 .producto-card:hover .favorito-btn {
@@ -60,7 +64,36 @@
   object-fit: contain;
 }
 
-/* BOTÓN CARRITO */
+/*---------- NOTIFICACIÓN FAVORITOS ----------*/
+.notificacion-login {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ffecec;
+  border: 1px solid #ff6b6b;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 9999;
+}
+
+.btn-login-aviso {
+  background: #ff6b6b;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.btn-cerrar-aviso {
+  background: transparent;
+  border: none;
+  color: #444;
+  cursor: pointer;
+}
+
+/*---------- BOTÓN CARRITO ----------*/
 .carrito-overlay-btn {
   position: absolute;
   bottom: 10px;
@@ -68,15 +101,14 @@
   transform: translateX(-50%);
   width: 85%;
   height: 42px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
+  background: #bfd1e0;
+  color: #6d96a6;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
 
-  /* Centrado del texto */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,15 +116,20 @@
 
   opacity: 0;
   transition: opacity 0.2s ease;
-  z-index: 2; /* por encima del link, pero debajo del favorito */
+  z-index: 2;
 }
 
 .producto-card:hover .carrito-overlay-btn {
   opacity: 1;
 }
 
+.carrito-overlay-btn:hover {
+  background: #6d96a6;
+  color: #bfd1e0;
+}
+
 .carrito-overlay-btn:active {
-  transform: translateX(-50%) scale(0.97);
+  transform: translateX(-50%) scale(1);
 }
 
 /* INFO */
@@ -121,4 +158,27 @@
 .sin-resultados {
   padding: 2rem;
   font-size: 1.2rem;
+}
+
+
+/*---------- NOTIFICACIÓN CARRITO ----------*/
+.notificacion-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #184763;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
 }

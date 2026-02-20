@@ -18,10 +18,6 @@ import seguridad.model.Producto;
 import seguridad.model.Libro;
 import seguridad.model.Papeleria;
 
-import seguridad.model.Producto;
-import seguridad.model.Usuario;
-import seguridad.model.dto.FiltroProductoDto;
-
 import seguridad.repository.LibroRepository;
 import seguridad.repository.PapeleriaRespository;
 
@@ -37,23 +33,27 @@ public class ProductoRestController {
 
     @Autowired
     private LibroRepository libroRepo;
-    
+
     @Autowired
     private PapeleriaRespository papeleriaRepo;
 
-	
-	@PutMapping("{idProducto}/destacado")
-	@PreAuthorize("hasAnyRole('ADMON', 'JEFE', 'TRABAJADOR')")
-	public ResponseEntity<?> elegirDestacado(@PathVariable Integer idProducto){
-		Producto producto = productoService.escogerDestacado(idProducto);
-		return ResponseEntity.ok(producto);
-	}
-	
-	@GetMapping("/destacado")
-	public ResponseEntity<?> mostrarDestacado(){
-		Producto producto = productoService.getProductoDestacado();
-		return ResponseEntity.ok(producto);
-	}
+    // Destacado
+
+    @PutMapping("{idProducto}/destacado")
+    @PreAuthorize("hasAnyRole('ADMON', 'JEFE', 'TRABAJADOR')")
+    public ResponseEntity<?> elegirDestacado(@PathVariable Integer idProducto) {
+        Producto producto = productoService.escogerDestacado(idProducto);
+        return ResponseEntity.ok(producto);
+    }
+
+    @GetMapping("/destacado")
+    public ResponseEntity<?> mostrarDestacado() {
+        Producto producto = productoService.getProductoDestacado();
+        return ResponseEntity.ok(producto);
+    }
+    
+
+    // Listar todos
 
     @GetMapping("/todos")
     public ResponseEntity<?> todos() {
@@ -62,6 +62,8 @@ public class ProductoRestController {
         return ResponseEntity.ok(lista);
     }
 
+    // Filtrar
+
     @GetMapping("/filtrar")
     public ResponseEntity<?> filtrarProductos(
             @RequestParam(required = false) String tipo,
@@ -69,14 +71,17 @@ public class ProductoRestController {
             @RequestParam(required = false) String genero,
             @RequestParam(required = false) String marca,
             @RequestParam(required = false) String categoria,
-            @RequestParam(required = false) Double precio,
+            @RequestParam(required = false) Double precioMin,
+            @RequestParam(required = false) Double precioMax,
             @RequestParam(required = false) String estado) {
 
         List<Producto> lista = productoService.filtrar(
-                tipo, idioma, genero, marca, categoria, precio, estado
+                tipo, idioma, genero, marca, categoria, precioMin, precioMax, estado
         );
         return ResponseEntity.ok(lista);
     }
+
+    // Buscador
 
     @GetMapping("/buscar/todos")
     public ResponseEntity<?> buscarProducto(@RequestParam String texto) {
@@ -86,7 +91,7 @@ public class ProductoRestController {
         }
         return ResponseEntity.ok(lista);
     }
-    
+
     // Obtener producto por ID
 
     @GetMapping("/{id}")
@@ -100,11 +105,9 @@ public class ProductoRestController {
             return ResponseEntity.status(404).body("Producto no encontrado");
         }
 
-        // Intentamos cargar libro y papelería por id_producto
         Libro libro = libroRepo.findById(id).orElse(null);
         Papeleria pap = papeleriaRepo.findById(id).orElse(null);
 
-        // Si existe libro con ese id es LIBRO
         if (libro != null) {
             return ResponseEntity.ok(new Object() {
                 public final Integer idProducto = base.getIdProducto();
@@ -118,10 +121,10 @@ public class ProductoRestController {
                 public final Integer numeroPaginas = libro.getNumeroPagina();
                 public final String idioma = (libro.getIdioma() != null ? libro.getIdioma().getNombreIdioma() : null);
                 public final String resumen = libro.getResumen();
+                public final List<?> imagenes = base.getImagenes();
             });
         }
 
-        // Si existe papelería con ese id es PAPELERIA
         if (pap != null) {
             return ResponseEntity.ok(new Object() {
                 public final Integer idProducto = base.getIdProducto();
@@ -132,14 +135,16 @@ public class ProductoRestController {
                 public final String tipo = "PAPELERIA";
                 public final String marca = (pap.getMarca() != null ? pap.getMarca().getNombreMarca() : null);
                 public final String categoria = (pap.getCategoria() != null ? pap.getCategoria().getNombreCategoria() : null);
+
+                public final List<?> imagenes = base.getImagenes();
             });
         }
 
-        // Si no es ni libro ni papelería (caso raro)
         return ResponseEntity.ok(base);
     }
+    
 
-
+    // Eliminar
 
     @DeleteMapping("/eliminar/{idProducto}")
     @PreAuthorize("hasRole('ADMON')")
@@ -156,9 +161,25 @@ public class ProductoRestController {
         return ResponseEntity.status(500).body("Error al eliminar");
     }
 
+    // Productos relacionados
 
-	
+    @GetMapping("/relacionados/libro")
+    public ResponseEntity<?> relacionadosLibro(
+            @RequestParam String autor,
+            @RequestParam String genero,
+            @RequestParam Integer idActual) {
 
+        List<Producto> lista = productoService.relacionadosLibro(autor, genero, idActual);
+        return ResponseEntity.ok(lista);
+    }
 
+    @GetMapping("/relacionados/papeleria")
+    public ResponseEntity<?> relacionadosPapeleria(
+            @RequestParam String marca,
+            @RequestParam String categoria,
+            @RequestParam Integer idActual) {
+
+        List<Producto> lista = productoService.relacionadosPapeleria(marca, categoria, idActual);
+        return ResponseEntity.ok(lista);
+    }
 }
-

@@ -18,7 +18,6 @@ export function CartProvider({ children }) {
     setCartItems(carrito.items);
   }
 
-
   function increaseCantidad(id_producto){
     setCartItems(prevItems =>
       prevItems.map(item=>
@@ -29,6 +28,7 @@ export function CartProvider({ children }) {
 
     )
   }
+
   function decreaseCantidad(id_producto){
     setCartItems(prevItems =>
       prevItems.map(item=>
@@ -39,11 +39,13 @@ export function CartProvider({ children }) {
       .filter(item=>item.cantidad > 0)
     )
   }
+
   function quitarFromCart(id_producto){
     setCartItems(prevItems=>
       prevItems.filter(item=> item.id_producto !== id_producto)
     );
   }
+
   //Abrir el carrito guardado
   useEffect(() => {
     const storedCart = localStorage.getItem('cartItems');
@@ -73,8 +75,8 @@ export function CartProvider({ children }) {
 
   //Significa que los componentes de este Provider pueden acceder al carrito (route, pages, botones pueden leerlo)
   return (
-    <CartContext.Provider value={{cartItems, addToCart}}>
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
-  );
+  );  
 }
