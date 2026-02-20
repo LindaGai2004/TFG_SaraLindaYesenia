@@ -8,7 +8,7 @@ export default function ProductoImagenes({ imagenes = [], modo = "completo" }) {
   // Imagen principal = la que tenga tipo "PRINCIPAL"
   const principal = imagenes.find(img => img.tipo === "PRINCIPAL") || imagenes[0];
 
-  // Si estamos en modo simple → SOLO mostrar la principal
+  // Si estamos en modo simple -> SOLO mostrar la principal
   if (modo === "simple") {
     return (
       <img
