@@ -5,7 +5,7 @@ import Modal from '../../components/Modal_dashboard';
 
 export default function Dashboard({ 
   books, 
-  stationery, 
+  papeleria, 
   clients , 
   pedidos, 
   mensual 
@@ -15,8 +15,8 @@ export default function Dashboard({
   // 计算总收入 ??
   const totalGanancia = mensual.length > 0 
     ? mensual[mensual.length - 1] 
-    : { libros: 0, stationery: 0 };
-  const total = totalGanancia.libros + totalGanancia.stationery;
+    : { libros: 0, papeleria: 0 };
+  const total = totalGanancia.libros + totalGanancia.papeleria;
 
   // 渲染主仪表盘
   return (
@@ -75,7 +75,7 @@ export default function Dashboard({
             </div>
           </div>
           <div className="stat-card-value">
-            {books?.length + stationery?.length}
+            {books?.length + papeleria?.length}
           </div>
           <div className="stat-card-footer">
             <div className="stat-card-trend-icon">
@@ -197,7 +197,7 @@ export default function Dashboard({
             </div>
             <div className="flex-1 rounded-xl p-3 text-center bg-amber-light">
               <p className="text-xl font-bold" style={{ color: '#92400e' }}>
-                ${totalGanancia.stationery.toLocaleString()}
+                ${totalGanancia.papeleria.toLocaleString()}
               </p>
               <p className="text-xs mt-1" style={{ color: '#92400e' }}>
                 📎 Papelerias
@@ -269,7 +269,7 @@ export default function Dashboard({
     if (type === 'products-popup') {
       const allProducts = [
       ...books.map(b => ({ ...b, tipoProducto: 'Libro' })),
-      ...stationery.map(s => ({ ...s, tipoProducto: 'Papeleria' }))
+      ...papeleria.map(s => ({ ...s, tipoProducto: 'Papeleria' }))
       ];
       return (
         <Modal open width="max-w-4xl" onClose={() => setPopup(null)} title="📦 Productos">

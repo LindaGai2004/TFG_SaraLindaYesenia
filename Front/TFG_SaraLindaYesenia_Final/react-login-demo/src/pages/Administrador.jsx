@@ -20,7 +20,7 @@ function App() {
   
   // Data from backend
   const [books, setBooks] = useState([]);
-  const [stationery, setStationery] = useState([]);
+  const [papeleria, setPapeleria] = useState([]);
   const [clients, setClients] = useState([]);
   const [jefes, setJefes] = useState([]);
   const [trabajadores, setTrabajadores] = useState([]);
@@ -58,7 +58,7 @@ function App() {
 
       setAdmin(adminList[0] || {});
       setBooks(LibroData);
-      setStationery(PapeleriaData);
+      setPapeleria(PapeleriaData);
       setClients(ClienteData);
       setJefes(JefeData);
       setTrabajadores(TrabajadorData);
@@ -112,30 +112,30 @@ function App() {
   };
 
   // --- PAPELERÍA ---
-  const addStationery = async (data) => {
+  const addPapeleria = async (data) => {
     try {
       const newItem = await api.papeleria.create(data);
-      setStationery(prev => [...prev, newItem]);
+      setPapeleria(prev => [...prev, newItem]);
     } catch (error) {
       console.error('Error adding papeleria:', error);
       throw error;
     }
   };
 
-  const editStationery = async (id, data) => {
+  const editPapeleria = async (id, data) => {
     try {
       const updated = await api.papeleria.update(id, data);
-      setStationery(prev => prev.map(s => s.id === id ? updated : s));
+      setPapeleria(prev => prev.map(s => s.id === id ? updated : s));
     } catch (error) {
       console.error('Error updating papeleria:', error);
       throw error;
     }
   };
 
-  const deleteStationery = async (id) => {
+  const deletePapeleria = async (id) => {
     try {
-      await api.stationery.delete(id);
-      setStationery(prev => prev.filter(s => s.id !== id));
+      await api.Papeleria.delete(id);
+      setPapeleria(prev => prev.filter(s => s.id !== id));
     } catch (error) {
       console.error('Error deleting papeleria:', error);
       throw error;
@@ -301,7 +301,7 @@ function App() {
           <div className="main-content-inner">
             <PageComponent
               books={books}
-              stationery={stationery}
+              papeleria={papeleria}
               clients={clients}
               jefes={jefes}
               trabajadores={trabajadores}
@@ -311,9 +311,9 @@ function App() {
               onAddBook={addBook}
               onEditBook={editBook}
               onDeleteBook={deleteBook}
-              onAddStationery={addStationery}
-              onEditStationery={editStationery}
-              onDeleteStationery={deleteStationery}
+              onAddPapeleria={addPapeleria}
+              onEditPapeleria={editPapeleria}
+              onDeletePapeleria={deletePapeleria}
               onEditClient={editClient}
               onDeleteClient={deleteClient}
               onAddJefe={addJefe}
