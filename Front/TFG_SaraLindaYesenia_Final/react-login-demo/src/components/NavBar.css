@@ -122,12 +122,13 @@
     text-align: center;
   }
   
-  .titulo-pagina h1 {
-    font-family: "Ablafit", sans-serif;
-    margin: 0;
-    font-size: 27px;
-    color: #333;
-  }
+  .logo-navbar {
+  font-family: "Ablafit", sans-serif;
+  font-size: 36px;
+  letter-spacing: -0.5px;
+  color: inherit;
+  text-decoration: none;
+}
   
   .acciones-usuario {
     display: flex;

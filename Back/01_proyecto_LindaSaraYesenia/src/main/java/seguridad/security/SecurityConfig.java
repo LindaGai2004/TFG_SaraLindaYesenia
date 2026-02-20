@@ -104,7 +104,8 @@ public class SecurityConfig {
             .requestMatchers("/carrito/**").authenticated()
             .requestMatchers("/rol/**").authenticated()
             .requestMatchers("/api/paypal/**").permitAll()
-            //otras requests deben ser autenticadas
+            .requestMatchers("/usuarios/favoritos/**").authenticated()
+          //otras requests deben ser autenticadas
             .anyRequest().authenticated()
         )
         //ya no usamos hhtpBasic

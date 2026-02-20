@@ -5,10 +5,11 @@
   }
   
   .favoritos-titulo {
-    font-size: 2rem;
+    font-size: 40px;
     margin-bottom: 25px;
     color: #6d96a6;
     font-weight: 700;
+    font-family: "Cormorant", sans-serif;
   }
   
   .favoritos-cargando,.favoritos-vacio {
@@ -106,9 +107,23 @@
     background: #d93636;
   }
   
-  /* RESPONSIVE: en móvil solo 1 por fila */
-  @media (max-width: 700px) {
-    .favoritos-lista {
-      grid-template-columns: 1fr;
-    }
-  }  
+.notificacion-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #184763;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
