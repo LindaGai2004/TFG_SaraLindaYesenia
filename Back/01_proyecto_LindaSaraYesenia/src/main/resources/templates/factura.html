@@ -1,72 +1,136 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            color: #333;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', Arial, sans-serif; color: #403D39; background: white; }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .header { background-color: #8EAEBD; width: 100%; padding: 18px 0; text-align: center; }
 
-        .section {
-            margin-bottom: 20px;
-        }
+        .container { padding: 40px 60px; }
 
-        .label {
-            font-weight: bold;
+        .gracias {
+            font-family: 'Cormorant', Georgia, serif;
+            font-size: 40px; font-weight: 400;
+            text-align: center; color: #403D39;
+            margin-bottom: 14px; margin-top: 10px;
         }
+        .saludo { text-align: center; font-size: 14px; margin-bottom: 6px; }
+        .intro { text-align: center; font-size: 13px; color: #403D39; margin-bottom: 28px; line-height: 1.7; font-weight: 300; }
 
-        .box {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 8px;
-        }
+        .factura-id-row { text-align: center; margin-bottom: 32px; }
+        .factura-id-row .label-part { font-size: 16px; font-weight: 700; color: #403D39; }
+        .factura-id-row .value-part { font-size: 16px; font-weight: 700; color: #8EAEBD; }
 
-        .total {
-            font-size: 18px;
-            font-weight: bold;
-            text-align: right;
-            margin-top: 20px;
-        }
+        .section-label { font-size: 12px; font-weight: 700; color: #B2B2B2; margin-bottom: 6px; }
+        .divider { border: none; border-top: 1px solid #e0e0e0; margin-bottom: 18px; }
+
+        .info-grid { display: table; width: 100%; margin-bottom: 28px; }
+        .info-col { display: table-cell; width: 50%; vertical-align: top; }
+        .info-field-label { font-size: 12px; font-weight: 700; color: #403D39; margin-bottom: 3px; }
+        .info-field-value { font-size: 13px; color: #403D39; font-weight: 300; margin-bottom: 14px; }
+
+        table { width: 100%; border-collapse: collapse; }
+        thead tr { background-color: #8EAEBD; color: white; }
+        thead th { padding: 10px 16px; font-size: 13px; font-weight: 700; }
+        thead th:first-child { text-align: left; }
+        thead th:nth-child(2) { text-align: center; }
+        thead th:last-child { text-align: center; }
+
+        tbody td { padding: 10px 16px; font-size: 13px; color: #403D39; border-bottom: 1px solid #f0f0f0; font-weight: 300; }
+        tbody td:first-child { text-align: left; }
+        tbody td:nth-child(2) { text-align: center; }
+        tbody td:last-child { text-align: center; }
+
+        .total-row { display: table; width: 100%; padding: 7px 16px; }
+        .t-label { display: table-cell; font-size: 13px; color: #B2B2B2; width: 70%; }
+        .t-value { display: table-cell; font-size: 13px; color: #B2B2B2; text-align: center; }
+        .total-row.final { background: #8EAEBD; }
+        .total-row.final .t-label,
+        .total-row.final .t-value { color: white; font-weight: 700; font-size: 14px; }
+
+        .footer { text-align: center; margin-top: 36px; font-size: 12px; color: #B2B2B2; font-weight: 300; }
     </style>
 </head>
-
 <body>
 
-    <h1>FACTURA</h1>
+<div class="header">
+    <img th:src="${logoBase64}" height="36" />
+</div>
 
-    <div class="section box">
-        <p><span class="label">Número:</span>
-            <span th:text="${factura.numFactura}"></span>
-        </p>
-        <p><span class="label">Fecha:</span>
-            <span th:text="${factura.fechaFactura}"></span>
-        </p>
+<div class="container">
+
+    <div class="gracias">¡Gracias!</div>
+    <p class="saludo">Hola <strong th:text="${usuario.nombre + ' ' + usuario.apellidos}"></strong>,</p>
+    <p class="intro">
+        Tu pedido se ha procesado correctamente.<br/>
+        ¡Gracias por tu compra en <strong>Archives</strong>!
+    </p>
+
+    <div class="factura-id-row">
+        <span class="label-part">ID de Factura: </span>
+        <span class="value-part" th:text="${factura.numFactura}"></span>
     </div>
 
-    <div class="section box">
-        <p><span class="label">Cliente:</span>
-            <span th:text="${usuario.nombre}"></span>
-        </p>
-        <p><span class="label">Email:</span>
-            <span th:text="${usuario.email}"></span>
-        </p>
-        <p><span class="label">Dirección:</span>
-            <span th:text="${usuario.direccion}"></span>
-        </p>
+    <div class="section-label">Información de su pedido:</div>
+    <hr class="divider"/>
+
+    <div class="info-grid">
+        <div class="info-col">
+            <div class="info-field-label">Nro. de Pedido:</div>
+            <div class="info-field-value" th:text="${factura.pedido.idPedido}"></div>
+            <div class="info-field-label">Fecha del pedido:</div>
+            <div class="info-field-value" th:text="${factura.fechaFactura}"></div>
+        </div>
+        <div class="info-col">
+            <div class="info-field-label">Dirección de envío:</div>
+            <div class="info-field-value" th:text="${usuario.direccion}"></div>
+            <div class="info-field-label">Método de pago:</div>
+            <div class="info-field-value" th:text="${factura.pedido.metodoPago}"></div>
+        </div>
     </div>
 
-    <div class="total">
-        Total: <span th:text="${factura.precioTotal}"></span> €
+    <div class="section-label">Detalles del pedido:</div>
+    <hr class="divider"/>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Artículo</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="detalle : ${detalles}">
+                <td th:text="${detalle.producto.nombreProducto}"></td>
+                <td th:text="${detalle.cantidad}"></td>
+                <td th:text="'€' + ${#numbers.formatDecimal(detalle.precioUnidad * detalle.cantidad, 1, 'COMMA', 2, 'POINT')}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="total-row">
+        <span class="t-label">Subtotal</span>
+        <span class="t-value" th:text="'€' + ${#numbers.formatDecimal(subtotal, 1, 'COMMA', 2, 'POINT')}"></span>
     </div>
+    <div class="total-row">
+        <span class="t-label">Delivery</span>
+        <span class="t-value" th:text="'€' + ${#numbers.formatDecimal(delivery, 1, 'COMMA', 2, 'POINT')}"></span>
+    </div>
+    <div class="total-row">
+        <span class="t-label">IVA</span>
+        <span class="t-value" th:text="'€' + ${#numbers.formatDecimal(iva, 1, 'COMMA', 2, 'POINT')}"></span>
+    </div>
+    <div class="total-row final">
+        <span class="t-label">Total</span>
+        <span class="t-value" th:text="'€' + ${#numbers.formatDecimal(factura.precioTotal, 1, 'COMMA', 2, 'POINT')}"></span>
+    </div>
+
+    <p class="footer">Conserve esta factura para utilizarlo en el futuro.</p>
+</div>
 
 </body>
 </html>

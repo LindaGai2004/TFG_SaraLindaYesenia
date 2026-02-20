@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import seguridad.model.Factura;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
