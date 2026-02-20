@@ -1,30 +1,21 @@
 package seguridad.model.dto;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.AllArgsConstructor;
 @Data
 @Builder
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor 
 public class PedidoItemResponseDto {
 	private Integer idProducto;
 	private String nombreProducto;
 	private String autor;
 	private Integer cantidad;
 	private Double precioUnidad;
-	private Double totalPorItem; //sin iva
-	
-	public PedidoItemResponseDto(Integer idProducto, String nombreProducto, String autor,Integer cantidad,Double precioUnidad, Double totalPorItem) {
-        this.idProducto = idProducto;
-        this.nombreProducto = nombreProducto;
-        this.autor = autor;
-        this.cantidad = cantidad;
-        this.precioUnidad = precioUnidad;
-        this.totalPorItem = totalPorItem;
-    }
+	private Double totalPorItem; // sin iva
+	private List<ImagenDto> imagenes;
+
 }

@@ -21,11 +21,13 @@ import seguridad.model.EstadoPedido;
 import seguridad.model.Libro;
 import seguridad.model.Papeleria;
 import seguridad.model.Pedido;
+import seguridad.model.dto.ImagenDto;
 import seguridad.model.dto.IngresoMensualDto;
 import seguridad.model.dto.PedidoItemResponseDto;
 import seguridad.model.dto.PedidoResponseDto;
 import seguridad.repository.PedidoRepository;
 import seguridad.repository.DetallePedidoRepository;
+import java.util.stream.Collectors;
 @Service
 public class PedidoServiceImpl implements PedidoService {
 
@@ -135,15 +137,26 @@ public class PedidoServiceImpl implements PedidoService {
 	                : totalPorItem.multiply(IVA_PAPELERIA);
 
 	        ivaTotal = ivaTotal.add(iva);
+	     // Obtener imágenes del producto
+	        List<ImagenDto> imagenes = d.getProducto().getImagenes().stream()
+	        	    .map(img -> new ImagenDto(
+	        	        img.getIdImagen(),
+	        	        img.getTipo().toString(),
+	        	        img.getRuta()
+	        	    ))
+	        	    .collect(Collectors.toList());
 
-	        items.add(new PedidoItemResponseDto(
-	                d.getProducto().getIdProducto(),
-	                d.getProducto().getNombreProducto(),
-	                (d.getProducto() instanceof Libro libro) ? libro.getAutor() : null,
-	                d.getCantidad(),
-	                d.getPrecioUnidad(),
-	                totalPorItem.doubleValue()
-	        ));
+	        	PedidoItemResponseDto itemDto = PedidoItemResponseDto.builder()
+	        	    .idProducto(d.getProducto().getIdProducto())
+	        	    .nombreProducto(d.getProducto().getNombreProducto())
+	        	    .autor((d.getProducto() instanceof Libro libro) ? libro.getAutor() : null)
+	        	    .cantidad(d.getCantidad())
+	        	    .precioUnidad(d.getPrecioUnidad())
+	        	    .totalPorItem(totalPorItem.doubleValue())
+	        	    .imagenes(imagenes)
+	        	    .build();
+
+	        	items.add(itemDto);
 	    }
 
 	    subtotal = subtotal.setScale(2, RoundingMode.HALF_UP);
