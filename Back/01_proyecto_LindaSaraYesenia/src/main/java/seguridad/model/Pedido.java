@@ -39,7 +39,7 @@ public class Pedido implements Serializable{
 	
 	 @Enumerated(EnumType.STRING)
 	 @Column(name = "estado_pedido")
-	 private EstadoPedido estado;
+	 private EstadoPedido estadoPedido;
 	
 	//Esto es nuevo
 	@Column(name="total")
@@ -48,54 +48,17 @@ public class Pedido implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
-
-	public int getIdPedido() {
-		return idPedido;
-	}
-
-	public void setIdPedido(int idPedido) {
-		this.idPedido = idPedido;
-	}
-
-	public LocalDate getFechaVenta() {
-		return fechaVenta;
-	}
-
-	public void setFechaVenta(LocalDate fechaVenta) {
-		this.fechaVenta = fechaVenta;
-	}
-
-	public EstadoPedido getEstado() {
-		return estado;
-	}
-
-	public void setEstado(EstadoPedido estado) {
-		this.estado = estado;
-	}
-
-	public Double getTotal() {
-		return total;
-	}
-
-	public void setTotal(Double total) {
-		this.total = total;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name="metodo_pago")
+	private MetodoPago metodoPago;
 	
-	//Esto no se aunpreguntar)
-	//@OneToMany(mappedBy = "pedido")
-	//private List<DetallePedido> detalles;
+	@Enumerated(EnumType.STRING)
+	@Column(name="estado_pago")
+	private EstadoPago estadoPago;
+	
+	@Column(name = "paypal_id_pedido")
+	private String paypalIdPedido;
+	
 	
 }

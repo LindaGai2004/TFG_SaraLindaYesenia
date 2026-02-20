@@ -9,18 +9,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import seguridad.model.EstadoPedido;
+import seguridad.model.MetodoPago;
 import seguridad.model.Pedido;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 //Lo que envía el back
-public class PedidoResponse {
+public class PedidoResponseDto {
+
+
 	private Integer idPedido;
 	private LocalDate fechaVenta;
-	private String metodoPago;
+	private MetodoPago metodoPago;
 	private EstadoPedido estadoPedido;
 	
 	private Double subtotal;
@@ -31,6 +32,6 @@ public class PedidoResponse {
 	private String direccion;
 	private String email;
 	
-	private List<PedidoItemResponse> items;
+	private List<PedidoItemResponseDto> items;
 
 }

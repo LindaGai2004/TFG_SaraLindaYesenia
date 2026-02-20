@@ -15,7 +15,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 	//Ver pedidos de un usuario	
 	List<Pedido> findByUsuario_IdUsuario(Integer idUsuario);
 	//Ver estado del pedido de un usuario
-	Optional<Pedido> findByUsuario_IdUsuarioAndEstado(Integer idUsuario, EstadoPedido estadoPedido);
-	
-	
+	Optional<Pedido> findByUsuario_IdUsuarioAndEstadoPedido(Integer idUsuario, EstadoPedido estadoPedido);
+	Pedido findByPaypalIdPedido(String paypalIdPedido);
 }

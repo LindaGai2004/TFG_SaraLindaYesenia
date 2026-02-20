@@ -13,6 +13,10 @@ import ResumenPedido from './pages/ResumenPedido';
 import Productos from './pages/Productos';
 import ProductoDetalle from './components/ProductoDetalle';
 import Portfolio from './pages/Cliente';
+import PaypalSuccess from './pages/PaypalSuccess';
+import PaypalCancel from './pages/PaypalCancel';
+import Checkout from "./pages/Checkout";
+
 import NavBar from './components/NavBar';
 import Footer from "./components/Footer";
 import './App.css';
@@ -93,7 +97,9 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/paypal/success" element={<PaypalSuccess />} />
 
+          <Route path="/paypal/cancel" element={<PaypalCancel />} />
           <Route
             path="/success"
             element={
@@ -102,7 +108,8 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-
+            <Route path="/checkout/:idPedido" element={<Checkout />} />
+            <Route path="/resumen" element={<ResumenPedido />} />
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
 

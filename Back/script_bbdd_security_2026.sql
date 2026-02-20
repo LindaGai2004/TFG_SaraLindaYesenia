@@ -756,3 +756,8 @@ WHERE email = 'eva@ifp.com';
 UPDATE usuarios
 SET password = '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe'
 WHERE email = 'ramon@ifp.com';
+
+ALTER TABLE pedidos
+ADD COLUMN metodo_pago VARCHAR(20),
+ADD COLUMN estado_pago VARCHAR(20),
+ADD COLUMN paypal_id_pedido VARCHAR(100);
