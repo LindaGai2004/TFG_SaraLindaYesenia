@@ -23,46 +23,46 @@ import lombok.ToString;
 @DiscriminatorValue("PAPELERIA")
 @Table(name = "papeleria")
 public class Papeleria extends Producto implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ManyToOne
-	@JoinColumn(name = "id_marca")
-	private Marca marca;
-	
-	@ManyToOne
-	@JoinColumn (name = "id_categoria")
-	private Categoria categoria;
+    @ManyToOne
+    @JoinColumn(name = "id_marca")
+    private Marca marca;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
 
-	
-	public Marca getMarca() {
-		return marca;
-	}
+    @Column(name = "descripcion_larga")
+    private String descripcionLarga;
 
+    public Marca getMarca() {
+        return marca;
+    }
 
-	public void setMarca(Marca marca) {
-		this.marca = marca;
-	}
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
+    public Papeleria(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
+            EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal, Marca marca, Categoria categoria,
+            String descripcionLarga) {
 
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
-	public Papeleria(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
-			EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal, Marca marca, Categoria categoria) {
-		super(idProducto, nombreProducto, descripcion, precio, stock, estadoProducto, fechaAlta, costoReal);
-		this.marca = marca;
-		this.categoria = categoria;
-	}
+        super(idProducto, nombreProducto, descripcion, precio, stock, estadoProducto, fechaAlta, costoReal);
+        this.marca = marca;
+        this.categoria = categoria;
+        this.descripcionLarga = descripcionLarga;
+    }
 }

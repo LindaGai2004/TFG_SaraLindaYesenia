@@ -48,7 +48,7 @@
 }
 
 .filtro input:focus {
-  border-color: #184763;
+  border-color: #6d96a6;
   outline: none;
 }
 
@@ -56,20 +56,40 @@
 .btn-filtrar {
   width: 100%;
   padding: 0.7rem;
-  background: #bfd1e0;
-  color: #6d96a6;
+  background: #6d96a6;
+  color: white;
   border: none;
   border-radius: 6px;
+  border: 1px solid #6d96a6;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   margin-top: 0.5rem;
-  transition: background 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Fondo animado */
+.btn-filtrar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: left 0.4s ease;
+  z-index: -1;
+}
+
+.btn-filtrar:hover::before {
+  left: 0;
 }
 
 .btn-filtrar:hover {
-  color: white;
-  background: #6d96a6;
+  color: #6d96a6;
+  border-color: #6d96a6;
 }
 
 

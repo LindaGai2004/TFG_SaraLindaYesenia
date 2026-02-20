@@ -80,12 +80,14 @@ public class SecurityConfig {
             .requestMatchers(
             	    "/api/login",
             	    "/registro",
-            	    "/todos",
             	    "/actuator/health",
-            	    "/todos/productos",
+
+            	    "/productos/todos",
+            	    "/productos/filtrar",
+            	    "/productos/**",
+
             	    "/libros/**",
             	    "/papelerias/**",
-            	    "/productos/**",
             	    "/uploads/**",
             	    "/generos/**",
             	    "/idiomas/**",
