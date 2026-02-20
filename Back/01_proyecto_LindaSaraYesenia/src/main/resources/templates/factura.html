@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>FACTURA</h1>
+
+    <div class="section box">
+        <p><span class="label">Número:</span>
+            <span th:text="${factura.numFactura}"></span>
+        </p>
+        <p><span class="label">Fecha:</span>
+            <span th:text="${factura.fechaFactura}"></span>
+        </p>
+    </div>
+
+    <div class="section box">
+        <p><span class="label">Cliente:</span>
+            <span th:text="${usuario.nombre}"></span>
+        </p>
+        <p><span class="label">Email:</span>
+            <span th:text="${usuario.email}"></span>
+        </p>
+        <p><span class="label">Dirección:</span>
+            <span th:text="${usuario.direccion}"></span>
+        </p>
+    </div>
+
+    <div class="total">
+        Total: <span th:text="${factura.precioTotal}"></span> €
+    </div>
+
+</body>
+</html>

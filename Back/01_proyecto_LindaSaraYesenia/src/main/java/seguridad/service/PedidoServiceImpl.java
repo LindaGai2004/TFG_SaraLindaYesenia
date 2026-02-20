@@ -22,8 +22,8 @@ import seguridad.model.Libro;
 import seguridad.model.Papeleria;
 import seguridad.model.Pedido;
 import seguridad.model.dto.IngresoMensualDto;
-import seguridad.model.dto.PedidoItemResponse;
-import seguridad.model.dto.PedidoResponse;
+import seguridad.model.dto.PedidoItemResponseDto;
+import seguridad.model.dto.PedidoResponseDto;
 import seguridad.repository.PedidoRepository;
 import seguridad.repository.DetallePedidoRepository;
 @Service
@@ -64,64 +64,99 @@ public class PedidoServiceImpl implements PedidoService {
 				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo puedes cancelar un pedido hasta 24 horas después de haberla realizado");
 			}
 		}
-		pedido.setEstado(estadoPedido);
+		pedido.setEstadoPedido(estadoPedido);
 		return prepo.save(pedido);
 		
 	}
+	//total real para el back
+	
+	public void recalcularTotalPedido(Pedido pedido) {
+
+	    List<DetallePedido> detalles =
+	            dprepo.findByPedido_IdPedido(pedido.getIdPedido());
+
+	    if (detalles.isEmpty()) {
+	        throw new RuntimeException("El carrito está vacío");
+	    }
+
+	    BigDecimal subtotal = BigDecimal.ZERO;
+	    BigDecimal ivaTotal = BigDecimal.ZERO;
+	    //fijo por ahora
+	    BigDecimal delivery = BigDecimal.valueOf(2.00);
+
+	    for (DetallePedido d : detalles) {
+
+	        BigDecimal precioUnidad = BigDecimal.valueOf(d.getPrecioUnidad());
+	        BigDecimal cantidad = BigDecimal.valueOf(d.getCantidad());
+	        BigDecimal totalPorItem = precioUnidad.multiply(cantidad);
+
+	        subtotal = subtotal.add(totalPorItem);
+
+	        BigDecimal iva = (d.getProducto() instanceof Libro)
+	                ? totalPorItem.multiply(IVA_LIBRO)
+	                : totalPorItem.multiply(IVA_PAPELERIA);
+
+	        ivaTotal = ivaTotal.add(iva);
+	    }
+
+	    subtotal = subtotal.setScale(2, RoundingMode.HALF_UP);
+	    ivaTotal = ivaTotal.setScale(2, RoundingMode.HALF_UP);
+	    BigDecimal totalFinal = subtotal.add(ivaTotal).add(delivery)
+	            .setScale(2, RoundingMode.HALF_UP);
+
+	    pedido.setTotal(totalFinal.doubleValue());
+	}
 	//muestra subtotal + iva = total final
-	//para el ui
+	//para el ui, solo para mostrar
 	@Override
-	public PedidoResponse resumenPedido(Integer idPedido) {
+	public PedidoResponseDto resumenPedido(Integer idPedido) {
+
 		Pedido pedido = prepo.findById(idPedido)
-				.orElseThrow(() -> new RuntimeException("No existe este pedido"));
-		
-		List<DetallePedido> detalles = dprepo.findByPedido_IdPedido(idPedido);
-		
-		BigDecimal subtotal = BigDecimal.ZERO;
-		BigDecimal ivaTotal = BigDecimal.ZERO;
-		
-		List<PedidoItemResponse> items = new ArrayList<>();
-		
-		for (DetallePedido d: detalles) {
-			BigDecimal precioUnidad = BigDecimal.valueOf(d.getPrecioUnidad());
-		    BigDecimal cantidad = BigDecimal.valueOf(d.getCantidad());
-			BigDecimal totalPorItem = precioUnidad.multiply(cantidad);
-			subtotal = subtotal.add(totalPorItem);//sin iva
-			
-			BigDecimal iva;
-			String autor = null;
-			if (d.getProducto() instanceof Libro libro) {
-	            autor = libro.getAutor();
-	        }
-			if (d.getProducto() instanceof Libro) {
-	            iva = totalPorItem.multiply(IVA_LIBRO);
-	        } else {
-	            iva = totalPorItem.multiply(IVA_PAPELERIA);
-	        }
-			
-			ivaTotal = ivaTotal.add(iva);
-			
-			items.add(new PedidoItemResponse(
-					d.getProducto().getIdProducto(),
+	            .orElseThrow(() -> new RuntimeException("No existe este pedido"));
+
+	    List<DetallePedido> detalles =
+	            dprepo.findByPedido_IdPedido(idPedido);
+
+	    BigDecimal subtotal = BigDecimal.ZERO;
+	    BigDecimal ivaTotal = BigDecimal.ZERO;
+
+	    List<PedidoItemResponseDto> items = new ArrayList<>();
+
+	    for (DetallePedido d : detalles) {
+
+	        BigDecimal precioUnidad = BigDecimal.valueOf(d.getPrecioUnidad());
+	        BigDecimal cantidad = BigDecimal.valueOf(d.getCantidad());
+	        BigDecimal totalPorItem = precioUnidad.multiply(cantidad);
+
+	        subtotal = subtotal.add(totalPorItem);
+
+	        BigDecimal iva = (d.getProducto() instanceof Libro)
+	                ? totalPorItem.multiply(IVA_LIBRO)
+	                : totalPorItem.multiply(IVA_PAPELERIA);
+
+	        ivaTotal = ivaTotal.add(iva);
+
+	        items.add(new PedidoItemResponseDto(
+	                d.getProducto().getIdProducto(),
 	                d.getProducto().getNombreProducto(),
-	                autor,
+	                (d.getProducto() instanceof Libro libro) ? libro.getAutor() : null,
 	                d.getCantidad(),
 	                d.getPrecioUnidad(),
 	                totalPorItem.doubleValue()
 	        ));
-		}
-		subtotal = subtotal.setScale(2, RoundingMode.HALF_UP);
-	    ivaTotal = ivaTotal.setScale(2, RoundingMode.HALF_UP);
-	    BigDecimal total = subtotal.add(ivaTotal);
+	    }
 
-	    return new PedidoResponse(
+	    subtotal = subtotal.setScale(2, RoundingMode.HALF_UP);
+	    ivaTotal = ivaTotal.setScale(2, RoundingMode.HALF_UP);
+
+	    return new PedidoResponseDto(
 	            pedido.getIdPedido(),
 	            pedido.getFechaVenta(),
-	            "MASTERCARD",
-	            pedido.getEstado(),
+	            pedido.getMetodoPago(),         
+	            pedido.getEstadoPedido(),              
 	            subtotal.doubleValue(),
 	            ivaTotal.doubleValue(),
-	            total.doubleValue(),
+	            pedido.getTotal(),
 	            pedido.getUsuario().getNombre(),
 	            pedido.getUsuario().getDireccion(),
 	            pedido.getUsuario().getEmail(),

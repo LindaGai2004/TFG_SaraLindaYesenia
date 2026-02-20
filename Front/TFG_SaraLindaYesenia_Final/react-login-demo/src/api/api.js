@@ -20,14 +20,14 @@ export async function apiGet(path) {
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
-export async function apiPost(path, body = null) {
+export async function apiPost(path, body) {
   const res = await fetch(`${BASE_URL}${path}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...getAuthHeader()
     },
-    body: body ? JSON.stringify(body) : null
+    body: JSON.stringify(body)
   });
 
   if (!res.ok) {

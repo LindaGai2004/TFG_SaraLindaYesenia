@@ -24,7 +24,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     @Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException{
-		//obtener header
+    	//para permitir endpoints de paypal
+    	String path = request.getServletPath();
+
+    	if (path.startsWith("/api/paypal")) {
+    	    filterChain.doFilter(request, response);
+    	    return;
+    	}
+    	//obtener header
 		final String authHeader = request.getHeader("Authorization");
 		//si no hay header o bearer, continuar
 		if (authHeader==null||!authHeader.startsWith("Bearer ")) {
@@ -54,5 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	        }
 			//continuar
 	        filterChain.doFilter(request, response);
+	        System.out.println("Authorization header: " + request.getHeader("Authorization"));
 	}
 }

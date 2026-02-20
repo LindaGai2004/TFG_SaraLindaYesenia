@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PedidoItemResponse {
+public class PedidoItemResponseDto {
 	private Integer idProducto;
 	private String nombreProducto;
 	private String autor;
@@ -19,7 +19,7 @@ public class PedidoItemResponse {
 	private Double precioUnidad;
 	private Double totalPorItem; //sin iva
 	
-	public PedidoItemResponse(Integer idProducto, String nombreProducto, String autor,Integer cantidad,Double precioUnidad, Double totalPorItem) {
+	public PedidoItemResponseDto(Integer idProducto, String nombreProducto, String autor,Integer cantidad,Double precioUnidad, Double totalPorItem) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.autor = autor;

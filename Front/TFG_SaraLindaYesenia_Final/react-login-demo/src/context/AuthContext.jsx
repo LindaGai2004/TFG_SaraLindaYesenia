@@ -57,37 +57,36 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // Login: llama al backend y guarda el user normalizado
+
   //Ahora Actualizado para ingresar con email NO username
-  async function login(email, password) {
-    try {
-      const res = await apiPost('/api/login', { email, password });
-      // apiPost debe devolver el usuario (JSON) o lanzar error
-      //const normalized = normalizeUser(res);
-      //setUser(normalized);
-      //localStorage.setItem('user', JSON.stringify(normalized));
-      //return normalized; // devuelve el user para que Login.jsx pueda redirigir
+async function login(email, password) {
+  try {
+    const res = await apiPost('/api/login', { email, password });
 
-      //res ={token,user} Nuevo formato esperado del backend
-      const normalizedUser = normalizeUser(res.user);
-      const authData = {...normalizedUser, token: res.token}; // guardamos token junto al user
-      setUser(authData);
-      localStorage.setItem('user', JSON.stringify(authData));
-      return authData;
+    const normalizedUser = normalizeUser(res.user);
 
-    } catch (err) {
-      console.error('Login error:', err);
-      return null;
-    }
+    const authData = {
+      ...normalizedUser,
+      token: res.token  
+    };
+
+    setUser(authData);
+    localStorage.setItem('user', JSON.stringify(authData));
+
+    return authData;
+
+  } catch (err) {
+    console.error('Login error:', err);
+    return null;
   }
+}
 
-  function logout() {
-    setUser(null);
-    localStorage.removeItem('user');
-    // opcional: llamar a backend /logout si lo tienes
-    localStorage.removeItem('cartItems'); // Limpiar carrito al cerrar sesión
-  }
-
+function logout() {
+  setUser(null);
+  localStorage.removeItem('user');
+  localStorage.removeItem('token'); 
+  localStorage.removeItem('cartItems');
+}
   // Exponemos initializing para que ProtectedRoute espere mientras cargamos
   const value = { user, login, logout, initializing };
 
