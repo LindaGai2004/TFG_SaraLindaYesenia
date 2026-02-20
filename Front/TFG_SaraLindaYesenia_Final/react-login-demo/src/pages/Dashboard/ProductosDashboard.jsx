@@ -88,7 +88,7 @@ export default function Productos({
             }}
             className={`tab-btn ${prodCategory === cat ? 'active' : ''}`}
           >
-            {cat === 'Libro' ? '📚 Libros' : cat === 'Papeleria' ? '📎 Pepelerias' : '🗂️ Todos'}
+            {cat === 'Libro' ? '📚 Libros' : cat === 'Papeleria' ? '📎 Papelerias' : '🗂️ Todos'}
           </button>
         ))}
       </div>
@@ -112,7 +112,7 @@ export default function Productos({
           className="input-field filter-select"
         >
           <option value="Todos">Estado: Todos</option>
-          <option value="DISPONIBLE">Dispobnible</option>
+          <option value="DISPONIBLE">Disponible</option>
           <option value="Agotado">Agotado</option>
         </select>
 
