@@ -67,17 +67,18 @@ public class PedidoRestController {
 	
 
 	
-	 @GetMapping("/mensual")
+	@GetMapping("/mensual")
 	@PreAuthorize("hasRole('ADMON')")
 	    public List<IngresoMensualDto> getMensual() {
 	        return pserv.getIngresosMensuales();
 	    }
 
-	 @GetMapping("/mensual/total")
+	@GetMapping("/mensual/total")
 	@PreAuthorize("hasRole('ADMON')")
 	 	public double getTotal() {
 	       return pserv.getTotalIngreso();
 	   }
+	
 		//Resumen del pedido
 		@GetMapping("/{idPedido:\\d+}")
 		public ResponseEntity<?> pedidoPorIdPedido(@PathVariable Integer idPedido){

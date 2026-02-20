@@ -135,7 +135,9 @@ INSERT INTO usuarios
 ('tomas', '{noop}tomasin', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
 ('sarita', '{noop}sarita', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
 ('eva', '{noop}evita', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
-('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
+('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4),
+('mmmmm', '{noop}sarita', 'mmm', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'mmm@ifp.com', 2),
+('ttttt', '{noop}sarita', 'ttt', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'ttt@ifp.com', 2);
 
 
 INSERT INTO genero (nombre_genero)VALUES

@@ -241,8 +241,6 @@ public class UsuarioRestController {
         
         boolean permitido = false;
 
-
-        if (!permitido) {
             switch (rolActual) {
                 case 1: 
                     permitido = true;
@@ -252,7 +250,7 @@ public class UsuarioRestController {
                     	permitido = true;
                     break;
             }
-        }
+
 
         if (!permitido) {
             return ResponseEntity.status(403)
