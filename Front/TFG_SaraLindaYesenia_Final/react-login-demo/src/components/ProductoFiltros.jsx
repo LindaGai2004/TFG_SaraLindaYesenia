@@ -36,17 +36,17 @@ export default function ProductoFiltros({ onFiltrar }) {
         if (tipo) filtros.tipo = tipo;
         if (estado) filtros.estado = estado;
         if (idioma) filtros.idioma = idioma;
-    
-        if (genero.length > 0) filtros.genero = genero;
-    
+
+        if (genero.length > 0) filtros.genero = genero.join(",");
+        if (categoria.length > 0) filtros.categoria = categoria.join(",");
+
         filtros.precioMin = precio.min;
         filtros.precioMax = precio.max;
-    
+
         if (marca) filtros.marca = marca;
-        if (categoria.length > 0) filtros.categoria = categoria;
-    
+
         onFiltrar(filtros);
-    };    
+    };
 
     return (
         <div className="filtros-container">
@@ -80,22 +80,22 @@ export default function ProductoFiltros({ onFiltrar }) {
                         <label>Género</label>
                         <div className="genero-checkboxes">
                             {generosBD.map((g, index) => (
-                            <label key={g.idGenero} className="genero-checkbox">
-                                <input
-                                type="checkbox"
-                                value={g.nombreGenero}
-                                checked={genero.includes(g.nombreGenero)}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    if (e.target.checked) {
-                                    setGenero(prev => [...prev, value]);
-                                    } else {
-                                    setGenero(prev => prev.filter(g => g !== value));
-                                    }
-                                }}
-                                />
-                                {g.nombreGenero}
-                            </label>
+                                <label key={g.idGenero} className="genero-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        value={g.nombreGenero}
+                                        checked={genero[0] === g.nombreGenero}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (e.target.checked) {
+                                                setGenero([value]); // solo uno
+                                            } else {
+                                                setGenero([]); // ninguno
+                                            }
+                                        }}
+                                    />
+                                    {g.nombreGenero}
+                                </label>
                             ))}
                         </div>
                     </div>
@@ -126,13 +126,13 @@ export default function ProductoFiltros({ onFiltrar }) {
                                     <input
                                         type="checkbox"
                                         value={c.nombreCategoria}
-                                        checked={categoria.includes(c.nombreCategoria)}
+                                        checked={categoria[0] === c.nombreCategoria}
                                         onChange={(e) => {
                                             const value = e.target.value;
                                             if (e.target.checked) {
-                                                setCategoria(prev => [...prev, value]);
+                                                setCategoria([value]); // solo una categoría
                                             } else {
-                                                setCategoria(prev => prev.filter(cat => cat !== value));
+                                                setCategoria([]);
                                             }
                                         }}
                                     />
@@ -150,19 +150,19 @@ export default function ProductoFiltros({ onFiltrar }) {
 
                 <div className="price-slider">
                     <input
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={precio.min}
-                    onChange={(e) => setPrecio(prev => ({ ...prev, min: Number(e.target.value) }))}
+                        type="range"
+                        min="0"
+                        max="200"
+                        value={precio.min}
+                        onChange={(e) => setPrecio(prev => ({ ...prev, min: Number(e.target.value) }))}
                     />
 
                     <input
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={precio.max}
-                    onChange={(e) => setPrecio(prev => ({ ...prev, max: Number(e.target.value) }))}
+                        type="range"
+                        min="0"
+                        max="200"
+                        value={precio.max}
+                        onChange={(e) => setPrecio(prev => ({ ...prev, max: Number(e.target.value) }))}
                     />
                 </div>
 
