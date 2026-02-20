@@ -180,7 +180,7 @@ public class ProductoServiceImpl implements ProductoService {
         return new ArrayList<>(resultado);
     }
 
-    // AÑADIDO: PRODUCTOS RELACIONADOS PARA PAPELERÍA
+    // PRODUCTOS RELACIONADOS PARA PAPELERÍA
     @Override
     public List<Producto> relacionadosPapeleria(String marca, String categoria, Integer idActual) {
 
