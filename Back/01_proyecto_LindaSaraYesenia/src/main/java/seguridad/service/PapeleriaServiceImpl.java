@@ -14,7 +14,8 @@ import seguridad.repository.PapeleriaRespository;
 
 @Service
 public class PapeleriaServiceImpl implements PapeleriaService {
-	@Autowired
+
+    @Autowired
     private PapeleriaRespository papeleriaRepo;
 
     @Override
@@ -29,7 +30,7 @@ public class PapeleriaServiceImpl implements PapeleriaService {
 
     @Override
     public Papeleria insertPapeleria(Papeleria papeleria) {
-    	papeleria.setFechaAlta(LocalDate.now());
+        papeleria.setFechaAlta(LocalDate.now());
         return papeleriaRepo.save(papeleria);
     }
 
@@ -39,27 +40,29 @@ public class PapeleriaServiceImpl implements PapeleriaService {
         Papeleria existente = findOne(papeleria.getIdProducto());
 
         if (existente != null) {
-        	// Campos heredados de Producto
+
+            // Campos heredados de Producto
             existente.setNombreProducto(papeleria.getNombreProducto());
             existente.setDescripcion(papeleria.getDescripcion());
             existente.setPrecio(papeleria.getPrecio());
             existente.setStock(papeleria.getStock());
             existente.setEstadoProducto(papeleria.getEstadoProducto());
-            
+
             if (papeleria.getFechaAlta() != null) {
-    		    existente.setFechaAlta(papeleria.getFechaAlta());
-    		}
+                existente.setFechaAlta(papeleria.getFechaAlta());
+            }
+
             existente.setCostoReal(papeleria.getCostoReal());
 
             // Campos propios de Papelería
             existente.setMarca(papeleria.getMarca());
+            existente.setCategoria(papeleria.getCategoria());
+            existente.setDescripcionLarga(papeleria.getDescripcionLarga());
 
             return papeleriaRepo.save(existente);
-        }else {
-        	return null;
+        } else {
+            return null;
         }
-
-        
     }
 
     @Override
@@ -73,6 +76,4 @@ public class PapeleriaServiceImpl implements PapeleriaService {
 
         return new ArrayList<>(resultado);
     }
-
-
 }
