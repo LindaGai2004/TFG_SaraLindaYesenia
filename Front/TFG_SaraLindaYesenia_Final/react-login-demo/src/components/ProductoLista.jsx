@@ -14,7 +14,8 @@ export default function ProductoLista({ productos }) {
   // estado para la notificación
   const [mensaje, setMensaje] = useState("");
 
-  const [mostrarLoginAviso, setMostrarLoginAviso] = useState(false);
+  const [mostrarAvisoFavorito, setMostrarAvisoFavorito] = useState(false);
+  const [mostrarAvisoCarrito, setMostrarAvisoCarrito] = useState(false);
 
   const { addToCart } = useCart();
 
@@ -38,7 +39,7 @@ export default function ProductoLista({ productos }) {
 
   const toggleFavorito = async (idProducto) => {
     if (!user) {
-      setMostrarLoginAviso(true);
+      setMostrarAvisoFavorito(true);
       return;
     }
 
@@ -50,8 +51,6 @@ export default function ProductoLista({ productos }) {
       } else {
         await apiPost(`/usuarios/favoritos/${idProducto}`);
       }
-
-      setTimeout(() => setMensaje(""), 2000);
 
       setFavoritos(prev => ({
         ...prev,
@@ -69,19 +68,38 @@ export default function ProductoLista({ productos }) {
 
   return (
     <>
-    {mostrarLoginAviso && (
+    {mostrarAvisoFavorito && (
       <div className="notificacion-login">
         <p>Debes iniciar sesión para guardar favoritos.</p>
-        <a href="/login" className="btn-login-aviso">Ir al login</a>
-        <button className="btn-cerrar-aviso" onClick={() => setMostrarLoginAviso(false)}>
-          Cerrar
-        </button>
+
+        <div className="notificacion-botones">
+          <a href="/login" className="btn-login-aviso">Ir al login</a>
+          <button
+            className="btn-cerrar-aviso"
+            onClick={() => setMostrarAvisoFavorito(false)}
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    )}
+
+    {mostrarAvisoCarrito && (
+      <div className="notificacion-login">
+        <p>Debes iniciar sesión para añadir productos al carrito.</p>
+        <div className="notificacion-botones">
+          <a href="/login" className="btn-login-aviso">Ir al login</a>
+          <button 
+            className="btn-cerrar-aviso" 
+            onClick={() => setMostrarAvisoCarrito(false)}
+          >
+            Cerrar
+          </button>
+        </div>
       </div>
     )}
 
     {mensaje && <div className="notificacion-toast">{mensaje}</div>}
-
-      {mensaje && <div className="notificacion-toast">{mensaje}</div>}
 
       <div className="producto-grid">
         {productos.map((p) => (
@@ -125,10 +143,14 @@ export default function ProductoLista({ productos }) {
             </button>
 
             {/* Botón Añadir al carrito */}
-
             <button
               className="carrito-overlay-btn"
               onClick={() => {
+                if (!user) {
+                  setMostrarAvisoCarrito(true);
+                  return;
+                }
+
                 addToCart(p.idProducto, 1);
                 setMensaje("Producto añadido al carrito");
                 setTimeout(() => setMensaje(""), 2000);
@@ -136,8 +158,6 @@ export default function ProductoLista({ productos }) {
             >
               Añadir al carrito
             </button>
-
-
           </div>
         ))}
       </div>

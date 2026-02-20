@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import ProductoFiltros from "../components/ProductoFiltros.jsx";
 import ProductoLista from "../components/ProductoLista.jsx";
@@ -6,6 +6,19 @@ import "./Productos.css";
 
 export default function Productos() {
     const [productos, setProductos] = useState([]);
+    useEffect(() => {
+        async function cargarTodos() {
+            try {
+                const response = await axios.get("http://localhost:9001/productos/todos");
+                setProductos(response.data);
+            } catch (error) {
+                console.error("Error cargando productos:", error);
+            }
+        }
+    
+        cargarTodos();
+    }, []);    
+
     const [orden, setOrden] = useState("");
     const [paginaActual, setPaginaActual] = useState(1);
     const productosPorPagina = 18; // 3 filas de 6 productos
