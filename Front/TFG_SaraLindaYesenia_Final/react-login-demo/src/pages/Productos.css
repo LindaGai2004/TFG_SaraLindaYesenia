@@ -29,11 +29,16 @@
   display: flex;
   gap: 2rem;
   padding: 2rem;
+  background: #f9f7f4;
 }
 
 .filtros {
   width: 250px;
   border-right: 1px solid #ccc;
+}
+
+.filtros h3 {
+  color: #6d96a6;
 }
 
 .resultados {
@@ -54,4 +59,37 @@
 .resultados-header select {
   padding: 0.5rem;
   font-size: 1rem;
+}
+
+/* PAGINACIÓN -----------------------------*/
+.paginacion {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 30px 0;
+}
+
+.paginacion button {
+  padding: 8px 14px;
+  border: none;
+  background: #e6eef4;
+  color: #6d96a6;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.paginacion button:hover:not(:disabled) {
+  background: #bfd1e0;
+}
+
+.paginacion button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagina-activa {
+  background: #6d96a6 !important;
+  color: white !important;
 }

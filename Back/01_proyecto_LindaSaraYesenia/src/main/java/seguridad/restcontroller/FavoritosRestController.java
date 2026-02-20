@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import seguridad.model.Producto;
 import seguridad.model.Usuario;
-import seguridad.repository.UsuarioRepository;
 import seguridad.service.FavoritosService;
 
 @RestController
@@ -20,8 +19,7 @@ public class FavoritosRestController {
 
 	@Autowired
 	private FavoritosService favoritosService;
-	@Autowired
-	private UsuarioRepository urepo;
+	
 	@GetMapping("/favoritos")
 	public List<Producto> getFavoritos(Authentication authentication) {
 	    Usuario usuario = (Usuario) authentication.getPrincipal();
@@ -38,14 +36,15 @@ public class FavoritosRestController {
 
 	    return ResponseEntity.ok(Map.of("message", "Añadido"));
 	}
-
+	
 	@DeleteMapping("/favoritos/{idProducto}")
 	public ResponseEntity<?> removeFavorito(@PathVariable Integer idProducto,
-            Authentication authentication) {
+	                                        Authentication authentication) {
 	    Usuario usuario = (Usuario) authentication.getPrincipal();
 
-		favoritosService.añadirFavorito(usuario.getIdUsuario(), idProducto);
+	    favoritosService.eliminarFavorito(usuario.getIdUsuario(), idProducto);
 
 	    return ResponseEntity.ok(Map.of("message", "Eliminado"));
 	}
+
 }
