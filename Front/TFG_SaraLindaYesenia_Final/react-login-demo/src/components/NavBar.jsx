@@ -34,9 +34,11 @@ function NavBar({ isVisible = true }) {
 
         {/* Título en el centro */}
         <div className="titulo-pagina">
-          <Link to="/">
-            <h1 className="logo-navbar">Archives</h1>
-          </Link>
+          <div className="titulo-pagina">
+            <Link to="/" className="logo-navbar-link">
+              <h1 className="logo-navbar">Archives</h1>
+            </Link>
+          </div>
         </div>
 
         {/* Acciones a la derecha */}

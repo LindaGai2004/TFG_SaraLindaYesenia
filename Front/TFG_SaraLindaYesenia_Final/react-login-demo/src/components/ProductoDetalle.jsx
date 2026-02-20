@@ -70,10 +70,11 @@ export default function ProductoDetalle() {
               setProducto(prev => ({
                 ...prev,
                 marca: pap.marca?.nombreMarca,
-                categoria: pap.categoria?.nombreCategoria
+                categoria: pap.categoria?.nombreCategoria,
+                descripcionLarga: pap.descripcionLarga || null
               }));
             });
-        }
+        }        
       });
   }, [id]);
 
@@ -192,16 +193,26 @@ export default function ProductoDetalle() {
             {/* FILA 2 */}
             <div className="fila-inferior">
               <div className="col-inferior-izq">
-                <h2 className="titulo-seccion">Resumen</h2>
 
+                {/* TÍTULO CAMBIANTE */}
+                <h2 className="titulo-seccion">
+                  {producto.tipo === "LIBRO" ? "Resumen" : "Acerca de este producto"}
+                </h2>
+
+                {/* CONTENIDO CAMBIANTE */}
                 <p className="texto-resumen">
-                  {expandido ? producto.resumen : resumenCorto}
+                  {producto.tipo === "LIBRO"
+                    ? (expandido ? producto.resumen : resumenCorto)
+                    : producto.descripcionLarga || producto.descripcion}
                 </p>
 
-                {producto.resumen && producto.resumen.length > 250 && (
-                  <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
-                    {expandido ? "Leer menos" : "Leer más"}
-                  </button>
+                {/* BOTÓN LEER MÁS SOLO PARA LIBROS */}
+                {producto.tipo === "LIBRO" &&
+                  producto.resumen &&
+                  producto.resumen.length > 250 && (
+                    <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
+                      {expandido ? "Leer menos" : "Leer más"}
+                    </button>
                 )}
               </div>
 
@@ -209,11 +220,26 @@ export default function ProductoDetalle() {
                 <h2 className="titulo-seccion">Detalles</h2>
 
                 <div className="detalles-grid">
-                  <p><strong>Editorial:</strong> {producto.editorial}</p>
-                  <p><strong>Idioma:</strong> {producto.idioma}</p>
-                  <p><strong>ISBN:</strong> {producto.isbn}</p>
-                  <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
-                  <p><strong>Género:</strong> {producto.genero}</p>
+
+                  {/* DETALLES LIBRO */}
+                  {producto.tipo === "LIBRO" && (
+                    <>
+                      <p><strong>Editorial:</strong> {producto.editorial}</p>
+                      <p><strong>Idioma:</strong> {producto.idioma}</p>
+                      <p><strong>ISBN:</strong> {producto.isbn}</p>
+                      <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
+                      <p><strong>Género:</strong> {producto.genero}</p>
+                    </>
+                  )}
+
+                  {/* DETALLES PAPELERÍA */}
+                  {producto.tipo === "PAPELERIA" && (
+                    <>
+                      <p><strong>Marca:</strong> {producto.marca}</p>
+                      <p><strong>Categoría:</strong> {producto.categoria}</p>
+                    </>
+                  )}
+
                 </div>
               </div>
             </div>
