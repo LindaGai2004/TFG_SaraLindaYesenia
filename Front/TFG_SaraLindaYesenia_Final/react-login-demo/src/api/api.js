@@ -10,6 +10,7 @@ function handle401() {
   console.error("Token inválido o caducado"); 
   localStorage.setItem("token_expirado", "true"); // Guarda el aviso para el login
   localStorage.removeItem("user"); 
+  localStorage.removeItem("token"); 
   localStorage.removeItem("cartItems"); 
   localStorage.removeItem("dl_option"); 
   window.location.href = "/login"; 
