@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { apiDelete, apiGet } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import "./favoritos.css";
 
 export default function Favoritos() {
@@ -9,9 +10,13 @@ export default function Favoritos() {
   const [loading, setLoading] = useState(true);
   const [mensaje, setMensaje] = useState("");
   const { addToCart } = useCart();
+  const { user } = useAuth();   // para evitar llamadas sin token
   const navigate = useNavigate();
 
   useEffect(() => {
+    //No llamar si no hay usuario -> evita el 401 y el forceLogout
+    if (!user) return;
+
     const fetchFavoritos = async () => {
       try {
         const data = await apiGet("/usuarios/favoritos");
@@ -23,8 +28,9 @@ export default function Favoritos() {
         setLoading(false);
       }
     };
+
     fetchFavoritos();
-  }, []);
+  }, [user]); // Se ejecuta solo cuando user está cargado
 
   const removeFavorito = async (idProducto) => {
     try {
@@ -50,8 +56,6 @@ export default function Favoritos() {
         ) : (
           <div className="favoritos-lista">
             {favoritos.map(fav => {
-
-              // Obtener imagen principal desde el backend
               let imagen = "";
 
               if (fav.imagenes && fav.imagenes.length > 0) {
@@ -65,14 +69,10 @@ export default function Favoritos() {
                   className="favorito-card"
                   onClick={() => navigate(`/producto/${fav.idProducto}`)}
                 >
-
-
-                  {/* IMAGEN */}
                   <div className="favorito-imagen">
                     <img src={imagen} alt={fav.nombreProducto} />
                   </div>
 
-                  {/* INFO */}
                   <div className="favorito-info">
                     <h3 className="favorito-nombre">{fav.nombreProducto}</h3>
 
@@ -104,7 +104,11 @@ export default function Favoritos() {
                           removeFavorito(fav.idProducto);
                         }}
                       >
-                        Eliminar
+                        <img
+                          src="/eliminar.png"
+                          alt="Eliminar"
+                          className="icono-eliminar"
+                        />
                       </button>
                     </div>
                   </div>

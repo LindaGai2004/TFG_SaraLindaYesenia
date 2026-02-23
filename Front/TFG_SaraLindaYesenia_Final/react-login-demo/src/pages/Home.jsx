@@ -252,7 +252,7 @@ export default function Home() {
   if (!libroMes) return null;
 
   return (
-    <>
+    <div className="home-container">
       {mostrarAvisoCarrito && (
         <div className="notificacion-login">
           <p>Debes iniciar sesión para añadir productos al carrito.</p>
@@ -511,6 +511,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
