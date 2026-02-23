@@ -49,8 +49,8 @@ export default function Trabajadores({
               <th>Email</th>
               <th>Username</th>
               <th>Dirección</th>
-              <th>Fecah registro</th>
-              <th>Fecah nacimiento</th>
+              <th>Fecha registro</th>
+              <th>Fecha nacimiento</th>
               <th></th>
             </tr>
           </thead>
@@ -82,7 +82,7 @@ export default function Trabajadores({
       </div>
 
       {formModal && (
-        <Modal open width="max-w-lg" onClose={() => setFormModal(null)} title={formModal.type === 'add' ? '➕ 添加员工' : '✏️ 编辑员工'}>
+        <Modal open width="max-w-lg" onClose={() => setFormModal(null)} title={formModal.type === 'add' ? '➕ Añadir' : '✏️ Editar'}>
           <StaffForm initial={formModal.data} onSave={d => { formModal.type === 'add' ? onAddTrabajador(d) : onEditTrabajador(formModal.data.email, d); setFormModal(null); }} />
         </Modal>
       )}
@@ -128,7 +128,7 @@ function StaffForm({ initial, onSave }) {
         className="input-field" /></div>
 
       <div className="form-group">
-        <label className="form-label">Usernema</label>
+        <label className="form-label">Username</label>
         <input 
         value={form.username} 
         onChange={e => set('username', e.target.value)} 

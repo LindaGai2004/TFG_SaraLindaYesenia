@@ -14,9 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,8 +22,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -72,119 +67,6 @@ public class Usuario implements UserDetails, Serializable{
 	)
 	private List<Producto> favoritos = new ArrayList<>();
 	
-	public Integer getIdUsuario() {
-		return idUsuario;
-	}
-
-
-	public void setIdUsuario(Integer idUsuario) {
-		this.idUsuario = idUsuario;
-	}
-
-
-	public String getUsername() {
-		//return username;
-		//pq autenticamos con email
-		return this.email;
-	}
-
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
-	public String getNombre() {
-		return nombre;
-	}
-
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-
-	public String getApellidos() {
-		return apellidos;
-	}
-
-
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
-
-
-	public int getEnabled() {
-		return enabled;
-	}
-
-
-	public void setEnabled(int enabled) {
-		this.enabled = enabled;
-	}
-
-
-	public LocalDate getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-
-	public void setFechaRegistro(LocalDate fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
-	}
-
-
-
-	public LocalDate getFechaNacimiento() {
-		return fechaNacimiento;
-	}
-
-
-
-	public void setFechaNacimiento(LocalDate fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
-
-
-	public String getDireccion() {
-		return direccion;
-	}
-
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public Perfil getPerfil() {
-		return perfil;
-	}
-
-
-	public void setPerfil(Perfil perfil) {
-		this.perfil = perfil;
-	}
 
 /*
 	@Override
@@ -194,18 +76,15 @@ public class Usuario implements UserDetails, Serializable{
 	}
 	*/
 	
+	@Override public String getUsername() { 
+		return this.email; 
+	}
+	
 	@Override
 	@JsonIgnore
+	// Convierte el perfil en un rol que Spring Security entiende (SimpleGrantedAuthority)
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 	    return List.of(new SimpleGrantedAuthority(perfil.getNombre()));
-	}
-	
-	public List<Producto> getFavoritos() {
-		return favoritos;
-	}
-	
-	public void setFavoritos(List<Producto> favoritos) {
-	    this.favoritos = favoritos;
 	}
 	
 }

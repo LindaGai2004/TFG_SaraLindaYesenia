@@ -136,9 +136,7 @@ INSERT INTO usuarios
 ('tomas', '{noop}tomasin', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
 ('sarita', '{noop}sarita', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
 ('eva', '{noop}evita', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
-('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4),
-('mmmmm', '{noop}sarita', 'mmm', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'mmm@ifp.com', 2),
-('ttttt', '{noop}sarita', 'ttt', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'ttt@ifp.com', 2);
+('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
 
 
 INSERT INTO genero (nombre_genero)VALUES
@@ -442,25 +440,78 @@ ESPACIOSA Y LIGERA: Tiradores en los cursores para facilitar su apertura. Doble 
 ERGONOMÍA Y COMODIDAD: Mochila adaptable a carro Safta (Ultraligero y Ruedas PVC). Asa de mano en la parte superior y tarjeta de identificación personal
 RESISTENCIA Y DURABILIDAD: Este producto está especialmente diseñado pensando en su durabilidad, elaborado con materiales de alta resistencia para asegurar que se pueda utilizar en todo tipo de actividades, garantizando su funcionalidad'),
 
-(36,5,2,''),
-(37,6,2,''),
-(38,7,2,''),
-(39,8,2,''),
+(36,5,2,'Bloc de notas grande con 240 páginas en blanco para notas, bocetos, reflexiones, etc.
+Páginas de papel libre de ácido de alta calidad, resiste daños provocados por la luz y el aire.
+Tapas encuadernadas de cartón con esquinas redondeadas para un acabado final.
+Marcapáginas integrado, cierre elástico que ayuda a mantener el cuaderno cerrado de forma segura.
+Bolsillo interior extensible para guardar objetos sueltos, mide 11,6 x 20,4 cm'),
+(37,6,2,'PLANIFICACIÓN DIARIA - Organiza tu curso escolar desde septiembre 2025 hasta julio 2026 con una estructura de una página por día (excepto fines de semana), que ofrece un espacio generoso para escribir tareas, apuntes, fechas de entrega y recordatorios, facilitando así el desarrollo de hábitos de organización y mejorando la gestión del tiempo para estudiantes que buscan aprovechar cada jornada al máximo.
+DISEÑO MOTIVADOR - Presenta un diseño interior lleno de color y detalles visuales alegres que hacen que el uso diario de la agenda sea divertido y estimulante, además de estar en formato bilingüe Español-Inglés, lo cual permite reforzar el idioma de manera natural; sus pegatinas incluidas permiten personalizar cada página y expresar creatividad mientras se planifica.
+MATERIALES RESISTENTES - Confeccionada con materiales de alta calidad, esta agenda cuenta con una tapa semirrígida protegida por cubiertas plásticas, una encuadernación en espiral de plástico reciclable flexible que no se deteriora al doblarse, y papel premium de 80 g/m² que evita el traspaso de tinta, haciéndola perfecta para un uso intensivo durante todo el curso escolar sin perder su forma ni funcionalidad.'),
+(38,7,2,'18 MESES: Agenda semanal 2025/2026 que cubre 18 meses, desde julio de 2025 hasta diciembre de 2026 para marcar tus citas y actividades diarias y semanales.
+LAYOUT HORIZONTAL: La agenda presenta cada semana en dos páginas a la vista, para tener una visión general de los compromisos semanales de un vistazo.
+PLUS: También incluye un calendario, un planificador de viajes, páginas rayadas para notas y una página "En caso de pérdida" impresa en la portada.
+DISEÑO: Esta agenda horizontal presenta esquinas redondeadas, cierre con elástico y marcador de página coordinado. El papel es libre de ácido, de 70 g/m² y color marfil.'),
+(39,8,2,'ORGANÍZATE FÁCILMENTE — ¡Organiza tu mes de un vistazo con nuestro calendario mensual! Día por día organizado a página por mes. Ideal si buscas agendas escolares de sobremesa, familiares o simplemente necesitas organizar mejor tu mes y que no se te escape nada!
+FUNCIONAL Y PERSONALIZABLE — Planificador mensual multifunción consta de múltiples áreas de ayuda para mejorar tu orden mensual: Objetivo del mes / Tareas / Tareas TOP 3 / Número de cada día de la semana y mes. Ideal para cualquier planning mensual.
+EXCLUSIVO Y ECOLÓGICO — Planificador de mesa de 25 páginas. Diseño muy cuidado y exclusivo con una impresión de alta calidad. Bloc de notas con base rígida para protegerlo y poder transportarlo sin problemas. Nuestro planner tiene como packaging un sobre de papel, no usamos nada de plástico en nuestros productos. Tamaño A4 y papel de calidad con certificado Ecológico PEFC. Desde PACKLIST estamos comprometidos con nuestro planeta y con el desarrollo sostenible.'),
 
-(40,6,3,''),
-(41,6,3,''),
-(42,6,3,''),
-(43,9,3,''),
-(44,10,3,''),
-(45,11,3,''),
+(40,6,3,'Cuaderno espiral 80 hojas formato folio (31 x 21,5 cm) con tapa blanda plastificada.
+Rayado contínuo cuadrícula 4x4 con margen de color azul.
+Espiral con cierre de seguridad coil‐lock para no dañar al usuario y evitar que se enganche con otra espiral.
+Cantos romos para garantizar un uso ergonómico y seguro y evitar que las tapas se deterioren.
+Paquete de 5 libretas con colores de tapa aleatorios: Naranja, Amarillo, Verde, Azul Marino, Rojo.'),
+(41,6,3,'Paquete Incluido: Incluidas 6 pcs de 21 x 14cm de cuaderno rayado de notas, 60 hojas/120 páginas, papel de escritura de 80 g/m2 con cubierta de Kraft. El papel está fabricado con materias primas certificadas FSC.
+Papel de Calidad: Cuadernos diarios con rayas está hecho de papel de alta calidad, reciclable y ecológico, no es fácil que se dañe y para tener un espesor suficiente, el papel beige también protege los ojos.
+Escritura Suave: La excepcional calidad de este papel no solo garantiza una superficie suave para escribir, sino que también previene el traspaso de tinta, proporcionando una escritura limpia y legible en ambas caras de la hoja.
+Fácil de usar: La cubierta de papel kraft blanda es resistente y duradera, y la doble hélice negra hace que sea más fácil pasar las páginas 360° sin tartamudear en absoluto.'),
+(42,6,3,'Cuaderno A4 con espiral metálica y tapa dura. 80 hojas de papel en blanco.
+Papel de 95 gr/m² de alta calidad, microperforado y con 4 taladros. Iniciador de corte para facilitar la separación de cada hoja.
+Cubierta de cartón rígido y logotipo MILAN brillante en relieve.
+Espiral flexible con cierre de seguridad que evita enganches con la ropa o rayaduras en muebles.
+Colección 430 since 1918, inspirada en los colores y diseño originales de las gomas de borrar MILAN, fabricadas en España desde 1918. Color verde.'),
+(43,9,3,'76 x 76 mm, 12 Blocs/Paquete, 80 Hojas/Bloc, un total de 960 hojas, Excelente relación calidad-precio.
+ZCZN notas adhesivas de 6 brillantes colores pueda satisfacer sus múltiples necesidades de uso.
+Papel de alta calidad, escritura suave, fácil de usar y despegar, sin residuos, puede mantenerse limpio y ordenado.
+Nuestras notas autoadhesivas tienen una mejor adhesión,que no es tóxico ni tiene sabor, se adsorbirá durante mucho tiempo sin caerse.
+Todas nuestras ZCZN notas adhesivas están fabricado con materias primas con certificación FSC.'),
+(44,10,3,'Recambio retractilado de 250 hojas sueltas A4 con 4 taladros; compatibles con carpetas de anillas y archivadores palanca; archiva tus apuntes fácilmente y transporta sólo las hojas que necesites.
+Cuadrícula 5x5 enmarcado con cabecera para la identificación del tema, poner la fecha, etc; 5 bandas de color pastel ideales para la clasificación por color de las asignaturas.
+Papel Optik Paper: un papel de Oxford con opacidad, lisura y satinado óptimas; la tinta no traspasa de un lado a otro ni se dispersa, resistente a la presión del lápiz y al borrado.
+Compatible con la aplicación gratuita SCRIBZEE que permite escanear tus notas manuscritas para poder tenerlas en el móvil, tablet u ordenador y compartirlas, organizarlas, o consultarlas cuando y donde quieras.'),
+(45,11,3,'El clásico y legendario cuaderno Moleskine se actualiza una vez más con nuevos colores y diseños, pero manteniendo la iconicidad y las características del clásico cuaderno más vendido de la marca.
+Diseño clásico con cierre elástico y un cómodo marcapáginas para no perder nunca la página; En la parte posterior hay una solapa plegable para guardar notas y papeles importantes.
+El cuaderno tiene 192 páginas lisas y papel marfil de 70 g/m² sin ácido y el icónico aviso "En caso de pérdida" para escribir tu información de contacto en caso de que pierdas tu cuaderno.
+En la contraportada del cuaderno aparecen diseños temáticos y la inconfundible historia de Moleskine en el interior de todos nuestros productos, un detalle icónico de la marca; Se puede abrir 180º.'),
 
-(46,12,4,''),
-(47,13,4,''),
-(48,14,4,''),
-(49,15,4,''),
+(46,12,4,'DISEÑO ESTILIZADO: Elegante diseño en papel kraft. Estos diseños de tarjeta felicitacion boda presentan un precioso ramillete de flores secas, dando al destinatario una sensación de elegancia y sofisticación.
+TAMAÑO DE LA CANTIDAD: Recibirá 10 tarjetas de felicitación de flores secas en papel kraft. Cada Tarjeta de Felicitación mide 7x10CM. La cantidad es suficiente para satisfacer la mayoría de sus necesidades.
+PAPEL ECOLÓGICO: Nuestras tarjeta felicitacion cumpleaños están hechas de papel kraft grueso de alta calidad con bordes lisos, no es fácil de cortar o rasgar. Estas tarjetas de felicitación no destiñen, son fáciles de escribir y tienen un aspecto elegante.'),
+(47,13,4,'Pack de 5 rollos con diseños navideños variados: Incluye 5 estampados diferentes con motivos clásicos como Santa Claus, renos, regalos, estrellas y copos de nieve.
+Tamaño grande 70x200cm: Cada rollo ofrece el doble de papel que la mayoría del mercado, ideal incluso para cajas de regalo grandes.
+Papel resistente y fácil de usar: Fabricado en papel grueso y duradero que no se rompe fácilmente al doblar o cortar.
+Ideal para todas las ocasiones: Perfecto para cumpleaños, fiestas infantiles, baby showers, Navidad o cualquier celebración especial.
+Multiusos y creativo: Además de envolver regalos, también sirve para manualidades, scrapbooking y decoración escolar.'),
+(48,14,4,'Materiales de Alta Calidad: Estos sobres de colores están hechos de papel de escribir reciclable de alta calidad que no se rompe fácilmente; el grosor de los diferentes sobres de colores puede variar ligeramente pero no afecta al uso, todos son igual de duraderos y no hay que preocuparse por la decoloración.
+Perfectos para Cartas: Están en blanco por ambas caras, así que puede usar su imaginación para crear un sobre de bricolaje diferente; los sobres de colores también son perfectos para envolver y enviar tarjetas de agradecimiento, invitaciones, postales, tarjetas de felicitación, cartas, cheques, fotos.
+Tamaño de Sobre Adecuado: Todos los sobres de colores miden 17,6*12,6 cm, un tamaño lo suficientemente grande como para guardar varias cosas y, por supuesto, perfecto para enviar cartas dondequiera que se envíen.
+Bonitas Pegatinas: Hay dos tamaños de pegatinas, 27 estilos y un total de 81 pegatinas pequeñas, que se pueden utilizar como cierre del sobre o como decoración del mismo, para que puedas personalizar el sobre a tu gusto.'),
+(49,15,4,'Superficie mate. Grande para escribir con bolígrafos, lápices y marcadores.
+Autoadhesivo. Se adhiere perfectamente al papel, la madera, el plástico y la mayoría de las superficies planas.
+Superficie blanca.
+Diámetro: 38 x 13 mm.
+20 etiquetas por hoja. 25 hojas. 500 etiquetas.'),
 
-(50,16,5,''),
-(51,17,5,'');
+(50,16,5,'TAMAÑOS - Disponible en tamaños A5, A4 y A3 para adaptarse a diversas necesidades de impresión, desde documentos estándar hasta proyectos más grandes.
+CALIDAD PREMIUM - Nuestros folios de papel premium de 80g/m² garantizan una excelente calidad de impresión, con colores nítidos y texto legible, ideal para presentaciones profesionales, informes y documentos importantes.
+DIFERENTES ENVASES - Con los folios de papel premium de Raylu Paper tendrás la posibilidad de elegir entre paquetes más pequeños o cajas más grandes, según la cantidad de folios que necesites.
+COMPATIBILIDAD - Nuestros folios de papel son compatibles con impresoras láser, inkjet y fotocopiadoras, por lo que asegurarás una experiencia de impresión sin complicaciones.
+SOSTENIBILIDAD - Fabricados con materiales respetuosos con el medio ambiente, nuestros folios de papel premium son una elección ecoamigable para aquellos preocupados por el medio ambiente.'),
+(51,17,5,'Acabado de alto brillo: el papel fotográfico Wenrescry ofrece un acabado de alto brillo que muestra sus fotos en colores vivos y reales. El recubrimiento especial garantiza una calidad de impresión óptima y lo hace ideal para impresiones fotográficas de alta resolución.
+Resistente al agua y de secado rápido: nuestro papel fotográfico A4 es se seca instantáneamente, lo que lo hace especialmente conveniente para el uso rápido de tarjetas fotográficas e impresiones en entornos domésticos o de oficina. Previene la decoloración y protege tus fotos a largo plazo.
+Compatibilidad con todas las impresoras de inyección de tinta: el papel fotográfico Wenrescry es adecuado para todas las impresoras de inyección de tinta comunes, como Canon, HP y Epson, y garantiza constantemente buenos resultados en todos los dispositivos.
+Longevidad de las fotografías: Gracias a sus propiedades de larga duración, sus impresiones son especialmente duraderas. Las fotos impresas con este papel conservan su vibrante profundidad de color y no se desvanecen, lo que lo hace perfecto para fotos de vacaciones, fotografías familiares o proyectos escolares.
+Aplicaciones versátiles: El papel fotográfico es versátil y es adecuado no solo para fotografías, sino también para hacer folletos, carteles, invitaciones o envolver regalos para enriquecer sus proyectos creativos. Está disponible en un pack de 50 hojas (A4, 200 g/m²).');
 
 INSERT INTO pedidos (fecha_venta, estado_pedido, total, id_usuario) VALUES
 ('2024-01-15','REALIZADO',72.48,1),
