@@ -9,13 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioDto;
@@ -66,12 +63,23 @@ public class UsuarioRestController {
 
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             Usuario usuarioBD = usuarioService.findByEmail(userDetails.getUsername());
+
          // Genera el token
             String jwt = jwtService.generarToken(usuarioBD.getEmail());
-            UsuarioDto dto = new UsuarioDto(usuarioBD);
-            // Envía al frontend
-            return ResponseEntity.ok(Map.of("token", jwt, "user", dto));
-            
+
+
+            UsuarioDto usuarioDto = new UsuarioDto();
+            usuarioDto.setUsername(usuarioBD.getUsername());
+            usuarioDto.setNombre(usuarioBD.getNombre());
+            usuarioDto.setApellidos(usuarioBD.getApellidos());
+            usuarioDto.setEmail(usuarioBD.getEmail());
+            usuarioDto.setDireccion(usuarioBD.getDireccion());
+            usuarioDto.setFechaRegistro(usuarioBD.getFechaRegistro());
+            usuarioDto.setPerfil(usuarioBD.getPerfil());
+
+            return ResponseEntity.ok(Map.of("token", jwt, "user", usuarioDto)
+            		);
+
         } catch (Exception e) { 
             return ResponseEntity.status(401).body("Credenciales inválidas");
         }
