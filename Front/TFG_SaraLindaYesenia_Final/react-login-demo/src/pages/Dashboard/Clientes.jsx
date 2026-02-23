@@ -51,7 +51,7 @@ export default function Clientes({
           </thead>
           <tbody>
             {filteredClients.map(c => {
-              const pedCnt = pedidos.filter(p => p.id_cliente === c.id).length;
+              const pedCnt = pedidos.filter(p => p.idUsuario === c.id).length;
               return (
                 <tr key={c.id} onClick={() => setPopup({ type: 'client', data: c })} className="cursor-pointer">
                   <td>
@@ -104,10 +104,10 @@ export default function Clientes({
             </div>
           ))}
           <h5 className="text-xs font-bold mt-4 mb-2 text-secondary">Pedidos</h5>
-          {pedidos.filter(p => p.id_cliente === popup.data.id).length === 0 ? (
+          {pedidos.filter(p => p.idUsuario === popup.data.id).length === 0 ? (
             <p className="text-xs text-muted">De momento no tienes pedido</p>
           ) : (
-            pedidos.filter(p => p.id_cliente === popup.data.id).map(p => {
+            pedidos.filter(p => p.idUsuario === popup.data.id).map(p => {
               const statusStyle = {
                 'CANCELADO': { bg: '#fef3c7', color: '#92400e' },
                 'CARRITO': { bg: '#dbeafe', color: '#1d4ed8' },

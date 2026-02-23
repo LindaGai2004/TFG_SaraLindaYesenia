@@ -2,12 +2,9 @@ const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:9001';
 
 // Mira en localStorage si hay un usuario guardado
 function getAuthHeader() {
-  const stored = localStorage.getItem('user');
-  // Si tiene token, devuelvo: Authorization: Bearer <token>
-  // Si no hay token, devuelvo un objeto vacío.
-  if (!stored) return {};
-  const parsed = JSON.parse(stored);
-  return parsed?.token ? { 'Authorization': `Bearer ${parsed.token}` } : {};
+  const token = localStorage.getItem('token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+
 }
 
 // Si el backend dice que el token no vale, borra la sesión y te mandoa al login
