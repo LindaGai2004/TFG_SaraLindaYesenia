@@ -32,15 +32,14 @@ const navSections = [
 ];
 
 export default function Sidebar({ currentPage, onNavigate, onLogout }) {
+
     const { user, logout } = useAuth();
-  
   return (
     <aside className="sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
         <div className="sidebar-logo-inner">
-          <div className="sidebar-logo-icon">📚</div> 
-          <span className="sidebar-logo-text">CAMBIAR LOGO</span>
+          <div className="sidebar-logo-icon"> Archives <img src="/libro.png" alt="Logo" className="sidebar-logo-img" /></div>
         </div>
       </div>
 
@@ -52,11 +51,11 @@ export default function Sidebar({ currentPage, onNavigate, onLogout }) {
             {section.items.map((item) => {
               const Icon = item.icon;
               const isActive = currentPage === item.id;
-              
+
               if (item.onlyClient && Users?.rol !== "CLIENTE") {
                 return null;
               }
-              
+
               return (
                 <div key={item.id}>
                   <button
@@ -66,7 +65,7 @@ export default function Sidebar({ currentPage, onNavigate, onLogout }) {
                     <Icon size={15} />
                     {item.label}
                   </button>
-                  
+
                   {/* Sub-menu for Productos */}
                   {item.hasSub && isActive && (
                     <div className="sidebar-sub-menu">
@@ -79,17 +78,15 @@ export default function Sidebar({ currentPage, onNavigate, onLogout }) {
             })}
           </div>
         ))}
+        {/* Logout */}
+      <a className="app-sidebar-link logout-link" onClick={logout}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+      </a>
       </nav>
-
-                {/* Logout */}
-          <a className="app-sidebar-link logout-link" onClick={logout}>
-            <span>Cerrar sesión</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-          </a>
     </aside>
   );
 }

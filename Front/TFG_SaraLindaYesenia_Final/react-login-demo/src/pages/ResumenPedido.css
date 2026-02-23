@@ -62,20 +62,22 @@
 }
 
 .order-back-btn {
-    width: 100%;
-    padding: 1rem;
-    background-color: #2d2d2d;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    background-color: #6D96A6;
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
 
 .order-back-btn:hover {
-    background-color: #1a1a1a;
+     background-color: white;
+    color: #6D96A6;
+    border: 1px solid #6D96A6;
 }
 
 /* RIGHT COLUMN */

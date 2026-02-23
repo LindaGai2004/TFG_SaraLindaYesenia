@@ -1,22 +1,54 @@
-/* En App.css o index.css — wrapper que da el fondo gris solo a la derecha */
+
+body, #root {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.app-content {
+  padding-top: 0;
+}
+
+.app-content.with-navbar {
+  padding-top: 70px;
+}
+
+
 .checkout-page {
-  display: grid;
+display: grid;
   grid-template-columns: 1fr 1fr;
-  width: 1200px;
+  width: 100%;
+  
+  margin: 0 auto;
+  flex: 1; 
 }
 
 .checkout-page-left {
-  background: #fff;
+   background: #fff;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1; 
+  border-right: 1px #e0ddd8 solid;
+  padding-right: 0;
+  padding-left: 32%;
 }
 
 .checkout-page-right {
-  background: #f7f7f5;
-  border-left: 1px solid #e0ddd8;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
-/* El contenido interior centrado */
 .checkout-wrapper {
-  display: contents; /* deja que los hijos participen en el grid del padre */
+  display: contents; 
 }
 
 .checkout-left {

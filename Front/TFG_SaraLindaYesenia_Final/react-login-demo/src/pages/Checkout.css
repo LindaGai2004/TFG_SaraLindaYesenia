@@ -1,11 +1,6 @@
 .checkout-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;  /* columnas iguales como la referencia */
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: calc(100vh - 60px);
-  padding: 0 2rem;
-  gap: 4rem;
+   display: flex;
+  flex: 1;
 }
 
 /* IZQUIERDA */
@@ -34,8 +29,8 @@
   gap: 1rem;
   transition: border-color 0.2s, background 0.2s;
 }
-.method-card:hover { border-color: #c9895a; }
-.method-card.selected { border-color: #c9895a; background: #f5ede6; }
+.method-card:hover { border-color: #8daebd; }
+.method-card.selected { border-color: #8daebd; background:#e6eff5; }
 
 .radio-dot {
   width: 18px; height: 18px;
@@ -45,8 +40,8 @@
   flex-shrink: 0;
   transition: border-color 0.2s;
 }
-.method-card.selected .radio-dot { border-color: #c9895a; }
-.radio-fill { width: 9px; height: 9px; border-radius: 50%; background: #c9895a; }
+.method-card.selected .radio-dot { border-color: #8daebd; }
+.radio-fill { width: 9px; height: 9px; border-radius: 50%; background: #8daebd; }
 
 .method-icon { font-size: 1.4rem; width: 36px; text-align: center; }
 .paypal-logo { font-weight: 700; color: #003087; font-size: 1rem; }
@@ -97,9 +92,11 @@
 
 /* DERECHA */
 .checkout-right {
-  background: #f7f7f5;
+  max-width: 480px;
   padding: 3rem 2rem;
-  border-left: 1px solid #e0ddd8;
+  width: 100%;
+  flex: 1;        
+  min-height: 100%;
 }
 .summary-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 1.5rem; }
 
@@ -151,7 +148,8 @@
   display: flex; align-items: center; justify-content: center; gap: 0.5rem;
   width: 100%; margin-top: 1.5rem; padding: 0.75rem;
   background: transparent; border: 1.5px solid #e0ddd8; border-radius: 10px;
-  font-size: 0.85rem; color: #555; cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  font-size: 0.85rem; cursor: pointer;
+  border-color: #d7d7d7; color: #8b8b8b;
+  transition: all 0.2s, color 0.2s;
 }
-.edit-cart-btn:hover { border-color: #c9895a; color: #c9895a; }
+.edit-cart-btn:hover {background-color: #e6eff5; border-color:#8daebd;color: #8daebd; }
