@@ -2,6 +2,7 @@ import './Login.css';
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import NotificacionToken from "./Notificacion_token.jsx";
 
 export default function Login() {
   const { login } = useAuth();
@@ -11,6 +12,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [mensaje, setMensaje] = useState("");
 
   // Navbar visible/oculto al hacer scroll (igual que en Home)
   const [isVisible, setIsVisible] = useState(true);
@@ -46,6 +48,14 @@ export default function Login() {
       if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
     };
   }, [lastScrollY]);
+
+  useEffect(() => {
+    const expirado = localStorage.getItem("token_expirado");
+    if (expirado) {
+      setMensaje("Tu sesión ha expirado. Inicia sesión de nuevo.");
+      localStorage.removeItem("token_expirado");
+    }
+  }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -85,6 +95,8 @@ export default function Login() {
 
   return (
     <div className="pagina-login">
+
+      <NotificacionToken mensaje={mensaje} onClose={() => setMensaje("")} />
 
       {/* FORMULARIO */}
       <div className="login-contenedor">
