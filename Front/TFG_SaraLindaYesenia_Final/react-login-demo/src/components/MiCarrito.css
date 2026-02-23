@@ -214,6 +214,7 @@
     cursor: pointer;
     margin-top: 1.5rem;
     transition: background-color 0.2s;
+    border: 1px solid #8daebd;
 }
 
 .cart-checkout-btn:hover {
