@@ -62,12 +62,13 @@ public class PaypalServiceImpl implements PaypalService{
 		
 		OrdersCreateRequest request = new OrdersCreateRequest();
 		request.prefer("return=representation");
+		//todo lo que se envia a paypal (lo que necesita paypal para q funcione)
 		OrderRequest orderRequest = new OrderRequest()
 		.applicationContext(new ApplicationContext()
 						      .returnUrl("http://localhost:5173/paypal/success")
 						      .cancelUrl("http://localhost:5173/paypal/cancel"))
 		.checkoutPaymentIntent("CAPTURE")
-        .purchaseUnits(
+		.purchaseUnits(
                 java.util.List.of(new PurchaseUnitRequest()
                        .amountWithBreakdown(new AmountWithBreakdown()
                             .currencyCode("EUR")
@@ -76,6 +77,7 @@ public class PaypalServiceImpl implements PaypalService{
            )
         );
 		request.requestBody(orderRequest);
+		//hace una peticion a su propia api para generar una orden (para paypal) y un link valido
 		Order order = payPalHttpClient.execute(request).result();
 		
 		String paypalPedidoId = order.id();
