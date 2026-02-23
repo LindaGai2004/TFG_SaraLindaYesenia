@@ -21,7 +21,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		this.jwtService = jwtService;
 		this.userDetailsService = userDetailsService;
 	}
-	//obtener token del header para verificar si el token es valido
     @Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException{
@@ -48,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	            SecurityContextHolder.getContext().getAuthentication() == null) {
 				//Cargar desde bbdd
 	            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-	            //si el token es valido crea el objeto de user sino sale 401
+	            //validar token
 	            if (jwtService.isTokenValid(jwt, userDetails)) {
 	            	//crear objeto de autenticacion
 	                UsernamePasswordAuthenticationToken authToken =new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

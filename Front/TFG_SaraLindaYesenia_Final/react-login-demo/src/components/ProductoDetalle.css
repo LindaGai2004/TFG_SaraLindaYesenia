@@ -1,14 +1,10 @@
-/* =========================================================
-   FONDO GENERAL
-========================================================= */
+/* FONDO GENERAL ------------------------------------------ */
 .fondo-detalle {
   background: #f9f7f4;
-  padding: 60px 0;
+  padding-top: 120px;
 }
 
-/* =========================================================
-   LAYOUT GENERAL
-========================================================= */
+/* LAYOUT GENERAL ------------------------------------------ */
 .detalle-layout {
   display: grid;
   grid-template-columns: 1fr 260px;
@@ -19,9 +15,7 @@
   padding: 20px;
 }
 
-/* =========================================================
-   FILA SUPERIOR (IMAGEN + INFO)
-========================================================= */
+/* FILA SUPERIOR (IMAGEN + INFO) ------------------------------------------ */
 .fila-superior {
   max-width: 800px;
   margin: 0 auto 40px auto;
@@ -33,9 +27,7 @@
   gap: 40px;
 }
 
-/* =========================================================
-   COLUMNA IZQUIERDA (GALERÍA)
-========================================================= */
+/* COLUMNA IZQUIERDA (GALERÍA) ------------------------------------------ */
 .col-izquierda {
   display: flex;
   flex-direction: column;
@@ -78,9 +70,7 @@
   border-color: #184763;
 }
 
-/* =========================================================
-  COLUMNA DERECHA (INFO)
-========================================================= */
+/* COLUMNA DERECHA (INFO) ------------------------------------------ */
 .col-derecha-editorial {
   display: flex;
   flex-direction: column;
@@ -114,9 +104,7 @@
   color: #333;
 }
 
-/* =========================================================
-  BOTONES
-========================================================= */
+/* BOTONES -------------------------------------------------- */
 .editorial-botones-fila {
   display: flex;
   justify-content: space-between;
@@ -193,23 +181,31 @@
   object-fit: contain;
 }
 
-/* =========================================================
-   FILA INFERIOR (RESUMEN + DETALLES)
-========================================================= */
+/* FILA INFERIOR (RESUMEN + DETALLES) ------------------------------------------ */
 .fila-inferior {
   max-width: 1100px;
   margin: 40px auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
+
+  /* Antes: 1fr 1fr → ahora la izquierda es más ancha */
+  grid-template-columns: 1.4fr 0.8fr;
+
+  gap: 60px; /* más separación para empujar la derecha */
   padding: 20px 10px;
 }
 
-.col-inferior-izq,
-.col-inferior-der {
+/* Columna izquierda más ancha */
+.col-inferior-izq {
   margin: 0 auto;
   width: 100%;
-  max-width: 450px;
+  max-width: 600px; /* antes 450px */
+}
+
+/* Columna derecha más pegada a la derecha */
+.col-inferior-der {
+  margin-left: auto; /* empuja la columna hacia la derecha */
+  width: 100%;
+  max-width: 380px; /* un poco más estrecha */
 }
 
 .titulo-seccion {
@@ -220,9 +216,7 @@
   color: #6d96a6;
 }
 
-/* =========================================================
-  RESUMEN / DESCRIPCIÓN
-========================================================= */
+/* RESUMEN / DESCRIPCIÓN ------------------------------------------ */
 .texto-resumen {
   font-size: 1rem;
   line-height: 1.7;
@@ -242,9 +236,7 @@
   text-decoration: underline;
 }
 
-/* =========================================================
-  LISTA DE PAPELERÍA
-========================================================= */
+/* LISTA DE PAPELERÍA ------------------------------------------ */
 .lista-detalles {
   list-style: disc;
   padding-left: 20px;
@@ -253,18 +245,14 @@
   color: #444;
 }
 
-/* =========================================================
-  DETALLES
-========================================================= */
 .detalles-grid p {
   margin: 6px 0;
   font-size: 1rem;
   color: #333;
 }
 
-/* =========================================================
-  RELACIONADOS
-========================================================= */
+
+/* RELACIONADOS ----------------------------------------------- */
 .detalle-relacionados {
   padding: 15px;
   border-radius: 6px;
@@ -324,7 +312,7 @@
 }
 
 
-/*---------- AVISO DE LOGIN (FAVORITOS / CARRITO) ----------*/
+/* AVISO DE LOGIN (FAVORITOS / CARRITO) ----------------------------------------*/
 .notificacion-login {
   position: fixed;
   top: 120px;
@@ -372,4 +360,109 @@
   color: #184763;
   cursor: pointer;
   font-weight: 600;
+}
+
+
+/* RESPONSIVE TABLET ------------------------------------------------------------*/
+@media (min-width: 769px) and (max-width: 1500px) {
+  .detalle-layout {
+    grid-template-columns: 1fr 220px;
+    max-width: 1000px;
+    padding: 15px;
+  }
+
+  /* Imagen + info */
+  .fila-superior.dos-columnas {
+    grid-template-columns: 240px 1fr;
+    gap: 30px;
+  }
+
+  .galeria-producto .imagen-principal img {
+    height: 300px;
+  }
+
+  .galeria-producto .miniaturas img {
+    height: 70px;
+  }
+
+  .titulo-editorial {
+    font-size: 40px;
+  }
+
+  .autor-editorial,.precio-editorial {
+    font-size: 22px;
+  }
+
+  .fila-inferior {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 80px;
+    padding: 20px 10px;
+  }
+
+  .col-inferior-izq {
+    max-width: 550px;
+  }
+
+  .col-inferior-der {
+    margin-left: auto; /* empuja la columna hacia la derecha */
+    max-width: 360px;
+  }
+
+  .detalle-relacionados {
+    width: 180px;
+  }
+}
+
+/* RESPONSIVE MÓVIL ------------------------------------------------------------*/
+@media (max-width: 768px) {
+
+  .detalle-layout {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .fila-superior.dos-columnas {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .galeria-producto .imagen-principal img {
+    height: 260px;
+  }
+
+  .galeria-producto .miniaturas img {
+    height: 60px;
+  }
+
+  .titulo-editorial {
+    font-size: 32px;
+  }
+
+  .autor-editorial,
+  .precio-editorial {
+    font-size: 20px;
+  }
+
+  /* Botones */
+  .editorial-botones-fila {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .btn-cesta-editorial {
+    width: 100%;
+  }
+
+  .fila-inferior {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .detalle-relacionados {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+  }
 }

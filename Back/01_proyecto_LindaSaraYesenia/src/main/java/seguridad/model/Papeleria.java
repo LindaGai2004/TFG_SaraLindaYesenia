@@ -2,6 +2,7 @@ package seguridad.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
@@ -9,17 +10,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @ToString(callSuper = true)
-@Getter
-@Setter
+@Data
 @DiscriminatorValue("PAPELERIA")
 @Table(name = "papeleria")
 public class Papeleria extends Producto implements Serializable {
@@ -35,26 +37,6 @@ public class Papeleria extends Producto implements Serializable {
 
     @Column(name = "descripcion_larga")
     private String descripcionLarga;
-
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca marca) {
-        this.marca = marca;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
 
     public Papeleria(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,
             EstadoProducto estadoProducto, LocalDate fechaAlta, Double costoReal, Marca marca, Categoria categoria,
