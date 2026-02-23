@@ -32,7 +32,8 @@ const navSections = [
 ];
 
 export default function Sidebar({ currentPage, onNavigate, onLogout }) {
-  const { user, logout } = useAuth();
+
+    const { user, logout } = useAuth();
   return (
     <aside className="sidebar">
       {/* Logo */}
@@ -86,9 +87,6 @@ export default function Sidebar({ currentPage, onNavigate, onLogout }) {
         </svg>
       </a>
       </nav>
-
-      
-
     </aside>
   );
 }

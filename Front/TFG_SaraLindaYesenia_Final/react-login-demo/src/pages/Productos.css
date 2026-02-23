@@ -29,6 +29,7 @@
   display: flex;
   gap: 2rem;
   padding: 2rem;
+  padding-top: 40px;
   background: #f9f7f4;
 }
 

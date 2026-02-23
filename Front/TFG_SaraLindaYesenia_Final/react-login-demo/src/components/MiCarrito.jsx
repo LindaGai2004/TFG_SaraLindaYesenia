@@ -29,8 +29,6 @@ function MiCarrito() {
                 ← Regresar
             </button>
 
-
-
             {items.length === 0 ? (
                 <div className="cart-empty-state">
                     <h2 className="cart-empty-title">Tu carrito esta vacío</h2>
@@ -183,4 +181,3 @@ function MiCarrito() {
 }
 
 export default MiCarrito;
-

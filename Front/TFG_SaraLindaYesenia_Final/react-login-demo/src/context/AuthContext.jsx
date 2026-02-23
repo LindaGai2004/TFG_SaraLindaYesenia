@@ -64,16 +64,12 @@ async function login(email, password) {
     const res = await apiPost('/api/login', { email, password });
 
     const normalizedUser = normalizeUser(res.user);
+   
+    localStorage.setItem('token', res.token);
+    localStorage.setItem('user', JSON.stringify(normalizedUser));
 
-    const authData = {
-      ...normalizedUser,
-      token: res.token  
-    };
-
-    setUser(authData);
-    localStorage.setItem('user', JSON.stringify(authData));
-
-    return authData;
+    setUser(normalizedUser);
+    return normalizedUser;
 
   } catch (err) {
     console.error('Login error:', err);

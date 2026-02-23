@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data @Builder
+@Data 
+@Builder
 public class UsuarioDto {
 	private String username;
 	private String nombre;
@@ -18,16 +20,20 @@ public class UsuarioDto {
 	private String direccion;
 	private String email;
 	private LocalDate fechaRegistro;
-	
-public UsuarioDto(Usuario usuario) {
-	this.username = usuario.getUsername();
-	this.nombre = usuario.getNombre();
-	this.apellidos = usuario.getApellidos();
-	this.direccion = usuario.getDireccion();
-	this.email = usuario.getEmail();
-	this.fechaRegistro = usuario.getFechaRegistro();
-	
-}
+	private Perfil perfil;
+
+
+	public UsuarioDto(Usuario usuario) {
+		this.username = usuario.getUsername();
+		this.nombre = usuario.getNombre();
+		this.apellidos = usuario.getApellidos();
+		this.direccion = usuario.getDireccion();
+		this.email = usuario.getEmail();
+		this.fechaRegistro = usuario.getFechaRegistro();
+		this.perfil = usuario.getPerfil();
+	}
+
+
 
 public String getUsername() {
 	return username;
@@ -76,9 +82,6 @@ public LocalDate getFechaRegistro() {
 public void setFechaRegistro(LocalDate fechaRegistro) {
 	this.fechaRegistro = fechaRegistro;
 }
-
-
-
 }
 
 

@@ -58,10 +58,10 @@ public abstract class Producto implements Serializable{
 	@Column(name = "costo_real")
 	private Double costoReal;
 	@Column(nullable = false)
-	boolean destacado; //para libro del mes 
+	boolean destacado; 
 
 	@OneToMany(mappedBy = "producto")
-	@JsonIgnoreProperties("producto")
+	@JsonIgnoreProperties("producto") //evita bucles infinitos al convertir a JSON.
 	private List<ImagenProducto> imagenes;
 
 	
