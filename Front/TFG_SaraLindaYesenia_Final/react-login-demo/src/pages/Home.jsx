@@ -1,4 +1,5 @@
 import './Home.css';
+import './Home.css';
 import { useState, useRef, useEffect, } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';

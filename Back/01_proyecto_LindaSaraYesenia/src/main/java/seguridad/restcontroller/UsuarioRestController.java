@@ -67,8 +67,18 @@ public class UsuarioRestController {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             String jwt = jwtService.generarToken(userDetails.getUsername());
             Usuario usuarioBD = usuarioService.findByEmail(userDetails.getUsername());
-            return ResponseEntity.ok(Map.of("token", jwt, "user", usuarioBD));
-            
+      
+            UsuarioDto usuarioDto = new UsuarioDto();
+            usuarioDto.setUsername(usuarioBD.getUsername());
+            usuarioDto.setNombre(usuarioBD.getNombre());
+            usuarioDto.setApellidos(usuarioBD.getApellidos());
+            usuarioDto.setEmail(usuarioBD.getEmail());
+            usuarioDto.setDireccion(usuarioBD.getDireccion());
+            usuarioDto.setFechaRegistro(usuarioBD.getFechaRegistro());
+            usuarioDto.setPerfil(usuarioBD.getPerfil());
+
+            return ResponseEntity.ok(Map.of("token", jwt, "user", usuarioDto)
+            		);
         } catch (Exception e) { 
             return ResponseEntity.status(401).body("Credenciales inválidas");
         }
