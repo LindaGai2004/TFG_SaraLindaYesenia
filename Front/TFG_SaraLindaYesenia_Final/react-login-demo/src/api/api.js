@@ -1,9 +1,7 @@
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:9001';
 function getAuthHeader() {
-  const stored = localStorage.getItem('user');
-  if (!stored) return {};
-  const parsed = JSON.parse(stored);
-  return parsed?.token ? { 'Authorization': `Bearer ${parsed.token}` } : {};
+  const token = localStorage.getItem('token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 export async function apiGet(path) {
   const res = await fetch(`${BASE_URL}${path}`, {

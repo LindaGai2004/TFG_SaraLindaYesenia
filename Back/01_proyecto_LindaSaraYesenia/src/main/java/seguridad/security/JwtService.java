@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -37,9 +38,15 @@ public class JwtService {
 				.getBody();
 	}
 	//Obtener email
-	public String extractUsername(String token) {
-		return extractAllClaims(token).getSubject();
+	String extractUsername(String token) {
+	    try {
+	        return extractAllClaims(token).getSubject();
+	    } catch (ExpiredJwtException e) {
+	        return null;
+	    }
 	}
+	
+	
 	//Para ver expiracion del token
 	private boolean isTokenExpired(String token) {
 		return extractAllClaims(token).getExpiration().before(new Date());

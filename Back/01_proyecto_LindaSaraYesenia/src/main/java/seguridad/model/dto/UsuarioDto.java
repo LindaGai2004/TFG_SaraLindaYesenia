@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 
 @AllArgsConstructor
@@ -18,6 +19,8 @@ public class UsuarioDto {
 	private String direccion;
 	private String email;
 	private LocalDate fechaRegistro;
+	private Perfil perfil;
+	
 	
 public UsuarioDto(Usuario usuario) {
 	this.username = usuario.getUsername();
@@ -26,8 +29,10 @@ public UsuarioDto(Usuario usuario) {
 	this.direccion = usuario.getDireccion();
 	this.email = usuario.getEmail();
 	this.fechaRegistro = usuario.getFechaRegistro();
+	this.perfil = perfil;
 	
 }
+
 
 public String getUsername() {
 	return username;
@@ -76,6 +81,8 @@ public LocalDate getFechaRegistro() {
 public void setFechaRegistro(LocalDate fechaRegistro) {
 	this.fechaRegistro = fechaRegistro;
 }
+
+
 
 
 
