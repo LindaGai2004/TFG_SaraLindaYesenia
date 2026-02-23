@@ -4,33 +4,25 @@ const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:9001';
 function getAuthHeader() {
   const token = localStorage.getItem('token');
   return token ? { Authorization: `Bearer ${token}` } : {};
-
 }
 
-// Si el backend dice que el token no vale, borra la sesión y te mandoa al login
-function forceLogout() {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
-  localStorage.removeItem("cartItems");
-  window.location.href = "/login";
+function handle401() { 
+  console.error("Token inválido o caducado"); 
+  localStorage.setItem("token_expirado", "true"); // Guarda el aviso para el login
+  localStorage.removeItem("user"); 
+  localStorage.removeItem("cartItems"); 
+  localStorage.removeItem("dl_option"); 
+  window.location.href = "/login"; 
 }
 
 export async function apiGet(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: {
-      ...getAuthHeader()
-    }
+    headers: {...getAuthHeader()}
   });
 
-  if (res.status === 401) {
-    forceLogout();
-    return;
-  }
+  if (res.status === 401) return handle401();
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || `Error GET ${path}`);
-  }
+  if (!res.ok) throw new Error (await res.text());
 
   const text = await res.text();
   return text ? JSON.parse(text) : null;
@@ -46,48 +38,30 @@ export async function apiPost(path, body) {
     body: JSON.stringify(body)
   });
 
-  if (res.status === 401) {
-    forceLogout();
-    return;
-  }
+  if (res.status === 401) return handle401();
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || `Error POST ${path}`);
-  }
+  if (!res.ok) throw new Error (await res.text());
 
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
 
 export async function apiPut(path, body) {
-  try {
-    const res = await fetch(`${BASE_URL}${path}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        ...getAuthHeader()
-      },
-      body: JSON.stringify(body)
-    });
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeader()
+    },
+    body: JSON.stringify(body)
+  });
 
-    if (res.status === 401) {
-      forceLogout();
-      return;
-    }
+  if (res.status === 401) return handle401();
 
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(text || `Error PUT ${path}`);
-    }
+  if (!res.ok) throw new Error (await res.text());
 
-    const text = await res.text();
-    return text ? JSON.parse(text) : null;
-
-  } catch (error) {
-    console.error('PUT request failed:', error);
-    throw error;
-  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
 }
 
 export async function apiDelete(path) {
@@ -99,15 +73,9 @@ export async function apiDelete(path) {
     }
   });
 
-  if (res.status === 401) {
-    forceLogout();
-    return;
-  }
-  
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || `Error DELETE ${path}`);
-  }
+  if (res.status === 401) return handle401();
+
+  if (!res.ok) throw new Error (await res.text());
 
   const text = await res.text();
   return text ? JSON.parse(text) : null;

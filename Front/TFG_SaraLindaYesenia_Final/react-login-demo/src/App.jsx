@@ -16,7 +16,7 @@ import Portfolio from './pages/Cliente';
 import PaypalSuccess from './pages/PaypalSuccess';
 import PaypalCancel from './pages/PaypalCancel';
 import Checkout from "./pages/Checkout";
-
+import NotificacionToken from './components/Notificacion_token';
 import NavBar from './components/NavBar';
 import Footer from "./components/Footer";
 import './App.css';
