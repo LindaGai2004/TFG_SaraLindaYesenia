@@ -71,7 +71,6 @@ public class UsuarioRestController {
             UsuarioDto dto = new UsuarioDto(usuarioBD);
             // Envía al frontend
             return ResponseEntity.ok(Map.of("token", jwt, "user", dto));
-
             
         } catch (Exception e) { 
             return ResponseEntity.status(401).body("Credenciales inválidas");
