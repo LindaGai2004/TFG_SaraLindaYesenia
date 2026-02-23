@@ -7,7 +7,7 @@ export default function Checkout() {
   const { idPedido } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [metodoPago, setMetodoPago] = useState("CARD");
+  const [metodoPago, setMetodoPago] = useState("PAYPAL");
 
   // Datos que vienen del carrito via navigate state
   const pedido = location.state ?? null;
@@ -26,6 +26,7 @@ export default function Checkout() {
           <p className="checkout-subtitle">Selecciona cómo quieres pagar tu pedido</p>
 
           <div className="method-cards">
+           
             <div
               className={`method-card ${metodoPago === "PAYPAL" ? "selected" : ""}`}
               onClick={() => setMetodoPago("PAYPAL")}
@@ -37,7 +38,7 @@ export default function Checkout() {
                 <div className="method-desc">Paga con tu cuenta PayPal de forma segura</div>
               </div>
             </div>
-
+           {/*
             <div
               className={`method-card ${metodoPago === "CARD" ? "selected" : ""}`}
               onClick={() => setMetodoPago("CARD")}
@@ -48,7 +49,7 @@ export default function Checkout() {
                 <div className="method-label">Tarjeta de crédito / débito</div>
                 <div className="method-desc">Visa, Mastercard, American Express</div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {metodoPago === "PAYPAL" && (
@@ -60,10 +61,6 @@ export default function Checkout() {
               </div>
               <PayPalButton idPedido={idPedido} mode="popup" />
             </div>
-          )}
-
-          {metodoPago === "CARD" && (
-            <PayPalButton idPedido={idPedido} mode="card" total={total} />
           )}
         </div>
       </div>
