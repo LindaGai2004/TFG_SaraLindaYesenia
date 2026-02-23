@@ -65,9 +65,13 @@ public class UsuarioRestController {
             //session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            String jwt = jwtService.generarToken(userDetails.getUsername());
             Usuario usuarioBD = usuarioService.findByEmail(userDetails.getUsername());
-            return ResponseEntity.ok(Map.of("token", jwt, "user", usuarioBD));
+         // Genera el token
+            String jwt = jwtService.generarToken(usuarioBD.getEmail());
+            UsuarioDto dto = new UsuarioDto(usuarioBD);
+            // Envía al frontend
+            return ResponseEntity.ok(Map.of("token", jwt, "user", dto));
+
             
         } catch (Exception e) { 
             return ResponseEntity.status(401).body("Credenciales inválidas");

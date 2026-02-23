@@ -1,7 +1,10 @@
 .cart-page {
-    max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 120px;
+    padding-bottom: 80px;
+    background-color: #f9f7f4;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
 }
 
@@ -201,8 +204,9 @@
 .cart-checkout-btn {
     width: 100%;
     padding: 0.875rem;
-    background-color: #1a1a1a;
+    background-color: #8daebd;
     color: white;
+    border: 1px solid #8daebd;
     border: none;
     border-radius: 4px;
     font-size: 1rem;
@@ -213,7 +217,8 @@
 }
 
 .cart-checkout-btn:hover {
-    background-color: #333;
+    background-color: white;
+    color: #8daebd;
 }
 
 .cart-summary-subtitle {
@@ -261,8 +266,8 @@
     width: 100%;
     padding: 0.875rem;
     background-color: white;
-    color: #1a1a1a;
-    border: 1px solid #e0e0e0;
+    color: #8daebd;
+    border: 1px solid #8daebd;
     border-radius: 4px;
     font-size: 1rem;
     font-weight: 500;
