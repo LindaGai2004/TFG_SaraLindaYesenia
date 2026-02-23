@@ -486,30 +486,6 @@ export default function Home() {
           </div>
         </div>
 
-
-        {/* Sección logros */}
-        <div className="seccion-logros" ref={logrosRef}>
-          <h2 className="titulo-logros">Logros</h2>
-
-          <div className="contenedor-logros">
-            <div className="columna-logro">
-              <Contador final={20000} visible={visible} />
-              <p className="texto-logro">Lectores</p>
-            </div>
-            <div className="columna-logro">
-              <Contador final={15000} visible={visible} />
-              <p className="texto-logro">Libros</p>
-            </div>
-            <div className="columna-logro">
-              <Contador final={98} visible={visible} />
-              <p className="texto-logro">Eventos y firmas</p>
-            </div>
-            <div className="columna-logro">
-              <Contador final={25} visible={visible} />
-              <p className="texto-logro">Premios ganados</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

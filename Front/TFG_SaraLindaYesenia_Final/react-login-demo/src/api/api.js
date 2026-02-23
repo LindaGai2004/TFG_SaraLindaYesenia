@@ -2,10 +2,8 @@ const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:9001';
 
 // Mira en localStorage si hay un usuario guardado
 function getAuthHeader() {
-  const stored = localStorage.getItem('user');
-  if (!stored) return {};
-  const parsed = JSON.parse(stored);
-  return parsed?.token ? { 'Authorization': `Bearer ${parsed.token}` } : {};
+  const token = localStorage.getItem('token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 function handle401() { 
