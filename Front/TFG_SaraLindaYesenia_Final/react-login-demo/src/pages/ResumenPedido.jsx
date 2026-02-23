@@ -42,7 +42,7 @@ function ResumenPedido() {
         </div>
 
         <button className="order-back-btn" onClick={() => navigate("/productos")}>
-          Regresar a la tienda
+          REGRESAR A LA TIENDA
         </button>
       </section>
 
