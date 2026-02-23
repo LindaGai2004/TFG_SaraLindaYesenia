@@ -16,7 +16,9 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity @Data @Builder
+@Entity 
+@Data 
+@Builder
 @EqualsAndHashCode(of = "idGenero")
 @Table(name = "genero")
 public class Genero implements Serializable {
@@ -30,25 +32,4 @@ public class Genero implements Serializable {
 	
 	@Column(name = "nombre_genero")
 	private String nombreGenero;
-
-	public Integer getIdGenero() {
-		return idGenero;
-	}
-
-	public void setIdGenero(Integer idGenero) {
-		this.idGenero = idGenero;
-	}
-
-	public String getNombreGenero() {
-		return nombreGenero;
-	}
-
-	public void setNombreGenero(String nombreGenero) {
-		this.nombreGenero = nombreGenero;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 }
