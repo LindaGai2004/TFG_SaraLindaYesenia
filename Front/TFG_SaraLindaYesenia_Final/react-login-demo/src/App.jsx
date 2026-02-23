@@ -32,9 +32,7 @@ export default function App() {
     '/success'
   ];
 
-  const shouldShowNavbar = !hideNavbarPaths.some(path =>
-    location.pathname.startsWith(path)
-  );
+  const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
 
   return (
     <>
@@ -97,9 +95,25 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/paypal/success" element={<PaypalSuccess />} />
 
-          <Route path="/paypal/cancel" element={<PaypalCancel />} />
+          <Route
+            path="/paypal/success"
+            element={
+              <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
+                <PaypalSuccess />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/paypal/cancel"
+            element={
+              <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
+                <PaypalCancel />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/success"
             element={
@@ -108,8 +122,25 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-            <Route path="/checkout/:idPedido" element={<Checkout />} />
-            <Route path="/resumen" element={<ResumenPedido />} />
+          
+          <Route
+            path="/checkout/:idPedido"
+            element={
+              <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/resumen"
+            element={
+              <ProtectedRoute allowedRoles={['ROLE_CLIENTE']}>
+                <ResumenPedido />
+              </ProtectedRoute>
+            }
+          />
+
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
 
