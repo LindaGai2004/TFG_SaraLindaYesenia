@@ -98,7 +98,7 @@ public class PaypalServiceImpl implements PaypalService{
 	@Override
 	@Transactional
 	public PedidoResponseDto capturarPedido(String paypalIdPedido) throws IOException {
-
+		//obtiene el pedido desde paypal
 	    OrdersCaptureRequest request = new OrdersCaptureRequest(paypalIdPedido);
 	    request.requestBody(new OrderRequest());
 	    payPalHttpClient.execute(request).result();
