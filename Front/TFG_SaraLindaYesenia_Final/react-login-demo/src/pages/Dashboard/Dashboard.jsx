@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Modal from '../../components/Modal_dashboard';
@@ -11,6 +11,7 @@ export default function Dashboard({
   mensual,
   mensualTotal 
 }) {
+
   const [popup, setPopup] = useState(null);
 
   //bucle
@@ -24,8 +25,191 @@ export default function Dashboard({
   );
   
   
+function renderPopup() {
+    if (!popup) return null;
+    const { type } = popup;
+
+    // PopUp-total
+    if (type === 'total') {
+      return (
+        <Modal 
+          open 
+          width="max-w-md" 
+          onClose={() => setPopup(null)} 
+          title="💰 Total"
+        >
+          <div className="flex gap-4 mt-2">
+            <div className="flex-1 rounded-xl p-3 text-center bg-green-light">
+              <p className="text-xl font-bold text-success">
+                ${totalGanancia.libros.toLocaleString()}
+              </p>
+              <p className="text-xs mt-1 text-success">📚 Libros</p>
+            </div>
+            <div className="flex-1 rounded-xl p-3 text-center bg-amber-light">
+              <p className="text-xl font-bold" style={{ color: '#92400e' }}>
+                ${totalGanancia.papeleria.toLocaleString()}
+              </p>
+              <p className="text-xs mt-1" style={{ color: '#92400e' }}>
+                📎 Papelerias
+              </p>
+            </div>
+          </div>
+          <div className="text-center mt-4 pt-4" style={{ borderTop: '1px solid #f1f5f9' }}>
+            <p className="text-xs text-secondary">Total</p>
+            <p className="text-2xl font-bold text-primary">
+              ${Number(mensualTotal || 0).toLocaleString()}
+            </p>
+          </div>
+        </Modal>
+      );
+    }
+
+    // PopUp-clientes
+    if (type === 'clients-popup') {
+      return (
+        <Modal 
+          open 
+          width="max-w-4xl" 
+          onClose={() => setPopup(null)} 
+          title="👥 Clientes"
+        >
+          <div className="table-wrapper">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Nombre</th>
+                  <th>Apellidos</th>
+                  <th>Email</th>
+                  <th>Username</th>
+                  <th>Dirección</th>
+                  <th>Pedidos</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clients.map(c => {
+                  const pedCnt = pedidos.filter(o => o.id_cliente === c.id).length;
+                  return (
+                    <tr key={c.id}>
+                      <td>
+                        <div className="table-avatar bg-green-light">👤</div>
+                      </td>
+                      <td className="text-xs font-semibold text-primary">
+                        {c.nombre}
+                      </td>
+                      <td className="text-xs font-semibold text-primary">
+                        {c.apellidos}
+                      </td>
+                      <td className="text-xs text-secondary">{c.email}</td>
+                      <td className="text-xs text-secondary">{c.username}</td>
+                      <td className="text-xs text-secondary">{c.direccion}</td>
+                      <td>
+                        <span className="badge badge-shipping">{pedCnt}</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </Modal>
+      );
+    }
+    
+    // PopUp-productos
+    if (type === 'products-popup') {
+      const allProducts = [
+      ...books.map(b => ({ ...b, tipoProducto: 'Libro' })),
+      ...papeleria.map(s => ({ ...s, tipoProducto: 'Papeleria' }))
+      ];
+      return (
+        <Modal open width="max-w-4xl" onClose={() => setPopup(null)} title="📦 Productos">
+          <div className="table-wrapper">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allProducts.map(p => (
+                  <tr key={p.id}>
+                    <td>{p.nombreProducto}</td>
+                    <td>{p.stock}</td>
+                    <td>{p.estadoProducto}</td>
+                    <td>{p.tipoProducto}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Modal>
+      );
+    }
+
+    // PopUp-pedidos
+    if (type === 'orders-popup') {
+      const statusStyle = {
+        'Pendiente': { bg: '#fef3c7', color: '#92400e' },
+        'En camino': { bg: '#dbeafe', color: '#1d4ed8' },
+        'Completado': { bg: '#d1fae5', color: '#065f46' },
+        'Cancelado': { bg: '#fee2e2', color: '#991b1b' }
+      };
+      const counts = pedidos.reduce((a, o) => { 
+        a[o.estadoPedido] = (a[o.estadoPedido] || 0) + 1; 
+        return a; 
+      }, {});
+      
+      return (
+        <Modal 
+          open 
+          width="max-w-md" 
+          onClose={() => setPopup(null)} 
+          title="🛒 Pedidos"
+        >
+          <div className="text-3xl font-bold mb-3 text-green">
+            {pedidos?.length} Pedidos
+          </div>
+          {Object.entries(counts).map(([estado, count]) => (
+            <div 
+              key={estado} 
+              className="flex items-center justify-between py-2"
+              style={{ borderTop: '1px solid #f1f5f9' }}
+            >
+              <span 
+                className="text-xs font-semibold px-2 py-0.5 rounded-full" 
+                style={statusStyle[estado]}
+              >
+                {estado}
+              </span>
+              <span className="text-sm font-bold text-primary">{count}</span>
+            </div>
+          ))}
+          <div 
+            className="flex items-center justify-between py-2 mt-2"
+            style={{ borderTop: '1px solid #e2e8f0' }}
+          >
+            <span className="text-xs font-semibold text-secondary">Total</span>
+            <span className="text-sm font-bold text-green">
+              ${pedidos
+                .filter(o => o.estadoPedido !== 'Cancelado')
+                .reduce((s, o) => s + o.total, 0)
+                .toFixed(2)}
+            </span>
+          </div>
+        </Modal>
+      );
+    }
+
+    return null;
+  }
+  
   return (
     <div>
+      
       {/* Cards*/}
       <div className="dashboard-cards">
         {/* Card-total: verde */}
@@ -180,185 +364,4 @@ export default function Dashboard({
       {renderPopup()}
     </div>
   );
-
-  function renderPopup() {
-    if (!popup) return null;
-    const { type } = popup;
-
-    // PopUp-total
-    if (type === 'total') {
-      return (
-        <Modal 
-          open 
-          width="max-w-md" 
-          onClose={() => setPopup(null)} 
-          title="💰 Total"
-        >
-          <div className="flex gap-4 mt-2">
-            <div className="flex-1 rounded-xl p-3 text-center bg-green-light">
-              <p className="text-xl font-bold text-success">
-                ${totalGanancia.libros.toLocaleString()}
-              </p>
-              <p className="text-xs mt-1 text-success">📚 Libros</p>
-            </div>
-            <div className="flex-1 rounded-xl p-3 text-center bg-amber-light">
-              <p className="text-xl font-bold" style={{ color: '#92400e' }}>
-                ${totalGanancia.papeleria.toLocaleString()}
-              </p>
-              <p className="text-xs mt-1" style={{ color: '#92400e' }}>
-                📎 Papelerias
-              </p>
-            </div>
-          </div>
-          <div className="text-center mt-4 pt-4" style={{ borderTop: '1px solid #f1f5f9' }}>
-            <p className="text-xs text-secondary">Total</p>
-            <p className="text-2xl font-bold text-primary">
-              ${Number(mensualTotal || 0).toLocaleString()}
-            </p>
-          </div>
-        </Modal>
-      );
-    }
-
-    // PopUp-clientes
-    if (type === 'clients-popup') {
-      return (
-        <Modal 
-          open 
-          width="max-w-4xl" 
-          onClose={() => setPopup(null)} 
-          title="👥 Clientes"
-        >
-          <div className="table-wrapper">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Nombre</th>
-                  <th>Apellidos</th>
-                  <th>Email</th>
-                  <th>Username</th>
-                  <th>Dirección</th>
-                  <th>Pedidos</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clients.map(c => {
-                  const pedCnt = pedidos.filter(o => o.id_cliente === c.id).length;
-                  return (
-                    <tr key={c.id}>
-                      <td>
-                        <div className="table-avatar bg-green-light">👤</div>
-                      </td>
-                      <td className="text-xs font-semibold text-primary">
-                        {c.nombre}
-                      </td>
-                      <td className="text-xs font-semibold text-primary">
-                        {c.apellidos}
-                      </td>
-                      <td className="text-xs text-secondary">{c.email}</td>
-                      <td className="text-xs text-secondary">{c.username}</td>
-                      <td className="text-xs text-secondary">{c.direccion}</td>
-                      <td>
-                        <span className="badge badge-shipping">{pedCnt}</span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </Modal>
-      );
-    }
-    // PopUp-productos
-    if (type === 'products-popup') {
-      const allProducts = [
-      ...books.map(b => ({ ...b, tipoProducto: 'Libro' })),
-      ...papeleria.map(s => ({ ...s, tipoProducto: 'Papeleria' }))
-      ];
-      return (
-        <Modal open width="max-w-4xl" onClose={() => setPopup(null)} title="📦 Productos">
-          <div className="table-wrapper">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Stock</th>
-                  <th>Estado</th>
-                  <th>Tipo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allProducts.map(p => (
-                  <tr key={p.id}>
-                    <td>{p.nombreProducto}</td>
-                    <td>{p.stock}</td>
-                    <td>{p.estadoProducto}</td>
-                    <td>{p.tipoProducto}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Modal>
-      );
-    }
-
-    // PopUp-pedidos
-    if (type === 'orders-popup') {
-      const statusStyle = {
-        'Pendiente': { bg: '#fef3c7', color: '#92400e' },
-        'En camino': { bg: '#dbeafe', color: '#1d4ed8' },
-        'Completado': { bg: '#d1fae5', color: '#065f46' },
-        'Cancelado': { bg: '#fee2e2', color: '#991b1b' }
-      };
-      const counts = pedidos.reduce((a, o) => { 
-        a[o.estadoPedido] = (a[o.estadoPedido] || 0) + 1; 
-        return a; 
-      }, {});
-      
-      return (
-        <Modal 
-          open 
-          width="max-w-md" 
-          onClose={() => setPopup(null)} 
-          title="🛒 Pedidos"
-        >
-          <div className="text-3xl font-bold mb-3 text-green">
-            {pedidos?.length} Pedidos
-          </div>
-          {Object.entries(counts).map(([estado, count]) => (
-            <div 
-              key={estado} 
-              className="flex items-center justify-between py-2"
-              style={{ borderTop: '1px solid #f1f5f9' }}
-            >
-              <span 
-                className="text-xs font-semibold px-2 py-0.5 rounded-full" 
-                style={statusStyle[estado]}
-              >
-                {estado}
-              </span>
-              <span className="text-sm font-bold text-primary">{count}</span>
-            </div>
-          ))}
-          <div 
-            className="flex items-center justify-between py-2 mt-2"
-            style={{ borderTop: '1px solid #e2e8f0' }}
-          >
-            <span className="text-xs font-semibold text-secondary">Total</span>
-            <span className="text-sm font-bold text-green">
-              ${pedidos
-                .filter(o => o.estadoPedido !== 'Cancelado')
-                .reduce((s, o) => s + o.total, 0)
-                .toFixed(2)}
-            </span>
-          </div>
-        </Modal>
-      );
-    }
-
-    return null;
-  }
 }
