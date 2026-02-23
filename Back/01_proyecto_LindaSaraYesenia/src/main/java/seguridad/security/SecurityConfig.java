@@ -54,19 +54,9 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         // /** -> todas las rutas en controller; para todas las rutas permite 5137
         // vuelve a spring
-        	return source;
-        /* Esquema  de cors
-          传入请求: GET /api/usuarios
-          ↓
-			Spring Security 询问: "/api/usuarios 有什么 CORS 规则?"
-			        ↓
-			UrlBasedCorsConfigurationSource 查找: "/** 匹配 /api/usuarios"
-			        ↓
-			返回: config (允许 localhost:5173,所有方法等)
-			        ↓
-			Spring Security 应用这些规则
-			          */
-			    }
+        return source;
+    }
+    
     //Configuración de Seguridad principal
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
@@ -129,6 +119,7 @@ public class SecurityConfig {
         //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //    	return new BCryptPasswordEncoder();
 //    }
+    
     //Verificar username y password si esta bien -> buscar en sql
     @Bean
     @SuppressWarnings("unused")
@@ -138,6 +129,7 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
+    
     @Bean
     // necesita AuthenticationProvider
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
