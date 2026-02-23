@@ -24,8 +24,7 @@ function normalizeUser(u) {
 }
 
 export function AuthProvider({ children }) {
-  // mira si hay un usuario guardado en local storage
-  // y si lo hay, lo usa como sesión activa
+  //const [user, setUser] = useState(null);
   const [user, setUser] = useState(() => {
 
   //Guarda el usuario completo
@@ -67,16 +66,12 @@ async function login(email, password) {
     const res = await apiPost('/api/login', { email, password });
 
     const normalizedUser = normalizeUser(res.user);
+   
+    localStorage.setItem('token', res.token);
+    localStorage.setItem('user', JSON.stringify(normalizedUser));
 
-    const authData = {
-      ...normalizedUser,
-      token: res.token  
-    };
-
-    setUser(authData);
-    localStorage.setItem('user', JSON.stringify(authData));
-
-    return authData;
+    setUser(normalizedUser);
+    return normalizedUser;
 
   } catch (err) {
     console.error('Login error:', err);
@@ -84,7 +79,6 @@ async function login(email, password) {
   }
 }
 
-// Borra el usuario, token y carrito y se hacer logout
 function logout() {
   setUser(null);
   localStorage.removeItem('user');
@@ -92,7 +86,6 @@ function logout() {
   localStorage.removeItem('cartItems');
 }
   // Exponemos initializing para que ProtectedRoute espere mientras cargamos
-  // Mientras se carga la sesión guardada, no bloquea ni permite rutas
   const value = { user, login, logout, initializing };
 
   return (
