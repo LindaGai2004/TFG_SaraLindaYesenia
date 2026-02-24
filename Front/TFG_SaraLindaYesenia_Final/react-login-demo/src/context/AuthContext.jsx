@@ -26,10 +26,12 @@ function normalizeUser(u) {
 export function AuthProvider({ children }) {
   //const [user, setUser] = useState(null);
   const [user, setUser] = useState(() => {
-  const storedUser = localStorage.getItem("user");
-  return storedUser ? JSON.parse(storedUser) : null;
-});
-  const [initializing, setInitializing] = useState(true); // <- nuevo: marca que estamos cargando la sesión
+
+  //Guarda el usuario completo
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const [initializing, setInitializing] = useState(true); // marca que estamos cargando la sesión
 
   // Al arrancar, cargar lo guardado en localStorage (si hay)
   useEffect(() => {
