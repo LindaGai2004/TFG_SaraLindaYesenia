@@ -62,7 +62,7 @@
 }
 
 .home-container {
-  padding-top: 70px;
+  padding-top: -1px;
 }
 
 /*------------------------------------- VIDEO -------------------------------------*/
@@ -420,10 +420,12 @@
   background: white;
   transition: left 0.4s ease;
   z-index: 1;/* Debajo del texto */
+  color: #8daebd;
 }
 
 .boton-carrito:hover::before {
   left: 0;
+
 }
 
 .boton-carrito span {
@@ -432,7 +434,7 @@
 }
 
 .boton-carrito:hover {
-  color: #8daebd;
+  color: #8daebd !important;
   border-color: #8daebd;
 }
 
@@ -524,6 +526,7 @@
   padding: 60px 20px;
   background-color: #f9f7f4;
   text-align: center;
+  display: none;
 }
 
 .titulo-logros {
