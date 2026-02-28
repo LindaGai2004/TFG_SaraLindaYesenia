@@ -1,0 +1,308 @@
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Ablafit";
+  src: url("/Ablafit-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+}
+
+/* Asegurar que html/body ocupen toda la altura para empujar el footer */
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #fff;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+
+/* --------------------------------- Layout página y espaciado --------------------------------- */
+:root {
+  --nav-height: 72px;
+  --vertical-gap: 48px;
+}
+
+.pagina-registro {
+  background-color: #f9f7f4;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: calc(var(--nav-height) + var(--vertical-gap));
+}
+
+.registro-contenedor {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px;
+  box-sizing: border-box;
+  background: transparent;
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Formulario: grid de 2 columnas; cada celda contiene label encima del input */
+.registro-contenedor form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 28px;
+  row-gap: 16px;
+  align-items: start;
+}
+
+.titulo-registro {
+  color: #6d96a6;
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: 36px;
+  font-size: 48px;
+  letter-spacing: -.8px;
+  font-family: 'Cormorant', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.registro-bloque {
+  display: flex;
+  flex-direction: column;
+}
+
+.registro-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #6d96a6;
+  font-size: 15px;
+}
+
+.registro-input {
+  width: 100%;
+  width: 446px;
+  border: 1px solid #6d96a6;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #fff;
+  color: #6d96a6;
+  height: 50px;
+  padding: 1.5rem;
+  letter-spacing: .1px;
+  padding-left: 15px;
+}
+
+/* Errores y mensajes ocupan toda la fila */
+.error {
+  grid-column: 1 / -1;
+  color: rgb(185, 37, 37);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.success {
+  grid-column: 1 / -1;
+  color: green;
+  font-size: 14px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.enlace-login {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.enlace-login a {
+    color: #6d96a6;
+    text-decoration: none;
+    font-size: 16px;
+    text-decoration: underline;
+    font-weight: bolder;
+}
+
+.enlace-login a:hover {
+  color: #7f7c7c;;
+}
+
+.registro-boton {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding: 14px;
+  color: white;
+  background-color: #8daebd;
+  border: 1px solid #8daebd;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.25s ease;
+  font-family: "Inter", sans-serif;
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.registro-boton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: left 0.25s ease;
+  z-index: 0;
+}
+
+.registro-boton:hover::before {
+  left: 0;
+}
+
+.registro-boton span {
+  position: relative;
+  z-index: 1;
+}
+
+.registro-boton:hover {
+  color: #6d96a6;
+  border-color: #6d96a6;
+}
+
+.registro-input[type="date"] {
+  padding: 9px 12px;
+  line-height: 1.2;
+}
+
+
+/* --------------------------------- Responsive --------------------------------- */
+@media (max-width: 900px) {
+  :root {
+    --nav-height: 64px;
+    --vertical-gap: 28px;
+  }
+
+  .registro-contenedor {
+    max-width: 92%;
+    padding: 20px;
+  }
+
+  .registro-contenedor form {
+    grid-template-columns: 1fr; /* pasa a una columna en móvil */
+    column-gap: 0;
+    row-gap: 12px;
+  }
+
+  .titulo-registro {
+    font-size: 34px;
+  }
+
+  .registro-boton {
+    padding: 12px;
+  }
+
+  .contenedor-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .columna-footer {
+    align-items: center;
+    text-align: center;
+    max-width: none;
+  }
+}
+
+
+/*------------------------------------- RESPONSIVE -------------------------------------*/
+/* -------- Tablet -------- */
+@media (max-width: 900px) {
+  .barra-navegacion {
+    grid-template-columns: 1fr 1fr; /* dos columnas: título y acciones */
+    padding: 12px 20px;
+  }
+
+  .titulo-pagina {
+    text-align: left; /* título a la izquierda */
+  }
+
+  .acciones-usuario {
+    justify-self: end; /* acciones a la derecha */
+  }
+
+  .enlaces-navegacion {
+    grid-column: 1 / -1; /* que ocupe toda la fila */
+    justify-content: center;
+    gap: 20px;
+    padding: 10px 0;
+  }
+}
+
+/* -------- Móvil -------- */
+@media (max-width: 600px) {
+  .barra-navegacion {
+    grid-template-columns: 1fr auto; /* título y acciones */
+    padding: 10px 16px;
+  }
+
+  .titulo-pagina {
+    text-align: left;
+  }
+
+  .acciones-usuario {
+    justify-self: end;
+    gap: 12px;
+  }
+
+  .enlaces-navegacion {
+    display: none; /* ocultar enlaces en móvil */
+  }
+
+  /* opcional: botón hamburguesa para mostrar enlaces */
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: 12px;
+  }
+
+  /* cuando el menú esté activo */
+  .enlaces-navegacion.activo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #f9f7f4;
+    padding: 12px;
+  }
+}

@@ -1,0 +1,623 @@
+@font-face {
+  font-family: "Ablafit";
+  src: url("/Ablafit-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-Bold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/Cormorant-BoldItalic.ttf") format("truetype");
+  font-weight: 800;
+  font-style: italic;
+}
+
+.home-container {
+  padding-top: -1px;
+}
+
+/*------------------------------------- VIDEO -------------------------------------*/
+.bloque-video {
+  position: relative;
+  width: 100%;
+  height: 85vh;
+  overflow: hidden;
+}
+
+.bloque-video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* Video de fondo */
+.video-fondo {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+ 
+}
+
+.contenido-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+}
+
+.contenido-video {
+  z-index: 2;
+}
+
+/* Estilos del título */
+.titulo-video {
+  font-weight: 800;
+  font-size: 64px;
+  margin-bottom: 16px;
+  font-family: "Cormorant", sans-serif;
+}
+
+/* Estilos del subtítulo */
+.subtitulo-video {
+  color: white;
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.btn-hero {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 28px;
+  background: #8daebd;
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.btn-hero:hover {
+  background: white;
+  color: #8daebd;
+}
+
+
+/*------------------------------------- RESEÑAS -------------------------------------*/
+.seccion-resenas {
+  background-color: #f9f7f4;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.titulo-resenas {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: "Cormorant", sans-serif;
+  letter-spacing: -.96px;
+  color: #6d96a6;
+  line-height: 1.16em;
+  margin-bottom: 55px;
+  text-align: center;
+}
+
+.titulo-libro-resena {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Cormorant', sans-serif;
+  letter-spacing: -.96px;
+  line-height: 26px;
+}
+
+.subtitulo-libro-resena {
+  margin-top: 7px;
+  text-align: center;
+  font-weight: 500;
+  color: #2c2c2c;
+  font-size: 14px;
+}
+
+.carrusel-resenas {
+  position: relative;
+  /* referencia para las flechas */
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  /* centra verticalmente respecto al carrusel */
+}
+
+.contenedor-resenas {
+  display: flex;
+  overflow: hidden;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+.bloque-resena {
+  flex: 0 0 calc(33.333% - 20px);
+  /* 3 columnas -> cada una ocupa un tercio menos el gap */
+  margin: 0 10px;
+  /* separación lateral */
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.estrellas-resena {
+  font-size: 22px;
+  color: #ddd01e;
+  margin: 3px 0;
+}
+
+.texto-resena {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 500;
+  color: #2c2c2c;
+  font-size: 14px;
+  /* font-style: italic;*/
+}
+
+.info-lector-resena {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 20px;
+}
+
+.imagen-lector-resena {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nombre-lector-resena {
+  font-weight: bold;
+  font-size: 15px;
+  text-align: left;
+  margin-top: 0px;
+}
+
+.datos-lector-resena {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0px;
+}
+
+.ocupacion-lector-resena {
+  font-size: 13px;
+  color: #777;
+  text-align: left;
+  margin-top: 5px;
+}
+
+.flecha-resenas {
+  transform: translateY(0);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #2c2c2c;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 211px;
+  color: #2c2c2c;
+  transition: all 0.3s;
+  z-index: 10;
+  margin-top: 0px;
+}
+
+.flecha-resenas:hover {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+
+.flecha-resenas.izquierda {
+  right: 16px;
+  position: relative;
+}
+
+.flecha-resenas.derecha {
+  left: 16px;
+  position: relative;
+}
+
+
+/*------------------------------------- LIBRO DEL MES -------------------------------------*/
+.seccion-libro-mes {
+  width: 100%;
+  padding: 60px 20px;
+  background-color: #f9f7f4;
+}
+
+.titulo-libro-mes {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 55px;
+  font-family: "Cormorant", serif;
+  color: #6d96a6;
+  text-align: center;
+}
+
+.contenido-libro-mes {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.columna-imagen-libro img {
+  width: 450px;
+  height: 600px;
+  object-fit: cover;
+  box-shadow: 10px 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* INFO */
+.columna-info-libro {
+  max-width: 500px;
+  text-align: left;
+  padding-top: 20px;
+}
+
+.nombre-libro-mes {
+  font-size: 46px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1.2;
+  color: #6d96a6;
+  font-family: "Cormorant", serif;
+}
+
+.autor {
+  margin-top: 7px;
+  font-weight: 600;
+  color: #6d96a6;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.contenedor-precio {
+  margin-bottom: 30px;
+}
+
+.precio-libro-mes {
+  font-size: 22px;
+  font-weight: 700;
+  color: #6d96a6;
+}
+
+/* ACCIONES */
+.acciones-libro {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+/* Cantidad */
+.boton-cantidad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid #d4d4d4;
+  border-radius: 6px;
+  height: 52px;
+  width: 140px;
+  padding: 0 16px;
+  background-color: #fff;
+  color: #2c2c2c;
+}
+
+.simbolo-cantidad {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.simbolo-cantidad:hover {
+  color: #2c2c2c;
+}
+
+/* BOTÓN CARRITO */
+.boton-carrito {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #8daebd;
+  color: white;
+  border: 1.5px solid #8daebd;
+  border-radius: 6px;
+  height: 52px;
+  padding: 0 24px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+}
+
+.boton-carrito::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%; /* Empieza fuera del botón */
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: left 0.4s ease;
+  z-index: 1;/* Debajo del texto */
+  color: #8daebd;
+}
+
+.boton-carrito:hover::before {
+  left: 0;
+
+}
+
+.boton-carrito span {
+  position: relative;
+  z-index: 2;
+}
+
+.boton-carrito:hover {
+  color: #8daebd !important;
+  border-color: #8daebd;
+}
+
+.resumen-libro {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #666;
+  margin-top: 2px;
+  text-align: left;
+}
+
+
+/*------------------------------------- EXTRACTOS -------------------------------------*/
+.seccion-extractos {
+  width: 100%;
+  padding: 60px 20px;
+  background-color: #f9f7f4;
+  text-align: center;
+}
+
+.titulo-extractos {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 55px;
+  font-family: "Cormorant", sans-serif;
+  letter-spacing: -.96px;
+  color: #6d96a6;
+  line-height: 1.16em;
+}
+
+.contenedor-extractos {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+
+}
+
+.columna-extracto {
+  max-width: 540px;
+  text-align: center;
+}
+
+.imagen-extracto {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  box-shadow: 4px 8px 13px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.imagen-extracto:hover {
+  transform: scale(1.08);
+  box-shadow: 14px 14px 24px rgba(0, 0, 0, 0.3);
+}
+
+.titulo-libro-extracto {
+  font-size: 35px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 1.2;
+  color: #2c2c2c;
+  font-family: "Cormorant", sans-serif;
+  letter-spacing: -1px;
+}
+
+.texto-extracto {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #666;
+  margin-top: 18px;
+  text-align: center;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.fecha-extracto {
+  font-size: 13px;
+  color: #2c2c2c;
+  font-weight: 500;
+  letter-spacing: 2px;
+  margin-top: 18px;
+}
+
+/*------------------------------------- LOGROS -------------------------------------*/
+.seccion-logros {
+  width: 100%;
+  padding: 60px 20px;
+  background-color: #f9f7f4;
+  text-align: center;
+  display: none;
+}
+
+.titulo-logros {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: "Cormorant", sans-serif;
+  letter-spacing: -.96px;
+  color: #6d96a6;
+  line-height: 1.16em;
+}
+
+.contenedor-logros {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.columna-logro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 180px;
+  text-align: center;
+}
+
+.numero-logro {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #2c2c2c;
+  background-color: #f0f0f0;
+  padding: 16px 24px;
+  border-radius: 12px;
+  min-width: 160px;
+  text-align: center;
+}
+
+.texto-logro {
+  font-size: 18px;
+  color: #555;
+  margin-top: 8px !important;
+}
+
+/*---------- AVISO DE LOGIN (FAVORITOS / CARRITO) ----------*/
+.notificacion-login {
+  position: fixed;
+  top: 120px;
+  right: 40px;
+  background: #e8f1f5;
+  border: 1px solid #6d96a6;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 7;
+  color: #184763;
+  font-weight: 500;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Contenedor de botones */
+.notificacion-botones {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+/* Botón "Ir al login" */
+.btn-login-aviso {
+  background: #6d96a6;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.btn-login-aviso:hover {
+  background: #184763;
+}
+
+/* Botón cerrar */
+.btn-cerrar-aviso {
+  background: transparent;
+  border: none;
+  color: #184763;
+  cursor: pointer;
+  font-weight: 600;
+}

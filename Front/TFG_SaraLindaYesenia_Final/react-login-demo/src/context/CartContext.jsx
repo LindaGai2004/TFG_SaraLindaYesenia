@@ -1,0 +1,82 @@
+//El CartContext sirve para guardar el estado del carrito globalmente
+//Persiste en localStorage
+import { apiPost, apiGet, apiDelete, apiPut } from '../api/api';
+import { createContext, useContext, useEffect, useState } from 'react';
+
+const CartContext = createContext();
+
+export const useCart = () => useContext(CartContext);
+
+export function CartProvider({ children }) {
+  //Un carrito es una lista de items que se inicializa vacio
+  const [cartItems, setCartItems] = useState([]);
+
+  async function addToCart(idProducto, cantidad = 1) {
+    const carrito = await apiPost("/carrito/add",
+      {idProducto, cantidad});
+    
+    setCartItems(carrito.items);
+  }
+
+  function increaseCantidad(id_producto){
+    setCartItems(prevItems =>
+      prevItems.map(item=>
+        item.id_producto === id_producto
+        ? {...item, cantidad: item.cantidad + 1}
+        : item        
+      )
+
+    )
+  }
+
+  function decreaseCantidad(id_producto){
+    setCartItems(prevItems =>
+      prevItems.map(item=>
+        item.id_producto === id_producto
+        ? {...item, cantidad: item.cantidad - 1 }
+        : item
+      )
+      .filter(item=>item.cantidad > 0)
+    )
+  }
+
+  function quitarFromCart(id_producto){
+    setCartItems(prevItems=>
+      prevItems.filter(item=> item.id_producto !== id_producto)
+    );
+  }
+
+  //Abrir el carrito guardado
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cartItems');
+    if (storedCart) {
+      try {
+        setCartItems(JSON.parse(storedCart));
+      } catch (e) {
+        console.error('No se pudieron cargar los productos del carrito', e);
+        setCartItems([]);
+      }
+    }
+  }, []);
+
+  // Se usa cuando cambia el estado del carrito y lo mantiene(persiste)
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  //Visible para los componentes
+  const value = {
+    cartItems,
+    addToCart,
+    increaseCantidad,
+    decreaseCantidad,
+    quitarFromCart
+  };
+
+  //Significa que los componentes de este Provider pueden acceder al carrito (route, pages, botones pueden leerlo)
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+    </CartContext.Provider>
+  );  
+}
