@@ -19,7 +19,6 @@
   font-style: normal;
 }
 
-/* Reset básico */
 * {
   margin: 0;
   padding: 0;
@@ -28,7 +27,7 @@
 }
 
 html, body {
-  height: 100%; /* asegurar altura completa */
+  height: 100%;
 }
 
 body {
@@ -147,6 +146,27 @@ body {
   text-align: center;
 }
 
+
+/* CONTRASEÑA OLVIDADA -----------------------------------------------------------------*/
+.login-olvido {
+  margin-top: 15px;
+  text-align: right;
+}
+
+.login-olvido a {
+  font-size: 0.9rem;
+  color: #6d96a6;
+  text-decoration: none;
+  font-weight: bolder;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.login-olvido a:hover {
+  color: #7f7c7c;
+  text-decoration: underline;
+}
+
+/* REGISTRAR SI NO HAY CUENTA ------------------------------------------------------*/
 .login-registrar {
   margin-top: 20px;
   text-align: center;
@@ -155,13 +175,12 @@ body {
 }
 
 .login-registrar a {
-    color:#6d96a6;
-    text-decoration: none;
-    font-size: 16px;
-    text-decoration: underline;
-    font-weight: bolder;
+  color:#6d96a6;
+  text-decoration: none;
+  font-weight: bolder;
 }
 
 .login-registrar a:hover {
   color: #7f7c7c;
+  text-decoration: underline;
 }
