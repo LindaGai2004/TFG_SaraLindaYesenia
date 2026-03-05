@@ -16,6 +16,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 	private static final String SUPERSECRET = "WT52]z2xvf]r+bq?P3Xu9Hn-HQxTQ03H";
 	
+	// transforma la contraseña secreta en una llave real que el sistema puede usar
 	private Key getSignKey() {
 		return Keys.hmacShaKeyFor(SUPERSECRET.getBytes());
 	}
@@ -53,7 +54,7 @@ public class JwtService {
 		return extractAllClaims(token).getExpiration().before(new Date());
 	}
 	
-	//Validar token
+	//Validar token (Comprueba si el token pertenece al usuario correcto y si no está caducado.)
 	public boolean isTokenValid(String token, UserDetails userDetails) {
 		final String username = extractUsername(token);
 		return username.equals(userDetails.getUsername()) && !isTokenExpired(token);

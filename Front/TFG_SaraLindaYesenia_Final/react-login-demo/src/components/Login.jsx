@@ -122,17 +122,19 @@ export default function Login() {
             required
           />
 
-          <p className="login-registrar">
-            ¿No tienes cuenta? <span>  </span><Link to="/register">Regístrate aquí</Link>
+          <p className="login-olvido">
+            <a href="/recuperar">¿Has olvidado tu contraseña?</a>
           </p>
-
-          
 
           {error && <p className="error">{error}</p>}
 
           <button type="submit" className="login-boton">
             <span>Entrar</span>
           </button>
+
+          <p className="login-registrar">
+            ¿No tienes cuenta? <span>  </span><Link to="/register">Regístrate aquí</Link>
+          </p>
         </form>
       </div>
     </div>

@@ -212,5 +212,12 @@ import org.springframework.stereotype.Service;
 
 	    return new ArrayList<>(resultado);
 	}
+	
+	
+	@Override
+	public boolean existsByEmail(String email) {
+	    return usuarioRepository.existsByEmail(email);
+	}
+
 
 }

@@ -3,6 +3,9 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Login from './components/Login';
 import Register from './components/Register';
+import RecuperarContrasena from './pages/RecuperarContra/RecuperarContrasena';
+import VerificarCodigo from './pages/RecuperarContra/VerificarCodigo';
+import RestablecerContrasena from './pages/RecuperarContra/RestablecerContrasena';
 import ProtectedRoute from './components/ProtectedRoute';
 import Administrador from './pages/Administrador';
 import Jefe from './pages/Jefe';
@@ -45,6 +48,11 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Rutas para recuperar contraseña */}
+          <Route path="/recuperar" element={<RecuperarContrasena />} />
+          <Route path="/verificar-codigo" element={<VerificarCodigo />} />
+          <Route path="/restablecer" element={<RestablecerContrasena />} />
 
           {/* Página de productos */}
           <Route path="/productos" element={<Productos />} />
