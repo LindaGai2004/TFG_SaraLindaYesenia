@@ -21,6 +21,16 @@ create table usuarios(
     foreign key (id_perfil) references perfiles(id_perfil)
 );
 
+CREATE TABLE codigo_recuperacion (
+    id_codigo_recuperacion int auto_increment primary key, 
+    email_codigo_recuperacion varchar(100) not null,
+    codigo varchar(10) not null,
+    expiracion datetime not null,
+    creado_en datetime not null,
+    usado boolean default false,
+	foreign key (email_codigo_recuperacion) references usuarios(email) on delete cascade
+);
+
 create table pedidos(
 	id_pedido int auto_increment primary key,
     fecha_venta date,

@@ -1,21 +1,25 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
 
 export default function VerificarCodigo() {
   const [codigo, setCodigo] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [params] = useSearchParams();
+  const navigate = useNavigate();
+
   const email = params.get("email");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMensaje("");
 
     try {
       await api.post("/auth/verificar-codigo", { email, codigo });
-      window.location.href = `/restablecer?email=${email}`;
+      navigate(`/restablecer?email=${email}`);
     } catch (err) {
-      setMensaje("Código incorrecto o expirado.");
+      const msg = err.response?.data || "Código incorrecto o expirado.";
+      setMensaje(msg);
     }
   };
 
@@ -25,6 +29,7 @@ export default function VerificarCodigo() {
 
       <form onSubmit={handleSubmit}>
         <label>Código recibido por email</label>
+
         <input
           type="text"
           value={codigo}
