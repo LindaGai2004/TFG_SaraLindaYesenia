@@ -12,13 +12,14 @@ export default function RestablecerContrasena() {
     e.preventDefault();
 
     try {
-      await api.post("/auth/restablecer", { email, nuevaPassword: password });
+      await api.post("/auth/restablecer", { email, password });
       setMensaje("Contraseña actualizada correctamente.");
       setTimeout(() => {
         window.location.href = "/login";
       }, 1500);
     } catch (err) {
-      setMensaje("Error al actualizar la contraseña.");
+      const msg = err.response?.data || "Error al actualizar la contraseña.";
+      setMensaje(msg);
     }
   };
 

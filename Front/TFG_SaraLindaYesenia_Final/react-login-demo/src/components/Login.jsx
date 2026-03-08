@@ -60,11 +60,19 @@ export default function Login() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
     const user = await login(email, password);
+
     if (!user) {
-      setError('Credenciales inválidas');
+      setError("Credenciales inválidas");
       return;
     }
+
+    if (user.error) {
+      setError(user.error);
+      return;
+    }
+
     //from existe solo cuando el usuario fue redirigido desde login
     if (from){
       navigate(from, {replace:true});
