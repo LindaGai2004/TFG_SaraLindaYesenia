@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import ProductoFiltros from "../components/ProductoFiltros.jsx";
-import ProductoLista from "../components/ProductoLista.jsx";
+import ProductoFiltros from "../components/Productos/ProductoFiltros.jsx";
+import ProductoLista from "../components//Productos/ProductoLista.jsx";
 import "./Productos.css";
 
 export default function Productos() {

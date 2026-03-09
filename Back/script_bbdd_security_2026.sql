@@ -31,6 +31,15 @@ CREATE TABLE codigo_recuperacion (
 	foreign key (email_codigo_recuperacion) references usuarios(email) on delete cascade
 );
 
+create table verificacion_cuenta (
+    id_verificacion int auto_increment primary key,
+    token varchar(255) not null,
+    id_usuario int not null,
+    expiracion datetime not null,
+    creado_en datetime not null,
+    foreign key (id_usuario) references usuarios(id_usuario) on delete cascade
+);
+
 create table pedidos(
 	id_pedido int auto_increment primary key,
     fecha_venta date,

@@ -13,7 +13,7 @@ export default function RecuperarContrasena() {
     setMensaje("");
 
     try {
-      const res = await api.post("/auth/recuperar", { email });
+      const res = await api.apiPost("/auth/recuperar", { email });
 
       setMensaje("Se ha enviado un código a tu correo.");
       navigate(`/verificar-codigo?email=${email}`);

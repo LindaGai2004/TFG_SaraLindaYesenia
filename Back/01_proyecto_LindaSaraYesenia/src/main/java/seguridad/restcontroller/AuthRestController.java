@@ -10,13 +10,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.transaction.Transactional;
 import seguridad.model.CodigoRecuperacion;
 import seguridad.model.Usuario;
 import seguridad.repository.CodigoRecuperacionRepository;
+import seguridad.repository.UsuarioRepository;
 import seguridad.service.EmailService;
 import seguridad.service.UsuarioService;
+import seguridad.service.VerificacionCuentaService;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,9 +29,15 @@ public class AuthRestController {
 
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private VerificacionCuentaService verificacionService;
 
     @Autowired
     private CodigoRecuperacionRepository codigoRepo;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -80,7 +90,8 @@ public class AuthRestController {
         String codigo = body.get("codigo");
 
         // Buscar por email
-        CodigoRecuperacion cr = codigoRepo.findByEmail(email).orElse(null);
+        CodigoRecuperacion cr = codigoRepo.findTopByEmailOrderByExpiracionDesc(email).orElse(null);
+
 
         if (cr == null) {
             return ResponseEntity.badRequest().body("No existe un código para este email");
@@ -97,7 +108,7 @@ public class AuthRestController {
         return ResponseEntity.ok("Código válido");
     }
 
-
+    @Transactional
     @PostMapping("/restablecer")
     public ResponseEntity<?> restablecer(@RequestBody Map<String, String> body) {
 
@@ -113,15 +124,65 @@ public class AuthRestController {
             return ResponseEntity.badRequest().body("El usuario no existe");
         }
 
-        // Actualizar contraseña
         usuario.setPassword(passwordEncoder.encode(nuevaPassword));
+        usuarioService.save(usuario);
 
-        // Guardar cambios en la BD
-        usuarioService.updateUsuario(usuario);
-
-        // Eliminar códigos usados
         codigoRepo.deleteByEmail(email);
 
         return ResponseEntity.ok("Contraseña actualizada correctamente");
     }
+    
+    
+	 // VERIFICAR TOKEN
+	 @PostMapping("/verificar")
+	 public ResponseEntity<?> verificarCuenta(@RequestParam String token) {
+	
+	     var optionalToken = verificacionService.obtenerPorToken(token);
+	
+	     if (optionalToken.isEmpty()) {
+	         return ResponseEntity.badRequest().body("Token inválido");
+	     }
+	
+	     var verificacion = optionalToken.get();
+	
+	     if (verificacion.getExpiracion().isBefore(LocalDateTime.now())) {
+	         return ResponseEntity.badRequest().body("Token expirado");
+	     }
+	
+	     Usuario usuario = verificacion.getUsuario();
+	     usuario.setEnabled(1); // activar cuenta
+	     usuarioRepo.save(usuario);
+	
+	     verificacionService.eliminarTokensDeUsuario(usuario);
+	
+	     return ResponseEntity.ok("Cuenta verificada correctamente");
+	 }
+	
+	 
+	 // REENVIAR TOKEN
+	 @PostMapping("/reenviar-verificacion")
+	 public ResponseEntity<?> reenviarToken(@RequestParam String email) {
+	
+	     Usuario usuario = usuarioRepo.findByEmail(email);
+	
+	     if (usuario == null) {
+	         return ResponseEntity.badRequest().body("El email no existe");
+	     }
+	
+	     if (usuario.getEnabled() == 1) {
+	         return ResponseEntity.badRequest().body("La cuenta ya está verificada");
+	     }
+	
+	     var nuevoToken = verificacionService.generarNuevoToken(usuario);
+	
+	     String link = "https://tu-frontend.com/verificacion-cuenta?token=" + nuevoToken.getToken();
+	
+	     emailService.enviar(
+	             usuario.getEmail(),
+	             "Verifica tu cuenta",
+	             "Haz clic en el siguiente enlace para activar tu cuenta:\n" + link
+	     );
+	
+	     return ResponseEntity.ok("Correo de verificación reenviado");
+	 }
 }

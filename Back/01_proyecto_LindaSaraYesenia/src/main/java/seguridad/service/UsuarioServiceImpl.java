@@ -219,5 +219,9 @@ import org.springframework.stereotype.Service;
 	    return usuarioRepository.existsByEmail(email);
 	}
 
+	@Override
+	public Usuario save(Usuario usuario) {
+	    return usuarioRepository.save(usuario);
+	}
 
 }

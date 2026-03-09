@@ -1,8 +1,8 @@
 import './Login.css';
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import NotificacionToken from "./Notificacion_token.jsx";
+import NotificacionToken from "../../components/Notificacion_token.jsx";
 
 export default function Login() {
   const { login } = useAuth();
@@ -131,7 +131,7 @@ export default function Login() {
           />
 
           <p className="login-olvido">
-            <a href="/recuperar">¿Has olvidado tu contraseña?</a>
+            <Link to="/recuperar">¿Has olvidado tu contraseña?</Link>
           </p>
 
           {error && <p className="error">{error}</p>}

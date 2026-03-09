@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import api from "../../api/api";
+import "./RestablecerContrasena.css";
 
 export default function RestablecerContrasena() {
   const [password, setPassword] = useState("");
@@ -12,7 +13,7 @@ export default function RestablecerContrasena() {
     e.preventDefault();
 
     try {
-      await api.post("/auth/restablecer", { email, password });
+      await api.apiPost("/auth/restablecer", { email, password });
       setMensaje("Contraseña actualizada correctamente.");
       setTimeout(() => {
         window.location.href = "/login";
@@ -24,22 +25,24 @@ export default function RestablecerContrasena() {
   };
 
   return (
-    <div className="restablecer-container">
-      <h2>Nueva contraseña</h2>
+    <div className="restablecer-page">
+      <div className="restablecer-container">
+        <h2>Nueva contraseña</h2>
 
-      <form onSubmit={handleSubmit}>
-        <label>Introduce tu nueva contraseña</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <form onSubmit={handleSubmit}>
+          <label>Introduce tu nueva contraseña</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-        <button type="submit">Guardar contraseña</button>
-      </form>
+          <button type="submit">Guardar contraseña</button>
+        </form>
 
-      {mensaje && <p>{mensaje}</p>}
+        {mensaje && <p>{mensaje}</p>}
+      </div>
     </div>
   );
 }

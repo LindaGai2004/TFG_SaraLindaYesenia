@@ -8,7 +8,7 @@ import seguridad.model.CodigoRecuperacion;
 
 public interface CodigoRecuperacionRepository extends JpaRepository<CodigoRecuperacion, Integer> {
 
-    Optional<CodigoRecuperacion> findByEmail(String email);
+	Optional<CodigoRecuperacion> findTopByEmailOrderByExpiracionDesc(String email);
 
     Optional<CodigoRecuperacion> findByEmailAndCodigo(String email, String codigo);
 
