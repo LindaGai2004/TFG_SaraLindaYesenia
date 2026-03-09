@@ -70,9 +70,7 @@ public class SecurityConfig {
             .requestMatchers(
             	    "/api/login",
             	    "/registro",
-            	    "/auth/recuperar",
-            	    "/auth/verificar-codigo",
-            	    "/auth/restablecer",
+            	    "/auth/**",
             	    "/actuator/health",
 
             	    "/productos/todos",

@@ -48,4 +48,15 @@ public class EmailServiceImpl implements EmailService{
 	    mailSender.send(mensaje);
 	}
 
+	@Override
+	public void enviarEmailSimple(String to, String asunto, String mensaje) throws Exception {
+	    MimeMessage email = mailSender.createMimeMessage();
+	    MimeMessageHelper helper = new MimeMessageHelper(email, false, "UTF-8");
+
+	    helper.setTo(to);
+	    helper.setSubject(asunto);
+	    helper.setText(mensaje, false);
+
+	    mailSender.send(email);
+	}
 }

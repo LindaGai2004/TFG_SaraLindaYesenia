@@ -18,7 +18,9 @@ import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioDto;
 import seguridad.repository.PerfilRepository;
 import seguridad.security.JwtService;
+import seguridad.service.EmailService;
 import seguridad.service.UsuarioService;
+import seguridad.service.VerificacionCuentaService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -26,6 +28,12 @@ public class UsuarioRestController {
 
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private VerificacionCuentaService verificacionService;
+    
+    @Autowired
+    private EmailService emailService;
    
     @Autowired
     private PerfilRepository perfilRepository;
@@ -90,9 +98,26 @@ public class UsuarioRestController {
     @PostMapping("/registro")
     public ResponseEntity<?> registro(@RequestBody Usuario usuario) {
         try {
+            if (usuarioService.existsByEmail(usuario.getEmail())) {
+                return ResponseEntity.badRequest().body("El email ya está registrado");
+            }
+
+            // NO encriptes aquí
+            usuario.setEnabled(0); // lo corregimos ahora abajo
             Usuario nuevo = usuarioService.registrarCliente(usuario);
+
+            var token = verificacionService.crearToken(nuevo);
+            String link = "http://localhost:5173/verificacion-cuenta?token=" + token.getToken();
+
+            emailService.enviarEmailSimple(
+                    nuevo.getEmail(),
+                    "Verifica tu cuenta",
+                    "Haz clic en el siguiente enlace para activar tu cuenta:\n" + link
+            );
+
             UsuarioDto dto = new UsuarioDto(nuevo);
             return ResponseEntity.ok(dto);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -330,7 +355,6 @@ public class UsuarioRestController {
             return ResponseEntity.status(500).body("Error al crear usuario: " + e.getMessage());
         }
     }
-    
     
     
     

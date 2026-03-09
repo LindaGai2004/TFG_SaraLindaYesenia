@@ -80,12 +80,6 @@ import org.springframework.stereotype.Service;
 	   }
 	   //el service se asegura de añadir {noop} si hace falta
 	   String password = usuario.getPassword();
-	   //anterior
-//	   if (!password.startsWith("{noop}")) {
-//	       usuario.setPassword("{noop}" + password);
-//	   } else {
-//	       usuario.setPassword(password);
-//	   }
 	   
 	   usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 	   usuario.setFechaRegistro(LocalDate.now());
@@ -93,10 +87,6 @@ import org.springframework.stereotype.Service;
 	   if (usuario.getDireccion() == null)
 	    usuario.setDireccion("");
 	
-	   if (usuario.getEnabled() == 0)
-	    usuario.setEnabled(1);
-	
-	 
 	   if (usuario.getPerfil() == null || usuario.getPerfil().getIdPerfil() == 0) {
 	       Perfil perfilCliente = perfilRepository.findById(2).orElseThrow(()
 	        -> new RuntimeException("El perfil cliente no existe"));
@@ -104,6 +94,8 @@ import org.springframework.stereotype.Service;
 	   } 
 	   return usuarioRepository.save(usuario);
 	}
+	
+	
 	
 	//añadir jefe y trabajador
 	@Override

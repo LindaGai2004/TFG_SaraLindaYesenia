@@ -40,26 +40,31 @@ export async function apiPost(path, body) {
     ...(isPublic ? {} : getAuthHeader())
   };
 
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const options = {
     method: "POST",
-    headers,
-    body: JSON.stringify(body)
-  });
+    headers
+  };
+
+  // Solo añadir body si existe
+  if (body !== undefined && body !== null) {
+    options.body = JSON.stringify(body);
+  }
+
+  const res = await fetch(`${BASE_URL}${path}`, options);
 
   if (res.status === 401) return handle401();
 
   if (!res.ok) throw new Error(await res.text());
 
-  // Detectar si la respuesta es JSON
   const contentType = res.headers.get("content-type");
 
   if (contentType && contentType.includes("application/json")) {
     return await res.json();
   }
 
-  // Si no es JSON, devolver texto plano
   return await res.text();
 }
+
 
 export async function apiPut(path, body) {
   const res = await fetch(`${BASE_URL}${path}`, {
