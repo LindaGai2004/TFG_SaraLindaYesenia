@@ -30,21 +30,35 @@ export async function apiGet(path) {
 }
 
 export async function apiPost(path, body) {
+  const isPublic =
+    path.startsWith("/auth") ||
+    path === "/registro" ||
+    path === "/api/login";
+
+  const headers = {
+    "Content-Type": "application/json",
+    ...(isPublic ? {} : getAuthHeader())
+  };
+
   const res = await fetch(`${BASE_URL}${path}`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuthHeader()
-    },
+    headers,
     body: JSON.stringify(body)
   });
 
   if (res.status === 401) return handle401();
 
-  if (!res.ok) throw new Error (await res.text());
+  if (!res.ok) throw new Error(await res.text());
 
-  const text = await res.text();
-  return text ? JSON.parse(text) : null;
+  // Detectar si la respuesta es JSON
+  const contentType = res.headers.get("content-type");
+
+  if (contentType && contentType.includes("application/json")) {
+    return await res.json();
+  }
+
+  // Si no es JSON, devolver texto plano
+  return await res.text();
 }
 
 export async function apiPut(path, body) {

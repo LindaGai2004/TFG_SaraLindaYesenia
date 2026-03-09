@@ -1,7 +1,7 @@
 import './Register.css';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { apiPost } from '../api/api';
+import { apiPost } from '../../api/api';
 import { Headphones, User, Search, ShoppingCart } from 'lucide-react';
 
 export default function Register() {

@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
+import ProductoImagenes from "./ProductoImagenes";
+import { apiGet, apiPost, apiDelete } from "../../api/api";
 import "./ProductoDetalle.css";
-import { useAuth } from "../context/AuthContext";
-import { useCart } from "../context/CartContext";
-import ProductoImagenes from "../components/ProductoImagenes";
-import { apiGet, apiPost, apiDelete } from "../api/api";
 
 export default function ProductoDetalle() {
   const { id } = useParams();

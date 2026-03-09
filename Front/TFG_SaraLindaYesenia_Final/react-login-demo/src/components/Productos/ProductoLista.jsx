@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useCart } from "../context/CartContext";
-import {apiGet, apiPost, apiDelete} from "../api/api.js";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { useCart } from "../../context/CartContext.jsx";
+import {apiGet, apiPost, apiDelete} from "../../api/api.js";
 import "./ProductoLista.css";
 import ProductoImagenes from "./ProductoImagenes";
 
