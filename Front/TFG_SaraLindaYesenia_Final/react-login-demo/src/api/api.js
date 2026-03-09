@@ -30,22 +30,41 @@ export async function apiGet(path) {
 }
 
 export async function apiPost(path, body) {
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const isPublic =
+    path.startsWith("/auth") ||
+    path === "/registro" ||
+    path === "/api/login";
+
+  const headers = {
+    "Content-Type": "application/json",
+    ...(isPublic ? {} : getAuthHeader())
+  };
+
+  const options = {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuthHeader()
-    },
-    body: JSON.stringify(body)
-  });
+    headers
+  };
+
+  // Solo añadir body si existe
+  if (body !== undefined && body !== null) {
+    options.body = JSON.stringify(body);
+  }
+
+  const res = await fetch(`${BASE_URL}${path}`, options);
 
   if (res.status === 401) return handle401();
 
-  if (!res.ok) throw new Error (await res.text());
+  if (!res.ok) throw new Error(await res.text());
 
-  const text = await res.text();
-  return text ? JSON.parse(text) : null;
+  const contentType = res.headers.get("content-type");
+
+  if (contentType && contentType.includes("application/json")) {
+    return await res.json();
+  }
+
+  return await res.text();
 }
+
 
 export async function apiPut(path, body) {
   const res = await fetch(`${BASE_URL}${path}`, {

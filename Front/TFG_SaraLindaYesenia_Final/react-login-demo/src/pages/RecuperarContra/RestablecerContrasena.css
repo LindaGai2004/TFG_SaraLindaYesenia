@@ -1,0 +1,81 @@
+/* Fondo de toda la página */
+.restablecer-page {
+  background-color: #f9f7f4;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor del formulario */
+.restablecer-container {
+  width: 85%;
+  max-width: 450px;
+  margin: 60px auto;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center;
+}
+
+/* Título */
+.restablecer-container h2 {
+  color: #6d96a6;
+  margin-bottom: 36px;
+  font-size: 48px;
+  font-family: 'Cormorant', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Formulario */
+.restablecer-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+/* Etiqueta */
+.restablecer-container form label {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Input */
+.restablecer-container form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Botón */
+.restablecer-container form button {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #6d96a6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.restablecer-container form button:hover {
+  background-color: #5a7f8d;
+}
+
+/* Mensaje */
+.restablecer-container p {
+  margin-top: 15px;
+  font-size: 0.95rem;
+  color: #6d96a6;
+  text-align: center;
+}
