@@ -162,27 +162,32 @@ public class AuthRestController {
 	 // REENVIAR TOKEN
 	 @PostMapping("/reenviar-verificacion")
 	 public ResponseEntity<?> reenviarToken(@RequestParam String email) {
-	
-	     Usuario usuario = usuarioRepo.findByEmail(email);
-	
+	     
+	     Usuario usuario = usuarioRepo.findByEmail(email).orElse(null);
+
 	     if (usuario == null) {
 	         return ResponseEntity.badRequest().body("El email no existe");
 	     }
-	
+
 	     if (usuario.getEnabled() == 1) {
 	         return ResponseEntity.badRequest().body("La cuenta ya está verificada");
 	     }
-	
+
 	     var nuevoToken = verificacionService.generarNuevoToken(usuario);
-	
+
 	     String link = "https://tu-frontend.com/verificacion-cuenta?token=" + nuevoToken.getToken();
-	
-	     emailService.enviar(
+
+	     try {
+	         emailService.enviarEmailSimple(
 	             usuario.getEmail(),
 	             "Verifica tu cuenta",
 	             "Haz clic en el siguiente enlace para activar tu cuenta:\n" + link
-	     );
-	
+	         );
+	     } catch (Exception e) {
+	         return ResponseEntity.status(500).body("Error enviando el correo");
+	     }
+
 	     return ResponseEntity.ok("Correo de verificación reenviado");
 	 }
+
 }

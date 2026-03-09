@@ -1,8 +1,8 @@
-import './Login.css';
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import NotificacionToken from "../../components/Notificacion_token.jsx";
+import './Login.css';
 
 export default function Login() {
   const { login } = useAuth();
@@ -51,11 +51,19 @@ export default function Login() {
 
   useEffect(() => {
     const expirado = localStorage.getItem("token_expirado");
+
+    // Si vienes desde verificación, NO mostrar mensaje
+    if (location.pathname.includes("verificacion-cuenta")) {
+      localStorage.removeItem("token_expirado");
+      return;
+    }
+
     if (expirado) {
       setMensaje("Tu sesión ha expirado. Inicia sesión de nuevo.");
       localStorage.removeItem("token_expirado");
     }
-  }, []);
+  }, [location.pathname]);
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
