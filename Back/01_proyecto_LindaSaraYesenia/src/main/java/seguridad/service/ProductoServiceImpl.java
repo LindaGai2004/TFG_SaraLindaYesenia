@@ -170,6 +170,7 @@ public class ProductoServiceImpl implements ProductoService {
         List<Libro> porAutor = libroRepo.findByAutorContainingIgnoreCase(autor);
         List<Libro> porGenero = libroRepo.findByGeneroNombreGeneroIgnoreCase(genero);
 
+        // Junta ambas listas en un set
         Set<Producto> resultado = new HashSet<>();
         resultado.addAll(porAutor);
         resultado.addAll(porGenero);

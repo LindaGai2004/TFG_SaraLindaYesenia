@@ -1,8 +1,8 @@
-import './Login.css';
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import NotificacionToken from "./Notificacion_token.jsx";
+import NotificacionToken from "../../components/Notificacion_token.jsx";
+import './Login.css';
 
 export default function Login() {
   const { login } = useAuth();
@@ -51,20 +51,36 @@ export default function Login() {
 
   useEffect(() => {
     const expirado = localStorage.getItem("token_expirado");
+
+    // Si vienes desde verificación, NO mostrar mensaje
+    if (location.pathname.includes("verificacion-cuenta")) {
+      localStorage.removeItem("token_expirado");
+      return;
+    }
+
     if (expirado) {
       setMensaje("Tu sesión ha expirado. Inicia sesión de nuevo.");
       localStorage.removeItem("token_expirado");
     }
-  }, []);
+  }, [location.pathname]);
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
     const user = await login(email, password);
+
     if (!user) {
-      setError('Credenciales inválidas');
+      setError("Credenciales inválidas");
       return;
     }
+
+    if (user.error) {
+      setError(user.error);
+      return;
+    }
+
     //from existe solo cuando el usuario fue redirigido desde login
     if (from){
       navigate(from, {replace:true});
@@ -122,17 +138,19 @@ export default function Login() {
             required
           />
 
-          <p className="login-registrar">
-            ¿No tienes cuenta? <span>  </span><Link to="/register">Regístrate aquí</Link>
+          <p className="login-olvido">
+            <Link to="/recuperar">¿Has olvidado tu contraseña?</Link>
           </p>
-
-          
 
           {error && <p className="error">{error}</p>}
 
           <button type="submit" className="login-boton">
             <span>Entrar</span>
           </button>
+
+          <p className="login-registrar">
+            ¿No tienes cuenta? <span>  </span><Link to="/register">Regístrate aquí</Link>
+          </p>
         </form>
       </div>
     </div>

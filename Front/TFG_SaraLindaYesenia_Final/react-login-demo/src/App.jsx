@@ -1,17 +1,20 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
-import Login from './components/Login';
-import Register from './components/Register';
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import VerificacionCuenta from './pages/Auth/VerificacionCuenta';
+import RecuperarContrasena from './pages/RecuperarContra/RecuperarContrasena';
+import VerificarCodigo from './pages/RecuperarContra/VerificarCodigo';
+import RestablecerContrasena from './pages/RecuperarContra/RestablecerContrasena';
 import ProtectedRoute from './components/ProtectedRoute';
 import Administrador from './pages/Administrador';
 import Jefe from './pages/Jefe';
 import Trabajador from './pages/Trabajador';
-import Cliente from './pages/Cliente';
 import MiCarrito from './components/MiCarrito';
 import ResumenPedido from './pages/ResumenPedido';
 import Productos from './pages/Productos';
-import ProductoDetalle from './components/ProductoDetalle';
+import ProductoDetalle from './components/Productos/ProductoDetalle';
 import Portfolio from './pages/Cliente';
 import PaypalSuccess from './pages/PaypalSuccess';
 import PaypalCancel from './pages/PaypalCancel';
@@ -45,6 +48,14 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Verificación de cuenta */}
+          <Route path="/verificacion-cuenta" element={<VerificacionCuenta />} />
+
+          {/* Rutas para recuperar contraseña */}
+          <Route path="/recuperar" element={<RecuperarContrasena />} />
+          <Route path="/verificar-codigo" element={<VerificarCodigo />} />
+          <Route path="/restablecer" element={<RestablecerContrasena />} />
 
           {/* Página de productos */}
           <Route path="/productos" element={<Productos />} />

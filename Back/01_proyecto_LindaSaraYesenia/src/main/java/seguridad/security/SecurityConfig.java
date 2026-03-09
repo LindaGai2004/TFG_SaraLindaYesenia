@@ -29,14 +29,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-// Ya se define en el bean de SecurityFilter
-//    private final AuthenticationProvider authenticationProvider;
-//
-//
-//    SecurityConfig(AuthenticationProvider authenticationProvider) {
-//        this.authenticationProvider = authenticationProvider;
-//    }
-
 
     @Bean //cors -> Define las reglas de cors
     public CorsConfigurationSource corsConfigurationSource() {
@@ -60,7 +52,9 @@ public class SecurityConfig {
     //Configuración de Seguridad principal
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
-        http
+    	System.out.println(">>> SECURITY CONFIG CARGADA");
+
+    	http
         .csrf(csrf -> csrf.disable())
         .cors(Customizer.withDefaults()) //activa cors
         //anterior
@@ -76,6 +70,7 @@ public class SecurityConfig {
             .requestMatchers(
             	    "/api/login",
             	    "/registro",
+            	    "/auth/**",
             	    "/actuator/health",
 
             	    "/productos/todos",
@@ -135,4 +130,11 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
+    
+    // Sirve para que no se duplique el filtro JWT y use el filtro correcto
+    @Bean
+    public JwtAuthenticationFilter jwtAuthFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+        return new JwtAuthenticationFilter(jwtService, userDetailsService);
+    }
+
 }

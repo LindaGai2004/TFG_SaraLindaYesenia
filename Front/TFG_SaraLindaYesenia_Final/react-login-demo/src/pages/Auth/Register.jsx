@@ -1,8 +1,8 @@
-import './Register.css';
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { apiPost } from '../api/api';
+import { Link, useNavigate } from 'react-router-dom';
+import { apiPost } from '../../api/api';
 import { Headphones, User, Search, ShoppingCart } from 'lucide-react';
+import './Register.css';
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -14,6 +14,7 @@ export default function Register() {
   const [birthdate, setBirthdate] = useState("");
   const [ok, setOk] = useState(false);
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   // --- Navbar visible/oculto al hacer scroll (igual que Login/Home) ---
   const [isVisible, setIsVisible] = useState(true);
@@ -86,27 +87,22 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
+
     try {
       await apiPost('/registro', {
-        username: username,
-        email: email,
+        username,
+        email,
         password,
         nombre: name,
         apellidos: surname,
         direccion: address,
         fechaNacimiento: birthdate,
-        enabled: 1,
+        enabled: 0,
         perfil: { idPerfil: 2 }
       });
-      setOk(true);
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setName("");
-      setSurname("");
-      setAddress("");
-      setBirthdate("");
-      setErrors({});
+
+      navigate(`/verificacion-cuenta?email=${email}`);
+
     } catch (err) {
       const mensaje = err.message || "Error al crear el usuario";
       alert(mensaje);
