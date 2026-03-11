@@ -5,12 +5,21 @@ import "./RestablecerContrasena.css";
 
 export default function RestablecerContrasena() {
   const [password, setPassword] = useState("");
+  const [confirmar, setConfirmar] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [mostrarPass, setMostrarPass] = useState(false);
+  const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
+
   const [params] = useSearchParams();
   const email = params.get("email");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (password !== confirmar) {
+      setMensaje("Las contraseñas no coinciden.");
+      return;
+    }
 
     try {
       await api.apiPost("/auth/restablecer", { email, password });
@@ -27,21 +36,57 @@ export default function RestablecerContrasena() {
   return (
     <div className="restablecer-page">
       <div className="restablecer-container">
-        <h2>Nueva contraseña</h2>
+        <h2>Restablecer contraseña</h2>
 
         <form onSubmit={handleSubmit}>
-          <label>Introduce tu nueva contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+
+          {/* Contraseña */}
+          <label>Contraseña</label>
+          <div className="input-wrapper">
+            <input
+              type={mostrarPass ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <span
+              className="toggle-ojito"
+              onClick={() => setMostrarPass(!mostrarPass)}
+            >
+              <img
+                src={mostrarPass ? "/ojos_abiertos.png" : "/ojos_cerrados.png"}
+                alt="toggle password"
+                className="icono-ojito"
+              />
+            </span>
+          </div>
+
+          {/* Confirmar contraseña */}
+          <label>Confirmar contraseña</label>
+          <div className="input-wrapper">
+            <input
+              type={mostrarConfirmar ? "text" : "password"}
+              value={confirmar}
+              onChange={(e) => setConfirmar(e.target.value)}
+              required
+            />
+            <span
+              className="toggle-ojito"
+              onClick={() => setMostrarConfirmar(!mostrarConfirmar)}
+            >
+              <img
+                src={mostrarConfirmar ? "/ojos_abiertos.png" : "/ojos_cerrados.png"}
+                alt="toggle password"
+                className="icono-ojito"
+              />
+            </span>
+          </div>
 
           <button type="submit">Guardar contraseña</button>
         </form>
 
-        {mensaje && <p>{mensaje}</p>}
+        {mensaje && <p className="mensaje">{mensaje}</p>}
       </div>
     </div>
   );

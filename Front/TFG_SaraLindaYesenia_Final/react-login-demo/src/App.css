@@ -12,6 +12,7 @@ main {
   display: flex;
   flex-direction: column;
 }
+
 .app-content {
   padding-top: 0;
 }
@@ -19,7 +20,6 @@ main {
 .app-content.with-navbar {
   padding-top: 70px;
 }
-
 
 .checkout-page {
 display: grid;

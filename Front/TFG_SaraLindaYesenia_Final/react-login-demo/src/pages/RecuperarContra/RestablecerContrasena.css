@@ -79,3 +79,48 @@
   color: #6d96a6;
   text-align: center;
 }
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 40px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Mostrar contraseña */
+.icono-ojito {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.icono-ojito:hover {
+  opacity: 1;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.toggle-ojito {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.mensaje {
+  margin-top: 15px;
+  color: #6d96a6;
+  text-align: center;
+}

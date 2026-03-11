@@ -79,3 +79,20 @@
   color: #6d96a6;
   text-align: center;
 }
+
+/* Contador */
+.contador {
+  margin-top: 10px;
+  color: #6d96a6;
+  font-size: 0.9rem;
+}
+
+.btn-reenviar {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #6d96a6;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-decoration: underline;
+}
