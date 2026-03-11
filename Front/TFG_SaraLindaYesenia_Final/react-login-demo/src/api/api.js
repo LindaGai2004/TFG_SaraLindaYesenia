@@ -6,15 +6,29 @@ function getAuthHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+
 function handle401() { 
+  const path = window.location.pathname;
+
+  // No hacer nada en estas páginas
+  if (
+    path.includes("verificacion") || 
+    path.includes("recuperar") || 
+    path.includes("verificar-codigo") ||
+    path.includes("restablecer")
+  ) {
+    return;
+  }
+
   console.error("Token inválido o caducado"); 
-  localStorage.setItem("token_expirado", "true"); // Guarda el aviso para el login
+  localStorage.setItem("token_expirado", "true");  // Guarda el aviso para el login
   localStorage.removeItem("user"); 
   localStorage.removeItem("token"); 
   localStorage.removeItem("cartItems"); 
   localStorage.removeItem("dl_option"); 
   window.location.href = "/login"; 
 }
+
 
 export async function apiGet(path) {
   const res = await fetch(`${BASE_URL}${path}`, {

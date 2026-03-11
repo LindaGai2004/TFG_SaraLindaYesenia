@@ -52,7 +52,6 @@ public class SecurityConfig {
     //Configuración de Seguridad principal
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authProvider, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
-    	System.out.println(">>> SECURITY CONFIG CARGADA");
 
     	http
         .csrf(csrf -> csrf.disable())

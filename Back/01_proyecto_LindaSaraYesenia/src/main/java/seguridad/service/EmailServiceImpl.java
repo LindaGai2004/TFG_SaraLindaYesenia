@@ -36,17 +36,26 @@ public class EmailServiceImpl implements EmailService{
 		mailSender.send(mensaje);
 	}
 
+	
 	@Override
 	public void enviarCodigoRecuperacion(String to, String codigo) throws Exception {
 	    MimeMessage mensaje = mailSender.createMimeMessage();
 	    MimeMessageHelper helper = new MimeMessageHelper(mensaje, false, "UTF-8");
 
+	    String texto = 
+	        "Hola,\n\n" +
+	        "Hemos recibido una solicitud para restablecer tu contraseña.\n\n" +
+	        "Tu código de recuperación es: " + codigo + "\n\n" +
+	        "Este código es válido durante 1 minuto.\n\n" +
+	        "Si no solicitaste este cambio, puedes ignorar este mensaje.";
+
 	    helper.setTo(to);
 	    helper.setSubject("Código de recuperación de contraseña");
-	    helper.setText("Tu código de recuperación es: " + codigo, false);
+	    helper.setText(texto, false);
 
 	    mailSender.send(mensaje);
 	}
+
 
 	@Override
 	public void enviarEmailSimple(String to, String asunto, String mensaje) throws Exception {
