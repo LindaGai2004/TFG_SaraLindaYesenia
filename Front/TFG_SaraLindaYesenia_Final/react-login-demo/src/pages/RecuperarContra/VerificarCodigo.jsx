@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import CodigoInputs from "../../components/CodigoInputs";
 import "./VerificarCodigo.css";
 
 export default function VerificarCodigo() {
@@ -10,6 +11,23 @@ export default function VerificarCodigo() {
   const navigate = useNavigate();
 
   const email = params.get("email");
+
+  const [tiempo, setTiempo] = useState(60);
+  const [puedeReenviar, setPuedeReenviar] = useState(false);
+
+  useEffect(() => {
+    if (tiempo <= 0) {
+      setPuedeReenviar(true);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTiempo((t) => t - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [tiempo]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,20 +42,37 @@ export default function VerificarCodigo() {
     }
   };
 
+
+  const reenviarCodigo = async () => {
+    try {
+      await api.apiPost("/auth/reenviar-codigo", { email });
+      setTiempo(60);
+      setPuedeReenviar(false);
+      setMensaje("Nuevo código enviado.");
+    } catch (err) {
+      setMensaje("Error reenviando el código.");
+    }
+  };
+  
+
   return (
     <div className="codigo-page">
       <div className="codigo-container">
         <h2>Introduce el código</h2>
 
         <form onSubmit={handleSubmit}>
-          <label>Código recibido por email</label>
+          <label>Hemos enviado un código de verificación a <strong>{email}</strong>.  
+          Revisa tu correo e introduce el código a continuación.</label>
 
-          <input
-            type="text"
-            value={codigo}
-            onChange={(e) => setCodigo(e.target.value)}
-            required
-          />
+          <CodigoInputs value={codigo} onChange={setCodigo} />
+
+          {!puedeReenviar ? (
+            <p className="contador">Puedes reenviar el código en {tiempo}s</p>
+          ) : (
+            <button type="button" className="btn-reenviar" onClick={reenviarCodigo}>
+              Reenviar código
+            </button>
+          )}
 
           <button type="submit">Validar código</button>
         </form>
