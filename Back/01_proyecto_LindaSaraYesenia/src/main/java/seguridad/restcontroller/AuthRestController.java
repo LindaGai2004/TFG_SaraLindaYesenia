@@ -67,7 +67,7 @@ public class AuthRestController {
         CodigoRecuperacion cr = new CodigoRecuperacion();
         cr.setEmail(email);
         cr.setCodigo(codigo);
-        cr.setExpiracion(LocalDateTime.now().plusMinutes(10));
+        cr.setExpiracion(LocalDateTime.now().plusSeconds(60));
         cr.setCreadoEn(LocalDateTime.now());
         cr.setUsado(false);
 
@@ -80,6 +80,40 @@ public class AuthRestController {
         }
 
         return ResponseEntity.ok("Código enviado");
+    }
+
+    
+    @PostMapping("/reenviar-codigo")
+    public ResponseEntity<?> reenviarCodigo(@RequestBody Map<String, String> body) {
+
+        String email = body.get("email");
+
+        if (!usuarioService.existsByEmail(email)) {
+            return ResponseEntity.badRequest().body("El email no existe");
+        }
+
+        // Borrar códigos anteriores
+        codigoRepo.deleteByEmail(email);
+
+        // Generar nuevo código
+        String codigo = generarCodigo();
+
+        CodigoRecuperacion cr = new CodigoRecuperacion();
+        cr.setEmail(email);
+        cr.setCodigo(codigo);
+        cr.setExpiracion(LocalDateTime.now().plusSeconds(60));
+        cr.setCreadoEn(LocalDateTime.now());
+        cr.setUsado(false);
+
+        codigoRepo.save(cr);
+
+        try {
+            emailService.enviarCodigoRecuperacion(email, codigo);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error enviando el correo");
+        }
+
+        return ResponseEntity.ok("Código reenviado");
     }
 
 
@@ -175,7 +209,7 @@ public class AuthRestController {
 
 	     var nuevoToken = verificacionService.generarNuevoToken(usuario);
 
-	     String link = "https://tu-frontend.com/verificacion-cuenta?token=" + nuevoToken.getToken();
+	     String link = "http://localhost:5173/verificacion-cuenta?token=" + nuevoToken.getToken();
 
 	     try {
 	         emailService.enviarEmailSimple(
