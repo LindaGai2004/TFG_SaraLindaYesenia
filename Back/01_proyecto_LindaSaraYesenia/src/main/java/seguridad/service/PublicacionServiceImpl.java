@@ -1,0 +1,145 @@
+package seguridad.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import seguridad.model.ComentarioPublicacion;
+import seguridad.model.LikePublicacion;
+import seguridad.model.Publicacion;
+import seguridad.model.Usuario;
+import seguridad.model.dto.PublicacionDto;
+import seguridad.repository.ComentarioPublicacionRepository;
+import seguridad.repository.LikePublicacionRepository;
+import seguridad.repository.PublicacionRepository;
+import seguridad.repository.UsuarioRepository;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class PublicacionServiceImpl implements PublicacionService {
+
+    @Autowired
+    private PublicacionRepository publicacionRepo;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepo;
+    
+    @Autowired
+    private LikePublicacionRepository likeRepo;
+
+    @Autowired
+    private ComentarioPublicacionRepository comentarioRepo;
+    
+
+    @Override
+    public List<PublicacionDto> obtenerPublicaciones() {
+        return publicacionRepo.findAllByOrderByFechaDesc()
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
+    @Override
+    public List<PublicacionDto> obtenerPublicacionesPorUsuario(Integer idUsuario) {
+        return publicacionRepo.findByUsuarioIdUsuarioOrderByFechaDesc(idUsuario)
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
+    @Override
+    public Publicacion crearPublicacion(Usuario usuario, String texto, String imagen) {
+        Publicacion p = new Publicacion();
+        p.setUsuario(usuario);
+        p.setTexto(texto);
+        p.setImagen(imagen);
+
+        return publicacionRepo.save(p);
+    }
+
+    @Override
+    public Publicacion obtenerPorId(Integer id) {
+        return publicacionRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public void eliminarPublicacion(Integer id) {
+        publicacionRepo.deleteById(id);
+    }
+
+    // mapper
+
+    private PublicacionDto mapToDto(Publicacion p) {
+        PublicacionDto dto = new PublicacionDto();
+
+        dto.setId(p.getId());
+        dto.setTexto(p.getTexto());
+        dto.setImagen(p.getImagen());
+        dto.setLikes(p.getLikes());
+        dto.setComentarios(p.getComentarios());
+
+        // Datos del usuario
+        dto.setUsuarioNombre(p.getUsuario().getNombre());
+
+        // Fecha formateada
+        dto.setFecha(formatearFecha(p.getFecha()));
+        
+        // Likes reales desde la tabla likes_publicacion
+        dto.setLikes(likeRepo.countByPublicacion_Id(p.getId()));
+
+        // Comentarios reales desde la tabla comentarios_publicacion
+        dto.setComentarios(comentarioRepo.countByPublicacion_Id(p.getId()));
+
+        return dto;
+    }
+
+    
+    private String formatearFecha(LocalDateTime fecha) {
+        LocalDateTime ahora = LocalDateTime.now();
+
+        long minutos = ChronoUnit.MINUTES.between(fecha, ahora);
+        long horas = ChronoUnit.HOURS.between(fecha, ahora);
+        long dias = ChronoUnit.DAYS.between(fecha, ahora);
+
+        if (minutos < 1) return "Justo ahora";
+        if (minutos < 60) return "Hace " + minutos + " min";
+        if (horas < 24) return "Hace " + horas + " horas";
+        if (dias == 1) return "Ayer";
+        return "Hace " + dias + " días";
+    }
+    
+    
+    // Likes de la publicación
+    @Override
+    public boolean toggleLike(Integer idPublicacion, Integer idUsuario) {
+        Optional<LikePublicacion> existing = likeRepo.findByPublicacion_IdAndUsuario_IdUsuario(idPublicacion, idUsuario);
+
+        if (existing.isPresent()) {
+            likeRepo.delete(existing.get());
+            return false; // like eliminado
+        }
+
+        LikePublicacion like = new LikePublicacion();
+        like.setPublicacion(publicacionRepo.findById(idPublicacion).orElseThrow());
+        like.setUsuario(usuarioRepo.findById(idUsuario).orElseThrow());
+        likeRepo.save(like);
+
+        return true; // like añadido
+    }
+
+    
+    // Agregar comentarios a la publicación
+    @Override
+    public void agregarComentario(Integer idPublicacion, Integer idUsuario, String texto) {
+        ComentarioPublicacion c = new ComentarioPublicacion();
+        c.setPublicacion(publicacionRepo.findById(idPublicacion).orElseThrow());
+        c.setUsuario(usuarioRepo.findById(idUsuario).orElseThrow());
+        c.setTexto(texto);
+
+        comentarioRepo.save(c);
+    }
+
+}

@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import seguridad.model.Rol;
 import seguridad.model.Usuario;
+import seguridad.model.dto.UsuarioRecomendadoDto;
 
 public interface UsuarioService extends UserDetailsService{
 	
@@ -25,5 +26,8 @@ public interface UsuarioService extends UserDetailsService{
 	//anterior
 	//String normalizePassword(String raw);
 	List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
+
+	/* Usuarios recomendados */
+	List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados();
 
 }

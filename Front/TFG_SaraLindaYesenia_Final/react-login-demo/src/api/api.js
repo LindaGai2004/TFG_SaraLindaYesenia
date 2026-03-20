@@ -15,7 +15,12 @@ function handle401() {
     path.includes("verificacion") || 
     path.includes("recuperar") || 
     path.includes("verificar-codigo") ||
-    path.includes("restablecer")
+    path.includes("restablecer") ||
+    path.includes("catalogo") ||
+    path.includes("producto") ||
+    path.includes("comunidad") ||
+    path.includes("notificacion") ||
+    path.includes("favoritos")
   ) {
     return;
   }
@@ -43,41 +48,34 @@ export async function apiGet(path) {
   return text ? JSON.parse(text) : null;
 }
 
-export async function apiPost(path, body) {
-  const isPublic =
-    path.startsWith("/auth") ||
-    path === "/registro" ||
-    path === "/api/login";
 
-  const headers = {
-    "Content-Type": "application/json",
-    ...(isPublic ? {} : getAuthHeader())
-  };
+export async function apiPost(path, body, isFormData = false) {
+  const cleanPath = path.trim().split("?")[0].replace(/\/+$/, "");
+
+  const isPublic =
+    cleanPath.startsWith("/auth") ||
+    cleanPath === "/registro" ||
+    cleanPath === "/api/login" ||
+    cleanPath.startsWith("/publicaciones");
+
+  const headers = isFormData
+    ? { ...(isPublic ? {} : getAuthHeader()) }
+    : { "Content-Type": "application/json", ...(isPublic ? {} : getAuthHeader()) };
 
   const options = {
     method: "POST",
-    headers
+    headers,
+    body: isFormData ? body : JSON.stringify(body)
   };
-
-  // Solo añadir body si existe
-  if (body !== undefined && body !== null) {
-    options.body = JSON.stringify(body);
-  }
 
   const res = await fetch(`${BASE_URL}${path}`, options);
 
   if (res.status === 401) return handle401();
-
   if (!res.ok) throw new Error(await res.text());
 
-  const contentType = res.headers.get("content-type");
-
-  if (contentType && contentType.includes("application/json")) {
-    return await res.json();
-  }
-
-  return await res.text();
+  return await res.json();
 }
+
 
 
 export async function apiPut(path, body) {

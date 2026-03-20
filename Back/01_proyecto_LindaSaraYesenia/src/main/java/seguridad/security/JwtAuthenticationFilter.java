@@ -24,40 +24,66 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		this.userDetailsService = userDetailsService;
 	}
 	
-    @Override
+	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException{
+	        throws ServletException, IOException {
+		
+		// Permitir preflight OPTIONS (CORS)
+	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
 
-    	//para permitir endpoints de paypal
-    	String path = request.getServletPath();
+	    //String path = request.getServletPath();
+	    String path = request.getRequestURI();
 
-    	// Rutas públicas que NO deben pasar por el filtro JWT
-    	if (path.startsWith("/auth")
-    	    || path.startsWith("/api/login")
-    	    || path.startsWith("/registro")
-    	    || path.startsWith("/actuator/health")
-    	    || path.startsWith("/api/paypal")) {
 
-    	    filterChain.doFilter(request, response);
-    	    return;
-    	}
-    	
-    	//obtener header (Miramos si la petición trae un token en el header)
-		final String authHeader = request.getHeader("Authorization");
-		
-		//si no hay header o bearer, continuar
-		if (authHeader==null||!authHeader.startsWith("Bearer ")) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		
-		//Extraer token
-		String jwt = authHeader.substring(7);
-		
-		//Extraer usuario
-		String username = jwtService.extractUsername(jwt);
-		
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+	    // rutas públicas
+	    if (
+	        path.startsWith("/auth") ||
+	        path.equals("/api/login") ||
+	        path.equals("/registro") ||
+	        path.startsWith("/actuator/health") ||
+	        path.startsWith("/api/paypal") ||
+
+	        // Comunidad
+	        path.startsWith("/comunidad") ||
+	        path.equals("/publicaciones") ||
+	        path.startsWith("/publicaciones") ||
+	        
+	        // Catálogo
+	        path.startsWith("/productos") ||
+	        path.startsWith("/uploads") ||
+	        path.startsWith("/generos") ||
+	        path.startsWith("/idiomas") ||
+	        path.startsWith("/categorias") ||
+	        path.startsWith("/marcas") ||
+
+	        // SidebarDerecha
+	        path.startsWith("/usuarios/top") ||
+	        path.startsWith("/libros/populares") ||
+	        path.startsWith("/publicaciones/tendencias") ||
+
+	        // Libros y papelería
+	        path.startsWith("/libros") ||
+	        path.startsWith("/papelerias")
+	    ) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
+
+	    // A partir de aquí, rutas protegidas
+	    final String authHeader = request.getHeader("Authorization");
+
+	    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
+
+	    String jwt = authHeader.substring(7);
+	    String username = jwtService.extractUsername(jwt);
+
+	    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
 	        if (jwtService.isTokenValid(jwt, userDetails)) {
@@ -68,9 +94,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	            SecurityContextHolder.getContext().setAuthentication(authToken);
 	        }
 	    }
-		
-		//continuar
-		filterChain.doFilter(request, response);
 
+	    filterChain.doFilter(request, response);
 	}
+
 }

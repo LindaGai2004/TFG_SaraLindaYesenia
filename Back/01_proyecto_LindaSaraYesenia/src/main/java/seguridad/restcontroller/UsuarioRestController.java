@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioDto;
+import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
 import seguridad.security.JwtService;
 import seguridad.service.EmailService;
@@ -56,7 +57,6 @@ public class UsuarioRestController {
         return ResponseEntity.ok(lista);
     }
    
-   
 
     //LOGIN
     @PostMapping("/api/login")
@@ -64,18 +64,15 @@ public class UsuarioRestController {
         try {
             Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-            //anterior
-            //SecurityContextHolder.getContext().setAuthentication(auth);
-            //HttpSession session = request.getSession(true);
-            //session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             Usuario usuarioBD = usuarioService.findByEmail(userDetails.getUsername());
 
-         // Genera el token
+            // Genera el token
             String jwt = jwtService.generarToken(usuarioBD.getEmail());
 
             UsuarioDto usuarioDto = new UsuarioDto();
+            usuarioDto.setIdUsuario(usuarioBD.getIdUsuario());
             usuarioDto.setUsername(usuarioBD.getUsername());
             usuarioDto.setNombre(usuarioBD.getNombre());
             usuarioDto.setApellidos(usuarioBD.getApellidos());
@@ -396,4 +393,13 @@ public class UsuarioRestController {
 
         return ResponseEntity.ok(lista);
     }
+    
+    
+    
+    /* Usuarios recomendados para la Comunidad */
+    @GetMapping("/recomendados")
+    public List<UsuarioRecomendadoDto> recomendados() {
+    	return usuarioService.obtenerUsuariosRecomendados();
+    }
+
 }

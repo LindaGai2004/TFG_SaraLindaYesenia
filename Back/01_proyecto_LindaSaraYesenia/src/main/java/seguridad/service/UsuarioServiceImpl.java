@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service;
 	
 	import seguridad.model.Perfil;
 	import seguridad.model.Usuario;
-	import seguridad.repository.PerfilRepository;
+import seguridad.model.dto.UsuarioRecomendadoDto;
+import seguridad.repository.PerfilRepository;
 	import seguridad.repository.UsuarioRepository;
 	@Service
 	public class UsuarioServiceImpl implements UsuarioService, UserDetailsService{
@@ -214,6 +215,12 @@ import org.springframework.stereotype.Service;
 	@Override
 	public Usuario save(Usuario usuario) {
 	    return usuarioRepository.save(usuario);
+	}
+
+
+	@Override
+	public List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados() {
+	    return usuarioRepository.obtenerUsuariosRecomendados();
 	}
 
 }
