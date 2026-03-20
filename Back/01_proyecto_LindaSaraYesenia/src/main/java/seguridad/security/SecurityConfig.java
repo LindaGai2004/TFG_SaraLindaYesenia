@@ -76,6 +76,9 @@ public class SecurityConfig {
             	    "/productos/filtrar",
             	    "/productos/**",
 
+            	    "/todos",
+            	    "/recomendados",
+            	    "/buscar",
             	    "/libros/**",
             	    "/papelerias/**",
             	    "/uploads/**",
@@ -84,6 +87,11 @@ public class SecurityConfig {
             	    "/categorias/**",
             	    "/marcas/**"
             	).permitAll()
+
+            	.requestMatchers(HttpMethod.POST, "/publicaciones").permitAll()
+            	.requestMatchers(HttpMethod.GET, "/publicaciones/**").permitAll()
+
+            
             //endpoints protegidos por rol
             .requestMatchers("/admin/crear").hasAnyRole("ADMON","JEFE")
             .requestMatchers("/pedidos/**").authenticated()
@@ -94,8 +102,8 @@ public class SecurityConfig {
           //otras requests deben ser autenticadas
             .anyRequest().authenticated()
         )
-        //ya no usamos hhtpBasic
-        //.httpBasic(Customizer.withDefaults())
+        
+
         //activar jwt
         .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
         .formLogin(form -> form.disable())
@@ -113,6 +121,7 @@ public class SecurityConfig {
         //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //    	return new BCryptPasswordEncoder();
 //    }
+    
     
     //Verificar username y password si esta bien -> buscar en sql
     @Bean

@@ -87,5 +87,12 @@ public class LibroServiceImpl implements LibroService {
 		return new ArrayList<>(resultado);
 
 	}
+	
+	/* Libros populares para la Comunidad*/
+	@Override
+	public List<Libro> findLibrosPopulares() {
+	    return libroRepo.findByDestacadoTrue();
+	}
+
 
 }

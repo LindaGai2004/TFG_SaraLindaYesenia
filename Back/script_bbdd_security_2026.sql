@@ -143,6 +143,38 @@ create table facturas(
     foreign key (id_pedido) references pedidos( id_pedido)
 );
 
+create table publicaciones (
+    id_publicacion int auto_increment primary key,
+    id_usuario int not null,
+    texto text,
+    imagen varchar(250),
+    fecha datetime default current_timestamp,
+    likes int default 0,
+    comentarios int default 0,
+    foreign key(id_usuario) references usuarios(id_usuario)
+);
+
+create table likes_publicacion (
+    id_like int auto_increment primary key,
+    id_publicacion int not null,
+    id_usuario int not null,
+    fecha datetime default current_timestamp,
+    unique (id_publicacion, id_usuario), /* evita que un usuario dé like dos veces a la misma publicacion */
+	foreign key (id_publicacion) references publicaciones(id_publicacion),
+    foreign key (id_usuario) references usuarios(id_usuario)
+);
+
+create table comentarios_publicacion (
+    id_comentario int auto_increment primary key,
+    id_publicacion int not null,
+    id_usuario int not null,
+    texto text not null,
+    fecha datetime default current_timestamp,
+    foreign key (id_publicacion) references publicaciones(id_publicacion),
+    foreign key (id_usuario) references usuarios(id_usuario)
+);
+
+
 
 INSERT INTO perfiles(nombre)
 values ('ROLE_ADMON'),('ROLE_CLIENTE'),
@@ -823,6 +855,22 @@ INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUE
 ('FAC-2024-006', '2024-06-18', 34.00, 6),
 ('FAC-2024-008', '2024-08-30', 52.90, 8),
 ('FAC-2024-009', '2024-09-15', 105.00, 9);
+
+
+INSERT INTO publicaciones (id_usuario, texto, imagen, fecha, likes, comentarios) VALUES
+(2, 'Hoy he vuelto a una librería pequeña del centro. No iba con intención de comprar nada, pero ya sabéis cómo acaba eso…', NULL, NOW() - INTERVAL 1 DAY, 3, 1),
+(2, 'Me encanta cuando un libro te sorprende justo cuando pensabas que ya lo habías entendido todo. Esa sensación no tiene precio.', NULL, NOW() - INTERVAL 2 DAY, 5, 2),
+(2, 'Estoy intentando leer un poco cada mañana antes de empezar el día. Me ayuda a no ir con prisas y a empezar con buena energía.', NULL, NOW() - INTERVAL 3 DAY, 2, 0),
+(2, 'Hoy he encontrado una frase preciosa: “A veces, lo que buscas llega cuando dejas de buscarlo”. La he tenido que subrayar.', NULL, NOW() - INTERVAL 4 DAY, 4, 1),
+(2, 'He empezado un cuaderno nuevo para escribir ideas. No sé si saldrá algo bueno, pero me hace ilusión tener un espacio solo para mí.', NULL, NOW() - INTERVAL 5 DAY, 1, 0),
+(2, '¿Alguna recomendación de libros de misterio? Me apetece algo que me enganche desde la primera página.', NULL, NOW() - INTERVAL 6 DAY, 6, 3),
+(2, 'Hoy he tenido una tarde tranquila con café y lectura. Ojalá más días así.', NULL, NOW() - INTERVAL 7 DAY, 2, 0),
+(2, 'Estoy releyendo un libro que me marcó hace años. Qué curioso cómo cambia la perspectiva con el tiempo.', NULL, NOW() - INTERVAL 8 DAY, 3, 1),
+(2, 'A veces solo necesito desconectar un rato y perderme entre páginas. Es mi forma favorita de respirar.', NULL, NOW() - INTERVAL 9 DAY, 4, 2),
+(2, 'Hoy me he dado cuenta de que subrayo demasiado, pero no pienso parar. Cada frase bonita merece ser guardada.', NULL, NOW() - INTERVAL 10 DAY, 1, 0),
+(2, 'Creo que voy a empezar a escribir reseñas cortas de los libros que leo. No sé si a alguien le servirán, pero a mí me ayudará a recordarlos.', NULL, NOW() - INTERVAL 11 DAY, 2, 0),
+(2, 'Me encanta cuando un libro te hace sentir acompañada, incluso en los días más raros.', NULL, NOW() - INTERVAL 12 DAY, 5, 3);
+
 
 UPDATE usuarios
 SET password = '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG'
