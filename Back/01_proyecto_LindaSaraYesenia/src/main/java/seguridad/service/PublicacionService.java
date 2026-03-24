@@ -12,9 +12,11 @@ public interface PublicacionService {
 
     List<PublicacionDto> obtenerPublicacionesPorUsuario(Integer idUsuario);
 
-    Publicacion crearPublicacion(Usuario usuario, String texto, String imagen);
+    Publicacion crearPublicacion(Usuario usuario, String texto, String nombreImagen);
 
     Publicacion obtenerPorId(Integer id);
+    
+    PublicacionDto mapToDto(Publicacion publicacion);
 
     void eliminarPublicacion(Integer id);
     

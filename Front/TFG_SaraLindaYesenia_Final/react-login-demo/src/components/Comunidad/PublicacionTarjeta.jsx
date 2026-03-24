@@ -4,6 +4,12 @@ import { useState } from "react";
 export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) {
   const [comentario, setComentario] = useState("");
   const [mostrarComentarios, setMostrarComentarios] = useState(false);
+  const [verTodos, setVerTodos] = useState(false);
+
+  // Mostrar solo los primeros 3 si no está expandido
+  const comentariosVisibles = verTodos
+    ? publicacion.listaComentarios || []
+    : (publicacion.listaComentarios || []).slice(0, 3);
 
   return (
     <div className="publicacion-tarjeta">
@@ -36,37 +42,86 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) 
 
       {/* Reacciones */}
       <div className="publicacion-acciones">
-        <button className="btn-accion" onClick={() => onLike(publicacion.id)}>
-          ❤️ {publicacion.likes}
+
+        {/* Botón Like con imagen */}
+        <button
+          className="btn-accion"
+          onClick={() => onLike(publicacion.idPublicacion)}
+        >
+          <img
+            src="/assets/icons/like.png"
+            alt="like"
+            className="icono-accion"
+          />
+          {publicacion.likes}
         </button>
 
+        {/* Botón Comentarios con imagen */}
         <button
           className="btn-accion"
           onClick={() => setMostrarComentarios(!mostrarComentarios)}
         >
-          💬 {publicacion.comentarios}
+          <img
+            src="/assets/icons/comment.png"
+            alt="comentarios"
+            className="icono-accion"
+          />
+          {publicacion.comentarios}
         </button>
       </div>
 
       {/* Comentarios */}
       {mostrarComentarios && (
         <div className="comentarios-box">
-          <input
-            type="text"
-            placeholder="Escribe un comentario..."
-            value={comentario}
-            onChange={(e) => setComentario(e.target.value)}
-          />
 
-          <button
-            className="btn-enviar"
-            onClick={() => {
-              onComentar(publicacion.id, comentario);
-              setComentario("");
-            }}
-          >
-            Enviar
-          </button>
+          {/* Lista de comentarios */}
+          {comentariosVisibles.map((c, i) => (
+            <div key={i} className="comentario-item">
+              <strong>{c.usuarioNombre}:</strong> {c.texto}
+              <span className="comentario-fecha">{c.fecha}</span>
+            </div>
+          ))}
+
+          {/* Botón "ver más" si hay más de 3 */}
+          {publicacion.listaComentarios?.length > 3 && !verTodos && (
+            <button
+              className="btn-ver-mas"
+              onClick={() => setVerTodos(true)}
+            >
+              Ver más comentarios ▼
+            </button>
+          )}
+
+          {/* Botón "ver menos" */}
+          {verTodos && (
+            <button
+              className="btn-ver-mas"
+              onClick={() => setVerTodos(false)}
+            >
+              Ver menos ▲
+            </button>
+          )}
+
+          {/* Input para escribir comentario */}
+          <div className="comentario-input">
+            <input
+              type="text"
+              placeholder="Escribe un comentario..."
+              value={comentario}
+              onChange={(e) => setComentario(e.target.value)}
+            />
+
+            <button
+              className="btn-enviar"
+              onClick={() => {
+                if (!comentario.trim()) return;
+                onComentar(publicacion.idPublicacion, comentario);
+                setComentario("");
+              }}
+            >
+              Enviar
+            </button>
+          </div>
         </div>
       )}
 

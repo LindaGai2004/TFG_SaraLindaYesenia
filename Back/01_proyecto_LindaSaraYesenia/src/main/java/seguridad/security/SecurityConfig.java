@@ -90,6 +90,9 @@ public class SecurityConfig {
 
             	.requestMatchers(HttpMethod.POST, "/publicaciones").permitAll()
             	.requestMatchers(HttpMethod.GET, "/publicaciones/**").permitAll()
+            	
+            	.requestMatchers(HttpMethod.POST, "/publicaciones/*/like").authenticated()
+            	.requestMatchers(HttpMethod.POST, "/publicaciones/*/comentarios").authenticated()
 
             
             //endpoints protegidos por rol

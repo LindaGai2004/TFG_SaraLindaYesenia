@@ -66,3 +66,31 @@
 .btn-accion:hover {
   opacity: 1;
 }
+
+
+.comentario-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.comentario-fecha {
+  font-size: 12px;
+  color: #777;
+}
+
+.btn-ver-mas {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.icono-accion {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}

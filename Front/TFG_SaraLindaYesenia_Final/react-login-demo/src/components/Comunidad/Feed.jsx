@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
 import PublicacionTarjeta from "./PublicacionTarjeta";
+import CrearPublicacion from "./CrearPublicacion"; 
 import "./Feed.css";
 
 export default function Feed() {
@@ -13,7 +14,11 @@ export default function Feed() {
   const cargarPublicaciones = async () => {
     try {
       const res = await api.apiGet("/publicaciones");
-      setPublicaciones(Array.isArray(res) ? res : []);
+      setPublicaciones(
+        Array.isArray(res)
+          ? res.map(p => ({ ...p, listaComentarios: [] }))
+          : []
+      );
     } catch (err) {
       console.error("Error cargando publicaciones:", err);
       setError("Error cargando publicaciones");
@@ -26,7 +31,13 @@ export default function Feed() {
     cargarPublicaciones();
   }, []);
 
-  // Dar o quitar likes
+  const agregarPublicacion = (nuevaPub) => {
+    setPublicaciones((prev) => [
+      { ...nuevaPub, listaComentarios: [] },
+      ...prev
+    ]);
+  };
+
   const handleLike = async (idPublicacion) => {
     try {
       const res = await api.apiPost(
@@ -35,7 +46,7 @@ export default function Feed() {
 
       setPublicaciones((prev) =>
         prev.map((p) =>
-          p.id === idPublicacion
+          p.idPublicacion === idPublicacion
             ? { ...p, likes: p.likes + (res.liked ? 1 : -1) }
             : p
         )
@@ -45,19 +56,27 @@ export default function Feed() {
     }
   };
 
-  // Añadir comentarios
   const handleComentar = async (idPublicacion, texto) => {
     try {
       await api.apiPost(
-        `/publicaciones/${idPublicacion}/comentarios?idUsuario=${user.idUsuario}&texto=${encodeURIComponent(
-          texto
-        )}`
+        `/publicaciones/${idPublicacion}/comentarios?idUsuario=${user.idUsuario}&texto=${encodeURIComponent(texto)}`
       );
 
       setPublicaciones((prev) =>
         prev.map((p) =>
-          p.id === idPublicacion
-            ? { ...p, comentarios: p.comentarios + 1 }
+          p.idPublicacion === idPublicacion
+            ? {
+                ...p,
+                comentarios: p.comentarios + 1,
+                listaComentarios: [
+                  ...(p.listaComentarios || []),
+                  {
+                    texto,
+                    usuarioNombre: user.nombre,
+                    fecha: "Justo ahora"
+                  }
+                ]
+              }
             : p
         )
       );
@@ -71,12 +90,14 @@ export default function Feed() {
 
   return (
     <div className="feed-container">
+      <CrearPublicacion onPublicada={agregarPublicacion} />
+
       {publicaciones.length === 0 ? (
         <p className="feed-vacio">No hay publicaciones todavía</p>
       ) : (
         publicaciones.map((pub) => (
           <PublicacionTarjeta
-            key={pub.id}
+            key={pub.idPublicacion}
             publicacion={pub}
             onLike={handleLike}
             onComentar={handleComentar}

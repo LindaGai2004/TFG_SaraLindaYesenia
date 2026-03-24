@@ -37,12 +37,11 @@ function handle401() {
 
 export async function apiGet(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: {...getAuthHeader()}
+    headers: { ...getAuthHeader() }
   });
 
   if (res.status === 401) return handle401();
-
-  if (!res.ok) throw new Error (await res.text());
+  if (!res.ok) throw new Error(await res.text());
 
   const text = await res.text();
   return text ? JSON.parse(text) : null;
@@ -51,12 +50,14 @@ export async function apiGet(path) {
 
 export async function apiPost(path, body, isFormData = false) {
   const cleanPath = path.trim().split("?")[0].replace(/\/+$/, "");
+  const query = path.includes("?") ? "?" + path.split("?")[1] : "";
 
+  // SOLO estas rutas son públicas
   const isPublic =
     cleanPath.startsWith("/auth") ||
     cleanPath === "/registro" ||
     cleanPath === "/api/login" ||
-    cleanPath.startsWith("/publicaciones");
+    cleanPath === "/publicaciones"; // SOLO GET general
 
   const headers = isFormData
     ? { ...(isPublic ? {} : getAuthHeader()) }
@@ -68,7 +69,7 @@ export async function apiPost(path, body, isFormData = false) {
     body: isFormData ? body : JSON.stringify(body)
   };
 
-  const res = await fetch(`${BASE_URL}${path}`, options);
+  const res = await fetch(`${BASE_URL}${cleanPath}${query}`, options);
 
   if (res.status === 401) return handle401();
   if (!res.ok) throw new Error(await res.text());
