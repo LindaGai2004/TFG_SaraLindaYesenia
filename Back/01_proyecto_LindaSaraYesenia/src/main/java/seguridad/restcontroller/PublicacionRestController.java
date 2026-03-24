@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import seguridad.model.Publicacion;
 import seguridad.model.Usuario;
 import seguridad.model.dto.PublicacionDto;
 import seguridad.service.PublicacionService;
@@ -39,7 +40,7 @@ public class PublicacionRestController {
 
     // Crear una nueva publicación
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Map<String, String>> crearPublicacion(
+    public ResponseEntity<PublicacionDto> crearPublicacion(
             @RequestParam Integer idUsuario,
             @RequestParam String texto,
             @RequestPart(required = false) MultipartFile imagen
@@ -47,24 +48,22 @@ public class PublicacionRestController {
         Usuario usuario = usuarioService.findById(idUsuario);
 
         if (usuario == null) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(Map.of("error", "Usuario no encontrado"));
+            return ResponseEntity.badRequest().build();
         }
 
         String nombreImagen = null;
 
         if (imagen != null && !imagen.isEmpty()) {
             nombreImagen = imagen.getOriginalFilename();
-            // Aquí podrías guardar la imagen en disco o S3
         }
 
-        publicacionService.crearPublicacion(usuario, texto, nombreImagen);
+        Publicacion nueva = publicacionService.crearPublicacion(usuario, texto, nombreImagen);
 
-        return ResponseEntity.ok(
-                Map.of("mensaje", "Publicación creada correctamente")
-        );
+        PublicacionDto dto = publicacionService.mapToDto(nueva);
+
+        return ResponseEntity.ok(dto);
     }
+
     
     
     // Likes

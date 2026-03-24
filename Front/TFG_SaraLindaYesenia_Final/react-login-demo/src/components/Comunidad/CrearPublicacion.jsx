@@ -2,12 +2,12 @@ import { useState } from "react";
 import api from "../../api/api";
 import "./CrearPublicacion.css";
 
-export default function CrearPublicacion() {
+export default function CrearPublicacion({ onPublicada }) {
   const [texto, setTexto] = useState("");
   const [imagen, setImagen] = useState(null);
 
   const handleImagen = (e) => {
-  const file = e.target.files[0];
+    const file = e.target.files[0];
     if (file) {
       setImagen(file);
     }
@@ -22,17 +22,22 @@ export default function CrearPublicacion() {
     const formData = new FormData();
     formData.append("idUsuario", user.idUsuario);
     formData.append("texto", texto);
-    formData.append("imagen", imagen || "");
+    if (imagen) formData.append("imagen", imagen);
 
     try {
-      await api.apiPost("/publicaciones", formData, true);
+      // El backend debe devolver la publicación creada (DTO)
+      const nuevaPub = await api.apiPost("/publicaciones", formData, true);
+
+      if (onPublicada && nuevaPub) {
+        onPublicada(nuevaPub);
+      }
+
       setTexto("");
       setImagen(null);
     } catch (e) {
       console.error("Error publicando", e);
     }
   };
-
 
   return (
     <div className="crear-publicacion">

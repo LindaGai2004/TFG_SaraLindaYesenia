@@ -71,27 +71,24 @@ public class PublicacionServiceImpl implements PublicacionService {
     }
 
     // mapper
-
-    private PublicacionDto mapToDto(Publicacion p) {
+    public PublicacionDto mapToDto(Publicacion p) {
         PublicacionDto dto = new PublicacionDto();
-
-        dto.setId(p.getId());
+;
+        dto.setIdPublicacion(p.getId());
         dto.setTexto(p.getTexto());
         dto.setImagen(p.getImagen());
-        dto.setLikes(p.getLikes());
-        dto.setComentarios(p.getComentarios());
 
-        // Datos del usuario
         dto.setUsuarioNombre(p.getUsuario().getNombre());
 
-        // Fecha formateada
         dto.setFecha(formatearFecha(p.getFecha()));
-        
-        // Likes reales desde la tabla likes_publicacion
-        dto.setLikes(likeRepo.countByPublicacion_Id(p.getId()));
 
-        // Comentarios reales desde la tabla comentarios_publicacion
-        dto.setComentarios(comentarioRepo.countByPublicacion_Id(p.getId()));
+        // Likes reales
+        Integer likes = likeRepo.countByPublicacion_Id(p.getId());
+        dto.setLikes(likes == null ? 0 : likes);
+
+        // Comentarios reales
+        Integer comentarios = comentarioRepo.countByPublicacion_Id(p.getId());
+        dto.setComentarios(comentarios == null ? 0 : comentarios);
 
         return dto;
     }

@@ -38,39 +38,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	    String path = request.getRequestURI();
 
 
-	    // rutas públicas
+	 // rutas públicas
 	    if (
-	        path.startsWith("/auth") ||
-	        path.equals("/api/login") ||
-	        path.equals("/registro") ||
-	        path.startsWith("/actuator/health") ||
-	        path.startsWith("/api/paypal") ||
+	    	    path.startsWith("/auth") ||
+	    	    path.equals("/api/login") ||
+	    	    path.equals("/registro") ||
+	    	    path.startsWith("/actuator/health") ||
+	    	    path.startsWith("/api/paypal") ||
 
-	        // Comunidad
-	        path.startsWith("/comunidad") ||
-	        path.equals("/publicaciones") ||
-	        path.startsWith("/publicaciones") ||
-	        
-	        // Catálogo
-	        path.startsWith("/productos") ||
-	        path.startsWith("/uploads") ||
-	        path.startsWith("/generos") ||
-	        path.startsWith("/idiomas") ||
-	        path.startsWith("/categorias") ||
-	        path.startsWith("/marcas") ||
+	    	    // Comunidad (solo GET)
+	    	    (path.equals("/publicaciones") && request.getMethod().equals("GET")) ||
+	    	    (path.startsWith("/publicaciones/") && request.getMethod().equals("GET")) ||
 
-	        // SidebarDerecha
-	        path.startsWith("/usuarios/top") ||
-	        path.startsWith("/libros/populares") ||
-	        path.startsWith("/publicaciones/tendencias") ||
+	    	    // Crear publicación (POST /publicaciones)
+	    	    (path.equals("/publicaciones") && request.getMethod().equals("POST")) ||
 
-	        // Libros y papelería
-	        path.startsWith("/libros") ||
-	        path.startsWith("/papelerias")
-	    ) {
-	        filterChain.doFilter(request, response);
-	        return;
-	    }
+	    	    // Catálogo
+	    	    path.startsWith("/productos") ||
+	    	    path.startsWith("/uploads") ||
+	    	    path.startsWith("/generos") ||
+	    	    path.startsWith("/idiomas") ||
+	    	    path.startsWith("/categorias") ||
+	    	    path.startsWith("/marcas") ||
+
+	    	    // SidebarDerecha
+	    	    path.startsWith("/usuarios/top") ||
+	    	    path.startsWith("/libros/populares") ||
+	    	    path.startsWith("/publicaciones/tendencias") ||
+
+	    	    // Libros y papelería
+	    	    path.startsWith("/libros") ||
+	    	    path.startsWith("/papelerias")
+	    	) {
+	    	    filterChain.doFilter(request, response);
+	    	    return;
+	    	}
+
+
 
 	    // A partir de aquí, rutas protegidas
 	    final String authHeader = request.getHeader("Authorization");

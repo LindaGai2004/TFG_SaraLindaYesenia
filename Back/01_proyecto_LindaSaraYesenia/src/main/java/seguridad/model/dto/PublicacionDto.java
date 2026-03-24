@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class PublicacionDto {
 
-    private Integer id;
+    private Integer idPublicacion;
     private String usuarioNombre;
     private String usuarioAvatar;
     private String texto;
