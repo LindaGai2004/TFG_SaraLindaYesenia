@@ -14,11 +14,7 @@ export default function Feed() {
   const cargarPublicaciones = async () => {
     try {
       const res = await api.apiGet("/publicaciones");
-      setPublicaciones(
-        Array.isArray(res)
-          ? res.map(p => ({ ...p, listaComentarios: [] }))
-          : []
-      );
+      setPublicaciones(Array.isArray(res) ? res : []);
     } catch (err) {
       console.error("Error cargando publicaciones:", err);
       setError("Error cargando publicaciones");
@@ -26,6 +22,7 @@ export default function Feed() {
       setCargando(false);
     }
   };
+
 
   useEffect(() => {
     cargarPublicaciones();
@@ -40,14 +37,17 @@ export default function Feed() {
 
   const handleLike = async (idPublicacion) => {
     try {
-      const res = await api.apiPost(
+      const liked = await api.apiPost(
         `/publicaciones/${idPublicacion}/like?idUsuario=${user.idUsuario}`
       );
+
+      // Si la API devolvió undefined, significa 401 → NO tocar contador
+      if (liked === undefined) return;
 
       setPublicaciones((prev) =>
         prev.map((p) =>
           p.idPublicacion === idPublicacion
-            ? { ...p, likes: p.likes + (res.liked ? 1 : -1) }
+            ? { ...p, likes: p.likes + (liked ? 1 : -1), likedByUser: liked }
             : p
         )
       );
@@ -55,6 +55,7 @@ export default function Feed() {
       console.error("Error dando like:", e);
     }
   };
+
 
   const handleComentar = async (idPublicacion, texto) => {
     try {

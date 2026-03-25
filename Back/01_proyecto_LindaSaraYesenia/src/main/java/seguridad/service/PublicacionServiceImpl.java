@@ -1,12 +1,14 @@
 package seguridad.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import seguridad.model.ComentarioPublicacion;
 import seguridad.model.LikePublicacion;
 import seguridad.model.Publicacion;
 import seguridad.model.Usuario;
+import seguridad.model.dto.ComentarioDto;
 import seguridad.model.dto.PublicacionDto;
 import seguridad.repository.ComentarioPublicacionRepository;
 import seguridad.repository.LikePublicacionRepository;
@@ -33,6 +35,21 @@ public class PublicacionServiceImpl implements PublicacionService {
     @Autowired
     private ComentarioPublicacionRepository comentarioRepo;
     
+    
+    private Integer obtenerIdUsuarioActual() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated() || auth.getName().equals("anonymousUser")) {
+            return null;
+        }
+
+        String email = auth.getName();
+        Optional<Usuario> u = usuarioRepo.findByEmail(email);
+
+        return u.map(Usuario::getIdUsuario).orElse(null);
+    }
+
+
 
     @Override
     public List<PublicacionDto> obtenerPublicaciones() {
@@ -72,14 +89,13 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     // mapper
     public PublicacionDto mapToDto(Publicacion p) {
+
         PublicacionDto dto = new PublicacionDto();
-;
+
         dto.setIdPublicacion(p.getId());
         dto.setTexto(p.getTexto());
         dto.setImagen(p.getImagen());
-
         dto.setUsuarioNombre(p.getUsuario().getNombre());
-
         dto.setFecha(formatearFecha(p.getFecha()));
 
         // Likes reales
@@ -89,6 +105,33 @@ public class PublicacionServiceImpl implements PublicacionService {
         // Comentarios reales
         Integer comentarios = comentarioRepo.countByPublicacion_Id(p.getId());
         dto.setComentarios(comentarios == null ? 0 : comentarios);
+
+        // Saber si el usuario actual ya dio like
+        Integer idUsuarioActual = obtenerIdUsuarioActual();
+
+        boolean likedByUser = false;
+
+        if (idUsuarioActual != null) {
+            likedByUser = likeRepo
+                    .findByPublicacion_IdAndUsuario_IdUsuario(p.getId(), idUsuarioActual)
+                    .isPresent();
+        }
+
+        dto.setLikedByUser(likedByUser);
+
+
+
+        // Lista de comentarios
+        dto.setListaComentarios(
+            comentarioRepo.findByPublicacion_IdOrderByFechaDesc(p.getId())
+                .stream()
+                .map(c -> new ComentarioDto(
+                        c.getUsuario().getNombre(),
+                        c.getTexto(),
+                        formatearFecha(c.getFecha())
+                ))
+                .toList()
+        );
 
         return dto;
     }

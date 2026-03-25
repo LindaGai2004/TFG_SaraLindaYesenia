@@ -15,4 +15,5 @@ public class UsuarioRecomendadoDto {
     private String nombre;
     private String apellidos;
     private Long totalPublicaciones;
+    private String avatar;
 }

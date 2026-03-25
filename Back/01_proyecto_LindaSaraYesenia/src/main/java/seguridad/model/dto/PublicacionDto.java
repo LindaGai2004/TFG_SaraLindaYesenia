@@ -1,5 +1,7 @@
 package seguridad.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +19,7 @@ public class PublicacionDto {
     private String fecha;
     private Integer likes;
     private Integer comentarios;
+    
+    private boolean likedByUser;
+    private List<ComentarioDto> listaComentarios;
 }

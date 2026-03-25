@@ -27,16 +27,18 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 	/* El join es para unir los usarios con su publicacion
 	 * Ordena por el nº de publicaciones */
 	@Query("""
-	        SELECT new seguridad.model.dto.UsuarioRecomendadoDto(
-	            u.idUsuario,
-	            u.nombre,
-	            u.apellidos,
-	            COUNT(p.id)
-	        )
-	        FROM Usuario u
-	        LEFT JOIN Publicacion p ON p.usuario.idUsuario = u.idUsuario
-	        GROUP BY u.idUsuario
-	        ORDER BY COUNT(p.id) DESC
-	    """)
+		    SELECT new seguridad.model.dto.UsuarioRecomendadoDto(
+		        u.idUsuario,
+		        u.nombre,
+		        u.apellidos,
+		        COUNT(p.id),
+		        u.avatar
+		    )
+		    FROM Usuario u
+		    LEFT JOIN Publicacion p ON p.usuario.idUsuario = u.idUsuario
+		    GROUP BY u.idUsuario
+		    ORDER BY COUNT(p.id) DESC
+		""")
+
 	List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados();
 }
