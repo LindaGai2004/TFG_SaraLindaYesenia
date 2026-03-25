@@ -10,4 +10,7 @@ public interface ComentarioPublicacionRepository extends JpaRepository<Comentari
 	List<ComentarioPublicacion> findByPublicacion_IdOrderByFechaDesc(Integer idPublicacion);
 	
 	int countByPublicacion_Id(Integer idPublicacion);
+	
+	List<ComentarioPublicacion> findByPublicacion_Id(Integer idPublicacion);
+
 }

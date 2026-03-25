@@ -54,6 +54,7 @@ public class Usuario implements UserDetails, Serializable{
 	private String direccion;
 	@Column(unique = true)
 	private String email;
+	private String avatar;
 	
 	@ManyToOne
 	@JoinColumn(name="id_perfil")

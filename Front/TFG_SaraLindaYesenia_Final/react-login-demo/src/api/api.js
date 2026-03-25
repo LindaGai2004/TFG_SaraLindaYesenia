@@ -56,8 +56,7 @@ export async function apiPost(path, body, isFormData = false) {
   const isPublic =
     cleanPath.startsWith("/auth") ||
     cleanPath === "/registro" ||
-    cleanPath === "/api/login" ||
-    cleanPath === "/publicaciones"; // SOLO GET general
+    cleanPath === "/api/login";
 
   const headers = isFormData
     ? { ...(isPublic ? {} : getAuthHeader()) }

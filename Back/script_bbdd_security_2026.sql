@@ -17,6 +17,7 @@ create table usuarios(
     fecha_nacimiento date,
     direccion varchar(200),
     email varchar(45) not null unique,
+    avatar varchar(255),
 	id_perfil int,
     foreign key (id_perfil) references perfiles(id_perfil)
 );
@@ -183,12 +184,25 @@ values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 
 
 INSERT INTO usuarios 
-(username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, id_perfil) VALUES
-('tomas', '{noop}tomasin', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
-('sarita', '{noop}sarita', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
-('eva', '{noop}evita', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
-('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
+(username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, avatar, id_perfil) VALUES
+('tomas', '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
+('sarita', '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
+('eva', '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
+('ramon', '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
 
+
+/*UPDATE usuarios
+SET password = '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG'
+WHERE email = 'sara@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC'
+WHERE email = 'tomas@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq'
+WHERE email = 'eva@ifp.com';
+UPDATE usuarios
+SET password = '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe'
+WHERE email = 'ramon@ifp.com';*/
 
 INSERT INTO genero (nombre_genero)VALUES
 ('Arquitectura y diseño'),
@@ -871,19 +885,6 @@ INSERT INTO publicaciones (id_usuario, texto, imagen, fecha, likes, comentarios)
 (2, 'Creo que voy a empezar a escribir reseñas cortas de los libros que leo. No sé si a alguien le servirán, pero a mí me ayudará a recordarlos.', NULL, NOW() - INTERVAL 11 DAY, 2, 0),
 (2, 'Me encanta cuando un libro te hace sentir acompañada, incluso en los días más raros.', NULL, NOW() - INTERVAL 12 DAY, 5, 3);
 
-
-UPDATE usuarios
-SET password = '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG'
-WHERE email = 'sara@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC'
-WHERE email = 'tomas@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq'
-WHERE email = 'eva@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe'
-WHERE email = 'ramon@ifp.com';
 
 ALTER TABLE pedidos
 ADD COLUMN metodo_pago VARCHAR(20),
