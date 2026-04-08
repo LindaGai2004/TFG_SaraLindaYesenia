@@ -18,7 +18,7 @@
   object-fit: cover;
 }
 
-textarea {
+.crear-textarea {
   flex: 1;
   border: none;
   resize: none;
@@ -27,6 +27,7 @@ textarea {
   padding-top: 10px;
 }
 
+/* PREVIEW IMAGEN */
 .preview-imagen {
   position: relative;
   margin-top: 10px;
@@ -37,11 +38,13 @@ textarea {
   border-radius: 10px;
 }
 
+
+/* BOTÓN ELIMINAR IMAGEN */
 .btn-eliminar {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(0,0,0,0.6);
+  background: #6d96a6;
   color: white;
   border: none;
   border-radius: 50%;
@@ -50,30 +53,50 @@ textarea {
   cursor: pointer;
 }
 
+/* BOTTOM */
 .crear-bottom {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
 }
 
+/* BOTÓN SUBIR IMAGEN */
 .btn-subir {
-  background: #f0f0f0;
+  background: #8daebd;
+  color: white;
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  transition: background .2s ease;
+}
+
+.btn-subir:hover {
+  background: #6d96a6;
 }
 
 .btn-subir input {
   display: none;
 }
 
+/* BOTÓN PUBLICAR */
 .btn-publicar {
-  background: #4a6cf7;
+  background: #6d96a6;
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  transition: background .2s ease;
+}
+
+.btn-publicar:hover {
+  background: #8daebd;
+}
+
+.btn-publicar:disabled {
+  background: #8daebd;
+  opacity: 0.5;
+  cursor: not-allowed;
 }

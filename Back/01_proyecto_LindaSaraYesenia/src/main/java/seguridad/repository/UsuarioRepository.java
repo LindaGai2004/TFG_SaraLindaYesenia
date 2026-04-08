@@ -31,14 +31,20 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 		        u.idUsuario,
 		        u.nombre,
 		        u.apellidos,
-		        COUNT(p.id),
-		        u.avatar
+		        COUNT(DISTINCT p.id),
+		        COUNT(DISTINCT l.id),
+		        COUNT(DISTINCT c.id),
+		        u.avatar,
+		        (COUNT(DISTINCT p.id) * 2L + COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id))
 		    )
 		    FROM Usuario u
 		    LEFT JOIN Publicacion p ON p.usuario.idUsuario = u.idUsuario
-		    GROUP BY u.idUsuario
-		    ORDER BY COUNT(p.id) DESC
+		    LEFT JOIN LikePublicacion l ON l.publicacion.id = p.id
+		    LEFT JOIN ComentarioPublicacion c ON c.publicacion.id = p.id
+		    GROUP BY u.idUsuario, u.nombre, u.apellidos, u.avatar
+		    ORDER BY (COUNT(DISTINCT p.id) * 2L + COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) DESC
 		""")
+		List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados();
 
-	List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados();
+
 }

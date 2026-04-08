@@ -12,11 +12,15 @@ export default function SidebarDerecha() {
   async function cargarUsuarios() {
     try {
       const res = await api.apiGet("/recomendados");
+
+      console.log("Usuarios recomendados:", res);
+
       setUsuarios(Array.isArray(res) ? res : []);
     } catch (e) {
       console.error("Error cargando usuarios", e);
     }
   }
+
 
   return (
     <div className="sidebar-derecha">
@@ -29,7 +33,7 @@ export default function SidebarDerecha() {
         {usuarios.map(u => (
           <li key={u.idUsuario} className="usuario-recomendado">
             <img
-              src={u.avatar || "/default-avatar.png"}
+              src={`http://localhost:9001${u.avatar}` || "/default-avatar.png"}
               alt="avatar"
               className="avatar"
             />

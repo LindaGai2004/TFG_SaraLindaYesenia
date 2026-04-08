@@ -17,7 +17,11 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) 
       {/* Cabecera */}
       <div className="publicacion-header">
         <img
-          src={publicacion.usuarioAvatar || "/assets/default-user.png"}
+          src={
+            publicacion.usuarioAvatar
+              ? `http://localhost:9001${publicacion.usuarioAvatar}`
+              : "/assets/default-user.png"
+          }
           alt="avatar"
           className="publicacion-avatar"
         />
@@ -43,7 +47,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) 
       {/* Reacciones */}
       <div className="publicacion-acciones">
 
-        {/* Botón Like con imagen */}
+        {/* Botón Like */}
         <button
           className="btn-accion"
           onClick={() => onLike(publicacion.idPublicacion)}
@@ -56,7 +60,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) 
           {publicacion.likes}
         </button>
 
-        {/* Botón Comentarios con imagen */}
+        {/* Botón Comentarios */}
         <button
           className="btn-accion"
           onClick={() => setMostrarComentarios(!mostrarComentarios)}
@@ -82,7 +86,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) 
             </div>
           ))}
 
-          {/* Botón "ver más" si hay más de 3 */}
+          {/* Botón "ver más" si hay más de 3 comentarios */}
           {publicacion.listaComentarios?.length > 3 && !verTodos && (
             <button
               className="btn-ver-mas"

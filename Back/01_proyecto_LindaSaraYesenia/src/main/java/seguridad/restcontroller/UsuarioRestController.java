@@ -80,6 +80,7 @@ public class UsuarioRestController {
             usuarioDto.setDireccion(usuarioBD.getDireccion());
             usuarioDto.setFechaRegistro(usuarioBD.getFechaRegistro());
             usuarioDto.setPerfil(usuarioBD.getPerfil());
+            usuarioDto.setAvatar(usuarioBD.getAvatar());
 
             return ResponseEntity.ok(Map.of("token", jwt, "user", usuarioDto)
             		);

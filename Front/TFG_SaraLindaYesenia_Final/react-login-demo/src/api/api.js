@@ -52,7 +52,7 @@ export async function apiPost(path, body, isFormData = false) {
   const cleanPath = path.trim().split("?")[0].replace(/\/+$/, "");
   const query = path.includes("?") ? "?" + path.split("?")[1] : "";
 
-  // SOLO estas rutas son públicas
+  // Solo estas rutas son públicas
   const isPublic =
     cleanPath.startsWith("/auth") ||
     cleanPath === "/registro" ||
@@ -75,7 +75,6 @@ export async function apiPost(path, body, isFormData = false) {
 
   return await res.json();
 }
-
 
 
 export async function apiPut(path, body) {
