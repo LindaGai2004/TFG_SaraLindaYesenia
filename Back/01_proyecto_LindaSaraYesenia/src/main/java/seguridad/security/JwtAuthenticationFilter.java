@@ -28,17 +28,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 	        throws ServletException, IOException {
 		
-		// Permitir preflight OPTIONS (CORS)
-	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+		String path = request.getRequestURI();
+	    String method = request.getMethod();
+	    
+	    if ("OPTIONS".equalsIgnoreCase(method)) {
 	        filterChain.doFilter(request, response);
 	        return;
 	    }
+		
+		// Permitir preflight OPTIONS (CORS)
+	    /*if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }*/
 
 	    //String path = request.getServletPath();
-	    String path = request.getRequestURI();
+	    //String path = request.getRequestURI();
 
 
-	 // rutas públicas
+	    // rutas públicas
 	    if (
 	    	    path.startsWith("/auth") ||
 	    	    path.equals("/api/login") ||
@@ -46,12 +54,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	    	    path.startsWith("/actuator/health") ||
 	    	    path.startsWith("/api/paypal") ||
 
-	    	    // Comunidad (solo GET)
-	    	    (path.equals("/publicaciones") && request.getMethod().equals("GET")) ||
-	    	    (path.startsWith("/publicaciones/") && request.getMethod().equals("GET")) ||
-
-	    	    // Crear publicación (POST /publicaciones)
-	    	    (path.equals("/publicaciones") && request.getMethod().equals("POST")) ||
+	    	    // Comunidad (todas las variantes)
+	    	    (path.equals("/publicaciones") && method.equals("POST")) ||
+	    	    (path.equals("/publicaciones") && method.equals("GET")) ||
+	    	    (path.startsWith("/publicaciones/") && method.equals("GET")) ||
 
 	    	    // Catálogo
 	    	    path.startsWith("/productos") ||
@@ -76,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 
 
-	    // A partir de aquí, rutas protegidas
+	    // Rutas protegidas
 	    final String authHeader = request.getHeader("Authorization");
 
 	    if (authHeader == null || !authHeader.startsWith("Bearer ")) {

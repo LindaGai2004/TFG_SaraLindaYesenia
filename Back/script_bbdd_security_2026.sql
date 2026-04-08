@@ -176,7 +176,6 @@ create table comentarios_publicacion (
 );
 
 
-
 INSERT INTO perfiles(nombre)
 values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 ('ROLE_TRABAJADOR'),
@@ -185,24 +184,14 @@ values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 
 INSERT INTO usuarios 
 (username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, avatar, id_perfil) VALUES
-('tomas', '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
-('sarita', '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
-('eva', '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
-('ramon', '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
+('tomas', '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'Madrid', 'tomas@ifp.com', '/uploads/perfiles/tomas.png', 1),
+('sarita', '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'Sevilla', 'sara@ifp.com', '/uploads/perfiles/sara.png', 2),
+('juan', '$2a$10$JWVBDtdPuxc3Lp7W4BieDO7js2mvEz6YiSEj9e1e6mGhwRmRmsj4m', 'Juan', 'García', 1, '2018-12-23', '1970-06-21', 'Galicia', 'juan@ifp.com', '/uploads/perfiles/juan.png', 2),
+('paqui', '$2a$10$tnK/swSN.pPaSnByMaLyU.sfLCkDsE1mqZ7F93Is.QXl72eNxSgTq', 'Paqui', 'Rodríguez', 1, '2004-05-14', '1989-02-13', 'Cuenca', 'paqui@ifp.com', '/uploads/perfiles/paqui.png', 2),
+('carlos', '$2a$10$LG/oVQoygOcECMEsZ3159us096iIFQl3PrsPg/u3DNPXVpykU85A2', 'Carlos', 'Rubio', 1, '2023-09-29', '2003-10-02', 'Salamanca', 'carlos@ifp.com', '/uploads/perfiles/carlos.png', 2),
+('eva', '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'Cordoba', 'eva@ifp.com', '/uploads/perfiles/eva.png', 3),
+('ramon', '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'Madrid','ramon@ifp.com', '/uploads/perfiles/ramon.png', 4);
 
-
-/*UPDATE usuarios
-SET password = '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG'
-WHERE email = 'sara@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC'
-WHERE email = 'tomas@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq'
-WHERE email = 'eva@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe'
-WHERE email = 'ramon@ifp.com';*/
 
 INSERT INTO genero (nombre_genero)VALUES
 ('Arquitectura y diseño'),
@@ -880,9 +869,9 @@ INSERT INTO publicaciones (id_usuario, texto, imagen, fecha, likes, comentarios)
 (2, '¿Alguna recomendación de libros de misterio? Me apetece algo que me enganche desde la primera página.', NULL, NOW() - INTERVAL 6 DAY, 6, 3),
 (2, 'Hoy he tenido una tarde tranquila con café y lectura. Ojalá más días así.', NULL, NOW() - INTERVAL 7 DAY, 2, 0),
 (2, 'Estoy releyendo un libro que me marcó hace años. Qué curioso cómo cambia la perspectiva con el tiempo.', NULL, NOW() - INTERVAL 8 DAY, 3, 1),
-(2, 'A veces solo necesito desconectar un rato y perderme entre páginas. Es mi forma favorita de respirar.', NULL, NOW() - INTERVAL 9 DAY, 4, 2),
+(4, 'A veces solo necesito desconectar un rato y perderme entre páginas. Es mi forma favorita de respirar.', NULL, NOW() - INTERVAL 9 DAY, 4, 2),
 (2, 'Hoy me he dado cuenta de que subrayo demasiado, pero no pienso parar. Cada frase bonita merece ser guardada.', NULL, NOW() - INTERVAL 10 DAY, 1, 0),
-(2, 'Creo que voy a empezar a escribir reseñas cortas de los libros que leo. No sé si a alguien le servirán, pero a mí me ayudará a recordarlos.', NULL, NOW() - INTERVAL 11 DAY, 2, 0),
+(3, 'Creo que voy a empezar a escribir reseñas cortas de los libros que leo. No sé si a alguien le servirán, pero a mí me ayudará a recordarlos.', NULL, NOW() - INTERVAL 11 DAY, 2, 0),
 (2, 'Me encanta cuando un libro te hace sentir acompañada, incluso en los días más raros.', NULL, NOW() - INTERVAL 12 DAY, 5, 3);
 
 

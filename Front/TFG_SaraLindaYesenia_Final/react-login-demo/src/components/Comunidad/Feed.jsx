@@ -22,11 +22,15 @@ export default function Feed() {
       setCargando(false);
     }
   };
-
-
+  
   useEffect(() => {
     cargarPublicaciones();
   }, []);
+
+  useEffect(() => {
+    console.log("PUBLICACIONES:", publicaciones);
+  }, [publicaciones]);
+
 
   const agregarPublicacion = (nuevaPub) => {
     setPublicaciones((prev) => [
@@ -41,7 +45,7 @@ export default function Feed() {
         `/publicaciones/${idPublicacion}/like?idUsuario=${user.idUsuario}`
       );
 
-      // Si la API devolvió undefined, significa 401 → NO tocar contador
+      // Si la api devuelve undefined, significa 401 -> tocar contador
       if (liked === undefined) return;
 
       setPublicaciones((prev) =>

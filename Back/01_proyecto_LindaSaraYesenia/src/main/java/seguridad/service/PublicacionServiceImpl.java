@@ -96,6 +96,7 @@ public class PublicacionServiceImpl implements PublicacionService {
         dto.setTexto(p.getTexto());
         dto.setImagen(p.getImagen());
         dto.setUsuarioNombre(p.getUsuario().getNombre());
+        dto.setUsuarioAvatar(p.getUsuario().getAvatar());
         dto.setFecha(formatearFecha(p.getFecha()));
 
         // Likes reales

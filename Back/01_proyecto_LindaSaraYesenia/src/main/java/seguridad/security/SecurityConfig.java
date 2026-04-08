@@ -35,7 +35,8 @@ public class SecurityConfig {
    
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); //Seguridad -> permite enviar cookies y headers entre front y back
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.addAllowedOriginPattern("*");
+        //config.setAllowedOrigins(List.of("http://localhost:5173"));
         //config.addAllowedHeader("*");
         config.setAllowedHeaders(List.of("*"));
 
@@ -48,6 +49,7 @@ public class SecurityConfig {
         // vuelve a spring
         return source;
     }
+    
     
     //Configuración de Seguridad principal
     @Bean
@@ -85,7 +87,9 @@ public class SecurityConfig {
             	    "/generos/**",
             	    "/idiomas/**",
             	    "/categorias/**",
-            	    "/marcas/**"
+            	    "/marcas/**",
+            	    
+            	    "/encrypt"
             	).permitAll()
 
             	.requestMatchers(HttpMethod.POST, "/publicaciones").permitAll()

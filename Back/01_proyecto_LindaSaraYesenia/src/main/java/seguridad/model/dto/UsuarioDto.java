@@ -22,6 +22,7 @@ public class UsuarioDto {
 	private String direccion;
 	private String email;
 	private LocalDate fechaRegistro;
+	private String avatar;
 	private Perfil perfil;
 
 
@@ -33,6 +34,7 @@ public class UsuarioDto {
 		this.direccion = usuario.getDireccion();
 		this.email = usuario.getEmail();
 		this.fechaRegistro = usuario.getFechaRegistro();
+		this.avatar = usuario.getAvatar();
 		this.perfil = usuario.getPerfil();
 	}
 }

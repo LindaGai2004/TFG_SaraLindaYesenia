@@ -68,14 +68,6 @@ public class Usuario implements UserDetails, Serializable{
 	)
 	private List<Producto> favoritos = new ArrayList<>();
 	
-
-/*
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// Spring espera "ROLE_ADMIN", "ROLE_USER", etc.
-        return List.of(new SimpleGrantedAuthority(perfil.getNombre()));
-	}
-	*/
 	
 	@Override public String getUsername() { 
 		return this.email; 
