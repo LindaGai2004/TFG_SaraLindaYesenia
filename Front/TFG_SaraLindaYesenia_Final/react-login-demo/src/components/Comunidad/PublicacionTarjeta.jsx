@@ -40,7 +40,10 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) 
       {/* Imagen */}
       {publicacion.imagen && (
         <div className="publicacion-imagen">
-          <img src={publicacion.imagen} alt="imagen publicación" />
+          <img
+            src={`http://localhost:9001${publicacion.imagen}`}
+            alt="imagen publicación"
+          />
         </div>
       )}
 
@@ -53,7 +56,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) 
           onClick={() => onLike(publicacion.idPublicacion)}
         >
           <img
-            src="/assets/icons/like.png"
+            src="/corazon.jpg"
             alt="like"
             className="icono-accion"
           />
