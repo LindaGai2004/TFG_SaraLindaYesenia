@@ -95,7 +95,7 @@ export async function apiPut(path, body) {
   return text ? JSON.parse(text) : null;
 }
 
-export async function apiDelete(path) {
+{/*export async function apiDelete(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
     method: 'DELETE',
     headers: {
@@ -110,6 +110,39 @@ export async function apiDelete(path) {
 
   const text = await res.text();
   return text ? JSON.parse(text) : null;
+} */}
+
+export async function apiDelete(path) {
+  // Limpiamos la ruta por si acaso
+  const cleanPath = path.trim().split("?")[0].replace(/\/+$/, "");
+  const query = path.includes("?") ? "?" + path.split("?")[1] : "";
+
+  const res = await fetch(`${BASE_URL}${cleanPath}${query}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeader()
+    }
+  });
+
+  // Si recibimos 401 (Token caducado)
+  if (res.status === 401) return handle401();
+
+  // Si hay error (403, 404, 500...)
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(errorText || "Error al eliminar");
+  }
+
+  // Si el borrado fue bien (200 OK)
+  const text = await res.text();
+  
+  try {
+    return text ? JSON.parse(text) : true;
+  } catch (e) {
+    // Si el backend devolvió un texto plano en lugar de JSON
+    return { mensaje: text }; 
+  }
 }
 
 export default {

@@ -23,4 +23,6 @@ public interface PublicacionService {
     boolean toggleLike(Integer idPublicacion, Integer idUsuario);
 
     void agregarComentario(Integer idPublicacion, Integer idUsuario, String texto);
+
+	boolean toggleSeguir(Integer idSeguidor, Integer idSeguido);
 }
