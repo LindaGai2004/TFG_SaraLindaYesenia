@@ -4,17 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import seguridad.model.ComentarioPublicacion;
 import seguridad.model.LikePublicacion;
 import seguridad.model.Publicacion;
+import seguridad.model.Seguidor;
 import seguridad.model.Usuario;
 import seguridad.model.dto.ComentarioDto;
 import seguridad.model.dto.PublicacionDto;
 import seguridad.repository.ComentarioPublicacionRepository;
 import seguridad.repository.LikePublicacionRepository;
 import seguridad.repository.PublicacionRepository;
+import seguridad.repository.SeguidorRepository;
 import seguridad.repository.UsuarioRepository;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -34,6 +40,9 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     @Autowired
     private ComentarioPublicacionRepository comentarioRepo;
+    
+    @Autowired
+    private SeguidorRepository seguidorRepo;
     
     
     private Integer obtenerIdUsuarioActual() {
@@ -67,6 +76,8 @@ public class PublicacionServiceImpl implements PublicacionService {
                 .toList();
     }
 
+    
+    // Crear publicación
     @Override
     public Publicacion crearPublicacion(Usuario usuario, String texto, String imagen) {
         Publicacion p = new Publicacion();
@@ -77,14 +88,32 @@ public class PublicacionServiceImpl implements PublicacionService {
         return publicacionRepo.save(p);
     }
 
+    
     @Override
     public Publicacion obtenerPorId(Integer id) {
         return publicacionRepo.findById(id).orElse(null);
     }
 
+    
+    // Eliminar publicación
     @Override
     public void eliminarPublicacion(Integer id) {
-        publicacionRepo.deleteById(id);
+        Publicacion pub = publicacionRepo.findById(id).orElse(null);
+        if (pub != null) {
+            // 1. Borrar el archivo físico si tiene imagen
+            if (pub.getImagen() != null) {
+                try {
+                    // Extraemos el nombre del archivo de la ruta "/uploads/publicaciones/nombre.jpg"
+                    String nombreImagen = pub.getImagen().substring(pub.getImagen().lastIndexOf("/") + 1);
+                    Path ruta = Paths.get("C:/Users/saray/Documents/TFG_SaraLindaYesenia/Back/01_proyecto_LindaSaraYesenia/upload/publicaciones/" + nombreImagen);
+                    Files.deleteIfExists(ruta);
+                } catch (Exception e) {
+                    System.err.println("No se pudo borrar el archivo físico: " + e.getMessage());
+                }
+            }
+            // 2. Borrar de la base de datos
+            publicacionRepo.deleteById(id);
+        }
     }
 
     // mapper
@@ -181,6 +210,41 @@ public class PublicacionServiceImpl implements PublicacionService {
         c.setTexto(texto);
 
         comentarioRepo.save(c);
+    }
+    
+    
+    // Seguir usuarios
+    @Override
+    @Transactional
+    public boolean toggleSeguir(Integer idSeguidor, Integer idSeguido) {
+        // Evitar que alguien se siga a sí mismo
+        if (idSeguidor.equals(idSeguido)) {
+            throw new RuntimeException("No puedes seguirte a ti mismo");
+        }
+
+        // Buscar a ambos usuarios
+        Usuario seguidor = usuarioRepo.findById(idSeguidor)
+                .orElseThrow(() -> new RuntimeException("Usuario seguidor no encontrado"));
+        Usuario seguido = usuarioRepo.findById(idSeguido)
+                .orElseThrow(() -> new RuntimeException("Usuario a seguir no encontrado"));
+
+        // Comprobar si ya existe la relación en la tabla 'seguidores'
+        Optional<Seguidor> existe = seguidorRepo.findBySeguidorAndSeguido(seguidor, seguido);
+
+        if (existe.isPresent()) {
+            // Si existe, lo borramos (dejar de seguir)
+            seguidorRepo.delete(existe.get());
+            return false; // Devolvemos false porque ya no le sigue
+        } else {
+            // Si no existe, lo creamos (sigue)
+            Seguidor nuevoSeguimiento = new Seguidor();
+            nuevoSeguimiento.setSeguidor(seguidor);
+            nuevoSeguimiento.setSeguido(seguido);
+            nuevoSeguimiento.setFechaSeguimiento(LocalDateTime.now());
+            
+            seguidorRepo.save(nuevoSeguimiento);
+            return true; // Devolvemos true porque ahora sí le sigue
+        }
     }
 
 }

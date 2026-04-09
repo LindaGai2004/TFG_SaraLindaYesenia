@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.core.Authentication;
 
 import seguridad.model.Publicacion;
 import seguridad.model.Usuario;
@@ -117,5 +119,58 @@ public class PublicacionRestController {
         return ResponseEntity.ok(
             Map.of("mensaje", "Comentario añadido correctamente")
         );
+    }
+    
+    
+    // Eliminar publicación
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarPublicacion(
+            @PathVariable Integer id, 
+            @RequestParam Integer idUsuario,
+            Authentication auth // Para verificar el rol de ADMIN si quieres
+    ) {
+        try {
+            Publicacion pub = publicacionService.obtenerPorId(id);
+
+            if (pub == null) {
+                return ResponseEntity.status(404).body("La publicación no existe");
+            }
+
+            // Solo el autor o el admin (Rol = 1) pueden eliminar la publicacion
+            Usuario usuarioActual = (Usuario) auth.getPrincipal();
+            boolean esAutor = pub.getUsuario().getIdUsuario().equals(idUsuario);
+            boolean esAdmin = usuarioActual.getPerfil().getIdPerfil() == 1;
+
+            if (!esAutor && !esAdmin) {
+                return ResponseEntity.status(403).body("No tienes permiso para eliminar esta publicación");
+            }
+
+            publicacionService.eliminarPublicacion(id);
+            return ResponseEntity.ok(Map.of("mensaje", "Publicación eliminada correctamente"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error al eliminar la publicación: " + e.getMessage());
+        }
+    }
+    
+    
+    // Seguir usuarios
+    @PostMapping("/usuarios/{idSeguido}/seguir")
+    public ResponseEntity<?> seguirUsuario(
+            @PathVariable Integer idSeguido, 
+            @RequestParam Integer idUsuarioActual // El que está logueado en React
+    ) {
+        try {
+            boolean siguiendo = publicacionService.toggleSeguir(idUsuarioActual, idSeguido);
+            String mensaje = siguiendo ? "Ahora sigues a este usuario" : "Has dejado de seguir a este usuario";
+            
+            return ResponseEntity.ok(Map.of(
+                "siguiendo", siguiendo,
+                "mensaje", mensaje
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al procesar el seguimiento");
+        }
     }
 }

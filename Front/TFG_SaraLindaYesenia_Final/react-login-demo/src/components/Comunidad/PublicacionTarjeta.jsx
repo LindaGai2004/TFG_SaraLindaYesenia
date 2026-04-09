@@ -1,10 +1,15 @@
 import "./PublicacionTarjeta.css";
 import { useState } from "react";
 
-export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) {
+export default function PublicacionTarjeta({ publicacion, onLike, onComentar, onEliminar }) {
   const [comentario, setComentario] = useState("");
   const [mostrarComentarios, setMostrarComentarios] = useState(false);
   const [verTodos, setVerTodos] = useState(false);
+
+  // Obtenemos el usuario logueado desde el localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const esDuenio = user && user.nombre === publicacion.usuarioNombre;
+  const esAdmin = user && user.perfil?.idPerfil === 1;
 
   // Mostrar solo los primeros 3 si no está expandido
   const comentariosVisibles = verTodos
@@ -15,21 +20,39 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar }) 
     <div className="publicacion-tarjeta">
 
       {/* Cabecera */}
-      <div className="publicacion-header">
-        <img
-          src={
-            publicacion.usuarioAvatar
-              ? `http://localhost:9001${publicacion.usuarioAvatar}`
-              : "/assets/default-user.png"
-          }
-          alt="avatar"
-          className="publicacion-avatar"
-        />
+      <div className="publicacion-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <img
+            src={
+              publicacion.usuarioAvatar
+                ? `http://localhost:9001${publicacion.usuarioAvatar}`
+                : "/assets/default-user.png"
+            }
+            alt="avatar"
+            className="publicacion-avatar"
+          />
 
-        <div className="publicacion-info">
-          <span className="publicacion-usuario">{publicacion.usuarioNombre}</span>
-          <span className="publicacion-fecha">{publicacion.fecha}</span>
+          <div className="publicacion-info">
+            <span className="publicacion-usuario">{publicacion.usuarioNombre}</span>
+            <span className="publicacion-fecha">{publicacion.fecha}</span>
+          </div>
         </div>
+
+        {/* BOTÓN ELIMINAR */}
+        {(esDuenio || esAdmin) && (
+          <button 
+            className="btn-eliminar-publicacion" 
+            onClick={() => {
+              if(window.confirm("¿Estás seguro de que quieres borrar esta publicación?")) {
+                onEliminar(publicacion.idPublicacion);
+              }
+            }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
+          >
+            🗑️
+          </button>
+        )}
       </div>
 
       {/* Texto */}

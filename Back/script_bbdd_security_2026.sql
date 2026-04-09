@@ -176,6 +176,16 @@ create table comentarios_publicacion (
 );
 
 
+CREATE TABLE seguidores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_seguidor INT NOT NULL,
+    id_seguido INT NOT NULL,
+    fecha_seguimiento DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_seguidor FOREIGN KEY (id_seguidor) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+    CONSTRAINT fk_seguido FOREIGN KEY (id_seguido) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+);
+
+
 INSERT INTO perfiles(nombre)
 values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 ('ROLE_TRABAJADOR'),

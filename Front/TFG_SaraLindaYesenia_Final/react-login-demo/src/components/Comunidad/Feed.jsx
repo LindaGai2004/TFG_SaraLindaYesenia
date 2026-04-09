@@ -27,10 +27,21 @@ export default function Feed() {
     cargarPublicaciones();
   }, []);
 
-  useEffect(() => {
-    console.log("PUBLICACIONES:", publicaciones);
-  }, [publicaciones]);
-
+  // Eliminar publicación
+  const handleEliminar = async (idPublicacion) => {
+    try {
+      // Llamada al DELETE del backend que creamos antes
+      await api.apiDelete(`/publicaciones/${idPublicacion}?idUsuario=${user.idUsuario}`);
+      
+      // Filtramos el estado local para que la publicación desaparezca sin recargar
+      setPublicaciones((prev) => 
+        prev.filter((p) => p.idPublicacion !== idPublicacion)
+      );
+    } catch (e) {
+      console.error("Error al eliminar la publicación:", e);
+      alert("No se pudo eliminar la publicación");
+    }
+  };
 
   const agregarPublicacion = (nuevaPub) => {
     setPublicaciones((prev) => [
@@ -45,7 +56,6 @@ export default function Feed() {
         `/publicaciones/${idPublicacion}/like?idUsuario=${user.idUsuario}`
       );
 
-      // Si la api devuelve undefined, significa 401 -> tocar contador
       if (liked === undefined) return;
 
       setPublicaciones((prev) =>
@@ -59,7 +69,6 @@ export default function Feed() {
       console.error("Error dando like:", e);
     }
   };
-
 
   const handleComentar = async (idPublicacion, texto) => {
     try {
@@ -106,6 +115,7 @@ export default function Feed() {
             publicacion={pub}
             onLike={handleLike}
             onComentar={handleComentar}
+            onEliminar={handleEliminar}
           />
         ))
       )}
