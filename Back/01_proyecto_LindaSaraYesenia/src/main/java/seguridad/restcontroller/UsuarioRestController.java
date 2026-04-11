@@ -20,6 +20,7 @@ import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
 import seguridad.security.JwtService;
 import seguridad.service.EmailService;
+import seguridad.service.PublicacionService;
 import seguridad.service.UsuarioService;
 import seguridad.service.VerificacionCuentaService;
 
@@ -29,6 +30,9 @@ public class UsuarioRestController {
 
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private PublicacionService publicacionService;
     
     @Autowired
     private VerificacionCuentaService verificacionService;
@@ -399,8 +403,36 @@ public class UsuarioRestController {
     
     /* Usuarios recomendados para la Comunidad */
     @GetMapping("/recomendados")
-    public List<UsuarioRecomendadoDto> recomendados() {
-    	return usuarioService.obtenerUsuariosRecomendados();
-    }
+    public List<UsuarioRecomendadoDto> recomendados(Authentication auth) {
+        Integer idLogueado = null;
 
+        // Si el usuario está logueado, buscamos su ID
+        if (auth != null && auth.isAuthenticated()) {
+            Usuario u = usuarioService.findByEmail(auth.getName());
+            if (u != null) {
+                idLogueado = u.getIdUsuario();
+            }
+        }
+
+        return usuarioService.obtenerUsuariosRecomendados(idLogueado);
+    }
+    
+    
+    // Seguir usuarios
+    @PostMapping("/usuarios/{idSeguido}/seguir")
+    public ResponseEntity<?> seguirUsuario(
+            @PathVariable Integer idSeguido, 
+            @RequestParam Integer idUsuarioActual
+    ) {
+        try {
+            boolean siguiendo = publicacionService.toggleSeguir(idUsuarioActual, idSeguido);
+            
+            return ResponseEntity.ok(Map.of(
+                "siguiendo", siguiendo,
+                "mensaje", siguiendo ? "Ahora sigues a este usuario" : "Has dejado de seguir a este usuario"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al procesar el seguimiento");
+        }
+    }
 }

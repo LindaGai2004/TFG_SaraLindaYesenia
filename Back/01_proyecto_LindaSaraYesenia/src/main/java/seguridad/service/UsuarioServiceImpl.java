@@ -17,7 +17,8 @@ import org.springframework.stereotype.Service;
 	import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
-	import seguridad.repository.UsuarioRepository;
+import seguridad.repository.SeguidorRepository;
+import seguridad.repository.UsuarioRepository;
 	@Service
 	public class UsuarioServiceImpl implements UsuarioService, UserDetailsService{
 	
@@ -26,6 +27,9 @@ import seguridad.repository.PerfilRepository;
 	
 	@Autowired
 	    private PerfilRepository perfilRepository;
+	
+	@Autowired
+	private SeguidorRepository seguidorRepository;
 	
 	@Autowired
 		private PasswordEncoder passwordEncoder;
@@ -217,10 +221,30 @@ import seguridad.repository.PerfilRepository;
 	    return usuarioRepository.save(usuario);
 	}
 
-
+	
+	
 	@Override
-	public List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados() {
-	    return usuarioRepository.obtenerUsuariosRecomendados();
+	public List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados(Integer idUsuarioLogueado) {
+	    List<UsuarioRecomendadoDto> recomendados = usuarioRepository.obtenerUsuariosRecomendados();
+	    
+	    // i no hay usuario logueado, devolvemos la lista tal cual
+	    if (idUsuarioLogueado == null) {
+	        return recomendados;
+	    }
+
+	    Usuario usuarioLogueado = usuarioRepository.findById(idUsuarioLogueado).orElse(null);
+
+	    // Por cada recomendado, comprobamos si el usuario logueado ya lo sigue
+	    for (UsuarioRecomendadoDto dto : recomendados) {
+	        Usuario usuarioRecomendado = usuarioRepository.findById(dto.getIdUsuario()).orElse(null);
+	        
+	        if (usuarioLogueado != null && usuarioRecomendado != null) {
+	            boolean yaLoSigo = seguidorRepository.findBySeguidorAndSeguido(usuarioLogueado, usuarioRecomendado).isPresent();
+	            dto.setSiguiendo(yaLoSigo);
+	        }
+	    }
+
+	    return recomendados;
 	}
 
 }

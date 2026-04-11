@@ -28,6 +28,6 @@ public interface UsuarioService extends UserDetailsService{
 	List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
 
 	/* Usuarios recomendados */
-	List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados();
+	List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados(Integer idUsuarioLogueado);
 
 }

@@ -147,12 +147,14 @@ create table facturas(
 create table publicaciones (
     id_publicacion int auto_increment primary key,
     id_usuario int not null,
+    id_producto int null,
     texto text,
     imagen varchar(250),
     fecha datetime default current_timestamp,
     likes int default 0,
     comentarios int default 0,
-    foreign key(id_usuario) references usuarios(id_usuario)
+    foreign key(id_usuario) references usuarios(id_usuario),
+    foreign key(id_producto) references productos(id_producto)
 );
 
 create table likes_publicacion (
@@ -176,13 +178,14 @@ create table comentarios_publicacion (
 );
 
 
-CREATE TABLE seguidores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_seguidor INT NOT NULL,
-    id_seguido INT NOT NULL,
+create table seguidores (
+    id int auto_increment primary key,
+    id_seguidor int not null,
+    id_seguido int not null,
     fecha_seguimiento DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_seguidor FOREIGN KEY (id_seguidor) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
-    CONSTRAINT fk_seguido FOREIGN KEY (id_seguido) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+    unique key unica_relacion (id_seguidor, id_seguido),
+    foreign key (id_seguidor) references usuarios(id_usuario) on delete cascade,
+    foreign key (id_seguido) references usuarios(id_usuario) on delete cascade
 );
 
 

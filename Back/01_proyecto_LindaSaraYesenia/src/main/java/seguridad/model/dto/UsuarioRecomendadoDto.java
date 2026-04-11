@@ -20,5 +20,6 @@ public class UsuarioRecomendadoDto {
     private String avatar;
 
     private Long popularidad;
+    private boolean siguiendo;
     
 }

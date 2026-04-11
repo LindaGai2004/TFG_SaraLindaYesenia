@@ -22,7 +22,12 @@ public class Publicacion {
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "id_producto", nullable = true)
+    // nullable = true porque no todas las publicaciones tienen libro
+    private Producto producto;
+    
     @Column(columnDefinition = "TEXT")
     private String texto;
 

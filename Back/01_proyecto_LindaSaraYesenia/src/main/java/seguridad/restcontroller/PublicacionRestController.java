@@ -48,6 +48,7 @@ public class PublicacionRestController {
     public ResponseEntity<PublicacionDto> crearPublicacion(
             @RequestParam Integer idUsuario,
             @RequestParam String texto,
+            @RequestParam(required = false) Integer idProducto,
             @RequestParam(required = false) MultipartFile imagen
     ){
         try {
@@ -77,7 +78,8 @@ public class PublicacionRestController {
             Publicacion nueva = publicacionService.crearPublicacion(
                     usuario,
                     texto,
-                    nombreImagen != null ? "/uploads/publicaciones/" + nombreImagen : null
+                    nombreImagen != null ? "/uploads/publicaciones/" + nombreImagen : null,
+                    idProducto
             );
 
             return ResponseEntity.ok(publicacionService.mapToDto(nueva));
@@ -155,22 +157,4 @@ public class PublicacionRestController {
     }
     
     
-    // Seguir usuarios
-    @PostMapping("/usuarios/{idSeguido}/seguir")
-    public ResponseEntity<?> seguirUsuario(
-            @PathVariable Integer idSeguido, 
-            @RequestParam Integer idUsuarioActual // El que está logueado en React
-    ) {
-        try {
-            boolean siguiendo = publicacionService.toggleSeguir(idUsuarioActual, idSeguido);
-            String mensaje = siguiendo ? "Ahora sigues a este usuario" : "Has dejado de seguir a este usuario";
-            
-            return ResponseEntity.ok(Map.of(
-                "siguiendo", siguiendo,
-                "mensaje", mensaje
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al procesar el seguimiento");
-        }
-    }
 }

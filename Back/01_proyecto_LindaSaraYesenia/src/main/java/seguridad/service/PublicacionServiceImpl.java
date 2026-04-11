@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import seguridad.model.ComentarioPublicacion;
+import seguridad.model.Libro;
 import seguridad.model.LikePublicacion;
+import seguridad.model.Papeleria;
 import seguridad.model.Publicacion;
 import seguridad.model.Seguidor;
 import seguridad.model.Usuario;
@@ -14,6 +16,7 @@ import seguridad.model.dto.ComentarioDto;
 import seguridad.model.dto.PublicacionDto;
 import seguridad.repository.ComentarioPublicacionRepository;
 import seguridad.repository.LikePublicacionRepository;
+import seguridad.repository.ProductoRepository;
 import seguridad.repository.PublicacionRepository;
 import seguridad.repository.SeguidorRepository;
 import seguridad.repository.UsuarioRepository;
@@ -40,6 +43,9 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     @Autowired
     private ComentarioPublicacionRepository comentarioRepo;
+    
+    @Autowired
+    private ProductoRepository productoRepo;
     
     @Autowired
     private SeguidorRepository seguidorRepo;
@@ -79,11 +85,18 @@ public class PublicacionServiceImpl implements PublicacionService {
     
     // Crear publicación
     @Override
-    public Publicacion crearPublicacion(Usuario usuario, String texto, String imagen) {
+    public Publicacion crearPublicacion(Usuario usuario, String texto, String imagen, Integer idProducto) {
         Publicacion p = new Publicacion();
         p.setUsuario(usuario);
         p.setTexto(texto);
         p.setImagen(imagen);
+        
+        // Buscael producto y asignarlo
+        if (idProducto != null) {
+            productoRepo.findById(idProducto).ifPresent(prod -> {
+                p.setProducto(prod);
+            });
+        }
 
         return publicacionRepo.save(p);
     }
@@ -124,10 +137,27 @@ public class PublicacionServiceImpl implements PublicacionService {
         dto.setIdPublicacion(p.getId());
         dto.setTexto(p.getTexto());
         dto.setImagen(p.getImagen());
+        
         dto.setUsuarioNombre(p.getUsuario().getNombre());
         dto.setUsuarioAvatar(p.getUsuario().getAvatar());
         dto.setFecha(formatearFecha(p.getFecha()));
 
+        if (p.getProducto() != null) {
+            dto.setIdProducto(p.getProducto().getIdProducto());
+            dto.setNombreProducto(p.getProducto().getNombreProducto());
+            dto.setPrecioProducto(p.getProducto().getPrecio());
+
+            if (p.getProducto() instanceof Libro) {
+                dto.setTipoProducto("LIBRO");
+            } else if (p.getProducto() instanceof Papeleria) {
+                dto.setTipoProducto("PAPELERIA");
+            }
+
+            if (p.getProducto().getImagenes() != null && !p.getProducto().getImagenes().isEmpty()) {
+                dto.setImagenProducto(p.getProducto().getImagenes().get(0).getRuta());
+            }
+        }
+        
         // Likes reales
         Integer likes = likeRepo.countByPublicacion_Id(p.getId());
         dto.setLikes(likes == null ? 0 : likes);

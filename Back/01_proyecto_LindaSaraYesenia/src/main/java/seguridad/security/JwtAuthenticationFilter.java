@@ -28,61 +28,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 	        throws ServletException, IOException {
 		
-		String path = request.getRequestURI();
-	    String method = request.getMethod();
+		// String path = request.getRequestURI();
+	    // String method = request.getMethod();
 	    
-	    if ("OPTIONS".equalsIgnoreCase(method)) {
-	        filterChain.doFilter(request, response);
-	        return;
-	    }
-		
-		// Permitir preflight OPTIONS (CORS)
-	    /*if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+	    /*if ("OPTIONS".equalsIgnoreCase(method)) {
 	        filterChain.doFilter(request, response);
 	        return;
 	    }*/
+		
+		// Es vital que esto esté al principio para que el navegador no bloquee tus POST/DELETE
+	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
 
 	    //String path = request.getServletPath();
 	    //String path = request.getRequestURI();
 
 
-	    // rutas públicas
-	    if (
-	    	    path.startsWith("/auth") ||
-	    	    path.equals("/api/login") ||
-	    	    path.equals("/registro") ||
-	    	    path.startsWith("/actuator/health") ||
-	    	    path.startsWith("/api/paypal") ||
-
-	    	    // Comunidad (todas las variantes)
-	    	    (path.equals("/publicaciones") && method.equals("POST")) ||
-	    	    (path.equals("/publicaciones") && method.equals("GET")) ||
-	    	    (path.startsWith("/publicaciones/") && method.equals("GET")) ||
-
-	    	    // Catálogo
-	    	    path.startsWith("/productos") ||
-	    	    path.startsWith("/uploads") ||
-	    	    path.startsWith("/generos") ||
-	    	    path.startsWith("/idiomas") ||
-	    	    path.startsWith("/categorias") ||
-	    	    path.startsWith("/marcas") ||
-
-	    	    // SidebarDerecha
-	    	    path.startsWith("/usuarios/top") ||
-	    	    path.startsWith("/libros/populares") ||
-	    	    path.startsWith("/publicaciones/tendencias") ||
-
-	    	    // Libros y papelería
-	    	    path.startsWith("/libros") ||
-	    	    path.startsWith("/papelerias")
-	    	) {
-	    	    filterChain.doFilter(request, response);
-	    	    return;
-	    	}
-
-
-
-	    // Rutas protegidas
+	    // Obtener la cabecera de authorization
 	    final String authHeader = request.getHeader("Authorization");
 
 	    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -90,21 +54,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	        return;
 	    }
 
-	    String jwt = authHeader.substring(7);
-	    String username = jwtService.extractUsername(jwt);
+	    try {
+	    	// extraemos el jwt y nombre del usuario
+	    	String jwt = authHeader.substring(7);
+	    	String username = jwtService.extractUsername(jwt);
+	    
+	    	// Si hay usuario y no está autenticado aún
+	    	if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+		        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-	    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+		        // Valida el token
+		        if (jwtService.isTokenValid(jwt, userDetails)) {
+		            UsernamePasswordAuthenticationToken authToken =
+		                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-	        if (jwtService.isTokenValid(jwt, userDetails)) {
-	            UsernamePasswordAuthenticationToken authToken =
-	                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+		            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		            // Establecer la autenticación en el contex
+		            SecurityContextHolder.getContext().setAuthentication(authToken);
+		        }
+		    }
 
-	            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-	            SecurityContextHolder.getContext().setAuthentication(authToken);
-	        }
+	    } catch (Exception e) {
+	    	// Si el token es inválido o expiró
+	    	logger.error("No se pudo establecer la autenticación del usuario: " + e.getMessage());
 	    }
-
+	    
 	    filterChain.doFilter(request, response);
 	}
 

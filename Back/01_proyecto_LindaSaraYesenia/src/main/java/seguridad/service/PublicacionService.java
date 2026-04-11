@@ -12,7 +12,7 @@ public interface PublicacionService {
 
     List<PublicacionDto> obtenerPublicacionesPorUsuario(Integer idUsuario);
 
-    Publicacion crearPublicacion(Usuario usuario, String texto, String nombreImagen);
+    Publicacion crearPublicacion(Usuario usuario, String texto, String nombreImagen, Integer idProducto);
 
     Publicacion obtenerPorId(Integer id);
     
