@@ -35,7 +35,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 		        COUNT(DISTINCT l.id),
 		        COUNT(DISTINCT c.id),
 		        u.avatar,
-		        (COUNT(DISTINCT p.id) * 2L + COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id))
+		        (COUNT(DISTINCT p.id) * 2L + COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)),
+		        false
 		    )
 		    FROM Usuario u
 		    LEFT JOIN Publicacion p ON p.usuario.idUsuario = u.idUsuario

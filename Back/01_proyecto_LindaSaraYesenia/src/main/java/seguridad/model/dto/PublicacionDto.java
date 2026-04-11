@@ -20,6 +20,12 @@ public class PublicacionDto {
     private Integer likes;
     private Integer comentarios;
     
+    private Integer idProducto;       // Para el enlace a la tienda
+    private String nombreProducto;   // Para el título de la tarjeta
+    private Double precioProducto;   // Para mostrar el precio
+    private String imagenProducto;   // Para mostrar la portada del libro
+    private String tipoProducto;
+    
     private boolean likedByUser;
     private List<ComentarioDto> listaComentarios;
 }

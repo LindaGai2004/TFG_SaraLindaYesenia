@@ -100,3 +100,43 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.buscador-libros {
+  position: relative;
+  margin: 10px 0;
+}
+.buscador-libros input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+}
+.lista-resultados {
+  position: absolute;
+  background: white;
+  width: 100%;
+  border: 1px solid #ddd;
+  z-index: 10;
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+.lista-resultados li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+.lista-resultados li:hover {
+  background: #f0f2f5;
+}
+.producto-etiquetado {
+  background: #e7f3ff;
+  color: #1877f2;
+  padding: 5px 12px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}

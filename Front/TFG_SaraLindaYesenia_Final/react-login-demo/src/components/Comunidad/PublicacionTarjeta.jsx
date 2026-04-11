@@ -1,5 +1,6 @@
 import "./PublicacionTarjeta.css";
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 export default function PublicacionTarjeta({ publicacion, onLike, onComentar, onEliminar }) {
   const [comentario, setComentario] = useState("");
@@ -69,6 +70,21 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
           />
         </div>
       )}
+
+
+      {/* Enlace al detalle del producto */}
+      {publicacion.idProducto && (
+        <div className="enlace-producto-contenedor">
+          <span className="emoji-libro">📖</span>
+          <Link 
+            to={`/producto/${publicacion.idProducto}`} 
+            className="enlace-producto-detalle"
+          >
+            Ver producto: <strong>{publicacion.nombreProducto}</strong>
+          </Link>
+        </div>
+      )}
+      
 
       {/* Reacciones */}
       <div className="publicacion-acciones">

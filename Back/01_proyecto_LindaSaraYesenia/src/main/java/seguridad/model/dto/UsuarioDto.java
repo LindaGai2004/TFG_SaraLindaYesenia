@@ -24,6 +24,10 @@ public class UsuarioDto {
 	private LocalDate fechaRegistro;
 	private String avatar;
 	private Perfil perfil;
+	
+	private Long seguidores;
+    private Long seguidos;
+    private boolean siguiendo; // Para saber si el usuario sigue ese perfil
 
 
 	public UsuarioDto(Usuario usuario) {
