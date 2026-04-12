@@ -54,6 +54,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     private Integer obtenerIdUsuarioActual() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
 
+        // verifica si no hay una sesión activa o si el usuario ha accedido de forma anónima sin loguearse
         if (auth == null || !auth.isAuthenticated() || auth.getName().equals("anonymousUser")) {
             return null;
         }
@@ -113,7 +114,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     public void eliminarPublicacion(Integer id) {
         Publicacion pub = publicacionRepo.findById(id).orElse(null);
         if (pub != null) {
-            // 1. Borrar el archivo físico si tiene imagen
+            // Borra el archivo físico si tiene imagen
             if (pub.getImagen() != null) {
                 try {
                     // Extraemos el nombre del archivo de la ruta "/uploads/publicaciones/nombre.jpg"
@@ -124,7 +125,7 @@ public class PublicacionServiceImpl implements PublicacionService {
                     System.err.println("No se pudo borrar el archivo físico: " + e.getMessage());
                 }
             }
-            // 2. Borrar de la base de datos
+            // Borra de la base de datos
             publicacionRepo.deleteById(id);
         }
     }
@@ -178,9 +179,7 @@ public class PublicacionServiceImpl implements PublicacionService {
         }
 
         dto.setLikedByUser(likedByUser);
-
-
-
+        
         // Lista de comentarios
         dto.setListaComentarios(
             comentarioRepo.findByPublicacion_IdOrderByFechaDesc(p.getId())
@@ -192,11 +191,11 @@ public class PublicacionServiceImpl implements PublicacionService {
                 ))
                 .toList()
         );
-
         return dto;
     }
 
     
+    // Formatear la fecha en la que se ha realizado la publicaicon
     private String formatearFecha(LocalDateTime fecha) {
         LocalDateTime ahora = LocalDateTime.now();
 

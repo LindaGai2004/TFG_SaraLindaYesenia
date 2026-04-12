@@ -11,12 +11,12 @@ import seguridad.model.Usuario;
 @Repository
 public interface SeguidorRepository extends JpaRepository<Seguidor, Integer> {
     
-    // Para saber si un usuario ya sigue a otro (importante para el botón Seguir/Siguiendo)
+    // Para saber si un usuario ya sigue a otro
     Optional<Seguidor> findBySeguidorAndSeguido(Usuario seguidor, Usuario seguido);
 
-    // Conteo de seguidores de un usuario
+    // Seguidores de un usuario
     Long countBySeguido(Usuario seguido);
 
-    // Conteo de a cuántos sigue un usuario
+    // Cuántos sigue un usuario
     Long countBySeguidor(Usuario seguidor);
 }

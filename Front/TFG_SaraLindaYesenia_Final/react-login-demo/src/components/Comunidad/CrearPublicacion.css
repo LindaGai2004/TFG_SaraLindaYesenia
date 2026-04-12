@@ -47,10 +47,20 @@
   background: #6d96a6;
   color: white;
   border: none;
-  border-radius: 50%;
+  border-radius: 4px;
   width: 28px;
   height: 28px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-eliminar:hover {
+  background: #c0392b;
 }
 
 /* BOTTOM */
@@ -69,6 +79,9 @@
   cursor: pointer;
   font-size: 14px;
   transition: background .2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .btn-subir:hover {
@@ -101,10 +114,15 @@
   cursor: not-allowed;
 }
 
+
+/* Buscador libros -------------------------------------------------------*/
 .buscador-libros {
   position: relative;
+  display: flex;
+  align-items: center;
   margin: 10px 0;
 }
+
 .buscador-libros input {
   width: 100%;
   padding: 8px;
@@ -130,13 +148,21 @@
 .lista-resultados li:hover {
   background: #f0f2f5;
 }
+
+
+/* Producto ya seleccionado -----------------------------------------------*/
 .producto-etiquetado {
-  background: #e7f3ff;
-  color: #1877f2;
-  padding: 5px 12px;
-  border-radius: 15px;
+  background-color: #f0f7ff;
+  border: 1px solid #cce4ff;
+  border-radius: 20px;
+  padding: 8px 15px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin: 10px 0;
+  gap: 10px;
+  width: fit-content;
+}
+
+.producto-etiquetado img {
+  width: 20px;
+  height: 20px;
 }
