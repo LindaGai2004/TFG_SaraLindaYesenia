@@ -98,7 +98,7 @@ export default function CrearPublicacion({ onPublicada }) {
           <div className="buscador-libros">
             <input
               type="text"
-              placeholder="🔍 Etiquetar un libro o producto..."
+              placeholder="Etiquetar un libro o producto..."
               value={busqueda}
               onChange={(e) => buscarProductos(e.target.value)}
             />
@@ -114,8 +114,9 @@ export default function CrearPublicacion({ onPublicada }) {
           </div>
         ) : (
           <div className="producto-etiquetado">
-             <span>📖 {productoSeleccionado.nombreProducto}</span>
-             <button onClick={() => setProductoSeleccionado(null)}>✖</button>
+            <img src="/libro-enlace.png" alt="libro" className="img-libro-enlace" />
+            <span>{productoSeleccionado.nombreProducto}</span>
+            <button onClick={() => setProductoSeleccionado(null)}>✖</button>
           </div>
         )}
       </div>
@@ -130,7 +131,11 @@ export default function CrearPublicacion({ onPublicada }) {
 
       <div className="crear-bottom">
         <label className="btn-subir">
-          📷 Foto del libro
+          <img src= "/foto-subida.png"
+          alt="foto" 
+          className="icono-accion" 
+          style={{ marginRight: '8px' }} />
+          Foto del libro
           <input type="file" accept="image/*" onChange={handleImagen} />
         </label>
 

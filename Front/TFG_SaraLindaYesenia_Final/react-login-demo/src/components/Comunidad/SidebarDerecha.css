@@ -30,9 +30,9 @@
 .btn-seguir {
   padding: 6px 12px;
   border-radius: 20px;
-  border: 1px solid #007bff;
+  border: 1px solid #8daebd;
   background-color: transparent;
-  color: #007bff;
+  color: #8daebd;
   cursor: pointer;
   font-weight: bold;
   transition: 0.3s;
@@ -41,7 +41,7 @@
 }
 
 .btn-seguir:hover {
-  background-color: #007bff;
+  background-color: #8daebd;
   color: white;
 }
 

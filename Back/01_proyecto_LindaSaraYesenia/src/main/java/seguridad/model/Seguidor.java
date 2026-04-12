@@ -21,7 +21,7 @@ public class Seguidor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // El usuario que pulsa el botón "Seguir"
+    // El usuario que pulsa el botón "seguir"
     @ManyToOne
     @JoinColumn(name = "id_seguidor", nullable = false)
     private Usuario seguidor;
