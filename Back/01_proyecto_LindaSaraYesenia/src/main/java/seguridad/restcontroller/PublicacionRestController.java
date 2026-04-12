@@ -93,7 +93,7 @@ public class PublicacionRestController {
     
     
     // Likes
-    @PostMapping("/{id}/like")
+    /*@PostMapping("/{id}/like")
     public ResponseEntity<Map<String, Object>> toggleLike(
             @PathVariable Integer id,
             @RequestParam Integer idUsuario
@@ -106,6 +106,23 @@ public class PublicacionRestController {
                 "mensaje", liked ? "Like añadido" : "Like eliminado"
             )
         );
+    }*/
+    @PostMapping("/{id}/like")
+    public ResponseEntity<Map<String, Object>> toggleLike(
+            @PathVariable("id") Integer id,
+            @RequestParam("idUsuario") Integer idUsuario // Especificamos el nombre exacto
+    ) {
+        try {
+            boolean liked = publicacionService.toggleLike(id, idUsuario);
+            return ResponseEntity.ok(Map.of(
+                "liked", liked,
+                "mensaje", liked ? "Like añadido" : "Like eliminado"
+            ));
+        } catch (Exception e) {
+            // Esto te dirá en la consola de Eclipse qué ha pasado exactamente
+            e.printStackTrace(); 
+            return ResponseEntity.status(500).build();
+        }
     }
     
     

@@ -40,18 +40,22 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
           </div>
         </div>
 
+        
         {/* BOTÓN ELIMINAR */}
         {(esDuenio || esAdmin) && (
           <button 
-            className="btn-eliminar-publicacion" 
+            className="btn-accion"
             onClick={() => {
               if(window.confirm("¿Estás seguro de que quieres borrar esta publicación?")) {
                 onEliminar(publicacion.idPublicacion);
               }
             }}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
           >
-            🗑️
+            <img 
+              src="/eliminar.png" 
+              alt="Eliminar" 
+              className="icono-accion"
+            />
           </button>
         )}
       </div>
@@ -75,12 +79,16 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
       {/* Enlace al detalle del producto */}
       {publicacion.idProducto && (
         <div className="enlace-producto-contenedor">
-          <span className="emoji-libro">📖</span>
+          <img 
+              src="/libro-enlace.png" 
+              alt="Libro" 
+              className="img-libro-enlace"
+            />
           <Link 
             to={`/producto/${publicacion.idProducto}`} 
             className="enlace-producto-detalle"
           >
-            Ver producto: <strong>{publicacion.nombreProducto}</strong>
+            <strong>{publicacion.nombreProducto}</strong>
           </Link>
         </div>
       )}
@@ -91,15 +99,17 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
 
         {/* Botón Like */}
         <button
-          className="btn-accion"
+          className={`btn-accion ${publicacion.likedByUser ? "liked" : ""}`}
           onClick={() => onLike(publicacion.idPublicacion)}
         >
           <img
-            src="/corazon.jpg"
+            src={publicacion.likedByUser ? "/corazon-lleno.png" : "/corazon.jpg"}
             alt="like"
             className="icono-accion"
           />
-          {publicacion.likes}
+          <span className={publicacion.likedByUser ? "count-liked" : ""}>
+            {publicacion.likes}
+          </span>
         </button>
 
         {/* Botón Comentarios */}
@@ -108,7 +118,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
           onClick={() => setMostrarComentarios(!mostrarComentarios)}
         >
           <img
-            src="/assets/icons/comment.png"
+            src="/comentario.png"
             alt="comentarios"
             className="icono-accion"
           />
