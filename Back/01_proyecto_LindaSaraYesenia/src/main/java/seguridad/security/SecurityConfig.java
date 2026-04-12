@@ -92,12 +92,12 @@ public class SecurityConfig {
             	    "/encrypt"
             	).permitAll()
 
-            	.requestMatchers(HttpMethod.POST, "/publicaciones").permitAll()
-            	.requestMatchers(HttpMethod.GET, "/publicaciones/**").permitAll()
+	            .requestMatchers(HttpMethod.GET, "/publicaciones/**").permitAll()
+	        	.requestMatchers(HttpMethod.POST, "/publicaciones").permitAll()
             	.requestMatchers(HttpMethod.DELETE, "/publicaciones/**").authenticated()
             	
-            	.requestMatchers(HttpMethod.POST, "/publicaciones/*/like").authenticated()
-            	.requestMatchers(HttpMethod.POST, "/publicaciones/*/comentarios").authenticated()
+            	.requestMatchers("/publicaciones/*/like").authenticated()
+            	.requestMatchers("/publicaciones/*/comentarios").authenticated()
             	.requestMatchers(HttpMethod.POST, "/usuarios/*/seguir").authenticated()
 
             

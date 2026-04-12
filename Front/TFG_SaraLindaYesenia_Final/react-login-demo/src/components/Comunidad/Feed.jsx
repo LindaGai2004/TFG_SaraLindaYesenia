@@ -33,7 +33,6 @@ export default function Feed() {
       // Llamada al DELETE del backend que creamos antes
       await api.apiDelete(`/publicaciones/${idPublicacion}?idUsuario=${user.idUsuario}`);
       
-      // Filtramos el estado local para que la publicación desaparezca sin recargar
       setPublicaciones((prev) => 
         prev.filter((p) => p.idPublicacion !== idPublicacion)
       );
@@ -50,25 +49,38 @@ export default function Feed() {
     ]);
   };
 
+
   const handleLike = async (idPublicacion) => {
     try {
-      const liked = await api.apiPost(
-        `/publicaciones/${idPublicacion}/like?idUsuario=${user.idUsuario}`
+      const respuesta = await api.apiPost(
+        `/publicaciones/${idPublicacion}/like?idUsuario=${user.idUsuario}`,
+        {}, 
+        true 
       );
 
-      if (liked === undefined) return;
+      // Extraemos el booleano del objeto que manda Java
+      const estaLikeado = respuesta.liked;
+      if (estaLikeado === undefined) return;
+
+      // if (liked === undefined) return;
 
       setPublicaciones((prev) =>
         prev.map((p) =>
           p.idPublicacion === idPublicacion
-            ? { ...p, likes: p.likes + (liked ? 1 : -1), likedByUser: liked }
-            : p
+            ? { 
+              ...p, 
+              // Si es true sumamos 1, si es false restamos 1
+              likes: estaLikeado ? p.likes + 1 : Math.max(0, p.likes - 1), 
+              likedByUser: estaLikeado 
+            }
+          : p
         )
       );
     } catch (e) {
       console.error("Error dando like:", e);
     }
-  };
+  }; 
+
 
   const handleComentar = async (idPublicacion, texto) => {
     try {
