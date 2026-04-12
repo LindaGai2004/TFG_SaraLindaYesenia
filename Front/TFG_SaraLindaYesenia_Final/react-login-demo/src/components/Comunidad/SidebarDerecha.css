@@ -1,0 +1,59 @@
+.usuario-recomendado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.usuario-recomendado .avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.usuario-recomendado .info {
+  display: flex;
+  flex-direction: column;
+}
+
+.usuario-recomendado .info strong {
+  font-size: 14px;
+}
+
+.usuario-recomendado .info span {
+  font-size: 12px;
+  color: #777;
+}
+
+.btn-seguir {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #8daebd;
+  background-color: transparent;
+  color: #8daebd;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+  font-size: 0.85rem;
+  margin-left: auto; /* Empuja el botón a la derecha */
+}
+
+.btn-seguir:hover {
+  background-color: #8daebd;
+  color: white;
+}
+
+/* Estilo cuando ya lo sigues */
+.btn-seguir.siguiendo {
+  background-color: #efefef;
+  color: #333;
+  border-color: #ccc;
+}
+
+.btn-seguir.siguiendo:hover {
+  background-color: #ffcccc;
+  color: #cc0000;
+  border-color: #cc0000;
+}

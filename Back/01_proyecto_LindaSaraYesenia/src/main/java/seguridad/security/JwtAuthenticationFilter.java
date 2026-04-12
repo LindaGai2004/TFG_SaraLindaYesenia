@@ -24,53 +24,62 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		this.userDetailsService = userDetailsService;
 	}
 	
-    @Override
+	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException{
-
-    	//para permitir endpoints de paypal
-    	String path = request.getServletPath();
-
-    	// Rutas públicas que NO deben pasar por el filtro JWT
-    	if (path.startsWith("/auth")
-    	    || path.startsWith("/api/login")
-    	    || path.startsWith("/registro")
-    	    || path.startsWith("/actuator/health")
-    	    || path.startsWith("/api/paypal")) {
-
-    	    filterChain.doFilter(request, response);
-    	    return;
-    	}
-    	
-    	//obtener header (Miramos si la petición trae un token en el header)
-		final String authHeader = request.getHeader("Authorization");
+	        throws ServletException, IOException {
 		
-		//si no hay header o bearer, continuar
-		if (authHeader==null||!authHeader.startsWith("Bearer ")) {
-			filterChain.doFilter(request, response);
-			return;
-		}
+		// String path = request.getRequestURI();
+	    // String method = request.getMethod();
+	    
+	    /*if ("OPTIONS".equalsIgnoreCase(method)) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }*/
 		
-		//Extraer token
-		String jwt = authHeader.substring(7);
-		
-		//Extraer usuario
-		String username = jwtService.extractUsername(jwt);
-		
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-	        if (jwtService.isTokenValid(jwt, userDetails)) {
-	            UsernamePasswordAuthenticationToken authToken =
-	                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-	            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-	            SecurityContextHolder.getContext().setAuthentication(authToken);
-	        }
+		// Es vital que esto esté al principio para que el navegador no bloquee tus POST/DELETE
+	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+	        filterChain.doFilter(request, response);
+	        return;
 	    }
-		
-		//continuar
-		filterChain.doFilter(request, response);
 
+	    //String path = request.getServletPath();
+	    //String path = request.getRequestURI();
+
+
+	    // Obtener la cabecera de authorization
+	    final String authHeader = request.getHeader("Authorization");
+
+	    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
+
+	    try {
+	    	// extraemos el jwt y nombre del usuario
+	    	String jwt = authHeader.substring(7);
+	    	String username = jwtService.extractUsername(jwt);
+	    
+	    	// Si hay usuario y no está autenticado aún
+	    	if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+		        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+		        // Valida el token
+		        if (jwtService.isTokenValid(jwt, userDetails)) {
+		            UsernamePasswordAuthenticationToken authToken =
+		                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+		            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		            // Establecer la autenticación en el contex
+		            SecurityContextHolder.getContext().setAuthentication(authToken);
+		        }
+		    }
+
+	    } catch (Exception e) {
+	    	// Si el token es inválido o expiró
+	    	logger.error("No se pudo establecer la autenticación del usuario: " + e.getMessage());
+	    }
+	    
+	    filterChain.doFilter(request, response);
 	}
+
 }

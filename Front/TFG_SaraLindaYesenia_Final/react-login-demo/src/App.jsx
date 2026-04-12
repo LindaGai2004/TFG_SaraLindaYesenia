@@ -19,7 +19,7 @@ import Portfolio from './pages/Cliente';
 import PaypalSuccess from './pages/PaypalSuccess';
 import PaypalCancel from './pages/PaypalCancel';
 import Checkout from "./pages/Checkout";
-import NotificacionToken from './components/Notificacion_token';
+import Comunidad from './pages/Comunidad';
 import NavBar from './components/NavBar';
 import Footer from "./components/Footer";
 import './App.css';
@@ -60,6 +60,9 @@ export default function App() {
           {/* Página de productos */}
           <Route path="/productos" element={<Productos />} />
           <Route path="/producto/:id" element={<ProductoDetalle />} />
+
+          {/* Comunidad */}
+          <Route path="/comunidad" element={<Comunidad />} />
 
           {/* Rutas protegidas */}
           <Route

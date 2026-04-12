@@ -1,0 +1,114 @@
+.comunidad-page {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  background: #f9f7f4;
+  border-radius: 12px;
+
+  /* Para que el scroll interno funcione */
+  height: calc(100vh - 40px);
+}
+
+/* COLUMNA IZQUIERDA: scroll independiente */
+.columna-izquierda {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  overflow-y: auto; /* scroll solo aquí */
+  padding-right: 10px; /* evita que tape el scroll */
+}
+
+/* COLUMNA DERECHA: fija */
+.columna-derecha {
+  flex: 1;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+
+  height: fit-content;
+  position: sticky; /* e queda fija */
+  top: 20px;
+}
+
+
+/* TITULO */
+.titulo-comunidad {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #184763;
+  margin-bottom: 1rem;
+}
+
+/* ESTILO DE TARJETAS (coherente con producto-card) */
+.comunidad-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: transform .2s ease;
+}
+
+.comunidad-card:hover {
+  transform: translateY(-4px);
+}
+
+/* BOTONES DE ACCIÓN */
+.btn-accion {
+  background: #8daebd;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background .2s ease;
+}
+
+.btn-accion:hover {
+  background: #6d96a6;
+}
+
+/* FORMULARIO DE COMENTARIOS */
+.comentarios-box {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comentarios-box input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.btn-enviar {
+  background: #6d96a6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.btn-enviar:hover {
+  background: #184763;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .comunidad-page {
+    flex-direction: column;
+  }
+
+  .columna-derecha {
+    position: static;
+    width: 100%;
+  }
+}
