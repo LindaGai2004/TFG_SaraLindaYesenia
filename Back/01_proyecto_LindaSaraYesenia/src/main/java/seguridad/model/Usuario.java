@@ -54,6 +54,7 @@ public class Usuario implements UserDetails, Serializable{
 	private String direccion;
 	@Column(unique = true)
 	private String email;
+	private String avatar;
 	
 	@ManyToOne
 	@JoinColumn(name="id_perfil")
@@ -67,14 +68,6 @@ public class Usuario implements UserDetails, Serializable{
 	)
 	private List<Producto> favoritos = new ArrayList<>();
 	
-
-/*
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// Spring espera "ROLE_ADMIN", "ROLE_USER", etc.
-        return List.of(new SimpleGrantedAuthority(perfil.getNombre()));
-	}
-	*/
 	
 	@Override public String getUsername() { 
 		return this.email; 

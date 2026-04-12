@@ -17,6 +17,7 @@ create table usuarios(
     fecha_nacimiento date,
     direccion varchar(200),
     email varchar(45) not null unique,
+    avatar varchar(255),
 	id_perfil int,
     foreign key (id_perfil) references perfiles(id_perfil)
 );
@@ -143,6 +144,50 @@ create table facturas(
     foreign key (id_pedido) references pedidos( id_pedido)
 );
 
+create table publicaciones (
+    id_publicacion int auto_increment primary key,
+    id_usuario int not null,
+    id_producto int null,
+    texto text,
+    imagen varchar(250),
+    fecha datetime default current_timestamp,
+    likes int default 0,
+    comentarios int default 0,
+    foreign key(id_usuario) references usuarios(id_usuario),
+    foreign key(id_producto) references productos(id_producto)
+);
+
+create table likes_publicacion (
+    id_like int auto_increment primary key,
+    id_publicacion int not null,
+    id_usuario int not null,
+    fecha datetime default current_timestamp,
+    unique (id_publicacion, id_usuario), /* evita que un usuario dé like dos veces a la misma publicacion */
+	foreign key (id_publicacion) references publicaciones(id_publicacion),
+    foreign key (id_usuario) references usuarios(id_usuario)
+);
+
+create table comentarios_publicacion (
+    id_comentario int auto_increment primary key,
+    id_publicacion int not null,
+    id_usuario int not null,
+    texto text not null,
+    fecha datetime default current_timestamp,
+    foreign key (id_publicacion) references publicaciones(id_publicacion),
+    foreign key (id_usuario) references usuarios(id_usuario)
+);
+
+
+create table seguidores (
+    id int auto_increment primary key,
+    id_seguidor int not null,
+    id_seguido int not null,
+    fecha_seguimiento DATETIME DEFAULT CURRENT_TIMESTAMP,
+    unique key unica_relacion (id_seguidor, id_seguido),
+    foreign key (id_seguidor) references usuarios(id_usuario) on delete cascade,
+    foreign key (id_seguido) references usuarios(id_usuario) on delete cascade
+);
+
 
 INSERT INTO perfiles(nombre)
 values ('ROLE_ADMON'),('ROLE_CLIENTE'),
@@ -151,11 +196,14 @@ values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 
 
 INSERT INTO usuarios 
-(username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, id_perfil) VALUES
-('tomas', '{noop}tomasin', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'madrid', 'tomas@ifp.com', 1),
-('sarita', '{noop}sarita', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'sevilla', 'sara@ifp.com', 2),
-('eva', '{noop}evita', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'cordoba', 'eva@ifp.com', 3),
-('ramon', '{noop}ramoncin', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'madrid','ramon@ifp.com', 4);
+(username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, avatar, id_perfil) VALUES
+('tomas', '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'Madrid', 'tomas@ifp.com', '/uploads/perfiles/tomas.png', 1),
+('sarita', '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'Sevilla', 'sara@ifp.com', '/uploads/perfiles/sara.png', 2),
+('juan', '$2a$10$JWVBDtdPuxc3Lp7W4BieDO7js2mvEz6YiSEj9e1e6mGhwRmRmsj4m', 'Juan', 'García', 1, '2018-12-23', '1970-06-21', 'Galicia', 'juan@ifp.com', '/uploads/perfiles/juan.png', 2),
+('paqui', '$2a$10$tnK/swSN.pPaSnByMaLyU.sfLCkDsE1mqZ7F93Is.QXl72eNxSgTq', 'Paqui', 'Rodríguez', 1, '2004-05-14', '1989-02-13', 'Cuenca', 'paqui@ifp.com', '/uploads/perfiles/paqui.png', 2),
+('carlos', '$2a$10$LG/oVQoygOcECMEsZ3159us096iIFQl3PrsPg/u3DNPXVpykU85A2', 'Carlos', 'Rubio', 1, '2023-09-29', '2003-10-02', 'Salamanca', 'carlos@ifp.com', '/uploads/perfiles/carlos.png', 2),
+('eva', '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'Cordoba', 'eva@ifp.com', '/uploads/perfiles/eva.png', 3),
+('ramon', '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'Madrid','ramon@ifp.com', '/uploads/perfiles/ramon.png', 4);
 
 
 INSERT INTO genero (nombre_genero)VALUES
@@ -824,18 +872,21 @@ INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUE
 ('FAC-2024-008', '2024-08-30', 52.90, 8),
 ('FAC-2024-009', '2024-09-15', 105.00, 9);
 
-UPDATE usuarios
-SET password = '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG'
-WHERE email = 'sara@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC'
-WHERE email = 'tomas@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq'
-WHERE email = 'eva@ifp.com';
-UPDATE usuarios
-SET password = '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe'
-WHERE email = 'ramon@ifp.com';
+
+INSERT INTO publicaciones (id_usuario, texto, imagen, fecha, likes, comentarios) VALUES
+(2, 'Hoy he vuelto a una librería pequeña del centro. No iba con intención de comprar nada, pero ya sabéis cómo acaba eso…', NULL, NOW() - INTERVAL 1 DAY, 3, 1),
+(2, 'Me encanta cuando un libro te sorprende justo cuando pensabas que ya lo habías entendido todo. Esa sensación no tiene precio.', NULL, NOW() - INTERVAL 2 DAY, 5, 2),
+(2, 'Estoy intentando leer un poco cada mañana antes de empezar el día. Me ayuda a no ir con prisas y a empezar con buena energía.', NULL, NOW() - INTERVAL 3 DAY, 2, 0),
+(2, 'Hoy he encontrado una frase preciosa: “A veces, lo que buscas llega cuando dejas de buscarlo”. La he tenido que subrayar.', NULL, NOW() - INTERVAL 4 DAY, 4, 1),
+(2, 'He empezado un cuaderno nuevo para escribir ideas. No sé si saldrá algo bueno, pero me hace ilusión tener un espacio solo para mí.', NULL, NOW() - INTERVAL 5 DAY, 1, 0),
+(2, '¿Alguna recomendación de libros de misterio? Me apetece algo que me enganche desde la primera página.', NULL, NOW() - INTERVAL 6 DAY, 6, 3),
+(2, 'Hoy he tenido una tarde tranquila con café y lectura. Ojalá más días así.', NULL, NOW() - INTERVAL 7 DAY, 2, 0),
+(2, 'Estoy releyendo un libro que me marcó hace años. Qué curioso cómo cambia la perspectiva con el tiempo.', NULL, NOW() - INTERVAL 8 DAY, 3, 1),
+(4, 'A veces solo necesito desconectar un rato y perderme entre páginas. Es mi forma favorita de respirar.', NULL, NOW() - INTERVAL 9 DAY, 4, 2),
+(2, 'Hoy me he dado cuenta de que subrayo demasiado, pero no pienso parar. Cada frase bonita merece ser guardada.', NULL, NOW() - INTERVAL 10 DAY, 1, 0),
+(3, 'Creo que voy a empezar a escribir reseñas cortas de los libros que leo. No sé si a alguien le servirán, pero a mí me ayudará a recordarlos.', NULL, NOW() - INTERVAL 11 DAY, 2, 0),
+(2, 'Me encanta cuando un libro te hace sentir acompañada, incluso en los días más raros.', NULL, NOW() - INTERVAL 12 DAY, 5, 3);
+
 
 ALTER TABLE pedidos
 ADD COLUMN metodo_pago VARCHAR(20),

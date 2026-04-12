@@ -14,15 +14,18 @@ export default function Favoritos() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //No llamar si no hay usuario -> evita el 401 y el forceLogout
-    if (!user) return;
+    if (!user) {
+      setFavoritos([]); 
+      setLoading(false);
+      return;
+    }
 
     const fetchFavoritos = async () => {
       try {
         const data = await apiGet("/usuarios/favoritos");
-        setFavoritos(data || []);
+        setFavoritos(Array.isArray(data) ? data : []);
       } catch (error) {
-        console.error("Error cargando favoritos:", error);
+        console.warn("No se pudieron cargar favoritos (usuario no logueado)");
         setFavoritos([]);
       } finally {
         setLoading(false);
@@ -30,7 +33,7 @@ export default function Favoritos() {
     };
 
     fetchFavoritos();
-  }, [user]); // Se ejecuta solo cuando user está cargado
+  }, [user]);
 
   const removeFavorito = async (idProducto) => {
     try {

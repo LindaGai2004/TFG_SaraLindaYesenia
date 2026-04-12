@@ -12,5 +12,6 @@ public interface LibroService {
 	Libro updateLibro(Libro libro);
 
 	List<Libro> buscadorLibro (String texto);
-	
+	/* Para encontrar libros populares para Comunidad*/
+	List<Libro> findLibrosPopulares();
 }
