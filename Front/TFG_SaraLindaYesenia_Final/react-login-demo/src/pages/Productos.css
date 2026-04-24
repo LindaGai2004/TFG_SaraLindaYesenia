@@ -51,9 +51,12 @@
 
 .resultados-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  gap: 20px;
+  margin-bottom: 25px;
+  width: 100%;
+  padding: 0 20px; 
+  box-sizing: border-box;
 }
 
 .resultados-header h2 {
@@ -96,4 +99,26 @@
 .pagina-activa {
   background: #6d96a6 !important;
   color: white !important;
+}
+
+
+/* Buscador de productos ------------------------------------------- */
+.buscador-tienda {
+  flex-grow: 1;
+}
+
+.input-busqueda {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  outline: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.input-busqueda:focus {
+  border-color: #8daebd;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(141, 174, 189, 0.2);
 }

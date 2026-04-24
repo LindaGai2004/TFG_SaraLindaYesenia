@@ -51,6 +51,9 @@ public class AuthRestController {
         return String.valueOf(codigo);
     }
 
+    
+    // RECUPERAR
+    @Transactional
     @PostMapping("/recuperar")
     public ResponseEntity<?> recuperar(@RequestBody Map<String, String> body) {
 
@@ -59,6 +62,9 @@ public class AuthRestController {
         if (!usuarioService.existsByEmail(email)) {
             return ResponseEntity.badRequest().body("El email no existe");
         }
+        
+        // Eliminar código previo por si acaso
+        codigoRepo.deleteByEmail(email);
 
         // Generar código
         String codigo = generarCodigo();
@@ -142,6 +148,7 @@ public class AuthRestController {
         return ResponseEntity.ok("Código válido");
     }
 
+    
     @Transactional
     @PostMapping("/restablecer")
     public ResponseEntity<?> restablecer(@RequestBody Map<String, String> body) {

@@ -112,6 +112,28 @@ export default function ProductoDetalle() {
       .catch(() => setEsFavorito(false));
   }, [producto, user]);
 
+
+  const handleCompartir = () => {
+    const shareData = {
+      title: producto.nombre,
+      text: `¡Mira este producto en Archives!: ${producto.nombre}`,
+      url: window.location.href, // La URL actual del detalle del producto
+    };
+
+    // Verificamos si el navegador soporta la Web Share API
+    if (navigator.share) {
+      navigator.share(shareData)
+        .then(() => console.log('Compartido con éxito'))
+        .catch((error) => console.log('Error al compartir', error));
+    } else {
+      // Si no lo soporta  copiamos al portapapeles
+      navigator.clipboard.writeText(window.location.href);
+      setMensaje("Copiado al portapapeles ✨");
+      setTimeout(() => setMensaje(""), 2000);
+    }
+  };
+
+
   const toggleFavorito = async () => {
     if (!user) {
       setMostrarAvisoFavorito(true);
@@ -228,7 +250,7 @@ export default function ProductoDetalle() {
                       />
                     </button>
 
-                    <button className="btn-icono">
+                    <button className="btn-icono" onClick={handleCompartir}>
                       <img src="/compartir.jpg" alt="Compartir" />
                     </button>
                   </div>

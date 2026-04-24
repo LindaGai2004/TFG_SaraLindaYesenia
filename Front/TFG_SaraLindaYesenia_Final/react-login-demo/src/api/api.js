@@ -49,16 +49,15 @@ export async function apiGet(path) {
 
 
 export async function apiPost(path, body, isFormData = false) {
-  // 1. Necesitamos cleanPath para saber si la ruta es pública o no
+  // Necesitamos cleanPath para saber si la ruta es pública o no
   const cleanPath = path.trim().split("?")[0].replace(/\/+$/, "");
 
-  // 2. Definimos qué rutas no necesitan Token
+  // Definimos qué rutas no necesitan Token
   const isPublic =
     cleanPath.startsWith("/auth") ||
     cleanPath === "/registro" ||
     cleanPath === "/api/login";
 
-  // 3. Configuramos las cabeceras
   const headers = isFormData
     ? { ...(isPublic ? {} : getAuthHeader()) }
     : { 
@@ -72,14 +71,17 @@ export async function apiPost(path, body, isFormData = false) {
     body: isFormData ? body : JSON.stringify(body)
   };
 
-  // 4. USAMOS EL 'path' ORIGINAL: 
-  // Esto es vital para que "/usuarios/2/seguir?idUsuarioActual=3" llegue completo al Back
   const res = await fetch(`${BASE_URL}${path}`, options);
 
   if (res.status === 401) return handle401();
   if (!res.ok) throw new Error(await res.text());
 
-  return await res.json();
+  const text = await res.text();
+  try {
+      return text ? JSON.parse(text) : null;
+  } catch (e) {
+      return text; // Si no es JSON, devuelve el texto tal cual
+  }
 }
 
 

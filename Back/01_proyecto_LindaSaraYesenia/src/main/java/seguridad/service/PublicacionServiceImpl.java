@@ -111,13 +111,17 @@ public class PublicacionServiceImpl implements PublicacionService {
     
     // Eliminar publicación
     @Override
+    @Transactional
     public void eliminarPublicacion(Integer id) {
         Publicacion pub = publicacionRepo.findById(id).orElse(null);
+        
         if (pub != null) {
-            // Borra el archivo físico si tiene imagen
+        	likeRepo.deleteByPublicacion_Id(id);
+            comentarioRepo.deleteByPublicacion_Id(id);
+            
+            // Borramos el archivo físico si tiene imagen
             if (pub.getImagen() != null) {
                 try {
-                    // Extraemos el nombre del archivo de la ruta "/uploads/publicaciones/nombre.jpg"
                     String nombreImagen = pub.getImagen().substring(pub.getImagen().lastIndexOf("/") + 1);
                     Path ruta = Paths.get("C:/Users/saray/Documents/TFG_SaraLindaYesenia/Back/01_proyecto_LindaSaraYesenia/upload/publicaciones/" + nombreImagen);
                     Files.deleteIfExists(ruta);
@@ -125,11 +129,13 @@ public class PublicacionServiceImpl implements PublicacionService {
                     System.err.println("No se pudo borrar el archivo físico: " + e.getMessage());
                 }
             }
+            
             // Borra de la base de datos
-            publicacionRepo.deleteById(id);
+            publicacionRepo.delete(pub);
         }
     }
 
+    
     // mapper
     public PublicacionDto mapToDto(Publicacion p) {
 

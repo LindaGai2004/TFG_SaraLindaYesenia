@@ -13,4 +13,5 @@ public interface ComentarioPublicacionRepository extends JpaRepository<Comentari
 	
 	List<ComentarioPublicacion> findByPublicacion_Id(Integer idPublicacion);
 
+	void deleteByPublicacion_Id(Integer idPublicacion);
 }
