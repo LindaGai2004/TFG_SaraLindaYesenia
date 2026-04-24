@@ -90,6 +90,8 @@ public class SecurityConfig {
             .requestMatchers("/carrito/**").authenticated()
             .requestMatchers("/rol/**").authenticated()
             .requestMatchers("/api/paypal/**").permitAll()
+            .requestMatchers("/productos/buscar-chatbot").permitAll()
+            .requestMatchers("/productos/filtrar-chatbot").permitAll()
             .requestMatchers("/usuarios/favoritos/**").authenticated()
           //otras requests deben ser autenticadas
             .anyRequest().authenticated()
