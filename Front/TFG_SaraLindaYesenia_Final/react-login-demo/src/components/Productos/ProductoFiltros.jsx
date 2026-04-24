@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ProductoFiltros.css";
 
-export default function ProductoFiltros({ onFiltrar }) {
-    const [tipo, setTipo] = useState("");
+export default function ProductoFiltros({ onFiltrar, initialTipo = "", initialGenero = "", initialCategoria = "" }) {
+    const [tipo, setTipo] = useState(initialTipo);
     const [precio, setPrecio] = useState({ min: 0, max: 200 });
     const [estado, setEstado] = useState("");
     const [idioma, setIdioma] = useState("");
-    const [genero, setGenero] = useState([]);
+    const [genero, setGenero] = useState(initialGenero ? [initialGenero] : []);
     const [marca, setMarca] = useState("");
-    const [categoria, setCategoria] = useState([]);
+    const [categoria, setCategoria] = useState(initialCategoria ? [initialCategoria] : []);
 
     const [idiomasBD, setIdiomasBD] = useState([]);
     const [generosBD, setGenerosBD] = useState([]);

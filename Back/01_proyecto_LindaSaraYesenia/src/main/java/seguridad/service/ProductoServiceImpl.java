@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import seguridad.model.Libro;
 import seguridad.model.Papeleria;
 import seguridad.model.Producto;
+import seguridad.model.dto.ProductoChatbotDto;
 import seguridad.repository.LibroRepository;
 import seguridad.repository.PapeleriaRespository;
 import seguridad.repository.ProductoRepository;
@@ -197,5 +198,45 @@ public class ProductoServiceImpl implements ProductoService {
 
         return new ArrayList<>(resultado);
     }
+
+    //busca en libros y papeleria por separado y devuelve una lista unida de dtos
+	@Override
+	public List<ProductoChatbotDto> buscarParaChatbot(String texto) {
+		List<ProductoChatbotDto> resultado = new ArrayList<>();
+		//busca libros por nombre, descripcion o genero
+		libroRepo.findByNombreProductoContainingIgnoreCaseOrDescripcionContainingIgnoreCaseOrGeneroNombreGeneroContainingIgnoreCaseOrAutorContainingIgnoreCase(
+			    texto, texto, texto, texto  // el mismo texto para los 4 campos
+			).forEach(l -> resultado.add(new ProductoChatbotDto(l)));
+		//busca productos de papeleria por nombre, descripcion o categoria
+		papeleriaRepo.findByNombreProductoContainingIgnoreCaseOrDescripcionContainingIgnoreCaseOrCategoriaNombreCategoriaContainingIgnoreCase(texto, texto, texto)
+		.forEach(p -> resultado.add(new ProductoChatbotDto(p)));
+		return resultado;
+	}
+	public List<Producto> filtrarParaChatbot(String genero, String categoria, String tipo){
+	    List<Producto> resultado = new ArrayList<>();
+
+	    boolean soloLibros = "libro".equalsIgnoreCase(tipo);
+	    boolean soloPapeleria = "papeleria".equalsIgnoreCase(tipo);
+
+	    // Libros
+	    if (!soloPapeleria) {
+	        libroRepo.findAll().stream()
+	            .filter(l -> genero == null || genero.isEmpty() ||
+	                (l.getGenero() != null &&
+	                 l.getGenero().getNombreGenero().equalsIgnoreCase(genero)))
+	            .forEach(resultado::add);
+	    }
+
+	    // Papelería
+	    if (!soloLibros) {
+	        papeleriaRepo.findAll().stream()
+	            .filter(p -> categoria == null || categoria.isEmpty() ||
+	                (p.getCategoria() != null &&
+	                 p.getCategoria().getNombreCategoria().equalsIgnoreCase(categoria)))
+	            .forEach(resultado::add);
+	    }
+
+	    return resultado;
+	}
 
 }

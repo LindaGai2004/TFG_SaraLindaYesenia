@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
 import PublicacionTarjeta from "./PublicacionTarjeta";
-import CrearPublicacion from "./CrearPublicacion"; 
+import CrearPublicacion from "./CrearPublicacion";
 import "./Feed.css";
 
 export default function Feed() {
@@ -22,65 +22,63 @@ export default function Feed() {
       setCargando(false);
     }
   };
-  
+
   useEffect(() => {
     cargarPublicaciones();
   }, []);
 
-  // Eliminar publicación
-  const handleEliminar = async (idPublicacion) => {
-    try {
-      // Llamada al DELETE del backend que creamos antes
-      await api.apiDelete(`/publicaciones/${idPublicacion}?idUsuario=${user.idUsuario}`);
-      
-      setPublicaciones((prev) => 
-        prev.filter((p) => p.idPublicacion !== idPublicacion)
-      );
-    } catch (e) {
-      console.error("Error al eliminar la publicación:", e);
-      alert("No se pudo eliminar la publicación");
+  // 🔥 ESTE ES EL FIX IMPORTANTE
+  const agregarPublicacion = async (nuevaPub) => {
+    if (!nuevaPub) {
+      // backend no devuelve → recargar todo
+      await cargarPublicaciones();
+      return;
     }
-  };
 
-  const agregarPublicacion = (nuevaPub) => {
+    // si backend sí devuelve → añadir arriba
     setPublicaciones((prev) => [
       { ...nuevaPub, listaComentarios: [] },
       ...prev
     ]);
   };
 
+  const handleEliminar = async (idPublicacion) => {
+    try {
+      await api.apiDelete(`/publicaciones/${idPublicacion}?idUsuario=${user.idUsuario}`);
+      setPublicaciones((prev) =>
+        prev.filter((p) => p.idPublicacion !== idPublicacion)
+      );
+    } catch (e) {
+      console.error("Error al eliminar:", e);
+    }
+  };
 
   const handleLike = async (idPublicacion) => {
     try {
-      const respuesta = await api.apiPost(
+      const res = await api.apiPost(
         `/publicaciones/${idPublicacion}/like?idUsuario=${user.idUsuario}`,
-        {}, 
-        true 
+        {},
+        true
       );
 
-      // Extraemos el booleano del objeto que manda Java
-      const estaLikeado = respuesta.liked;
-      if (estaLikeado === undefined) return;
-
-      // if (liked === undefined) return;
+      const liked = res.liked;
+      if (liked === undefined) return;
 
       setPublicaciones((prev) =>
         prev.map((p) =>
           p.idPublicacion === idPublicacion
-            ? { 
-              ...p, 
-              // Si es true sumamos 1, si es false restamos 1
-              likes: estaLikeado ? p.likes + 1 : Math.max(0, p.likes - 1), 
-              likedByUser: estaLikeado 
-            }
-          : p
+            ? {
+                ...p,
+                likes: liked ? p.likes + 1 : Math.max(0, p.likes - 1),
+                likedByUser: liked
+              }
+            : p
         )
       );
     } catch (e) {
-      console.error("Error dando like:", e);
+      console.error("Error like:", e);
     }
-  }; 
-
+  };
 
   const handleComentar = async (idPublicacion, texto) => {
     try {
@@ -111,26 +109,23 @@ export default function Feed() {
     }
   };
 
-  if (cargando) return <p className="feed-loading">Cargando publicaciones...</p>;
-  if (error) return <p className="feed-error">{error}</p>;
+  if (cargando) return <p>Cargando...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="feed-container">
       <CrearPublicacion onPublicada={agregarPublicacion} />
 
-      {publicaciones.length === 0 ? (
-        <p className="feed-vacio">No hay publicaciones todavía</p>
-      ) : (
-        publicaciones.map((pub) => (
-          <PublicacionTarjeta
-            key={pub.idPublicacion}
-            publicacion={pub}
-            onLike={handleLike}
-            onComentar={handleComentar}
-            onEliminar={handleEliminar}
-          />
-        ))
-      )}
+      {publicaciones.map((pub) => (
+        <PublicacionTarjeta
+          key={pub.idPublicacion}
+          publicacion={pub}
+          onLike={handleLike}
+          onComentar={handleComentar}
+          onEliminar={handleEliminar}
+        />
+      ))}
     </div>
   );
 }
+console.log("PRUEBA GITHUB");

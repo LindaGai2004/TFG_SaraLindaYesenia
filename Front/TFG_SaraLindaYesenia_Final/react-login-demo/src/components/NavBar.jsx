@@ -7,7 +7,7 @@ import './NavBar.css';
 
 function NavBar({ isVisible = true }) {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   // Estado para controlar la apertura del sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -35,13 +35,23 @@ function NavBar({ isVisible = true }) {
           <Link to="/acercaDe" className="enlace">Acerca de</Link>
         </div>
 
-        {/* Título en el centro */}
-        <div className="titulo-pagina">
-          <div className="titulo-pagina">
-            <Link to="/" className="logo-navbar-link">
-              <h1 className="logo-navbar">Archives</h1>
-            </Link>
-          </div>
+        <div className="separador"></div>
+
+        <div
+          className="accion"
+          onClick={() => {
+            if (!user) {
+              navigate("/login");
+            } else {
+              const rol = user.perfil?.nombre;
+              if (rol === "ROLE_CLIENTE") navigate("/cliente");
+              else if (rol === "ROLE_ADMON") navigate("/administrador");
+              else if (rol === "ROLE_JEFE") navigate("/jefe");
+              else if (rol === "ROLE_TRABAJADOR") navigate("/trabajador");
+            }
+          }}
+        >
+          <User size={24} />
         </div>
 
         {/* Acciones a la derecha */}
