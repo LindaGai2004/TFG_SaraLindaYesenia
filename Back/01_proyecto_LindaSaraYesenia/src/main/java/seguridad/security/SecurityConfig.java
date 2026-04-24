@@ -35,7 +35,8 @@ public class SecurityConfig {
    
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); //Seguridad -> permite enviar cookies y headers entre front y back
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.addAllowedOriginPattern("*");
+        //config.setAllowedOrigins(List.of("http://localhost:5173"));
         //config.addAllowedHeader("*");
         config.setAllowedHeaders(List.of("*"));
 
@@ -48,6 +49,7 @@ public class SecurityConfig {
         // vuelve a spring
         return source;
     }
+    
     
     //Configuración de Seguridad principal
     @Bean
@@ -76,14 +78,29 @@ public class SecurityConfig {
             	    "/productos/filtrar",
             	    "/productos/**",
 
+            	    "/todos",
+            	    "/recomendados",
+            	    "/buscar",
             	    "/libros/**",
             	    "/papelerias/**",
             	    "/uploads/**",
             	    "/generos/**",
             	    "/idiomas/**",
             	    "/categorias/**",
-            	    "/marcas/**"
+            	    "/marcas/**",
+            	    
+            	    "/encrypt"
             	).permitAll()
+
+	            .requestMatchers(HttpMethod.GET, "/publicaciones/**").permitAll()
+	        	.requestMatchers(HttpMethod.POST, "/publicaciones").permitAll()
+            	.requestMatchers(HttpMethod.DELETE, "/publicaciones/**").authenticated()
+            	
+            	.requestMatchers("/publicaciones/*/like").authenticated()
+            	.requestMatchers("/publicaciones/*/comentarios").authenticated()
+            	.requestMatchers(HttpMethod.POST, "/usuarios/*/seguir").authenticated()
+
+            
             //endpoints protegidos por rol
             .requestMatchers("/admin/crear").hasAnyRole("ADMON","JEFE")
             .requestMatchers("/pedidos/**").authenticated()
@@ -96,8 +113,8 @@ public class SecurityConfig {
           //otras requests deben ser autenticadas
             .anyRequest().authenticated()
         )
-        //ya no usamos hhtpBasic
-        //.httpBasic(Customizer.withDefaults())
+        
+
         //activar jwt
         .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
         .formLogin(form -> form.disable())
@@ -115,6 +132,7 @@ public class SecurityConfig {
         //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //    	return new BCryptPasswordEncoder();
 //    }
+    
     
     //Verificar username y password si esta bien -> buscar en sql
     @Bean

@@ -13,22 +13,29 @@ export default function VerificacionCuenta() {
   const [mensaje, setMensaje] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Si viene con token → verificar automáticamente
+  const [verificado, setVerificado] = useState(false);
+
+  // Si viene con token -> verificar automáticamente
   useEffect(() => {
+    if (verificado) return; // evita reverificar
+
     if (token) {
       setLoading(true);
       api.apiPost(`/auth/verificar?token=${token}`)
         .then(() => {
           setMensaje("Cuenta verificada correctamente. Ya puedes iniciar sesión.");
+          setVerificado(true); // marca como verificado
         })
-        .catch((err) => {
-          setMensaje(err.response?.data || "Error verificando la cuenta");
+        .catch(() => {
+          setMensaje("El enlace de verificación ya no es válido.");
+          setVerificado(true); // evita reintentos
         })
         .finally(() => setLoading(false));
     } else if (email) {
       setMensaje(`Hemos enviado un email a ${email}`);
     }
-  }, [token, email]);
+  }, [token, email, verificado]);
+
 
   const reenviarCorreo = () => {
     if (!email) return;

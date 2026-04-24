@@ -14,4 +14,6 @@ public interface LibroService {
 	List<Libro> buscadorLibro (String texto);
 	public List<Libro> buscadorLibroChatbot(String texto);
 
+	/* Para encontrar libros populares para Comunidad*/
+	List<Libro> findLibrosPopulares();
 }

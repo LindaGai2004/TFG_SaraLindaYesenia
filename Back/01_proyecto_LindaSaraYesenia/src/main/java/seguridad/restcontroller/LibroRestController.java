@@ -71,5 +71,13 @@ public class LibroRestController {
 		}
 		return ResponseEntity.ok(lista);
 	}
-
+	
+	
+	/* Libros populares para la Comunidad*/
+	@GetMapping("/populares")
+	public ResponseEntity<?> librosPopulares() {
+	    List<Libro> lista = libroService.findLibrosPopulares();
+	    lista.forEach(l -> l.setCostoReal(null));
+	    return ResponseEntity.ok(lista);
+	}
 }

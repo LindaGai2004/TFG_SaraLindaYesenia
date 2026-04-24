@@ -15,7 +15,12 @@ function handle401() {
     path.includes("verificacion") || 
     path.includes("recuperar") || 
     path.includes("verificar-codigo") ||
-    path.includes("restablecer")
+    path.includes("restablecer") ||
+    path.includes("catalogo") ||
+    path.includes("producto") ||
+    path.includes("comunidad") ||
+    path.includes("notificacion") ||
+    path.includes("favoritos")
   ) {
     return;
   }
@@ -32,51 +37,49 @@ function handle401() {
 
 export async function apiGet(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: {...getAuthHeader()}
+    headers: { ...getAuthHeader() }
   });
 
   if (res.status === 401) return handle401();
-
-  if (!res.ok) throw new Error (await res.text());
+  if (!res.ok) throw new Error(await res.text());
 
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
 
-export async function apiPost(path, body) {
-  const isPublic =
-    path.startsWith("/auth") ||
-    path === "/registro" ||
-    path === "/api/login";
 
-  const headers = {
-    "Content-Type": "application/json",
-    ...(isPublic ? {} : getAuthHeader())
-  };
+export async function apiPost(path, body, isFormData = false) {
+  // 1. Necesitamos cleanPath para saber si la ruta es pública o no
+  const cleanPath = path.trim().split("?")[0].replace(/\/+$/, "");
+
+  // 2. Definimos qué rutas no necesitan Token
+  const isPublic =
+    cleanPath.startsWith("/auth") ||
+    cleanPath === "/registro" ||
+    cleanPath === "/api/login";
+
+  // 3. Configuramos las cabeceras
+  const headers = isFormData
+    ? { ...(isPublic ? {} : getAuthHeader()) }
+    : { 
+        "Content-Type": "application/json", 
+        ...(isPublic ? {} : getAuthHeader()) 
+      };
 
   const options = {
     method: "POST",
-    headers
+    headers,
+    body: isFormData ? body : JSON.stringify(body)
   };
 
-  // Solo añadir body si existe
-  if (body !== undefined && body !== null) {
-    options.body = JSON.stringify(body);
-  }
-
+  // 4. USAMOS EL 'path' ORIGINAL: 
+  // Esto es vital para que "/usuarios/2/seguir?idUsuarioActual=3" llegue completo al Back
   const res = await fetch(`${BASE_URL}${path}`, options);
 
   if (res.status === 401) return handle401();
-
   if (!res.ok) throw new Error(await res.text());
 
-  const contentType = res.headers.get("content-type");
-
-  if (contentType && contentType.includes("application/json")) {
-    return await res.json();
-  }
-
-  return await res.text();
+  return await res.json();
 }
 
 
@@ -98,7 +101,7 @@ export async function apiPut(path, body) {
   return text ? JSON.parse(text) : null;
 }
 
-export async function apiDelete(path) {
+{/*export async function apiDelete(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
     method: 'DELETE',
     headers: {
@@ -113,6 +116,39 @@ export async function apiDelete(path) {
 
   const text = await res.text();
   return text ? JSON.parse(text) : null;
+} */}
+
+export async function apiDelete(path) {
+  // Limpiamos la ruta por si acaso
+  const cleanPath = path.trim().split("?")[0].replace(/\/+$/, "");
+  const query = path.includes("?") ? "?" + path.split("?")[1] : "";
+
+  const res = await fetch(`${BASE_URL}${cleanPath}${query}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeader()
+    }
+  });
+
+  // Si recibimos 401 (Token caducado)
+  if (res.status === 401) return handle401();
+
+  // Si hay error (403, 404, 500...)
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(errorText || "Error al eliminar");
+  }
+
+  // Si el borrado fue bien (200 OK)
+  const text = await res.text();
+  
+  try {
+    return text ? JSON.parse(text) : true;
+  } catch (e) {
+    // Si el backend devolvió un texto plano en lugar de JSON
+    return { mensaje: text }; 
+  }
 }
 
 export default {
