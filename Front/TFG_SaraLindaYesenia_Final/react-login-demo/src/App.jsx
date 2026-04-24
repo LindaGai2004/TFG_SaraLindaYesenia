@@ -22,6 +22,8 @@ import Checkout from "./pages/Checkout";
 import NotificacionToken from './components/Notificacion_token';
 import NavBar from './components/NavBar';
 import Footer from "./components/Footer";
+import Chatbot from "./components/Chatbot";
+import { useAuth } from "./context/AuthContext";
 import './App.css';
 
 export default function App() {
@@ -36,7 +38,9 @@ export default function App() {
   ];
 
   const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
-
+  const { user } = useAuth();
+const rolesExcluidos = ['ROLE_ADMON', 'ROLE_TRABAJADOR', 'ROLE_JEFE'];
+const mostrarChatbot = !user || !rolesExcluidos.includes(user?.perfil?.nombre);
   return (
     <>
       {shouldShowNavbar && <NavBar />}
@@ -159,6 +163,7 @@ export default function App() {
       </main>
 
       <Footer />
+       <Chatbot />
     </>
   );
 }

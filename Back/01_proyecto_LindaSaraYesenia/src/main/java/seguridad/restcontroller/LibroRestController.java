@@ -67,7 +67,7 @@ public class LibroRestController {
 	public ResponseEntity<?> buscarLibro(@RequestParam String texto){
 		List<Libro> lista = libroService.buscadorLibro(texto);
 		if(lista.isEmpty()) {
-			return ResponseEntity.ok("No hay LIBRO que coincidan con la busqueda");
+			return ResponseEntity.ok(List.of());
 		}
 		return ResponseEntity.ok(lista);
 	}

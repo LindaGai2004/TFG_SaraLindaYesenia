@@ -87,5 +87,13 @@ public class LibroServiceImpl implements LibroService {
 		return new ArrayList<>(resultado);
 
 	}
+	@Override
+	public List<Libro> buscadorLibroChatbot(String texto) {
+	    List<Libro> resultado = new ArrayList<>();
 
+	    resultado.addAll(libroRepo.findByGenero_NombreGeneroContainingIgnoreCase(texto));
+	    resultado.addAll(libroRepo.findByNombreProductoContainingIgnoreCase(texto));
+
+	    return resultado;
+	}
 }
