@@ -1,1 +1,5 @@
 Back/01_proyecto_LindaSaraYesenia/bin/
+# secrets
+application-local.properties
+**/application-local.properties
+.env

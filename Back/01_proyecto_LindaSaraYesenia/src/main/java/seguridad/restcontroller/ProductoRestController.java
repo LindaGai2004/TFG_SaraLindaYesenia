@@ -1,5 +1,6 @@
 package seguridad.restcontroller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import seguridad.model.Producto;
+import seguridad.model.dto.ProductoChatbotDto;
 import seguridad.model.Libro;
 import seguridad.model.Papeleria;
 
@@ -83,13 +85,20 @@ public class ProductoRestController {
 
     // Buscador
 
-    @GetMapping("/buscar/todos")
+    /*@GetMapping("/buscar/todos")
     public ResponseEntity<?> buscarProducto(@RequestParam String texto) {
         List<Producto> lista = productoService.buscardorProducto(texto);
         if (lista.isEmpty()) {
             return ResponseEntity.ok("No hay NINGUN PRODUCTO que coincidan con la busqueda");
         }
         return ResponseEntity.ok(lista);
+    }*/
+    
+    // Buscador (CORREGIDO)
+    @GetMapping("/buscar/todos")
+    public ResponseEntity<List<Producto>> buscarProducto(@RequestParam String texto) {
+        List<Producto> lista = productoService.buscardorProducto(texto);
+        return ResponseEntity.ok(lista);  // empty list is still valid JSON: []
     }
 
     // Obtener producto por ID
@@ -182,4 +191,20 @@ public class ProductoRestController {
         List<Producto> lista = productoService.relacionadosPapeleria(marca, categoria, idActual);
         return ResponseEntity.ok(lista);
     }
+    
+    @GetMapping("/buscar-chatbot")
+    public List<ProductoChatbotDto> buscarParaChatbot(@RequestParam String texto){
+    	return productoService.buscarParaChatbot(texto);
+    }
+    
+    @GetMapping("/filtrar-chatbot")
+    public ResponseEntity<?> filtrarParaChatbot(
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String tipo) {
+
+        List<Producto> lista = productoService.filtrarParaChatbot(genero, categoria, tipo);
+        return ResponseEntity.ok(lista);
+    }
+    
 }

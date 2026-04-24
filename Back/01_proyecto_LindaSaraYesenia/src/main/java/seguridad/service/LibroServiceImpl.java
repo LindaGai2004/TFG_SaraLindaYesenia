@@ -87,7 +87,14 @@ public class LibroServiceImpl implements LibroService {
 		return new ArrayList<>(resultado);
 
 	}
-	
+	@Override
+	public List<Libro> buscadorLibroChatbot(String texto) {
+	    List<Libro> resultado = new ArrayList<>();
+	    resultado.addAll(libroRepo.findByGenero_NombreGeneroContainingIgnoreCase(texto));
+	    resultado.addAll(libroRepo.findByNombreProductoContainingIgnoreCase(texto));
+
+	    return resultado;
+	}
 	/* Libros populares para la Comunidad*/
 	@Override
 	public List<Libro> findLibrosPopulares() {
@@ -95,4 +102,6 @@ public class LibroServiceImpl implements LibroService {
 	}
 
 
+	    
+  
 }
