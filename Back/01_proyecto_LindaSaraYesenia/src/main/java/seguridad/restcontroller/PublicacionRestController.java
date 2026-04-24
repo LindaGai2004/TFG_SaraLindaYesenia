@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,10 @@ import seguridad.service.UsuarioService;
 @RequestMapping("/publicaciones")
 @CrossOrigin(origins = "*")
 public class PublicacionRestController {
-
+	
+	@Value("${app.upload.dir:./upload/}")
+	private String uploadDir;
+	
     @Autowired
     private PublicacionService publicacionService;
 
@@ -42,7 +46,7 @@ public class PublicacionRestController {
     public ResponseEntity<List<PublicacionDto>> obtenerPorUsuario(@PathVariable Integer idUsuario) {
         return ResponseEntity.ok(publicacionService.obtenerPublicacionesPorUsuario(idUsuario));
     }
-    
+    /*
     // Crear una nueva publicación
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PublicacionDto> crearPublicacion(
@@ -88,9 +92,53 @@ public class PublicacionRestController {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
         }
-    }
+    }*/
 
-    
+    // Crear una nueva publicacion (Corregido sin ruta hardcodeada)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PublicacionDto> crearPublicacion(
+            @RequestParam Integer idUsuario,
+            @RequestParam String texto,
+            @RequestParam(required = false) Integer idProducto,
+            @RequestParam(required = false) MultipartFile imagen
+    ){
+        try {
+            Usuario usuario = usuarioService.findById(idUsuario);
+            if (usuario == null) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            String nombreImagen = null;
+
+            // Guardar imagen si existe
+            if (imagen != null && !imagen.isEmpty()) {
+
+                String nombreOriginal = imagen.getOriginalFilename();
+                nombreImagen = System.currentTimeMillis() + "_" + nombreOriginal;
+
+                // RUTA NO ABSOLUTA
+                Path ruta = Paths.get(uploadDir, "publicaciones", nombreImagen);
+
+             // Make sure the directory exists before writing
+             Files.createDirectories(ruta.getParent());
+             Files.write(ruta, imagen.getBytes());
+            }
+
+            // Crear publicación
+            Publicacion nueva = publicacionService.crearPublicacion(
+                    usuario,
+                    texto,
+                    nombreImagen != null ? "/uploads/publicaciones/" + nombreImagen : null,
+                    idProducto
+            );
+
+            return ResponseEntity.ok(publicacionService.mapToDto(nueva));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
     
     // Likes
     /*@PostMapping("/{id}/like")

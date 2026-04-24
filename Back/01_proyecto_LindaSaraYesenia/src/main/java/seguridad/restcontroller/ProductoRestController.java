@@ -85,13 +85,20 @@ public class ProductoRestController {
 
     // Buscador
 
-    @GetMapping("/buscar/todos")
+    /*@GetMapping("/buscar/todos")
     public ResponseEntity<?> buscarProducto(@RequestParam String texto) {
         List<Producto> lista = productoService.buscardorProducto(texto);
         if (lista.isEmpty()) {
             return ResponseEntity.ok("No hay NINGUN PRODUCTO que coincidan con la busqueda");
         }
         return ResponseEntity.ok(lista);
+    }*/
+    
+    // Buscador (CORREGIDO)
+    @GetMapping("/buscar/todos")
+    public ResponseEntity<List<Producto>> buscarProducto(@RequestParam String texto) {
+        List<Producto> lista = productoService.buscardorProducto(texto);
+        return ResponseEntity.ok(lista);  // empty list is still valid JSON: []
     }
 
     // Obtener producto por ID

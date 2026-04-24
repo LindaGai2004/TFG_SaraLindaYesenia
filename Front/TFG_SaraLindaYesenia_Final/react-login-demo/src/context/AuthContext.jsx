@@ -1,7 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { apiPost } from '../api/api';
-import { apiPost } from '../api/api'; 
-
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
@@ -15,7 +13,7 @@ const PROFILE_MAP = {
 
 // Normaliza lo mínimo que necesitamos (id y rol)
 function normalizeUser(u) {
-  if (!u) return null;s
+  if (!u) return null;
   const idPerfil = u.perfil?.idPerfil ?? u.id_perfil ?? null;
   const nombreRol = u.perfil?.nombre ?? PROFILE_MAP[idPerfil] ?? '';
   return {
