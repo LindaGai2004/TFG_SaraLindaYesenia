@@ -9,6 +9,7 @@ import seguridad.model.Libro;
 import seguridad.model.Producto;
 
 public interface LibroRepository  extends JpaRepository<Libro, Integer>{
+	
 	List<Libro> findByNombreProductoContainingIgnoreCase (String nombreProducto);
 	List<Libro> findByAutorContainingIgnoreCase (String autor);
 	List<Libro> findByISBNContaining (String isbn);
@@ -21,4 +22,7 @@ public interface LibroRepository  extends JpaRepository<Libro, Integer>{
 	    String nombre, String desc, String genero, String autor
 	);
 
+	
+	/* Para encontrar libros populares para Comunidad*/
+	List<Libro> findByDestacadoTrue();
 }

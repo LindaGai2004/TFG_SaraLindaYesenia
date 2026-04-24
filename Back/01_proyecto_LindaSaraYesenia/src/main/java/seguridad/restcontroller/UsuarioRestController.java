@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioDto;
+import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
 import seguridad.security.JwtService;
 import seguridad.service.EmailService;
+import seguridad.service.PublicacionService;
 import seguridad.service.UsuarioService;
 import seguridad.service.VerificacionCuentaService;
 
@@ -28,6 +30,9 @@ public class UsuarioRestController {
 
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private PublicacionService publicacionService;
     
     @Autowired
     private VerificacionCuentaService verificacionService;
@@ -56,7 +61,6 @@ public class UsuarioRestController {
         return ResponseEntity.ok(lista);
     }
    
-   
 
     //LOGIN
     @PostMapping("/api/login")
@@ -64,18 +68,15 @@ public class UsuarioRestController {
         try {
             Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-            //anterior
-            //SecurityContextHolder.getContext().setAuthentication(auth);
-            //HttpSession session = request.getSession(true);
-            //session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             Usuario usuarioBD = usuarioService.findByEmail(userDetails.getUsername());
 
-         // Genera el token
+            // Genera el token
             String jwt = jwtService.generarToken(usuarioBD.getEmail());
 
             UsuarioDto usuarioDto = new UsuarioDto();
+            usuarioDto.setIdUsuario(usuarioBD.getIdUsuario());
             usuarioDto.setUsername(usuarioBD.getUsername());
             usuarioDto.setNombre(usuarioBD.getNombre());
             usuarioDto.setApellidos(usuarioBD.getApellidos());
@@ -83,6 +84,7 @@ public class UsuarioRestController {
             usuarioDto.setDireccion(usuarioBD.getDireccion());
             usuarioDto.setFechaRegistro(usuarioBD.getFechaRegistro());
             usuarioDto.setPerfil(usuarioBD.getPerfil());
+            usuarioDto.setAvatar(usuarioBD.getAvatar());
 
             return ResponseEntity.ok(Map.of("token", jwt, "user", usuarioDto)
             		);
@@ -395,5 +397,42 @@ public class UsuarioRestController {
         }
 
         return ResponseEntity.ok(lista);
+    }
+    
+    
+    
+    /* Usuarios recomendados para la Comunidad */
+    @GetMapping("/recomendados")
+    public List<UsuarioRecomendadoDto> recomendados(Authentication auth) {
+        Integer idLogueado = null;
+
+        // Si el usuario está logueado, buscamos su ID
+        if (auth != null && auth.isAuthenticated()) {
+            Usuario u = usuarioService.findByEmail(auth.getName());
+            if (u != null) {
+                idLogueado = u.getIdUsuario();
+            }
+        }
+
+        return usuarioService.obtenerUsuariosRecomendados(idLogueado);
+    }
+    
+    
+    // Seguir usuarios
+    @PostMapping("/usuarios/{idSeguido}/seguir")
+    public ResponseEntity<?> seguirUsuario(
+            @PathVariable Integer idSeguido, 
+            @RequestParam Integer idUsuarioActual
+    ) {
+        try {
+            boolean siguiendo = publicacionService.toggleSeguir(idUsuarioActual, idSeguido);
+            
+            return ResponseEntity.ok(Map.of(
+                "siguiendo", siguiendo,
+                "mensaje", siguiendo ? "Ahora sigues a este usuario" : "Has dejado de seguir a este usuario"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al procesar el seguimiento");
+        }
     }
 }

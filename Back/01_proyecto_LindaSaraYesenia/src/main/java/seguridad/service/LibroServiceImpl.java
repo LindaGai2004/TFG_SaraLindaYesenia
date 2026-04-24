@@ -90,6 +90,13 @@ public class LibroServiceImpl implements LibroService {
 	@Override
 	public List<Libro> buscadorLibroChatbot(String texto) {
 	    List<Libro> resultado = new ArrayList<>();
+	
+	/* Libros populares para la Comunidad*/
+	@Override
+	public List<Libro> findLibrosPopulares() {
+	    return libroRepo.findByDestacadoTrue();
+	}
+
 
 	    resultado.addAll(libroRepo.findByGenero_NombreGeneroContainingIgnoreCase(texto));
 	    resultado.addAll(libroRepo.findByNombreProductoContainingIgnoreCase(texto));
