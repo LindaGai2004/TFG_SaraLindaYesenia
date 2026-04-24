@@ -67,8 +67,7 @@ export default function SidebarDerecha() {
         {usuarios.length === 0 && <li>No hay usuarios aún</li>}
 
         {usuarios.map(u => (
-          // 1. Verificamos que 'u' existe
-          // 2. No te mostramos a ti mismo en la lista
+          // Verificamos que el usuario existe y no mostramos al usuario en la lista
           u && u.idUsuario !== user?.idUsuario && (
             <li key={u.idUsuario} className="usuario-recomendado">
               <img
@@ -79,7 +78,8 @@ export default function SidebarDerecha() {
 
               <div className="info">
                 <strong>{u.nombre} {u.apellidos}</strong>
-                <span>{u.totalPublicaciones} publicaciones</span>
+                <span className="username">@{u.username || 'lector'}</span>
+                <span className="stats-sidebar">{u.totalPublicaciones} publicaciones</span>
               </div>
 
               <button 

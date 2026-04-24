@@ -1,22 +1,27 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Search, User, ShoppingCart, Headphones, AlertTriangle } from 'lucide-react';
+import CartSidebar from './Carrito/CartSideBar.jsx';
+import { useState } from 'react';
 import './NavBar.css';
 
 function NavBar({ isVisible = true }) {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  function entrarCarrito() {
+  // Estado para controlar la apertura del sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Modificamos la función del carrito
+  function manejarClickCarrito() {
     if (!user) {
       alert('Debes loguearte para ver tu carrito');
-      navigate('/login',
-        { state: { from: '/carrito' } }
-      );
+      navigate('/login', { state: { from: window.location.pathname } });
     } else {
-      navigate('/carrito')
+      setIsSidebarOpen(true);
     }
   }
+
   return (
     <>
       {/* Navegación */}
@@ -24,9 +29,6 @@ function NavBar({ isVisible = true }) {
         {/* Enlaces a la izquierda */}
         <div className="enlaces-navegacion">
           <Link to="/productos" className="enlace">Tienda <span><svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
-          </svg></span></Link>
-          <Link to="/blogs" className="enlace">Blogs <span><svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
           </svg></span></Link>
           <Link to="/comunidad" className="enlace">Comunidad</Link>
@@ -81,11 +83,15 @@ function NavBar({ isVisible = true }) {
           </div>
 
           {/* Carrito */}
-          <div className="accion" onClick={entrarCarrito}>
+          <div className="accion" onClick={manejarClickCarrito}>
             <ShoppingCart size={22} className="icono-carrito" />
           </div>
         </div>
       </nav>
+      <CartSidebar 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+      />
     </>
   );
 }

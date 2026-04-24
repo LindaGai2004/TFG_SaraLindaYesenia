@@ -4,8 +4,14 @@ import ProductoFiltros from "../components/Productos/ProductoFiltros.jsx";
 import ProductoLista from "../components//Productos/ProductoLista.jsx";
 import "./Productos.css";
 
+
 export default function Productos() {
     const [productos, setProductos] = useState([]);
+    const [orden, setOrden] = useState("");
+    const [paginaActual, setPaginaActual] = useState(1);
+    const [busqueda, setBusqueda] = useState("");
+    const productosPorPagina = 24; 
+
     useEffect(() => {
         async function cargarTodos() {
             try {
@@ -19,9 +25,29 @@ export default function Productos() {
         cargarTodos();
     }, []);    
 
-    const [orden, setOrden] = useState("");
-    const [paginaActual, setPaginaActual] = useState(1);
-    const productosPorPagina = 18; // 3 filas de 6 productos
+
+    // Función para el buscador de los productos
+    const manejarBusqueda = async (e) => {
+        const texto = e.target.value;
+        setBusqueda(texto);
+        setPaginaActual(1); // Resetear a la página 1 al buscar
+
+        if (texto.trim().length > 0) {
+            try {
+                const response = await axios.get(`http://localhost:9001/productos/buscar/todos`, {
+                    params: { texto: texto }
+                });
+                // Si el back devuelve un array, lo ponemos
+                //  si no lista vacía
+                setProductos(Array.isArray(response.data) ? response.data : []);
+            } catch (error) {
+                console.error("Error en la búsqueda:", error);
+                setProductos([]);
+            }
+        } else {
+            cargarTodos(); // Si borra el texto, mostramos todo otra vez
+        }
+    };
 
     const filtrarProductos = async (filtros) => {
         try {
@@ -76,6 +102,18 @@ export default function Productos() {
 
             <main className="resultados">
                 <div className="resultados-header">
+                    {/* Buscador de productos */}
+                    <div className="buscador-tienda">
+                        <input
+                            type="text"
+                            placeholder="Buscar libros o papelería..."
+                            value={busqueda}
+                            onChange={manejarBusqueda}
+                            className="input-busqueda"
+                        />
+                    </div>
+
+                    {/* Ordenar */}
                     <select value={orden} onChange={(e) => setOrden(e.target.value)}>
                         <option value="">Ordenar por: </option>
                         <option value="alfbAsc">Alfabéticamente: a - z</option>

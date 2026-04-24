@@ -144,6 +144,7 @@ export default function ProductoFiltros({ onFiltrar }) {
                 </>
             )}
 
+            
             {/* PRECIO */}
             <div className="filtro">
                 <label>Precio</label>
@@ -154,7 +155,13 @@ export default function ProductoFiltros({ onFiltrar }) {
                         min="0"
                         max="200"
                         value={precio.min}
-                        onChange={(e) => setPrecio(prev => ({ ...prev, min: Number(e.target.value) }))}
+                        onChange={(e) => {
+                            const val = Number(e.target.value);
+                            // Solo actualiza si el nuevo valor es menor que el máximo actual
+                            if (val < precio.max) {
+                                setPrecio(prev => ({ ...prev, min: val }));
+                            }
+                        }}
                     />
 
                     <input
@@ -162,7 +169,13 @@ export default function ProductoFiltros({ onFiltrar }) {
                         min="0"
                         max="200"
                         value={precio.max}
-                        onChange={(e) => setPrecio(prev => ({ ...prev, max: Number(e.target.value) }))}
+                        onChange={(e) => {
+                            const val = Number(e.target.value);
+                            // Actualiza si el nuevo valor es mayor que el mínimo actual
+                            if (val > precio.min) {
+                                setPrecio(prev => ({ ...prev, max: val }));
+                            }
+                        }}
                     />
                 </div>
 
@@ -171,6 +184,7 @@ export default function ProductoFiltros({ onFiltrar }) {
                     <span>{precio.max} €</span>
                 </div>
             </div>
+
 
             {/* ESTADO */}
             <div className="filtro">

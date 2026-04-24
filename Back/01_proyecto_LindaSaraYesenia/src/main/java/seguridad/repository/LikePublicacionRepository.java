@@ -10,4 +10,6 @@ public interface LikePublicacionRepository extends JpaRepository<LikePublicacion
 	Optional<LikePublicacion> findByPublicacion_IdAndUsuario_IdUsuario(Integer idPublicacion, Integer idUsuario);
 
     int countByPublicacion_Id(Integer idPublicacion);
+    
+    void deleteByPublicacion_Id(Integer idPublicacion);
 }

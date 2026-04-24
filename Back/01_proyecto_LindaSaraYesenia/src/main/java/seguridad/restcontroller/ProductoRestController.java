@@ -53,8 +53,8 @@ public class ProductoRestController {
     }
     
 
+    
     // Listar todos
-
     @GetMapping("/todos")
     public ResponseEntity<?> todos() {
         List<Producto> lista = productoService.findAll();
@@ -62,8 +62,9 @@ public class ProductoRestController {
         return ResponseEntity.ok(lista);
     }
 
+    
+    
     // Filtrar
-
     @GetMapping("/filtrar")
     public ResponseEntity<?> filtrarProductos(
             @RequestParam(required = false) String tipo,
@@ -81,8 +82,9 @@ public class ProductoRestController {
         return ResponseEntity.ok(lista);
     }
 
+    
+    
     // Buscador
-
     @GetMapping("/buscar/todos")
     public ResponseEntity<?> buscarProducto(@RequestParam String texto) {
         List<Producto> lista = productoService.buscardorProducto(texto);
