@@ -247,4 +247,9 @@ import seguridad.repository.UsuarioRepository;
 	    return recomendados;
 	}
 
+	@Override
+	public boolean existsByUsername(String username) {
+		return usuarioRepository.existsByUsername(username);
+	}
+
 }

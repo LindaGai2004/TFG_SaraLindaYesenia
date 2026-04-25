@@ -1,91 +1,139 @@
-.usuario-recomendado {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 18px;
-  width: 100%;
-}
-
-.usuario-recomendado .avatar {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ddd;
-}
-
-
-.usuario-recomendado .info {
+.sidebar-derecha {
   display: flex;
   flex-direction: column;
-  min-width: 120px;
+  height: 100%;
+  padding: 20px;
 }
 
-.usuario-recomendado .info strong {
-  font-size: 14px;
-}
 
-.usuario-recomendado .info span {
-  font-size: 12px;
-  color: #777;
-  font-weight: 500;
-}
-
+/* --- Títulos y Listas --- */
 .sidebar-derecha h3 {
   margin-bottom: 20px;
   font-family: "Cormorant", serif;
   color: #6d96a6;
   font-size: 30px;
   text-align: center;
+  flex-shrink: 0;
 }
 
+.lista-recomendados {
+  flex: 1; /* Ocupa todo el espacio sobrante debajo del h3 */
+  overflow-y: auto; /* El scroll SOLO ocurre en la lista de usuarios */
+  padding-right: 5px;
+  margin: 0;
+  list-style: none;
+}
 
+.lista-recomendados::-webkit-scrollbar {
+  width: 5px;
+}
+.lista-recomendados::-webkit-scrollbar-thumb {
+  background: #8daebd;
+  border-radius: 10px;
+}
+
+.usuario-recomendado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* --- Avatares e Info --- */
+.usuario-recomendado .avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f0f0f0;
+  flex-shrink: 0; /* Evita que la imagen se aplaste */
+}
+
+.usuario-recomendado .info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.usuario-recomendado .info strong {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Si el nombre es muy largo pone "..." */
+}
+
+.usuario-recomendado .info .username {
+  font-size: 12px;
+  color: #777;
+  font-weight: 500;
+}
+
+.stats-sidebar {
+  font-size: 11px !important;
+  color: #999 !important;
+}
+
+/* --- Botón Seguir --- */
 .btn-seguir {
-  padding: 6px 12px;
+  padding: 6px 0;
   border-radius: 20px;
   border: 1px solid #8daebd;
   background-color: transparent;
   color: #8daebd;
   cursor: pointer;
   font-weight: bold;
-  font-size: 0.85rem;
-  margin-left: 0; 
-
+  font-size: 0.8rem;
+  width: 90px;
+  flex-shrink: 0;
   position: relative;
   overflow: hidden;
   z-index: 1;
-  transition: color 0.4s ease, border-color 0.4s ease;
-  width: 120px; 
-  text-align: center;
+  transition: all 0.4s ease;
 }
-
-/* Capa que hace el barrido */
-.btn-seguir::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%; /* Empieza fuera a la izquierda */
-  width: 100%;
-  height: 100%;
-  background-color: #8daebd; /* El color que rellenará el botón */
-  transition: left 0.4s ease;
-  z-index: -1;
-}
-
-.btn-seguir:hover::before {
-  left: 0;
-}
-
-.btn-seguir:hover {
-  color: white;
-  border-color: #8daebd;
-}
-
-/* --- ESTADO SIGUIENDO --- */
 
 .btn-seguir.siguiendo {
   background-color: #8daebd;
   color: white;
-  border-color: #8daebd;
+}
+
+.btn-seguir:hover:not(.siguiendo) {
+  background-color: #8daebd;
+  color: white;
+}
+
+
+/* RESPONSIVE tablet --------------------------------------------------------------------*/
+@media (min-width: 769px) and (max-width: 1500px) {
+  .sidebar-derecha {
+    padding: 12px;
+  }
+
+  .sidebar-derecha h3 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+  }
+
+  .usuario-recomendado {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .usuario-recomendado .info strong {
+    font-size: 13px;
+  }
+
+  .usuario-recomendado .info .username {
+    font-size: 11px;
+  }
+
+  .stats-sidebar {
+    font-size: 10px !important;
+  }
+
+  .btn-seguir {
+    font-size: 0.7rem;
+  }
 }

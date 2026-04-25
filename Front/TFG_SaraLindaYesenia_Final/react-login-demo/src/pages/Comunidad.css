@@ -1,14 +1,16 @@
+.comunidad-wrapper {
+  background-color: #f9f7f4; 
+  width: 100%;
+  min-height: 100vh;
+}
+
 .comunidad-page {
   display: flex;
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1300px;
-  margin: 0 auto;
-  background: #f9f7f4;
-  border-radius: 12px;
-
-  /* Para que el scroll interno funcione */
-  height: calc(100vh - 40px);
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1500px;
+    margin: 0 auto;
+    height: calc(100vh - 40px);
 }
 
 /* COLUMNA IZQUIERDA: scroll independiente */
@@ -30,11 +32,12 @@
   border-radius: 12px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);
 
-  height: fit-content;
-  position: sticky; /* e queda fija */
-  top: 20px;
+  /* Cambios clave aquí: */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ocupa el mismo alto que la izquierda */
+  overflow: hidden; /* Evita que el contenido se salga del recuadro blanco */
 }
-
 
 /* TITULO */
 .titulo-comunidad {
@@ -101,14 +104,38 @@
   background: #184763;
 }
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
+/* RESPONSIVE tablet --------------------------------------------------------------------*/
+@media (min-width: 769px) and (max-width: 1500px) {
+  .comunidad-page {
+    width: 80%; 
+    margin: 20px auto;
+    gap: 30px;
+  }
+}
+
+/* MÓVILES Y TABLETS PEQUEÑAS  */
+@media (max-width: 768px) {
   .comunidad-page {
     flex-direction: column;
+    height: auto;
+    width: 95%;
+    padding: 1rem;
+    margin: 10px auto;
+  }
+
+  .columna-izquierda {
+    overflow-y: visible;
+    height: auto;
   }
 
   .columna-derecha {
     position: static;
     width: 100%;
+    height: auto;
+    order: 2;
+  }
+  
+  .columna-izquierda {
+    order: 1;
   }
 }

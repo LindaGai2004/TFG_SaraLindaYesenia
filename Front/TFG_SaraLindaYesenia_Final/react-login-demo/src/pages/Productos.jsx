@@ -11,6 +11,7 @@ export default function Productos() {
     const [orden, setOrden] = useState("");
     const [paginaActual, setPaginaActual] = useState(1);
     const [busqueda, setBusqueda] = useState("");
+    const [searchParams] = useSearchParams();
     const productosPorPagina = 24; 
 
     useEffect(() => {

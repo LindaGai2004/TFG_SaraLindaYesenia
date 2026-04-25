@@ -161,7 +161,7 @@
   width: 48px;
   height: 48px;
   background: #8daebd;
-  border: 1px solid #8daebd;
+  border: 1.5px solid #8daebd;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -171,8 +171,8 @@
 }
 
 .btn-icono:hover {
-  background: white;
-  border-color: #8daebd;
+  background: #6d96a6;
+  border-color: #6d96a6;
 }
 
 .btn-icono img {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioDto;
 import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
+import seguridad.repository.UsuarioRepository;
 import seguridad.security.JwtService;
 import seguridad.service.EmailService;
 import seguridad.service.PublicacionService;
@@ -42,6 +44,9 @@ public class UsuarioRestController {
    
     @Autowired
     private PerfilRepository perfilRepository;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
    
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -100,21 +105,26 @@ public class UsuarioRestController {
     @PostMapping("/registro")
     public ResponseEntity<?> registro(@RequestBody Usuario usuario) {
         try {
+            // validar si el email ya existe
             if (usuarioService.existsByEmail(usuario.getEmail())) {
                 return ResponseEntity.badRequest().body("El email ya está registrado");
             }
 
-            // NO encriptes aquí
-            usuario.setEnabled(0); // lo corregimos ahora abajo
+            // Validar si el nombre de usuario ya existe
+            if (usuarioService.existsByUsername(usuario.getUsername())) {
+                return ResponseEntity.badRequest().body("El nombre de usuario ya está en uso");
+            }
+
+            // Configuración inicial del usuario
+            usuario.setEnabled(0); // Deshabilitado hasta verificar
             Usuario nuevo = usuarioService.registrarCliente(usuario);
 
-            var token = verificacionService.crearToken(nuevo);
-            String link = "http://localhost:5173/verificacion-cuenta?token=" + token.getToken();
+            var tokenVerificacion = verificacionService.crearToken(nuevo);
 
-            emailService.enviarEmailSimple(
+            emailService.enviarEmailVerificacion(
                     nuevo.getEmail(),
-                    "Verifica tu cuenta",
-                    "Haz clic en el siguiente enlace para activar tu cuenta:\n" + link
+                    nuevo.getNombre(),
+                    tokenVerificacion.getToken()
             );
 
             UsuarioDto dto = new UsuarioDto(nuevo);
@@ -122,7 +132,8 @@ public class UsuarioRestController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Hubo un error al procesar el registro. Inténtalo de nuevo.");
         }
     }
 

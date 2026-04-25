@@ -1,6 +1,6 @@
 .publicacion-tarjeta {
   background: #fffefc;
-  padding: 10px 15px 15px 15px;
+  padding: 20px 20px 20px 20px;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   margin-bottom: 20px;
@@ -24,6 +24,7 @@
 
 .publicacion-info {
   display: flex;
+  padding-left: 10px;
   flex-direction: column;
 }
 
@@ -67,13 +68,18 @@ background: #f5f5f5;
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
+  padding: 6px 12px;
+  background: #8daebd;
+  border: 1.5px solid #8daebd;
   border-radius: 8px;
-  transition: background 0.2s;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .btn-accion:hover {
-  background: #f0f0f0;
+  background: #6d96a6;
+  border-color: #6d96a6;
 }
 
 .comentario-item {
@@ -104,11 +110,12 @@ background: #f5f5f5;
 }
 
 
+
 /* Enlace para etiquetar libro -------------------------------------------*/
 .enlace-producto-contenedor {
   margin-top: 10px;
   padding: 8px 12px;
-  background-color: #f0f7ff; /* Un azul muy clarito */
+  background-color: #f0f7ff;
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
@@ -136,29 +143,40 @@ background: #f5f5f5;
 
 
 /* Botón eliminar publicación -------------------------------------------*/
-.btn-eliminar-publicacion {
-  background: transparent;
-  border: none;
+/* Botón eliminar publicación corregido */
+.btn-eliminar {
+  background: #8daebd; /* Usamos tu azul principal para que sea visible */
+  border: 1.5px solid #8daebd;
   cursor: pointer;
   
-  width: 32px;
+  /* Tamaño cuadrado para que no se vea deforme */
+  width: 32px; 
   height: 32px; 
+  min-width: 32px; /* Evita que flexbox lo aplaste */
+  
   padding: 0;
-  border-radius: 4px;
+  border-radius: 8px; /* Coherente con los otros botones */
   
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 
-.btn-eliminar-publicacion:hover {
-  background: #f0f0f0;
+.btn-eliminar:hover {
+  background: white; /* Efecto Archives: fondo blanco al pasar el ratón */
+  border-color: #e74c3c; /* Borde rojo al querer eliminar */
 }
 
-.icono-eliminar {
-  width: 20px;
-  height: 20px;
+/* Manejo de la imagen dentro del botón eliminar */
+.btn-eliminar img, .btn-eliminar .icono-accion {
+  width: 18px; /* Un poco más pequeño que el botón para que respire */
+  height: 18px;
   object-fit: contain;
-  text-align: center;
+  transition: filter 0.2s ease;
+}
+
+/* Truco opcional: si la imagen es blanca, en hover la ponemos roja */
+.btn-eliminar:hover img {
+  filter: invert(27%) sepia(91%) saturate(2352%) hue-rotate(346deg) brightness(91%) contrast(88%);
 }

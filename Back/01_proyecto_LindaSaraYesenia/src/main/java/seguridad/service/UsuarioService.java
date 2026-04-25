@@ -13,6 +13,7 @@ public interface UsuarioService extends UserDetailsService{
 	Usuario findById(Integer idUsuario);
 	Usuario findByEmail(String email);
 	boolean existsByEmail(String email);
+	boolean existsByUsername(String username);
 	
 	List<Usuario> findAll();
 	

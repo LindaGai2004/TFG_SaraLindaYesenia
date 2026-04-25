@@ -8,4 +8,6 @@ public interface EmailService {
 	void enviarCodigoRecuperacion(String to, String codigo) throws Exception;
 	
 	void enviarEmailSimple(String to, String asunto, String mensaje) throws Exception;
+
+	void enviarEmailVerificacion(String to, String nombre, String token) throws Exception;
 }
