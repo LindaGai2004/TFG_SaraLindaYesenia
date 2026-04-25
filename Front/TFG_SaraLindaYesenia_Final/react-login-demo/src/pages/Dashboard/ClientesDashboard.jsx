@@ -21,7 +21,7 @@ export default function Clientes({
   return (
     <div>
       <h2 className="text-xl font-bold text-primary mb-1">Clientes</h2>
-      <p className="text-xs text-secondary mb-4">Gestión los clientes</p>
+      <p className="text-xs text-secondary mb-4"></p>
 
       <div className="search-wrapper mb-4">
         <Search size={15} className="search-icon" />
@@ -51,7 +51,7 @@ export default function Clientes({
           </thead>
           <tbody>
             {filteredClients.map(c => {
-              const pedCnt = pedidos.filter(p => p.idUsuario === c.id).length;
+              const pedCnt = pedidos.filter(p => p.email === c.email).length;
               return (
                 <tr key={c.id} onClick={() => setPopup({ type: 'client', data: c })} className="cursor-pointer">
                   <td>
@@ -70,7 +70,7 @@ export default function Clientes({
                   <td>
                     <div className="table-actions">
                       <button onClick={e => { e.stopPropagation(); setFormModal({ type: 'edit', data: c }); }} className="btn-icon edit">
-                        <Edit size={16} color="#2d6a4f" />
+                        <Edit size={16} color="#6d96a6" />
                       </button>
                       <button onClick={e => { e.stopPropagation(); onDeleteClient(c.idUsuario); }} className="btn-icon delete">
                         <Trash2 size={16} color="#ef4444" />
@@ -104,14 +104,14 @@ export default function Clientes({
             </div>
           ))}
           <h5 className="text-xs font-bold mt-4 mb-2 text-secondary">Pedidos</h5>
-          {pedidos.filter(p => p.idUsuario === popup.data.id).length === 0 ? (
+          {pedidos.filter(p => p.email === popup.data.email).length === 0 ? (
             <p className="text-xs text-muted">De momento no tienes pedido</p>
           ) : (
-            pedidos.filter(p => p.idUsuario === popup.data.id).map(p => {
+            pedidos.filter(p => p.email === popup.data.email).map(p => {
               const statusStyle = {
                 'CANCELADO': { bg: '#fef3c7', color: '#92400e' },
                 'CARRITO': { bg: '#dbeafe', color: '#1d4ed8' },
-                'REALIZADO': { bg: '#d1fae5', color: '#065f46' },
+                'REALIZADO': { bg: '#dce8ed', color: '#3f6b7c' },
                 'DEVUELTO': { bg: '#fee2e2', color: '#991b1b' }
               }[p.estadoPedido];
               return (

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ProductoFiltros.css";
 
-export default function ProductoFiltros({ onFiltrar }) {
+export default function ProductoFiltros({ onFiltrar, initialFilters = null }) {
     const [tipo, setTipo] = useState("");
     const [precio, setPrecio] = useState({ min: 0, max: 200 });
     const [estado, setEstado] = useState("");
@@ -29,6 +29,21 @@ export default function ProductoFiltros({ onFiltrar }) {
         axios.get("http://localhost:9001/categorias/todos")
             .then(res => setCategoriasBD(res.data));
     }, []);
+
+    useEffect(() => {
+        if (!initialFilters) return;
+
+        setTipo(initialFilters.tipo ?? "");
+        setEstado(initialFilters.estado ?? "");
+        setIdioma(initialFilters.idioma ?? "");
+        setGenero(initialFilters.genero ? [initialFilters.genero] : []);
+        setMarca(initialFilters.marca ?? "");
+        setCategoria(initialFilters.categoria ? [initialFilters.categoria] : []);
+        setPrecio({
+            min: initialFilters.precioMin ?? 0,
+            max: initialFilters.precioMax ?? 200,
+        });
+    }, [initialFilters]);
 
     const aplicarFiltros = () => {
         const filtros = {};
