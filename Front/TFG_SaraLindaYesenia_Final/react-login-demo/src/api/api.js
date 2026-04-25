@@ -19,7 +19,7 @@ function handle401() {
   ) {
     return;
   }
-
+  //alert("401 - Token inválido o caducado"); 
   console.error("Token inválido o caducado"); 
   localStorage.setItem("token_expirado", "true");  // Guarda el aviso para el login
   localStorage.removeItem("user"); 
@@ -91,8 +91,9 @@ export async function apiPut(path, body) {
   });
 
   if (res.status === 401) return handle401();
-
+  
   if (!res.ok) throw new Error (await res.text());
+  
 
   const text = await res.text();
   return text ? JSON.parse(text) : null;
@@ -111,8 +112,12 @@ export async function apiDelete(path) {
 
   if (!res.ok) throw new Error (await res.text());
 
-  const text = await res.text();
-  return text ? JSON.parse(text) : null;
+    const text = await res.text();
+  try {
+    return text ? JSON.parse(text) : null;
+  } catch {
+    return text;
+  }
 }
 
 export default {

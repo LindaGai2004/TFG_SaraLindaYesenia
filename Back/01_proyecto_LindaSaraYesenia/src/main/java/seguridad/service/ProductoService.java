@@ -2,6 +2,8 @@ package seguridad.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import seguridad.model.EstadoProducto;
 import seguridad.model.Producto;
 
 @Service
@@ -31,10 +33,13 @@ public interface ProductoService {
         Double precioMax,
         String estado
     );
+    
+  
 
     // Para productos relacionados
     List<Producto> relacionadosLibro(String autor, String genero, Integer idActual);
 
     List<Producto> relacionadosPapeleria(String marca, String categoria, Integer idActual);
     
+    List<Producto> filtroEstado(String estadoProducto);
 }

@@ -3,7 +3,9 @@ import { useState, useRef, useEffect, } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ChevronLeft, ChevronRight} from 'lucide-react';
-import { apiPost } from '../api/api';
+import { apiGet, apiPost } from '../api/api';
+
+const LIBRO_MES_STORAGE_KEY = 'libro_mes_id';
 
 // Componente estar en pantalla
 function useOnScreen(ref) {
@@ -238,8 +240,8 @@ export default function Home() {
   useEffect(() => {
     async function cargarLibroMes() {
       try {
-        const res = await fetch("http://localhost:9001/productos/31");
-        const data = await res.json();
+        const libroMesId = localStorage.getItem(LIBRO_MES_STORAGE_KEY) || '31';
+        const data = await apiGet(`/productos/${libroMesId}`);
         setLibroMes(data);
       } catch (error) {
         console.error("Error cargando libro del mes:", error);
