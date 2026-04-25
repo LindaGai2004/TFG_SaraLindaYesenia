@@ -59,6 +59,7 @@ export default function Productos() {
                 { params: filtros }
             );
             setProductos(response.data);
+            setPaginaActual(1);
         } catch (error) {
             console.error("Error al filtrar productos:", error);
         }

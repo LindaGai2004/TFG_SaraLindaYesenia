@@ -30,6 +30,21 @@ export default function ProductoFiltros({ onFiltrar, initialTipo = "", initialGe
             .then(res => setCategoriasBD(res.data));
     }, []);
 
+    useEffect(() => {
+        if (!initialFilters) return;
+
+        setTipo(initialFilters.tipo ?? "");
+        setEstado(initialFilters.estado ?? "");
+        setIdioma(initialFilters.idioma ?? "");
+        setGenero(initialFilters.genero ? [initialFilters.genero] : []);
+        setMarca(initialFilters.marca ?? "");
+        setCategoria(initialFilters.categoria ? [initialFilters.categoria] : []);
+        setPrecio({
+            min: initialFilters.precioMin ?? 0,
+            max: initialFilters.precioMax ?? 200,
+        });
+    }, [initialFilters]);
+
     const aplicarFiltros = () => {
         const filtros = {};
     

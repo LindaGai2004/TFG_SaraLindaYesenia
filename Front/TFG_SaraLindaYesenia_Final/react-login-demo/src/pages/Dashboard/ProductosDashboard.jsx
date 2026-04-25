@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useEffect} from 'react';
 import { Search, Plus, Edit, Trash2 } from 'lucide-react';
 import Modal from '../../components/Modal_dashboard';
+import { apiGet } from '../../api/api';
 
 export default function Productos({
   books,
@@ -8,10 +9,13 @@ export default function Productos({
   onAddBook,
   onEditBook,
   onDeleteBook,
-  onAddStationery,
-  onEditStationery,
-  onDeleteStationery,
+  onAddPapeleria,
+  onEditPapeleria,
+  onDeletePapeleria,
 }) {
+
+
+
   const [popup, setPopup] = useState(null);
   const [formModal, setFormModal] = useState(null);
 
@@ -30,28 +34,117 @@ export default function Productos({
   const [papCategoria, setPapCategoria] = useState('Todos');
   const [papPrecio, setPapPrecio] = useState('Todos');
 
+  const [apiBooks, setApiBooks] = useState([]);
+  const [apiPapeleria, setApiPapeleria] = useState([]);
+  const [isSearching, setIsSearching] = useState(false); 
+  const [idiomasBD, setIdiomasBD] = useState([]);
+
+useEffect(() => {
+  const fetchIdiomas = async () => {
+    try {
+      const data = await apiGet('/idiomas/todos');
+      setIdiomasBD(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error('Error cargando idiomas:', e);
+      setIdiomasBD([]);
+    }
+  };
+
+  fetchIdiomas();
+}, []);
+
+  //para buscador
+useEffect(() => {
+  const fetchBuscar = async () => {
+    if (!prodSearch || prodSearch.trim().length < 2) {
+      setIsSearching(false);  // ← 不在搜索状态
+      setApiBooks([]);
+      setApiPapeleria([]);
+      return;
+    }
+
+    setIsSearching(true);  // ← 正在搜索
+
+    try {
+      const data = await apiGet(
+        `/productos/buscar/todos?texto=${encodeURIComponent(prodSearch)}`
+      );
+
+      if (!data || !Array.isArray(data)) {
+        setApiBooks([]);
+        setApiPapeleria([]);
+        return;
+      }
+
+      setApiBooks(data.filter(p => p.isbn !== undefined && p.isbn !== null));
+      setApiPapeleria(data.filter(p => p.isbn === undefined || p.isbn === null));
+
+    } catch (e) {
+      console.error("Error búsqueda:", e);
+      setApiBooks([]);
+      setApiPapeleria([]);
+    }
+  };
+
+  const timer = setTimeout(fetchBuscar, 300);
+  return () => clearTimeout(timer);
+
+}, [prodSearch]);
+
+//Para filtro de estado
+useEffect(() => {
+  const fetchEstado = async () => {
+    if (!prodEstado || prodEstado === 'Todos') {
+      setApiBooks([]);
+      setApiPapeleria([]);
+      return;
+    }
+
+    try {
+      const data = await apiGet(
+        `/productos/filtro/estado?estadoProducto=${prodEstado}`
+      );
+      if (!data || !Array.isArray(data)) {
+        setApiBooks([]);
+        setApiPapeleria([]);
+        return;
+      }
+
+    setApiBooks(data.filter(p => p.isbn !== undefined && p.isbn !== null));
+    setApiPapeleria(data.filter(p => p.isbn === undefined || p.isbn === null));
+
+    } catch (e) {
+      console.error("Error:", e);
+      setApiBooks([]);
+      setApiPapeleria([]);
+    }
+  };
+
+  fetchEstado();
+}, [prodEstado]);
+
   // 筛选后的数据
-  const filteredBooks = useMemo(() => books.filter(b => {
-    if (prodSearch && !`${b.nombre} ${b.autor} ${b.isbn} ${b.editorial}`.toLowerCase().includes(prodSearch.toLowerCase())) return false;
-    if (prodEstado !== 'Todos' && b.estado !== prodEstado) return false;
+const filteredBooks = useMemo(() => 
+  (isSearching ? apiBooks : (apiBooks.length ? apiBooks : books)).filter(b => {
+  //  ↑ 正在搜索时只用apiBooks，不回退到books
     if (bookIdioma !== 'Todos' && b.idioma?.nombreIdioma !== bookIdioma) return false;
     if (bookGenero !== 'Todos' && b.genero?.nombreGenero !== bookGenero) return false;
     if (bookPrecio === 'Bajo' && b.precio > 15) return false;
     if (bookPrecio === 'Medio' && (b.precio <= 15 || b.precio > 25)) return false;
     if (bookPrecio === 'Alto' && b.precio <= 25) return false;
     return true;
-  }), [books, prodSearch, prodEstado, bookIdioma, bookGenero, bookPrecio]);
+}), [isSearching, apiBooks, books, bookIdioma, bookGenero, bookPrecio]);
 
-  const filteredStationery = useMemo(() => papeleria.filter(s => {
-    if (prodSearch && !`${s.nombreProducto} ${s.marca?.nombreMarca} ${s.categoria?.nombreCategoria}`.toLowerCase().includes(prodSearch.toLowerCase())) return false;
-    if (prodEstado !== 'Todos' && s.estado !== prodEstado) return false;
+const filteredStationery = useMemo(() => 
+  (isSearching ? apiPapeleria : (apiPapeleria.length ? apiPapeleria : papeleria)).filter(s => {
+  //  ↑ 正在搜索时只用apiPapeleria，不回退到papeleria
     if (papMarca !== 'Todos' && s.marca?.nombreMarca !== papMarca) return false;
     if (papCategoria !== 'Todos' && s.categoria?.nombreCategoria !== papCategoria) return false;
     if (papPrecio === 'Bajo' && s.precio > 5) return false;
     if (papPrecio === 'Medio' && (s.precio <= 5 || s.precio > 20)) return false;
     if (papPrecio === 'Alto' && s.precio <= 20) return false;
     return true;
-  }), [papeleria, prodSearch, prodEstado, papMarca, papCategoria, papPrecio]);
+}), [isSearching, apiPapeleria, papeleria, papMarca, papCategoria, papPrecio]);
 
   const showBooks = prodCategory === 'Todos' || prodCategory === 'Libro';
   const showPap = prodCategory === 'Todos' || prodCategory === 'Papeleria';
@@ -97,7 +190,7 @@ export default function Productos({
       <div className="search-wrapper mb-3">
         <Search size={15} className="search-icon" />
         <input
-          placeholder="Buscar por nombre..."
+          placeholder="Buscar por nombre, autor, marca..."
           value={prodSearch}
           onChange={e => setProdSearch(e.target.value)}
           className="input-field search-input"
@@ -111,19 +204,28 @@ export default function Productos({
           onChange={e => setProdEstado(e.target.value)} 
           className="input-field filter-select"
         >
-          <option value="Todos">Estado: Todos</option>
+          <option value="Todos">Todos</option>
           <option value="DISPONIBLE">Disponible</option>
-          <option value="Agotado">Agotado</option>
+          <option value="AGOTADO">Agotado</option>
         </select>
 
         {prodCategory === 'Libro' && <>
-          <select value={bookIdioma} onChange={e => setBookIdioma(e.target.value)} className="input-field filter-select">
-            <option value="Todos">Lenguaje: Todos</option>
-            <option value="Español">Español</option>
-            <option value="Inglés">Ingles</option>
-          </select>
+          {idiomasBD.length > 0 ? (
+            <select value={bookIdioma} onChange={e => setBookIdioma(e.target.value)} className="input-field filter-select">
+              <option value="Todos">Todos</option>
+              {idiomasBD.map(i => (
+                <option key={i.idIdioma} value={i.nombreIdioma}>{i.nombreIdioma}</option>
+              ))}
+            </select>
+          ) : (
+            <select value={bookIdioma} onChange={e => setBookIdioma(e.target.value)} className="input-field filter-select">
+              <option value="Todos">Todos</option>
+              <option value="Espa?ol">Espa?ol</option>
+              <option value="Ingl?s">Ingles</option>
+            </select>
+          )}
           <select value={bookGenero} onChange={e => setBookGenero(e.target.value)} className="input-field filter-select">
-          <option value="Todos">Genero: Todos</option>
+          <option value="Todos">Todos</option>
 
           {/**SIN REPETIR */}
             {books
@@ -214,7 +316,7 @@ export default function Productos({
                     <td className="text-xs text-secondary">{b.editorial}</td>
                     <td className="text-xs font-bold text-green">${b.precio.toFixed(2)}</td>
                     <td>
-                      <span className={`badge ${b.estadoProducto === 'Disponible' ? 'badge-success' : 'badge-error'}`}>
+                      <span className={`badge ${b.estadoProducto === 'DISPONIBLE' ? 'badge-success' : 'badge-error'}`}>
                         {b.estadoProducto}
                       </span>
                     </td>
@@ -222,9 +324,9 @@ export default function Productos({
                     <td>
                       <div className="table-actions">
                         <button onClick={e => { e.stopPropagation(); setFormModal({ type: 'edit-book', data: b }); }} className="btn-icon edit">
-                          <Edit size={13} color="#2d6a4f" />
+                          <Edit size={13} color="#6d96a6" />
                         </button>
-                        <button onClick={e => { e.stopPropagation(); onDeleteBook(b.id); }} className="btn-icon delete">
+                        <button onClick={e => { e.stopPropagation(); onDeleteBook(b.idProducto); }} className="btn-icon delete">
                           <Trash2 size={13} color="#ef4444" />
                         </button>
                       </div>
@@ -267,7 +369,7 @@ export default function Productos({
                     <td className="text-xs text-secondary">{s.categoria?.nombreCategoria}</td>
                     <td className="text-xs font-bold text-blue">${s.precio.toFixed(2)}</td>
                     <td>
-                      <span className={`badge ${s.estadoProducto === 'Disponible' ? 'badge-success' : 'badge-error'}`}>
+                      <span className={`badge ${s.estadoProducto === 'DISPONIBLE' ? 'badge-success' : 'badge-error'}`}>
                         {s.estadoProducto}
                       </span>
                     </td>
@@ -277,7 +379,7 @@ export default function Productos({
                         <button onClick={e => { e.stopPropagation(); setFormModal({ type: 'edit-papeleria', data: s }); }} className="btn-icon edit">
                           <Edit size={13} color="#3b82f6" />
                         </button>
-                        <button onClick={e => { e.stopPropagation(); onDeleteStationery(s.id); }} className="btn-icon delete">
+                        <button onClick={e => { e.stopPropagation(); onDeletePapeleria(s.idProducto); }} className="btn-icon delete">
                           <Trash2 size={13} color="#ef4444" />
                         </button>
                       </div>
@@ -316,7 +418,7 @@ export default function Productos({
           ].map(([k, v]) => (
             <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderTop: '1px solid #f1f5f9' }}>
               <span className="text-secondary">{k}</span>
-              <span className={`font-semibold ${k === 'Estado' && v === 'Agotado' ? 'text-error' : k === 'Precio' ? 'text-green' : 'text-primary'}`}>
+              <span className={`font-semibold ${k === 'Estado' && v === 'AGOTADO' ? 'text-error' : k === 'Precio' ? 'text-green' : 'text-primary'}`}>
                 {v}
               </span>
             </div>
@@ -338,7 +440,7 @@ export default function Productos({
           ].map(([k, v]) => (
             <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderTop: '1px solid #f1f5f9' }}>
               <span className="text-secondary">{k}</span>
-              <span className={`font-semibold ${k === 'Estado' && v === 'Agotado' ? 'text-error' : k === 'Precio' ? 'text-blue' : 'text-primary'}`}>
+              <span className={`font-semibold ${k === 'Estado' && v === 'AGOTADO' ? 'text-error' : k === 'Precio' ? 'text-blue' : 'text-primary'}`}>
                 {v}
               </span>
             </div>
@@ -356,19 +458,19 @@ export default function Productos({
     const { type, data } = formModal;
 
     if (type === 'add-product') {
-      return <AddProductModal onClose={() => setFormModal(null)} onAddBook={onAddBook} onAddStationery={onAddStationery} />;
+      return <AddProductModal onClose={() => setFormModal(null)} onAddBook={onAddBook} onAddPapeleria={onAddPapeleria} books={books} papeleria={papeleria} />;
     }
     if (type === 'edit-book') {
       return (
         <Modal open width="max-w-lg" onClose={() => setFormModal(null)} title="✏️ Editar">
-          <ProductForm type="book" initial={data} onSave={d => { onEditBook(data.id, d); setFormModal(null); }} />
+          <ProductForm type="book" initial={data} onSave={d => { onEditBook(data.idProducto ?? data.id, d); setFormModal(null); }} books={books} papeleria={papeleria} />
         </Modal>
       );
     }
     if (type === 'edit-papeleria') {
       return (
         <Modal open width="max-w-lg" onClose={() => setFormModal(null)} title="✏️ Editar">
-          <ProductForm type="papeleria" initial={data} onSave={d => { onEditStationery(data.id, d); setFormModal(null); }} />
+          <ProductForm type="papeleria" initial={data} onSave={d => { onEditPapeleria(data.idProducto ?? data.id, d); setFormModal(null); }} books={books} papeleria={papeleria} />
         </Modal>
       );
     }
@@ -377,8 +479,16 @@ export default function Productos({
 }
 
 // 添加产品弹窗
-function AddProductModal({ onClose, onAddBook, onAddStationery }) {
+function AddProductModal({ onClose, onAddBook, onAddPapeleria, books, papeleria }) {
   const [subType, setSubType] = useState('book');
+  const handleSave = async (data) => {
+    if (subType === 'book') {
+      await onAddBook(data);
+    } else {
+      await onAddPapeleria(data);
+    }
+    onClose();
+  };
   return (
     <Modal open width="max-w-lg" onClose={onClose} title="➕ Añadir">
       <div className="flex gap-2 mb-4">
@@ -388,19 +498,74 @@ function AddProductModal({ onClose, onAddBook, onAddStationery }) {
           </button>
         ))}
       </div>
-      <ProductForm type={subType} onSave={d => { subType === 'book' ? onAddBook(d) : onAddStationery(d); onClose(); }} />
+      <ProductForm type={subType} onSave={handleSave} books={books} papeleria={papeleria} />
     </Modal>
   );
 }
 
 // 产品表单
-function ProductForm({ type, initial, onSave }) {
+function ProductForm({ type, initial, onSave, books = [], papeleria = [] }) {
   const isBook = type === 'book';
   const [form, setForm] = useState(initial || (isBook
-    ? { nombreProducto: '', autor: '', isbn: '', editorial: '', precio: '', nombreIdioma: '', nombreGenero: '', estadoProducto: '' }
-    : { nombreProducto: '', nombreMarca: '', categoria: '', precio: '', estadoProducto: '' }
+    ? { nombreProducto: '', autor: '', ISBN: '', editorial: '', precio: '', idioma: null, genero: null, estadoProducto: 'DISPONIBLE', stock: '', costoReal: '', fechaPublicacion: '', numeroPagina: '', descripcion: ''  }
+    : { nombreProducto: '', marca: null, categoria: null, precio: '', estadoProducto: 'DISPONIBLE', stock: '', costoReal: '', descripcion: ''  }
   ));
   const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
+  const idiomas = books
+    .map((b) => b.idioma)
+    .filter(Boolean)
+    .reduce((acc, curr) => {
+      if (!acc.find((i) => i.idIdioma === curr.idIdioma)) acc.push(curr);
+      return acc;
+    }, []);
+  const generos = books
+    .map((b) => b.genero)
+    .filter(Boolean)
+    .reduce((acc, curr) => {
+      if (!acc.find((g) => g.idGenero === curr.idGenero)) acc.push(curr);
+      return acc;
+    }, []);
+  const marcas = papeleria
+    .map((p) => p.marca)
+    .filter(Boolean)
+    .reduce((acc, curr) => {
+      if (!acc.find((m) => m.idMarca === curr.idMarca)) acc.push(curr);
+      return acc;
+    }, []);
+  const categorias = papeleria
+    .map((p) => p.categoria)
+    .filter(Boolean)
+    .reduce((acc, curr) => {
+      if (!acc.find((c) => c.idCategoria === curr.idCategoria)) acc.push(curr);
+      return acc;
+    }, []);
+
+  const handleSubmit = async () => {
+
+    if (isBook && !form.idioma) {
+      alert('Selecciona un idioma para el libro.');
+      return;
+    }
+    if (isBook && !form.genero) {
+      alert('Selecciona un genero para el libro.');
+      return;
+    }
+    if (!isBook && !form.marca) {
+      alert('Selecciona una marca para papeleria.');
+      return;
+    }
+    if (!isBook && !form.categoria) {
+      alert('Selecciona una categoria para papeleria.');
+      return;
+    }
+    await onSave({ 
+      ...form, 
+      precio: parseFloat(form.precio) || 0,
+      costoReal: parseFloat(form.costoReal) || 0,
+      stock: parseInt(form.stock) || 0,
+      numeroPagina: parseInt(form.numeroPagina) || 0,
+    });
+  };
 
   return (
     <div className="space-y-3">
@@ -408,7 +573,7 @@ function ProductForm({ type, initial, onSave }) {
         <>
           <div className="form-group">
             <label className="form-label">Nombre</label>
-            <input value={form.nombreProducto} onChange={e => set('nombre', e.target.value)} className="input-field" />
+            <input value={form.nombreProducto} onChange={e => set('nombreProducto', e.target.value)} className="input-field" />
           </div>
           <div className="form-group">
             <label className="form-label">Autor</label>
@@ -431,11 +596,11 @@ function ProductForm({ type, initial, onSave }) {
             </div>
             <div className="form-group">
               <label className="form-label">Idioma</label>
-              <select  value={form.idioma ?.nombreIdioma?? ''}  onChange={e =>  
-              {const selected = books.map(b => b.idioma).find(x => x.idIdioma === parseInt(e.target.value));
-                set('idioma', selected);}} className="input-field">
-                  <option value="">Todos</option>
-                {[...new Set(books.map(b => b.idioma))].map(i => (
+              <select  value={form.idioma?.idIdioma ?? ''}  onChange={e =>  
+              {const selected = idiomas.find(x => x.idIdioma === parseInt(e.target.value));
+                set('idioma', selected || null);}} className="input-field">
+                  <option value="">Selecciona idioma</option>
+                {idiomas.map(i => (
                   <option key={i.idIdioma} value={i.idIdioma}>{i.nombreIdioma}</option>
                 ))}
               </select>
@@ -445,33 +610,88 @@ function ProductForm({ type, initial, onSave }) {
             <div className="form-group">
               <label className="form-label">Genero</label>
               <select value={form.genero ?.idGenero?? ''} onChange={e => {
-                const selected = books.map(b => b.genero).find(g => g.idGenero === parseInt(e.target.value));
-                set('genero', selected);
+                const selected = generos.find(g => g.idGenero === parseInt(e.target.value));
+                set('genero', selected || null);
               }} className="input-field" >
-              <option value="">Todos</option>
-              {[...new Set(books.map(b => b.genero))].map(g => (
+              <option value="">Selecciona genero</option>
+              {generos.map(g => (
                 <option key={g.idGenero} value={g.idGenero}>{g.nombreGenero}</option>   
               ))}
             </select>
             </div>
             <div className="form-group">
               <label className="form-label">Estado</label>
-              <select value={form.estadoProducto} onChange={e => set('estado', e.target.value)} className="input-field">
-                <option value="Disponible">Disponible</option>
-                <option value="Agotado">Agotado</option>
+              <select value={form.estadoProducto} onChange={e => set('estadoProducto', e.target.value)} className="input-field">
+                <option value="DISPONIBLE">Disponible</option>
+                <option value="AGOTADO">Agotado</option>
               </select>
             </div>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Stock</label>
+            <input 
+              type="number" 
+              value={form.stock} 
+              onChange={e => set('stock', parseInt(e.target.value) || 0)} 
+              className="input-field" 
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Costo Real</label>
+            <input 
+              type="number" 
+              value={form.costoReal} 
+              onChange={e => set('costoReal', parseFloat(e.target.value) || 0)} 
+              className="input-field" 
+            />
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Fecha publicación</label>
+              <input 
+                type="date" 
+                value={form.fechaPublicacion} 
+                onChange={e => set('fechaPublicacion', e.target.value)} 
+                className="input-field" 
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Nº páginas</label>
+              <input 
+                type="number" 
+                value={form.numeroPagina} 
+                onChange={e => set('numeroPagina', parseInt(e.target.value) || 0)} 
+                className="input-field" 
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Descripción</label>
+            <textarea 
+              value={form.descripcion} 
+              onChange={e => set('descripcion', e.target.value)} 
+              className="input-field" 
+              rows={3}
+            />
           </div>
         </>
       ) : (
         <>
           <div className="form-group">
             <label className="form-label">Nombre</label>
-            <input value={form.nombreProducto} onChange={e => set('nombre', e.target.value)} className="input-field" />
+            <input value={form.nombreProducto} onChange={e => set('nombreProducto', e.target.value)} className="input-field" />
           </div>
           <div className="form-group">
             <label className="form-label">Marca</label>
-            <input value={form.marca?.nombreMarca} onChange={e => set('nombreMarca', e.target.value)} className="input-field" />
+            <select value={form.marca?.idMarca ?? ''} onChange={e => {
+              const selected = marcas.find(m => m.idMarca === parseInt(e.target.value));
+              set('marca', selected || null);
+            }} className="input-field">
+              <option value="">Selecciona marca</option>
+              {marcas.map(m => (
+                <option key={m.idMarca} value={m.idMarca}>{m.nombreMarca}</option>
+              ))}
+            </select>
           </div>
           <div className="form-row">
             <div className="form-group">
@@ -480,23 +700,54 @@ function ProductForm({ type, initial, onSave }) {
             </div>
             <div className="form-group">
               <label className="form-label">Categoria</label>
-              <select value={form.categoria?.nombreCategoria} onChange={e => set('categoria', e.target.value)} className="input-field">
-                {['Cuadernos', 'Coloreados', 'Accesorios', 'Bolígrafos', 'Carpetas', 'Herramientas'].map(c => (
-                  <option key={c} value={c}>{c}</option>
+              <select value={form.categoria?.idCategoria ?? ''} onChange={e => {
+                const selected = categorias.find(c => c.idCategoria === parseInt(e.target.value));
+                set('categoria', selected || null);
+              }} className="input-field">
+                <option value="">Selecciona categoria</option>
+                {categorias.map(c => (
+                  <option key={c.idCategoria} value={c.idCategoria}>{c.nombreCategoria}</option>
                 ))}
               </select>
             </div>
           </div>
           <div className="form-group">
             <label className="form-label">Estado</label>
-            <select value={form.estadoProducto} onChange={e => set('estado', e.target.value)} className="input-field">
-              <option value="Disponible">Disponible</option>
-              <option value="Agotado">Agotado</option>
-            </select>
+              <select value={form.estadoProducto} onChange={e => set('estadoProducto', e.target.value)} className="input-field">
+                <option value="DISPONIBLE">Disponible</option>
+                <option value="AGOTADO">Agotado</option>
+              </select>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Stock</label>
+            <input 
+              type="number" 
+              value={form.stock} 
+              onChange={e => set('stock', parseInt(e.target.value) || 0)} 
+              className="input-field" 
+            />
+          </div>
+           <div className="form-group">
+            <label className="form-label">Costo Real</label>
+            <input 
+              type="number" 
+              value={form.costoReal} 
+              onChange={e => set('costoReal', parseFloat(e.target.value) || 0)} 
+              className="input-field" 
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Descripción</label>
+            <textarea 
+              value={form.descripcion} 
+              onChange={e => set('descripcion', e.target.value)} 
+              className="input-field" 
+              rows={3}
+            />
           </div>
         </>
       )}
-      <button onClick={() => onSave({ ...form, precio: parseFloat(form.precio) || 0 })} className="btn btn-primary w-full mt-2">
+      <button type="button" onClick={handleSubmit} className="btn btn-primary w-full mt-2">
         {initial ? 'Guardar' : 'Añadir'}
       </button>
     </div>

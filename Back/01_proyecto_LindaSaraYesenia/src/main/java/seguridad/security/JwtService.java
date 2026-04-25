@@ -3,6 +3,7 @@ package seguridad.security;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,9 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.HashMap;
 
 @Service
 public class JwtService {
@@ -22,13 +26,29 @@ public class JwtService {
 	}
 	
 	//Generar token
-	public String generarToken(String email){
+	/*public String generarToken(String email){
 		return Jwts.builder()
 				.setSubject(email)
 				.setIssuedAt(new Date()) // Cuando se ha creado
 				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 *60)) // cuando caduca
 				.signWith(getSignKey(), SignatureAlgorithm.HS256)
 				.compact();
+	}*/
+	// 改方法签名，接收UserDetails而不是String
+	public String generarToken(UserDetails userDetails) {
+	    Map<String, Object> claims = new HashMap<>();
+	    claims.put("roles", userDetails.getAuthorities()
+	        .stream()
+	        .map(GrantedAuthority::getAuthority)
+	        .collect(Collectors.toList()));
+
+	    return Jwts.builder()
+	        .setClaims(claims)
+	        .setSubject(userDetails.getUsername())
+	        .setIssuedAt(new Date())
+	        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+	        .signWith(getSignKey(), SignatureAlgorithm.HS256)
+	        .compact();
 	}
 	
 	// Leer el token
