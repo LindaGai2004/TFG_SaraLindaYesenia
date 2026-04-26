@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import seguridad.model.EstadoProducto;
 import seguridad.model.Libro;
 import seguridad.model.Papeleria;
 import seguridad.model.Producto;
@@ -50,6 +51,29 @@ public class ProductoServiceImpl implements ProductoService {
             return -1;
         }
     }
+    
+  /*  @Override
+    @Transactional
+    public int deleteById(Integer idProducto) {
+        Optional<Producto> optional = productoRepository.findById(idProducto);
+        if (optional.isEmpty()) {
+            return -1;
+        }
+        try {
+            Producto p = optional.get();
+            if (p instanceof Libro) {
+                libroRepo.deleteById(idProducto);
+            } else if (p instanceof Papeleria) {
+                papeleriaRepo.deleteById(idProducto);
+            } else {
+                productoRepository.deleteById(idProducto);
+            }
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }*/
 
     @Override
     public Producto getProductoDestacado() {
@@ -197,5 +221,17 @@ public class ProductoServiceImpl implements ProductoService {
 
         return new ArrayList<>(resultado);
     }
+
+	@Override
+	public List<Producto> filtroEstado(String estadoProducto) {
+		if (estadoProducto == null || estadoProducto.equals("Todos")) {
+		    return productoRepository.findAll();
+		}else {
+		EstadoProducto estadoEnum = EstadoProducto.valueOf(estadoProducto);
+		return productoRepository.findByEstadoProducto(estadoEnum);
+		}
+		
+	}
+
 
 }

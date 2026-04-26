@@ -68,7 +68,7 @@ export default function Trabajadores({
                 <td>
                   <div className="table-actions">
                     <button onClick={() => setFormModal({ type: 'edit', data: t })} className="btn-icon edit">
-                      <Edit size={16} color="#2d6a4f" />
+                      <Edit size={16} color="#6d96a6" />
                     </button>
                     <button onClick={() => onDeleteTrabajador(t.idUsuario)} className="btn-icon delete">
                       <Trash2 size={16} color="#ef4444" />
