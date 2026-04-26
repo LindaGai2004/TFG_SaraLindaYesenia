@@ -38,7 +38,7 @@ function App() {
         setNotification(null);
       }, 3000);
     };
-  // ═══ FETCH DATA FROM BACKEND ═════════════════════════════════════════════
+  // FETCH DATA FROM BACKEND ---------------------------------------------------------------
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -84,7 +84,7 @@ function App() {
     }
   };
 
-  // ═══ CRUD OPERATIONS ═════════════════════════════════════════════════════
+  // CRUD OPERATIONS ---------------------------------------------------------------
 
   // --- LIBROS ---
   const addBook = async (bookData) => {
@@ -287,7 +287,7 @@ function App() {
     }
   };
 
-  // ═══ PAGE COMPONENTS ═════════════════════════════════════════════════════
+  // PAGE COMPONENTS ---------------------------------------------------------------
   const pageComponents = {
     dashboard: Dashboard,
     productos: Productos,
@@ -300,7 +300,7 @@ function App() {
  
   const PageComponent = pageComponents[page];
 
-  // ═══ RENDER ══════════════════════════════════════════════════════════════
+  // RENDER ---------------------------------------------------------------
   if (loading) {
     return (
       <div className="admin-layout">

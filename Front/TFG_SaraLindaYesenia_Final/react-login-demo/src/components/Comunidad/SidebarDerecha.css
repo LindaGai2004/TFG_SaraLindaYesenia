@@ -17,19 +17,11 @@
 }
 
 .lista-recomendados {
-  flex: 1; /* Ocupa todo el espacio sobrante debajo del h3 */
-  overflow-y: auto; /* El scroll SOLO ocurre en la lista de usuarios */
-  padding-right: 5px;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 15px;
   margin: 0;
   list-style: none;
-}
-
-.lista-recomendados::-webkit-scrollbar {
-  width: 5px;
-}
-.lista-recomendados::-webkit-scrollbar-thumb {
-  background: #8daebd;
-  border-radius: 10px;
 }
 
 .usuario-recomendado {

@@ -1,6 +1,7 @@
 package seguridad.restcontroller;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import seguridad.model.Perfil;
 import seguridad.model.Usuario;
@@ -446,4 +448,5 @@ public class UsuarioRestController {
             return ResponseEntity.status(500).body("Error al procesar el seguimiento");
         }
     }
+    
 }

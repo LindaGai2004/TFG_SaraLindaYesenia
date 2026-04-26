@@ -3,6 +3,7 @@ package seguridad.service;
 import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 import seguridad.model.Rol;
 import seguridad.model.Usuario;
@@ -30,5 +31,6 @@ public interface UsuarioService extends UserDetailsService{
 
 	/* Usuarios recomendados */
 	List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados(Integer idUsuarioLogueado);
+	
 
 }

@@ -1,6 +1,6 @@
 package seguridad.service;
-	
-	import java.time.LocalDate;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-	
-	import seguridad.model.Perfil;
+
+import seguridad.model.Perfil;
 	import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
@@ -33,6 +33,7 @@ import seguridad.repository.UsuarioRepository;
 	
 	@Autowired
 		private PasswordEncoder passwordEncoder;
+	
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -252,4 +253,5 @@ import seguridad.repository.UsuarioRepository;
 		return usuarioRepository.existsByUsername(username);
 	}
 
+	
 }
