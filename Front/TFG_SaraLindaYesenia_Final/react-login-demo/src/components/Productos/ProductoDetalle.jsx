@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
 import ProductoImagenes from "./ProductoImagenes";
 import { apiGet, apiPost, apiDelete } from "../../api/api";
+import { crearItemHistorial, guardarEnHistorial } from "../../utils/historialProductos";
 import "./ProductoDetalle.css";
 
 export default function ProductoDetalle() {
@@ -27,6 +28,8 @@ export default function ProductoDetalle() {
     fetch(`http://localhost:9001/productos/${id}`)
       .then(res => res.json())
       .then(data => {
+        guardarEnHistorial(crearItemHistorial(data));
+
         const base = {
           id: data.idProducto,
           nombre: data.nombreProducto,

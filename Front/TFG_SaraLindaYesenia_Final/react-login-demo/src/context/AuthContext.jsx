@@ -79,6 +79,12 @@ async function login(email, password) {
   }
 }
 
+function updateUser(updatedUser) {
+  const normalizedUser = normalizeUser(updatedUser);
+  setUser(normalizedUser);
+  localStorage.setItem('user', JSON.stringify(normalizedUser));
+}
+
 function logout() {
   setUser(null);
   localStorage.removeItem('user');
@@ -86,7 +92,7 @@ function logout() {
   localStorage.removeItem('cartItems');
 }
   // Exponemos initializing para que ProtectedRoute espere mientras cargamos
-  const value = { user, login, logout, initializing };
+  const value = { user, login, logout, updateUser, initializing };
 
   return (
     <AuthContext.Provider value={value}>

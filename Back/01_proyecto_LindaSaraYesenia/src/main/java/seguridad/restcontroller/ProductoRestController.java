@@ -184,4 +184,10 @@ public class ProductoRestController {
         List<Producto> lista = productoService.relacionadosPapeleria(marca, categoria, idActual);
         return ResponseEntity.ok(lista);
     }
+    
+    @GetMapping("/filtro/estado")
+    public ResponseEntity<?> filtroPorProducto(@RequestParam(required = false) String estadoProducto){
+    	
+    	return ResponseEntity.ok(productoService.filtroEstado(estadoProducto));
+    }
 }
