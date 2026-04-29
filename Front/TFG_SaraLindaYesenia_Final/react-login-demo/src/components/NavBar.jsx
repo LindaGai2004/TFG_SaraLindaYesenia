@@ -11,19 +11,36 @@ function NavBar({ isVisible = true }) {
 
   // Estado para controlar la apertura del sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [mostrarAvisoLogin, setMostrarAvisoLogin] = useState(false);
 
-  // Modificamos la función del carrito
   function manejarClickCarrito() {
     if (!user) {
-      alert('Debes loguearte para ver tu carrito');
-      navigate('/login', { state: { from: window.location.pathname } });
+      setMostrarAvisoLogin(true);
     } else {
       setIsSidebarOpen(true);
     }
   }
-
   return (
     <>
+      {mostrarAvisoLogin && (
+        <div className="notificacion-login">
+          <p>Debes iniciar sesión para ver tu carrito.</p>
+          <div className="notificacion-botones">
+            <button
+              className="btn-login-aviso"
+              onClick={() => {
+                setMostrarAvisoLogin(false);
+                navigate('/login', { state: { from: '/carrito' } });
+              }}
+            >
+              Ir al login
+            </button>
+            <button className="btn-cerrar-aviso" onClick={() => setMostrarAvisoLogin(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
       {/* Navegación */}
       <nav className={`barra-navegacion ${isVisible ? 'visible' : ''}`}>
         {/* Enlaces a la izquierda */}
@@ -98,9 +115,9 @@ function NavBar({ isVisible = true }) {
           </div>
         </div>
       </nav>
-      <CartSidebar 
-        isOpen={isSidebarOpen} 
-        onClose={() => setIsSidebarOpen(false)} 
+      <CartSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
     </>
   );

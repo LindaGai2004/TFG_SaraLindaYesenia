@@ -160,3 +160,6 @@ export default {
   apiPut,
   apiDelete
 };
+// apiGet para imagenes
+export const getUploadUrl = (ruta) => 
+  `${import.meta.env.VITE_API_URL ?? 'http://localhost:9001'}/uploads/${ruta}`;

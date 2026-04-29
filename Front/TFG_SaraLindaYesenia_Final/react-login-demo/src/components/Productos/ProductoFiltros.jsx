@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { apiGet } from "../../api/api"; // según api.js
 import "./ProductoFiltros.css";
 
 // He añadido 'initialFilters' a los props para que el useEffect no de error
@@ -24,23 +24,24 @@ export default function ProductoFiltros({
     const [categoriasBD, setCategoriasBD] = useState([]);
 
     // Carga inicial de datos desde la BD
+    //se cambio por apiGet
     useEffect(() => {
-        axios.get("http://localhost:9001/idiomas/todos")
-            .then(res => setIdiomasBD(res.data))
-            .catch(err => console.error("Error idiomas:", err));
+    apiGet("/idiomas/todos")
+        .then(res => setIdiomasBD(res))
+        .catch(err => console.error("Error idiomas:", err));
 
-        axios.get("http://localhost:9001/generos/todos")
-            .then(res => setGenerosBD(res.data))
-            .catch(err => console.error("Error géneros:", err));
+    apiGet("/generos/todos")
+        .then(res => setGenerosBD(res))
+        .catch(err => console.error("Error géneros:", err));
 
-        axios.get("http://localhost:9001/marcas/todos")
-            .then(res => setMarcasBD(res.data))
-            .catch(err => console.error("Error marcas:", err));
+    apiGet("/marcas/todos")
+        .then(res => setMarcasBD(res))
+        .catch(err => console.error("Error marcas:", err));
 
-        axios.get("http://localhost:9001/categorias/todos")
-            .then(res => setCategoriasBD(res.data))
-            .catch(err => console.error("Error categorías:", err));
-    }, []);
+    apiGet("/categorias/todos")
+        .then(res => setCategoriasBD(res))
+        .catch(err => console.error("Error categorías:", err));
+}, []);
 
     // Sincronizar estados si cambian los filtros iniciales desde el padre
     useEffect(() => {

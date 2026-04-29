@@ -1,14 +1,14 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom"; import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
 import ProductoImagenes from "./ProductoImagenes";
-import { apiGet, apiPost, apiDelete } from "../../api/api";
+import { apiGet, apiPost, apiDelete, getUploadUrl  } from "../../api/api";
 import { crearItemHistorial, guardarEnHistorial } from "../../utils/historialProductos";
 import "./ProductoDetalle.css";
 
 export default function ProductoDetalle() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [producto, setProducto] = useState(null);
   const [expandido, setExpandido] = useState(false); // LIBRO
   const [expandidoPap, setExpandidoPap] = useState(false); // PAPELERÍA
@@ -19,17 +19,16 @@ export default function ProductoDetalle() {
 
   const [esFavorito, setEsFavorito] = useState(false);
   const [mensaje, setMensaje] = useState("");
-  
+
   const [mostrarAvisoFavorito, setMostrarAvisoFavorito] = useState(false);
   const [mostrarAvisoCarrito, setMostrarAvisoCarrito] = useState(false);
 
   // Cargar producto base
+  // ahora con ruta de api.js
   useEffect(() => {
-    fetch(`http://localhost:9001/productos/${id}`)
-      .then(res => res.json())
+    apiGet(`/productos/${id}`)
       .then(data => {
         guardarEnHistorial(crearItemHistorial(data));
-
         const base = {
           id: data.idProducto,
           nombre: data.nombreProducto,
@@ -37,68 +36,54 @@ export default function ProductoDetalle() {
           precio: data.precio,
           tipo: data.tipo_producto || data.tipo,
           imagenes: data.imagenes || [],
-          autor: null,
-          isbn: null,
-          numeroPaginas: null,
-          idioma: null,
-          resumen: null,
-          editorial: null,
-          fechaPublicacion: null,
-          genero: null,
-          marca: null,
-          categoria: null,
-          descripcionLarga: null
+          autor: null, isbn: null, numeroPaginas: null,
+          idioma: null, resumen: null, editorial: null,
+          fechaPublicacion: null, genero: null, marca: null,
+          categoria: null, descripcionLarga: null
         };
-
         setProducto(base);
 
         if (base.tipo === "LIBRO") {
-          fetch(`http://localhost:9001/libros/${id}`)
-            .then(res => res.json())
-            .then(libro => {
-              setProducto(prev => ({
-                ...prev,
-                autor: libro.autor,
-                isbn: libro.isbn,
-                numeroPaginas: libro.numeroPagina,
-                idioma: libro.idioma?.nombreIdioma,
-                editorial: libro.editorial,
-                fechaPublicacion: libro.fechaPublicacion,
-                genero: libro.genero?.nombreGenero,
-                resumen: libro.resumen || null
-              }));
-            });
+          apiGet(`/libros/${id}`).then(libro => {
+            setProducto(prev => ({
+              ...prev,
+              autor: libro.autor, isbn: libro.isbn,
+              numeroPaginas: libro.numeroPagina,
+              idioma: libro.idioma?.nombreIdioma,
+              editorial: libro.editorial,
+              fechaPublicacion: libro.fechaPublicacion,
+              genero: libro.genero?.nombreGenero,
+              resumen: libro.resumen || null
+            }));
+          });
         }
 
         if (base.tipo === "PAPELERIA") {
-          fetch(`http://localhost:9001/papelerias/${id}`)
-            .then(res => res.json())
-            .then(pap => {
-              setProducto(prev => ({
-                ...prev,
-                marca: pap.marca?.nombreMarca,
-                categoria: pap.categoria?.nombreCategoria,
-                descripcionLarga: pap.descripcionLarga || null
-              }));
-            });
+          apiGet(`/papelerias/${id}`).then(pap => {
+            setProducto(prev => ({
+              ...prev,
+              marca: pap.marca?.nombreMarca,
+              categoria: pap.categoria?.nombreCategoria,
+              descripcionLarga: pap.descripcionLarga || null
+            }));
+          });
         }
       });
   }, [id]);
 
   // Cargar productos relacionados
+  // ahora con ruta de api.js
   useEffect(() => {
     if (!producto) return;
 
     let url = "";
-
     if (producto.tipo === "LIBRO") {
-      url = `http://localhost:9001/productos/relacionados/libro?autor=${producto.autor}&genero=${producto.genero}&idActual=${producto.id}`;
+      url = `/productos/relacionados/libro?autor=${producto.autor}&genero=${producto.genero}&idActual=${producto.id}`;
     } else if (producto.tipo === "PAPELERIA") {
-      url = `http://localhost:9001/productos/relacionados/papeleria?marca=${producto.marca}&categoria=${producto.categoria}&idActual=${producto.id}`;
+      url = `/productos/relacionados/papeleria?marca=${producto.marca}&categoria=${producto.categoria}&idActual=${producto.id}`;
     }
 
-    fetch(url)
-      .then(res => res.json())
+    apiGet(url)
       .then(data => setRelacionados(data))
       .catch(err => console.error("Error cargando relacionados:", err));
   }, [producto]);
@@ -178,13 +163,13 @@ export default function ProductoDetalle() {
       {mostrarAvisoFavorito && (
         <div className="notificacion-login">
           <p>Debes iniciar sesión para guardar favoritos.</p>
-
           <div className="notificacion-botones">
-            <a href="/login" className="btn-login-aviso">Ir al login</a>
-            <button
-              className="btn-cerrar-aviso"
-              onClick={() => setMostrarAvisoFavorito(false)}
-            >
+            {/* Cambiado: usar navigate para no perder el state */}
+            <button className="btn-login-aviso"
+              onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
+              Ir al login
+            </button>
+            <button className="btn-cerrar-aviso" onClick={() => setMostrarAvisoFavorito(false)}>
               Cerrar
             </button>
           </div>
@@ -195,11 +180,12 @@ export default function ProductoDetalle() {
         <div className="notificacion-login">
           <p>Debes iniciar sesión para añadir productos al carrito.</p>
           <div className="notificacion-botones">
-            <a href="/login" className="btn-login-aviso">Ir al login</a>
-            <button 
-              className="btn-cerrar-aviso" 
-              onClick={() => setMostrarAvisoCarrito(false)}
-            >
+            {/* Cambiado: usar navigate para no perder el state */}
+            <button className="btn-login-aviso"
+              onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
+              Ir al login
+            </button>
+            <button className="btn-cerrar-aviso" onClick={() => setMostrarAvisoCarrito(false)}>
               Cerrar
             </button>
           </div>
@@ -346,12 +332,10 @@ export default function ProductoDetalle() {
                   <div
                     key={r.idProducto}
                     className="relacionado-item"
-                    onClick={() => window.location.href = `/producto/${r.idProducto}`}
+                    // Cambiado: usar navigate en lugar de window.location.href
+                    onClick={() => navigate(`/producto/${r.idProducto}`)}
                   >
-                    <img 
-                      src={`http://localhost:9001/uploads/${imgPrincipal}`} 
-                      alt={r.nombreProducto} 
-                    />
+                    <img src={getUploadUrl(imgPrincipal)} alt={r.nombreProducto} />
 
                     <p className="relacionado-nombre">{r.nombreProducto}</p>
                     <p className="relacionado-precio">{r.precio} €</p>
