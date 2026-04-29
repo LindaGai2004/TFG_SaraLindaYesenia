@@ -3,12 +3,12 @@ import { apiGet } from "../../api/api"; // según api.js
 import "./ProductoFiltros.css";
 
 // He añadido 'initialFilters' a los props para que el useEffect no de error
-export default function ProductoFiltros({ 
-    onFiltrar, 
+export default function ProductoFiltros({
+    onFiltrar,
     initialFilters = null, // Propiedad añadida
-    initialTipo = "", 
-    initialGenero = "", 
-    initialCategoria = "" 
+    initialTipo = "",
+    initialGenero = "",
+    initialCategoria = ""
 }) {
     const [tipo, setTipo] = useState(initialTipo);
     const [precio, setPrecio] = useState({ min: 0, max: 200 });
@@ -20,28 +20,28 @@ export default function ProductoFiltros({
 
     const [idiomasBD, setIdiomasBD] = useState([]);
     const [generosBD, setGenerosBD] = useState([]);
-    const [marcasBD, setMarcasBD] = useState([]); 
+    const [marcasBD, setMarcasBD] = useState([]);
     const [categoriasBD, setCategoriasBD] = useState([]);
 
     // Carga inicial de datos desde la BD
     //se cambio por apiGet
     useEffect(() => {
-    apiGet("/idiomas/todos")
-        .then(res => setIdiomasBD(res))
-        .catch(err => console.error("Error idiomas:", err));
+        apiGet("/idiomas/todos")
+            .then(res => setIdiomasBD(res))
+            .catch(err => console.error("Error idiomas:", err));
 
-    apiGet("/generos/todos")
-        .then(res => setGenerosBD(res))
-        .catch(err => console.error("Error géneros:", err));
+        apiGet("/generos/todos")
+            .then(res => setGenerosBD(res))
+            .catch(err => console.error("Error géneros:", err));
 
-    apiGet("/marcas/todos")
-        .then(res => setMarcasBD(res))
-        .catch(err => console.error("Error marcas:", err));
+        apiGet("/marcas/todos")
+            .then(res => setMarcasBD(res))
+            .catch(err => console.error("Error marcas:", err));
 
-    apiGet("/categorias/todos")
-        .then(res => setCategoriasBD(res))
-        .catch(err => console.error("Error categorías:", err));
-}, []);
+        apiGet("/categorias/todos")
+            .then(res => setCategoriasBD(res))
+            .catch(err => console.error("Error categorías:", err));
+    }, []);
 
     // Sincronizar estados si cambian los filtros iniciales desde el padre
     useEffect(() => {
@@ -61,7 +61,7 @@ export default function ProductoFiltros({
 
     const aplicarFiltros = () => {
         const filtros = {};
-    
+
         if (tipo) filtros.tipo = tipo;
         if (estado) filtros.estado = estado;
         if (idioma) filtros.idioma = idioma;

@@ -1,6 +1,6 @@
 import { useCart } from '../../context/CartContext';
 import { useNavigate } from 'react-router-dom';
-import { getUploadUrl } from "../../api/api";
+import { apiPost, getUploadUrl } from "../../api/api";
 import React from 'react';
 import './MiCarrito.css';
 

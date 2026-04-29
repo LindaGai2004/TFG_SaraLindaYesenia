@@ -46,54 +46,7 @@ public class PublicacionRestController {
     public ResponseEntity<List<PublicacionDto>> obtenerPorUsuario(@PathVariable Integer idUsuario) {
         return ResponseEntity.ok(publicacionService.obtenerPublicacionesPorUsuario(idUsuario));
     }
-    /*
-    // Crear una nueva publicación
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PublicacionDto> crearPublicacion(
-            @RequestParam Integer idUsuario,
-            @RequestParam String texto,
-            @RequestParam(required = false) Integer idProducto,
-            @RequestParam(required = false) MultipartFile imagen
-    ){
-        try {
-            Usuario usuario = usuarioService.findById(idUsuario);
-            if (usuario == null) {
-                return ResponseEntity.badRequest().build();
-            }
-
-            String nombreImagen = null;
-
-            // Guardar imagen si existe
-            if (imagen != null && !imagen.isEmpty()) {
-
-                String nombreOriginal = imagen.getOriginalFilename();
-                nombreImagen = System.currentTimeMillis() + "_" + nombreOriginal;
-
-                // RUTA ABSOLUTA
-                Path ruta = Paths.get(
-                    "C:/Users/saray/Documents/TFG_SaraLindaYesenia/Back/01_proyecto_LindaSaraYesenia/upload/publicaciones/" 
-                    + nombreImagen
-                );
-
-                Files.write(ruta, imagen.getBytes());
-            }
-
-            // Crear publicación
-            Publicacion nueva = publicacionService.crearPublicacion(
-                    usuario,
-                    texto,
-                    nombreImagen != null ? "/uploads/publicaciones/" + nombreImagen : null,
-                    idProducto
-            );
-
-            return ResponseEntity.ok(publicacionService.mapToDto(nueva));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).build();
-        }
-    }*/
-
+   
     // Crear una nueva publicacion (Corregido sin ruta hardcodeada)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PublicacionDto> crearPublicacion(

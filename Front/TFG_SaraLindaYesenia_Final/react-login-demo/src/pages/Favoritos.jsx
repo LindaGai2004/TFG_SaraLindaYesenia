@@ -108,7 +108,7 @@ export default function Favoritos() {
                         }}
                       >
                         <img
-                          src="/eliminar.png"
+                          src="/eliminar_blanco.png"
                           alt="Eliminar"
                           className="icono-eliminar"
                         />

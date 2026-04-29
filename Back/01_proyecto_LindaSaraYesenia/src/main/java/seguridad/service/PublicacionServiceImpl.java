@@ -1,5 +1,5 @@
 package seguridad.service;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,8 @@ import java.util.Optional;
 
 @Service
 public class PublicacionServiceImpl implements PublicacionService {
-
+    @Value("${app.upload.dir:./upload/}")
+    private String uploadDir;
     @Autowired
     private PublicacionRepository publicacionRepo;
     
@@ -123,7 +124,7 @@ public class PublicacionServiceImpl implements PublicacionService {
             if (pub.getImagen() != null) {
                 try {
                     String nombreImagen = pub.getImagen().substring(pub.getImagen().lastIndexOf("/") + 1);
-                    Path ruta = Paths.get("C:/Users/saray/Documents/TFG_SaraLindaYesenia/Back/01_proyecto_LindaSaraYesenia/upload/publicaciones/" + nombreImagen);
+                    Path ruta = Paths.get(uploadDir + "publicaciones/" + nombreImagen);
                     Files.deleteIfExists(ruta);
                 } catch (Exception e) {
                     System.err.println("No se pudo borrar el archivo físico: " + e.getMessage());

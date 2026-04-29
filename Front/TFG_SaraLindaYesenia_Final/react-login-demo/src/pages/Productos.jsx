@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import axios from "axios";
+import { apiGet } from "../api/api";
 import ProductoFiltros from "../components/Productos/ProductoFiltros.jsx";
 import ProductoLista from "../components//Productos/ProductoLista.jsx";
 import "./Productos.css";
@@ -12,63 +12,46 @@ export default function Productos() {
     const [paginaActual, setPaginaActual] = useState(1);
     const [busqueda, setBusqueda] = useState("");
     const [searchParams] = useSearchParams();
-    const productosPorPagina = 24; 
+    const productosPorPagina = 24;
 
     useEffect(() => {
-        async function cargarTodos() {
-            try {
-                const response = await axios.get("http://localhost:9001/productos/todos");
-                setProductos(response.data);
-            } catch (error) {
-                console.error("Error cargando productos:", error);
-            }
-        }
-    
         cargarTodos();
-    }, []);    
+    }, []);
 
 
     // Función para el buscador de los productos
     const manejarBusqueda = async (e) => {
         const texto = e.target.value;
         setBusqueda(texto);
-        setPaginaActual(1); // Resetear a la página 1 al buscar
-
+        setPaginaActual(1);
         if (texto.trim().length > 0) {
             try {
-                const response = await axios.get(`http://localhost:9001/productos/buscar/todos`, {
-                    params: { texto: texto }
-                });
-                // Si el back devuelve un array, lo ponemos
-                //  si no lista vacía
-                setProductos(Array.isArray(response.data) ? response.data : []);
+                const data = await apiGet(`/productos/buscar/todos?texto=${texto}`);
+                setProductos(Array.isArray(data) ? data : []);
             } catch (error) {
-                console.error("Error en la búsqueda:", error);
                 setProductos([]);
             }
         } else {
-            cargarTodos(); // Si borra el texto, mostramos todo otra vez
+            cargarTodos();
         }
     };
 
     // Mueve filtrarProductos ANTES del useEffect para que pueda usarla
     const filtrarProductos = async (filtros) => {
         try {
-            const response = await axios.get(
-                "http://localhost:9001/productos/filtrar",
-                { params: filtros }
-            );
-            setProductos(response.data);
+            const params = new URLSearchParams(filtros).toString();
+            const data = await apiGet(`/productos/filtrar?${params}`);
+            setProductos(data);
             setPaginaActual(1);
         } catch (error) {
-            console.error("Error al filtrar productos:", error);
+            console.error("Error al filtrar:", error);
         }
     };
 
     async function cargarTodos() {
         try {
-            const response = await axios.get("http://localhost:9001/productos/todos");
-            setProductos(response.data);
+            const data = await apiGet("/productos/todos");
+            setProductos(data);
         } catch (error) {
             console.error("Error cargando productos:", error);
         }
@@ -86,8 +69,8 @@ export default function Productos() {
             if (genero) params.genero = genero;
             if (categoria) params.categoria = categoria;
 
-            axios.get("http://localhost:9001/productos/filtrar-chatbot", { params })
-                .then(res => setProductos(res.data))
+            apiGet(`/productos/filtrar-chatbot?${new URLSearchParams(params).toString()}`)
+                .then(data => setProductos(data))
                 .catch(err => console.error("Error:", err));
         } else {
             cargarTodos();
