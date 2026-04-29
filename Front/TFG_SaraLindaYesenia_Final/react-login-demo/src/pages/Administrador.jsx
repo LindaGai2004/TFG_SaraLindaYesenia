@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar_dashboard';
 import Header from '../components/Header_dashboard';
-import Dashboard from './Dashboard/Dashboard';
+import Dashboard from './Dashboard/DashboardPrincipal';
 import Productos from './Dashboard/ProductosDashboard';
-import Clientes from './Dashboard/Clientes';
+import Clientes from './Dashboard/ClientesDashboard';
 import Jefes from './Dashboard/Jefes';
 import Trabajadores from './Dashboard/Trabajadores';
 import Pedidos from './Dashboard/Pedidos';
@@ -89,30 +89,34 @@ function App() {
   // --- LIBROS ---
   const addBook = async (bookData) => {
     try {
-      const newBook = await api.libros.create(bookData);
-      setBooks(prev => [...prev, newBook]);
+      await apiPost('/libros/altaLibro', bookData);
+      await fetchAllData();
+      showNotification("success", "Libro añadido correctamente");
     } catch (error) {
-      console.error('Error adding book:', error);
+      alert("ERROR: " + error.message); 
+      showNotification("error", error.message || "Error al añadir libro");
       throw error;
     }
   };
 
-  const editBook = async (id, bookData) => {
+  const editBook = async (idProducto, bookData) => {
     try {
-      const updatedBook = await api.libros.update(id, bookData);
-      setBooks(prev => prev.map(b => b.id === id ? updatedBook : b));
+      await apiPut(`/libros/modificarLibro/${idProducto}`, bookData);
+      await fetchAllData();
+      showNotification("success", "Libro modificado correctamente");
     } catch (error) {
-      console.error('Error updating book:', error);
+      showNotification("error", error.message || "Error al modificar libro");
       throw error;
     }
   };
 
-  const deleteBook = async (id) => {
+  const deleteBook = async (idProducto) => {
     try {
-      await api.libros.delete(id);
-      setBooks(prev => prev.filter(b => b.id !== id));
+      await apiDelete(`/productos/eliminar/${idProducto}`);
+      await fetchAllData();
+      showNotification("success", "Libro eliminado correctamente");
     } catch (error) {
-      console.error('Error deleting book:', error);
+      showNotification("error", error.message || "Error al eliminar libro");
       throw error;
     }
   };
@@ -120,30 +124,33 @@ function App() {
   // --- PAPELERÍA ---
   const addPapeleria = async (data) => {
     try {
-      const newItem = await api.papeleria.create(data);
-      setPapeleria(prev => [...prev, newItem]);
+      await apiPost('/papelerias/altaPapeleria', data);
+      await fetchAllData();
+      showNotification("success", "Producto de papeleria añadido correctamente");
     } catch (error) {
-      console.error('Error adding papeleria:', error);
+      showNotification("error", error.message || "Error al añadir papeleria");
       throw error;
     }
   };
 
-  const editPapeleria = async (id, data) => {
+  const editPapeleria = async (idProducto, data) => {
     try {
-      const updated = await api.papeleria.update(id, data);
-      setPapeleria(prev => prev.map(s => s.id === id ? updated : s));
+      await apiPut(`/papelerias/modificarPapeleria/${idProducto}`, data);
+      await fetchAllData();
+      showNotification("success", "Papeleria modificada correctamente");
     } catch (error) {
-      console.error('Error updating papeleria:', error);
+      showNotification("error", error.message || "Error al modificar papeleria");
       throw error;
     }
   };
 
-  const deletePapeleria = async (id) => {
+  const deletePapeleria = async (idProducto) => {
     try {
-      await api.Papeleria.delete(id);
-      setPapeleria(prev => prev.filter(s => s.id !== id));
+      await apiDelete(`/productos/eliminar/${idProducto}`);
+      await fetchAllData();
+      showNotification("success", "Papeleria eliminada correctamente");
     } catch (error) {
-      console.error('Error deleting papeleria:', error);
+      showNotification("error", error.message || "Error al eliminar papeleria");
       throw error;
     }
   };
@@ -304,7 +311,7 @@ function App() {
           width: '100%', 
           height: '100vh',
           fontSize: '1.5rem',
-          color: '#2d6a4f'
+          color: '#6d96a6'
         }}>
           Cargando...
         </div>
@@ -360,7 +367,7 @@ function App() {
                     height: "90px",
                     borderRadius: "50%",
                     backgroundColor:
-                      notification.type === "success" ? "#2d6a4f" : "#DB504A",
+                      notification.type === "success" ? "#6d96a6" : "#DB504A",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",

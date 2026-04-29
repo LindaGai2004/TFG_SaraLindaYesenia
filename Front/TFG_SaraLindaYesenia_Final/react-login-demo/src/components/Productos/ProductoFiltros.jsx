@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ProductoFiltros.css";
 
-export default function ProductoFiltros({ onFiltrar, initialTipo = "", initialGenero = "", initialCategoria = "" }) {
+// He añadido 'initialFilters' a los props para que el useEffect no de error
+export default function ProductoFiltros({ 
+    onFiltrar, 
+    initialFilters = null, // Propiedad añadida
+    initialTipo = "", 
+    initialGenero = "", 
+    initialCategoria = "" 
+}) {
     const [tipo, setTipo] = useState(initialTipo);
     const [precio, setPrecio] = useState({ min: 0, max: 200 });
     const [estado, setEstado] = useState("");
@@ -16,19 +23,40 @@ export default function ProductoFiltros({ onFiltrar, initialTipo = "", initialGe
     const [marcasBD, setMarcasBD] = useState([]); 
     const [categoriasBD, setCategoriasBD] = useState([]);
 
+    // Carga inicial de datos desde la BD
     useEffect(() => {
         axios.get("http://localhost:9001/idiomas/todos")
-            .then(res => setIdiomasBD(res.data));
+            .then(res => setIdiomasBD(res.data))
+            .catch(err => console.error("Error idiomas:", err));
 
         axios.get("http://localhost:9001/generos/todos")
-            .then(res => setGenerosBD(res.data));
+            .then(res => setGenerosBD(res.data))
+            .catch(err => console.error("Error géneros:", err));
 
         axios.get("http://localhost:9001/marcas/todos")
-            .then(res => setMarcasBD(res.data));
+            .then(res => setMarcasBD(res.data))
+            .catch(err => console.error("Error marcas:", err));
 
         axios.get("http://localhost:9001/categorias/todos")
-            .then(res => setCategoriasBD(res.data));
+            .then(res => setCategoriasBD(res.data))
+            .catch(err => console.error("Error categorías:", err));
     }, []);
+
+    // Sincronizar estados si cambian los filtros iniciales desde el padre
+    useEffect(() => {
+        if (!initialFilters) return;
+
+        setTipo(initialFilters.tipo ?? "");
+        setEstado(initialFilters.estado ?? "");
+        setIdioma(initialFilters.idioma ?? "");
+        setGenero(initialFilters.genero ? [initialFilters.genero] : []);
+        setMarca(initialFilters.marca ?? "");
+        setCategoria(initialFilters.categoria ? [initialFilters.categoria] : []);
+        setPrecio({
+            min: initialFilters.precioMin ?? 0,
+            max: initialFilters.precioMax ?? 200,
+        });
+    }, [initialFilters]);
 
     const aplicarFiltros = () => {
         const filtros = {};
@@ -79,18 +107,18 @@ export default function ProductoFiltros({ onFiltrar, initialTipo = "", initialGe
                     <div className="filtro">
                         <label>Género</label>
                         <div className="genero-checkboxes">
-                            {generosBD.map((g, index) => (
+                            {generosBD.map((g) => (
                                 <label key={g.idGenero} className="genero-checkbox">
                                     <input
                                         type="checkbox"
                                         value={g.nombreGenero}
-                                        checked={genero[0] === g.nombreGenero}
+                                        checked={genero.includes(g.nombreGenero)}
                                         onChange={(e) => {
                                             const value = e.target.value;
                                             if (e.target.checked) {
-                                                setGenero([value]); // solo uno
+                                                setGenero([value]); // Solo permite uno según tu lógica actual
                                             } else {
-                                                setGenero([]); // ninguno
+                                                setGenero([]);
                                             }
                                         }}
                                     />
@@ -119,18 +147,17 @@ export default function ProductoFiltros({ onFiltrar, initialTipo = "", initialGe
 
                     <div className="filtro">
                         <label>Categoría</label>
-
                         <div className="genero-checkboxes">
                             {categoriasBD.map(c => (
                                 <label key={c.idCategoria} className="genero-checkbox">
                                     <input
                                         type="checkbox"
                                         value={c.nombreCategoria}
-                                        checked={categoria[0] === c.nombreCategoria}
+                                        checked={categoria.includes(c.nombreCategoria)}
                                         onChange={(e) => {
                                             const value = e.target.value;
                                             if (e.target.checked) {
-                                                setCategoria([value]); // solo una categoría
+                                                setCategoria([value]);
                                             } else {
                                                 setCategoria([]);
                                             }
@@ -147,25 +174,32 @@ export default function ProductoFiltros({ onFiltrar, initialTipo = "", initialGe
             {/* PRECIO */}
             <div className="filtro">
                 <label>Precio</label>
-
                 <div className="price-slider">
                     <input
                         type="range"
                         min="0"
                         max="200"
                         value={precio.min}
-                        onChange={(e) => setPrecio(prev => ({ ...prev, min: Number(e.target.value) }))}
+                        onChange={(e) => {
+                            const val = Number(e.target.value);
+                            if (val < precio.max) {
+                                setPrecio(prev => ({ ...prev, min: val }));
+                            }
+                        }}
                     />
-
                     <input
                         type="range"
                         min="0"
                         max="200"
                         value={precio.max}
-                        onChange={(e) => setPrecio(prev => ({ ...prev, max: Number(e.target.value) }))}
+                        onChange={(e) => {
+                            const val = Number(e.target.value);
+                            if (val > precio.min) {
+                                setPrecio(prev => ({ ...prev, max: val }));
+                            }
+                        }}
                     />
                 </div>
-
                 <div className="price-values">
                     <span>{precio.min} €</span>
                     <span>{precio.max} €</span>

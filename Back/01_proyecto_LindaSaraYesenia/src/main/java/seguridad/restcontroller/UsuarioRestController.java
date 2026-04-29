@@ -72,9 +72,9 @@ public class UsuarioRestController {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             Usuario usuarioBD = usuarioService.findByEmail(userDetails.getUsername());
 
-            // Genera el token
-            String jwt = jwtService.generarToken(usuarioBD.getEmail());
-
+         // Genera el token
+           // String jwt = jwtService.generarToken(usuarioBD.getEmail());
+            String jwt = jwtService.generarToken(userDetails);
             UsuarioDto usuarioDto = new UsuarioDto();
             usuarioDto.setIdUsuario(usuarioBD.getIdUsuario());
             usuarioDto.setUsername(usuarioBD.getUsername());

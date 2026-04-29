@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
 import ProductoImagenes from "./ProductoImagenes";
 import { apiGet, apiPost, apiDelete } from "../../api/api";
+import { crearItemHistorial, guardarEnHistorial } from "../../utils/historialProductos";
 import "./ProductoDetalle.css";
 
 export default function ProductoDetalle() {
@@ -27,6 +28,8 @@ export default function ProductoDetalle() {
     fetch(`http://localhost:9001/productos/${id}`)
       .then(res => res.json())
       .then(data => {
+        guardarEnHistorial(crearItemHistorial(data));
+
         const base = {
           id: data.idProducto,
           nombre: data.nombreProducto,
@@ -111,6 +114,28 @@ export default function ProductoDetalle() {
       })
       .catch(() => setEsFavorito(false));
   }, [producto, user]);
+
+
+  const handleCompartir = () => {
+    const shareData = {
+      title: producto.nombre,
+      text: `¡Mira este producto en Archives!: ${producto.nombre}`,
+      url: window.location.href, // La URL actual del detalle del producto
+    };
+
+    // Verificamos si el navegador soporta la Web Share API
+    if (navigator.share) {
+      navigator.share(shareData)
+        .then(() => console.log('Compartido con éxito'))
+        .catch((error) => console.log('Error al compartir', error));
+    } else {
+      // Si no lo soporta  copiamos al portapapeles
+      navigator.clipboard.writeText(window.location.href);
+      setMensaje("Copiado al portapapeles ✨");
+      setTimeout(() => setMensaje(""), 2000);
+    }
+  };
+
 
   const toggleFavorito = async () => {
     if (!user) {
@@ -228,7 +253,7 @@ export default function ProductoDetalle() {
                       />
                     </button>
 
-                    <button className="btn-icono">
+                    <button className="btn-icono" onClick={handleCompartir}>
                       <img src="/compartir.jpg" alt="Compartir" />
                     </button>
                   </div>

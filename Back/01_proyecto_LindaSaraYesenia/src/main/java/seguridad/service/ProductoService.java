@@ -2,6 +2,8 @@ package seguridad.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import seguridad.model.EstadoProducto;
 import seguridad.model.Producto;
 import seguridad.model.dto.ProductoChatbotDto;
 
@@ -32,6 +34,8 @@ public interface ProductoService {
         Double precioMax,
         String estado
     );
+    
+  
 
     // Para productos relacionados
     List<Producto> relacionadosLibro(String autor, String genero, Integer idActual);
@@ -40,4 +44,6 @@ public interface ProductoService {
     // para buscar en libros y papeleria por separado y devuelev una lista unificada de dtos
     List<ProductoChatbotDto> buscarParaChatbot(String texto);
     List<Producto> filtrarParaChatbot(String genero, String categoria, String tipo);
+    
+    List<Producto> filtroEstado(String estadoProducto);
 }

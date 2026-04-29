@@ -31,6 +31,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 		        u.idUsuario,
 		        u.nombre,
 		        u.apellidos,
+		        u.username,
 		        COUNT(DISTINCT p.id),
 		        COUNT(DISTINCT l.id),
 		        COUNT(DISTINCT c.id),
@@ -42,6 +43,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 		    LEFT JOIN Publicacion p ON p.usuario.idUsuario = u.idUsuario
 		    LEFT JOIN LikePublicacion l ON l.publicacion.id = p.id
 		    LEFT JOIN ComentarioPublicacion c ON c.publicacion.id = p.id
+		    WHERE u.perfil.id = 2
 		    GROUP BY u.idUsuario, u.nombre, u.apellidos, u.avatar
 		    ORDER BY (COUNT(DISTINCT p.id) * 2L + COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) DESC
 		""")

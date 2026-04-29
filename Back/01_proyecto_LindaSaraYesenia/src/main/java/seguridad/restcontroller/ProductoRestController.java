@@ -55,8 +55,8 @@ public class ProductoRestController {
     }
     
 
+    
     // Listar todos
-
     @GetMapping("/todos")
     public ResponseEntity<?> todos() {
         List<Producto> lista = productoService.findAll();
@@ -64,8 +64,9 @@ public class ProductoRestController {
         return ResponseEntity.ok(lista);
     }
 
+    
+    
     // Filtrar
-
     @GetMapping("/filtrar")
     public ResponseEntity<?> filtrarProductos(
             @RequestParam(required = false) String tipo,
@@ -81,18 +82,7 @@ public class ProductoRestController {
                 tipo, idioma, genero, marca, categoria, precioMin, precioMax, estado
         );
         return ResponseEntity.ok(lista);
-    }
-
-    // Buscador
-
-    /*@GetMapping("/buscar/todos")
-    public ResponseEntity<?> buscarProducto(@RequestParam String texto) {
-        List<Producto> lista = productoService.buscardorProducto(texto);
-        if (lista.isEmpty()) {
-            return ResponseEntity.ok("No hay NINGUN PRODUCTO que coincidan con la busqueda");
-        }
-        return ResponseEntity.ok(lista);
-    }*/
+    }   
     
     // Buscador (CORREGIDO)
     @GetMapping("/buscar/todos")
@@ -207,4 +197,9 @@ public class ProductoRestController {
         return ResponseEntity.ok(lista);
     }
     
+    @GetMapping("/filtro/estado")
+    public ResponseEntity<?> filtroPorProducto(@RequestParam(required = false) String estadoProducto){
+    	
+    	return ResponseEntity.ok(productoService.filtroEstado(estadoProducto));
+    }
 }

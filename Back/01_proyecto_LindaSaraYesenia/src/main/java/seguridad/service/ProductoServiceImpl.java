@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import seguridad.model.EstadoProducto;
 import seguridad.model.Libro;
 import seguridad.model.Papeleria;
 import seguridad.model.Producto;
@@ -238,5 +239,17 @@ public class ProductoServiceImpl implements ProductoService {
 
 	    return resultado;
 	}
+
+	@Override
+	public List<Producto> filtroEstado(String estadoProducto) {
+		if (estadoProducto == null || estadoProducto.equals("Todos")) {
+		    return productoRepository.findAll();
+		}else {
+		EstadoProducto estadoEnum = EstadoProducto.valueOf(estadoProducto);
+		return productoRepository.findByEstadoProducto(estadoEnum);
+		}
+		
+	}
+
 
 }

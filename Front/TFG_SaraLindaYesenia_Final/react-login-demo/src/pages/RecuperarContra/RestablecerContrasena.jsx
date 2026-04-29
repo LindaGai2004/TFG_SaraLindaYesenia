@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import "./RestablecerContrasena.css";
 
@@ -7,21 +7,29 @@ export default function RestablecerContrasena() {
   const [password, setPassword] = useState("");
   const [confirmar, setConfirmar] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [cargando, setCargando] = useState(false);
   const [mostrarPass, setMostrarPass] = useState(false);
   const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
 
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const email = params.get("email");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMensaje(""); // Limpiamos mensajes previos
+
+    if (password.length < 6) {
+        setMensaje("La contraseña debe tener al menos 6 caracteres.");
+        return;
+    }
 
     if (password !== confirmar) {
       setMensaje("Las contraseñas no coinciden.");
       return;
     }
 
-    try {
+    {/*try {
       await api.apiPost("/auth/restablecer", { email, password });
       setMensaje("Contraseña actualizada correctamente.");
       setTimeout(() => {
@@ -30,6 +38,23 @@ export default function RestablecerContrasena() {
     } catch (err) {
       const msg = err.response?.data || "Error al actualizar la contraseña.";
       setMensaje(msg);
+    } */}
+
+    setCargando(true);
+    try {
+      // Enviamos email y password al endpoint
+      await api.apiPost("/auth/restablecer", { email, password });
+      
+      setMensaje("Contraseña actualizada correctamente. Redirigiendo...");
+      
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err) {
+      const msg = err.response?.data || "Error al actualizar la contraseña.";
+      setMensaje(msg);
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -48,6 +73,7 @@ export default function RestablecerContrasena() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={cargando}
             />
 
             <span
