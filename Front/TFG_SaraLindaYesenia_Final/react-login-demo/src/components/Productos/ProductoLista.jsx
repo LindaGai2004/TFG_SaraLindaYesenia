@@ -42,21 +42,20 @@ export default function ProductoLista({ productos }) {
       setMostrarAvisoFavorito(true);
       return;
     }
-
     const esFavorito = favoritos[idProducto];
-
     try {
       if (esFavorito) {
         await apiDelete(`/usuarios/favoritos/${idProducto}`);
+        setMensaje("Eliminado de favoritos"); // añadido
       } else {
         await apiPost(`/usuarios/favoritos/${idProducto}`);
+        setMensaje("Añadido a favoritos"); // añadido
       }
-
       setFavoritos(prev => ({
         ...prev,
         [idProducto]: !prev[idProducto]
       }));
-
+      setTimeout(() => setMensaje(""), 2000); // añadido
     } catch (error) {
       console.error("Error al actualizar favorito:", error);
     }
@@ -136,7 +135,7 @@ export default function ProductoLista({ productos }) {
             {/* Icono de favorito */}
             <button className="favorito-btn" onClick={() => toggleFavorito(p.idProducto)}>
               <img
-                src={favoritos[p.idProducto] ? "/corazon-lleno.png" : "/corazon.jpg"}
+                src={favoritos[p.idProducto] ? "/corazon_lleno.png" : "/corazon_vacio.png"}
                 alt="Favorito"
                 className="favorito-icon"
               />

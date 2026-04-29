@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import { apiGet, apiPost, apiDelete } from '../../api/api';
+import { apiGet, apiPost, apiDelete, getUploadUrl } from '../../api/api';
 import './CartSidebar.css';
 
 export default function CartSidebar({ isOpen, onClose }) {
@@ -76,7 +76,7 @@ export default function CartSidebar({ isOpen, onClose }) {
                 <div key={idParaAccion} className="sidebar-item">
                   <div className="sidebar-item-img">
                     <img 
-                      src={imgPrincipal ? `http://localhost:9001/uploads/${imgPrincipal}` : "/default-product.png"} 
+                      src={imgPrincipal ? getUploadUrl(imgPrincipal) : "/default-product.png"}
                       alt={item.nombreProducto} 
                     />
                   </div>

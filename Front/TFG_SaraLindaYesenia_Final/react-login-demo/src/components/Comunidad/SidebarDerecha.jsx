@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
+import { getApiUrl } from "../../api/api"; 
 import "./SidebarDerecha.css";
 
 export default function SidebarDerecha() {
@@ -71,7 +72,7 @@ export default function SidebarDerecha() {
           u && u.idUsuario !== user?.idUsuario && (
             <li key={u.idUsuario} className="usuario-recomendado">
               <img
-                src={u.avatar ? `http://localhost:9001${u.avatar}` : "/default-avatar.png"}
+                src={u.avatar ? getApiUrl(u.avatar) : "/default-avatar.png"}
                 alt="avatar"
                 className="avatar"
               />

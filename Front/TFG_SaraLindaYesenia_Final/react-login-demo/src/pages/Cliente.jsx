@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { apiGet, apiPut } from '../api/api';
+import { apiGet, apiPut, getApiUrl, getUploadUrl } from '../api/api';
 import Favoritos from './Favoritos';
 import { crearItemHistorial, getHistorial, getProductoImagen } from '../utils/historialProductos';
 import './Cliente.css';
@@ -14,16 +14,16 @@ const MINI_BOOK_COLORS = [
 ];
 
 const GENERO_PORTADAS_PREFERIDAS = {
-  'Histórico':   'Guerra y paz',
-  'Infantil':    'Anna Karénina',
-  'Juvenil':     'Madame Bovary',
-  'Misterio':    'El retrato de Dorian Gray',
-  'Novela':      '1984',
-  'Poesía':      'Juego de tronos',
-  'Romance':     'Cien años de soledad',
-  'Teatro':      'La rueda del tiempo',
-  'Terror':      'Pedro Páramo',
-  'Viajes':      'Ficciones',
+  'Histórico': 'Guerra y paz',
+  'Infantil': 'Anna Karénina',
+  'Juvenil': 'Madame Bovary',
+  'Misterio': 'El retrato de Dorian Gray',
+  'Novela': '1984',
+  'Poesía': 'Juego de tronos',
+  'Romance': 'Cien años de soledad',
+  'Teatro': 'La rueda del tiempo',
+  'Terror': 'Pedro Páramo',
+  'Viajes': 'Ficciones',
 };
 const CLIENT_PROFILE_IMAGE_KEY = 'cliente_profile_image_preview';
 
@@ -245,14 +245,15 @@ export default function Portfolio() {
     statusStyle[estadoPedido] ?? { bg: '#ede8f5', color: '#6d5e9e', label: estadoPedido ?? 'Sin estado' };
 
   const isCartPedido = (pedido) => pedido?.estadoPedido === 'CARRITO';
-  const profileImageFromBackend =
+  const profileImageFromBackend = getApiUrl(
     user?.fotoPerfil ??
     user?.imagenPerfil ??
     user?.avatar ??
     profileData?.fotoPerfil ??
     profileData?.imagenPerfil ??
     profileData?.avatar ??
-    '';
+    ''
+  );
 
   const profileImageSrc = profileImagePreview || profileImageFromBackend || '/68e45e7a40b25293eb1f3a85d9368ae0.png';
 
@@ -409,7 +410,7 @@ export default function Portfolio() {
           apiGet('/generos/todos'),
           apiGet('/productos/todos'),
         ]);
-        
+
         const libros = productosData ?? [];
 
         const buscarLibroPreferido = (nombreGenero) => {
@@ -431,7 +432,7 @@ export default function Portfolio() {
           const primerLibro = libroPreferido ?? libros.find(
             (libro) => libro.genero?.nombreGenero === genero.nombreGenero
           );
-           console.log(genero.nombreGenero, primerLibro, getProductoImagen(primerLibro));
+          console.log(genero.nombreGenero, primerLibro, getProductoImagen(primerLibro));
           return {
             ...genero,
             libroPortada: primerLibro ? getProductoImagen(primerLibro) : null,
@@ -448,7 +449,7 @@ export default function Portfolio() {
 
     cargarGeneros();
   }, []);
-  
+
   useEffect(() => {
     const cargarPedidos = async () => {
       setPedidosLoading(true);
@@ -516,66 +517,32 @@ export default function Portfolio() {
   };
 
   const handleSaveProfile = async () => {
-  if (!profileForm.email) return;
-
-  setProfileSaving(true);
-  setProfileMessage('');
-
-  try {
-    // 只发必要字段，不带多余的Spring Security字段
-    const payload = {
-      nombre: profileForm.nombre,
-      apellidos: profileForm.apellidos,
-      email: profileForm.email,
-      username: profileForm.username,
-      direccion: profileForm.direccion,
-      fechaNacimiento: profileForm.fechaNacimiento || null,
-      perfil: profileData?.perfil ?? { idPerfil: 2 },
-    };
-
-    if (profileForm.password) {
-      payload.password = profileForm.password;
-    }
-
-    await apiPut(`/usuario/${profileData?.email ?? profileForm.email}`, payload);
-
-    updateUser({ ...user, ...payload });
-    setProfileData(prev => ({ ...prev, ...payload }));
-    setProfileForm(prev => ({ ...prev, password: '' }));
-    setProfileMessage('Perfil actualizado correctamente.');
-  } catch (error) {
-    console.error('Error actualizando perfil:', error);
-    setProfileMessage('No se pudo actualizar el perfil.');
-  } finally {
-    setProfileSaving(false);
-  }
-};
- /* const handleSaveProfile = async () => {
     if (!profileForm.email) return;
 
     setProfileSaving(true);
     setProfileMessage('');
 
     try {
+      // 只发必要字段，不带多余的Spring Security字段
       const payload = {
-        ...profileData,
-        ...profileForm,
+        nombre: profileForm.nombre,
+        apellidos: profileForm.apellidos,
+        email: profileForm.email,
+        username: profileForm.username,
+        direccion: profileForm.direccion,
+        fechaNacimiento: profileForm.fechaNacimiento || null,
+        perfil: profileData?.perfil ?? { idPerfil: 2 },
       };
 
-      if (!payload.password) {
-        delete payload.password;
+      if (profileForm.password) {
+        payload.password = profileForm.password;
       }
 
       await apiPut(`/usuario/${profileData?.email ?? profileForm.email}`, payload);
 
-      const updatedLocalUser = {
-        ...user,
-        ...payload,
-      };
-
-      updateUser(updatedLocalUser);
-      setProfileData((prev) => ({ ...prev, ...payload }));
-      setProfileForm((prev) => ({ ...prev, password: '' }));
+      updateUser({ ...user, ...payload });
+      setProfileData(prev => ({ ...prev, ...payload }));
+      setProfileForm(prev => ({ ...prev, password: '' }));
       setProfileMessage('Perfil actualizado correctamente.');
     } catch (error) {
       console.error('Error actualizando perfil:', error);
@@ -583,7 +550,41 @@ export default function Portfolio() {
     } finally {
       setProfileSaving(false);
     }
-  };*/
+  };
+  /* const handleSaveProfile = async () => {
+     if (!profileForm.email) return;
+ 
+     setProfileSaving(true);
+     setProfileMessage('');
+ 
+     try {
+       const payload = {
+         ...profileData,
+         ...profileForm,
+       };
+ 
+       if (!payload.password) {
+         delete payload.password;
+       }
+ 
+       await apiPut(`/usuario/${profileData?.email ?? profileForm.email}`, payload);
+ 
+       const updatedLocalUser = {
+         ...user,
+         ...payload,
+       };
+ 
+       updateUser(updatedLocalUser);
+       setProfileData((prev) => ({ ...prev, ...payload }));
+       setProfileForm((prev) => ({ ...prev, password: '' }));
+       setProfileMessage('Perfil actualizado correctamente.');
+     } catch (error) {
+       console.error('Error actualizando perfil:', error);
+       setProfileMessage('No se pudo actualizar el perfil.');
+     } finally {
+       setProfileSaving(false);
+     }
+   };*/
 
   const scrollHistorial = (direction) => {
     const container = historialRef.current;
@@ -742,12 +743,12 @@ export default function Portfolio() {
                   <div className="section-header">
                     <span className="section-title">Historial</span>
                     <div className="nav-arrows">
-                        <button className="nav-arrow" onClick={() => scrollHistorial(-1)} type="button">
-                          <Icon d={Icons.chevL} size={14} sw={2.2} />
-                        </button>
-                        <button className="nav-arrow" onClick={() => scrollHistorial(1)} type="button">
-                          <Icon d={Icons.chevR} size={14} sw={2.2} />
-                        </button>
+                      <button className="nav-arrow" onClick={() => scrollHistorial(-1)} type="button">
+                        <Icon d={Icons.chevL} size={14} sw={2.2} />
+                      </button>
+                      <button className="nav-arrow" onClick={() => scrollHistorial(1)} type="button">
+                        <Icon d={Icons.chevR} size={14} sw={2.2} />
+                      </button>
                     </div>
                   </div>
 
@@ -798,11 +799,11 @@ export default function Portfolio() {
                             style={
                               genero.libroPortada
                                 ? {
-                                    backgroundImage: `linear-gradient(to top, rgba(28, 25, 32, 0.62), rgba(28, 25, 32, 0.12)), url(${genero.libroPortada})`,
-                                  }
+                                  backgroundImage: `linear-gradient(to top, rgba(28, 25, 32, 0.62), rgba(28, 25, 32, 0.12)), url(${genero.libroPortada})`,
+                                }
                                 : {
-                                    backgroundImage: `linear-gradient(to top, rgba(28, 25, 32, 0.58), rgba(28, 25, 32, 0.1)), ${genero.color ?? MINI_BOOK_COLORS[index % MINI_BOOK_COLORS.length]}`,
-                                  }
+                                  backgroundImage: `linear-gradient(to top, rgba(28, 25, 32, 0.58), rgba(28, 25, 32, 0.1)), ${genero.color ?? MINI_BOOK_COLORS[index % MINI_BOOK_COLORS.length]}`,
+                                }
                             }
                           >
                             <span className="genre-cover-title">{genero.nombreGenero}</span>
@@ -856,7 +857,7 @@ export default function Portfolio() {
                           <div className="order-card-media">
                             {portada ? (
                               <img
-                                src={`http://localhost:9001/uploads/${portada}`}
+                                src={getUploadUrl(portada)}
                                 alt={items[0]?.nombreProducto ?? `Pedido ${pedido.idPedido}`}
                                 className="order-card-image"
                               />

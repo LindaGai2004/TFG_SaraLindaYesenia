@@ -1,5 +1,6 @@
 import { useCart } from '../../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { getUploadUrl } from "../../api/api";
 import React from 'react';
 import './MiCarrito.css';
 
@@ -48,7 +49,7 @@ function MiCarrito() {
                                     <div className="cart-item-image">
                                         {imgPrincipal ? (
                                             <img
-                                                src={`http://localhost:9001/uploads/${imgPrincipal}`}
+                                                src={getUploadUrl(imgPrincipal)}
                                                 alt={item.nombreProducto}
                                                 style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }}
                                             />

@@ -234,7 +234,7 @@ export default function ProductoDetalle() {
                   <div className="botones-iconos">
                     <button className="btn-icono" onClick={toggleFavorito}>
                       <img
-                        src={esFavorito ? "/corazon-lleno.png" : "/corazon.jpg"}
+                        src={esFavorito ? "/corazon_lleno.png" : "/corazon_vacio.png"}
                         alt="Favorito"
                       />
                     </button>

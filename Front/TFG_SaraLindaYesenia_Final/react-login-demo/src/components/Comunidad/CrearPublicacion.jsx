@@ -1,6 +1,9 @@
 import { useState } from "react";
 import api from "../../api/api";
+import { getApiUrl } from "../../api/api";
 import "./CrearPublicacion.css";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function CrearPublicacion({ onPublicada }) {
   const [texto, setTexto] = useState("");
@@ -8,8 +11,9 @@ export default function CrearPublicacion({ onPublicada }) {
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [mostrarAvisoLogin, setMostrarAvisoLogin] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleImagen = (e) => {
     const file = e.target.files[0];
@@ -38,7 +42,11 @@ export default function CrearPublicacion({ onPublicada }) {
 
   const handlePublicar = async () => {
     if (!texto.trim() && !imagen) return;
-    if (!user) return alert("Debes iniciar sesión");
+    //para q redirect a login si no esta logueado
+    if (!user) {
+      setMostrarAvisoLogin(true);
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -70,10 +78,23 @@ export default function CrearPublicacion({ onPublicada }) {
 
   return (
     <div className="crear-publicacion">
-
+      {mostrarAvisoLogin && (
+        <div className="notificacion-login">
+          <p>Debes iniciar sesión para publicar.</p>
+          <div className="notificacion-botones">
+            <button className="btn-login-aviso"
+              onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
+              Ir al login
+            </button>
+            <button className="btn-cerrar-aviso" onClick={() => setMostrarAvisoLogin(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
       <div className="crear-top">
         <img
-          src={user?.avatar ? `http://localhost:9001${user.avatar}` : "/assets/default-user.png"}
+          src={user?.avatar ? getApiUrl(user.avatar) : "/assets/default-user.png"}
           alt="usuario"
           className="crear-avatar"
         />
