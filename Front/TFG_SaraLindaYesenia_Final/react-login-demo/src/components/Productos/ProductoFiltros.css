@@ -180,6 +180,33 @@
   background: #c7d3dd;
   border-radius: 4px;
 }
+/* rc-slider custom styles */
+.rc-slider-rail {
+  background-color: #c7d3dd !important;
+  height: 6px !important;
+}
+
+.rc-slider-track {
+  background-color: #8daebd !important;
+  height: 6px !important;
+}
+
+.rc-slider-handle {
+  width: 18px !important;
+  height: 18px !important;
+  background-color: #8daebd !important;
+  border: 2px solid white !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+  opacity: 1 !important;
+  margin-top: -6px !important;
+}
+
+.rc-slider-handle:hover,
+.rc-slider-handle:focus,
+.rc-slider-handle-dragging {
+  border-color: white !important;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3) !important;
+}
 /* Valores debajo */
 .price-values {
   display: flex;

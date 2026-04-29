@@ -892,3 +892,23 @@ ALTER TABLE pedidos
 ADD COLUMN metodo_pago VARCHAR(20),
 ADD COLUMN estado_pago VARCHAR(20),
 ADD COLUMN paypal_id_pedido VARCHAR(100);
+
+INSERT INTO usuarios 
+(username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, avatar, id_perfil) VALUES
+('tomasesc', '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'Madrid', 'tomas@ifp.com', '/uploads/perfiles/tomas.png', 1),
+('mariardu', '$2a$10$G1z9biVEqDJfQsPQeieplO1OEiXgoJvUcT9/XBOgTCuWdiNj0UcaC', 'Maria', 'Radu', 1, '2025-11-05', '1960-11-02', 'Madrid', 'maria@ifp.com', '/uploads/perfiles/maria.png', 2),
+('saribaras', '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'Sevilla', 'sara@ifp.com', '/uploads/perfiles/sara.png', 2),
+('palcald', '$2a$10$wgeISe4JqxuQU2S9Q8Ze5uwN4YBBLuoavlwnTEbNItlrDQdBB8h6u', 'Paloma', 'Calderón', 1, '2024-02-05', '1999-03-16', 'Sevilla', 'paloma@ifp.com', '/uploads/perfiles/paloma.png', 2),
+('juangarc', '$2a$10$JWVBDtdPuxc3Lp7W4BieDO7js2mvEz6YiSEj9e1e6mGhwRmRmsj4m', 'Juan', 'García', 1, '2018-12-23', '1970-06-21', 'Galicia', 'juan@ifp.com', '/uploads/perfiles/juan.png', 2),
+('rauligl', '$2a$10$zDLw08xUEVqxZjKhF2qv2uo7sZDriM4U8x2y4rbWdgoAuT6osKKI.', 'Raúl', 'Iglesias', 1, '2018-12-23', '1970-06-21', 'Galicia', 'raul@ifp.com', '/uploads/perfiles/raul.png', 2),
+('paquiRod', '$2a$10$tnK/swSN.pPaSnByMaLyU.sfLCkDsE1mqZ7F93Is.QXl72eNxSgTq', 'Paqui', 'Rodríguez', 1, '2004-05-14', '1989-02-13', 'Cuenca', 'paqui@ifp.com', '/uploads/perfiles/paqui.png', 2),
+('elencdr', '$2a$10$xnln2Z.GJ8TLmu6pf3FLyOTXUM9XYy8mTKh/2F4XJAZFM1hu40Kh2', 'Elena', 'Cuadrado', 1, '2004-05-14', '1989-02-13', 'Cuenca', 'elena@ifp.com', '/uploads/perfiles/elena.png', 2),
+('carlrub', '$2a$10$LG/oVQoygOcECMEsZ3159us096iIFQl3PrsPg/u3DNPXVpykU85A2', 'Carlos', 'Rubio', 1, '2023-09-29', '2003-10-02', 'Salamanca', 'carlos@ifp.com', '/uploads/perfiles/carlos.png', 2),
+('alejlpz', '$2a$10$V2QYmmpdnaHqr7r3D7RJy.7yQjxn7fcWXkHbcauUtR5gnqx1EpFUa', 'Alejandro', 'López', 1, '2023-09-29', '2003-10-02', 'Salamanca', 'alejandro@ifp.com', '/uploads/perfiles/alejandro.png', 2),
+('nadiacsl', '$2a$10$S40sJwmdN9Yh9nAbAn4JD.9TBdP53MOJCCthcwlnfxAgbBdZb7nzK', 'Nadia', 'Casel', 1, '2023-09-29', '2003-10-02', 'Cáceres', 'nadia@ifp.com', '/uploads/perfiles/nadia.png', 2),
+('rosavlo', '$2a$10$7EcNTYFHJaRhWT45tW3m5esiiLvzt7krj3iZwyn6.7jHUfxhzt2x6', 'Rosa', 'Velo', 1, '2023-09-29', '2003-10-02', 'Cáceres', 'rosa@ifp.com', '/uploads/perfiles/rosa.png', 2),
+('joaqpzo', '$2a$10$eo1Tznaq/sP78ia4y/piJ.hXsyDfIVb2Z6YsnpchNW/H0kw.x6ty.', 'Joaquin', 'Pozo', 1, '2023-09-29', '2003-10-02', 'Segovia', 'joaquin@ifp.com', '/uploads/perfiles/joaquin.png', 2),
+('pepedbson', '$2a$10$.T43po/EyGWwFnZ92LkbiOF6AKv7Iq84ef/rTDY7rbKQXujsTF2cS', 'Pepe', 'Dobson', 1, '2023-09-29', '2003-10-02', 'Segovia', 'pepe@ifp.com', '/uploads/perfiles/pepe.png', 2),
+('sunakim', '$2a$10$6D1fPoIBGmtphX2frS93neMaHhPtAR425X7R6fUL.ODWx2gEgwmli', 'Suna', 'Kim', 1, '2023-09-29', '2003-10-02', 'Valencia', 'suna@ifp.com', '/uploads/perfiles/suna.png', 2),
+('evagoma', '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'Cordoba', 'eva@ifp.com', '/uploads/perfiles/eva.png', 3),
+('ramgnzl', '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'Madrid','ramon@ifp.com', '/uploads/perfiles/ramon.png', 4);

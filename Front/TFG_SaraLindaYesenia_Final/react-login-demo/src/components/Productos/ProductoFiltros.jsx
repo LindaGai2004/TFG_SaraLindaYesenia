@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { apiGet } from "../../api/api"; // según api.js
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 import "./ProductoFiltros.css";
 
 // He añadido 'initialFilters' a los props para que el useEffect no de error
@@ -175,30 +177,18 @@ export default function ProductoFiltros({
             {/* PRECIO */}
             <div className="filtro">
                 <label>Precio</label>
-                <div className="price-slider">
-                    <input
-                        type="range"
-                        min="0"
-                        max="200"
-                        value={precio.min}
-                        // sin style={{ zIndex: ... }}
-                        onChange={(e) => {
-                            const val = Number(e.target.value);
-                            if (val < precio.max) setPrecio(prev => ({ ...prev, min: val }));
-                        }}
-                    />
-                    <input
-                        type="range"
-                        min="0"
-                        max="200"
-                        value={precio.max}
-                        // sin style={{ zIndex: ... }}
-                        onChange={(e) => {
-                            const val = Number(e.target.value);
-                            if (val > precio.min) setPrecio(prev => ({ ...prev, max: val }));
-                        }}
-                    />
-                </div>
+                <Slider
+                    range
+                    min={0}
+                    max={200}
+                    value={[precio.min, precio.max]}
+                    onChange={(values) => setPrecio({ min: values[0], max: values[1] })}
+                    styles={{
+                        track: { backgroundColor: '#8daebd' },
+                        handle: { borderColor: '#8daebd', backgroundColor: '#8daebd' },
+                        rail: { backgroundColor: '#c7d3dd' }
+                    }}
+                />
                 <div className="price-values">
                     <span>{precio.min} €</span>
                     <span>{precio.max} €</span>
