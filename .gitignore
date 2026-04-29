@@ -9,3 +9,4 @@ application-local.properties
 
 # Imágenes de upload (generadas en runtime)
 Back/01_proyecto_LindaSaraYesenia/upload/
+Back/chatbot-service/src/main/resources/application-local.properties
