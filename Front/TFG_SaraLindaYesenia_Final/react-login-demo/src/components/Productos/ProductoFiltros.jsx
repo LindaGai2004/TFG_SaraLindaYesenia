@@ -181,11 +181,10 @@ export default function ProductoFiltros({
                         min="0"
                         max="200"
                         value={precio.min}
+                        // sin style={{ zIndex: ... }}
                         onChange={(e) => {
                             const val = Number(e.target.value);
-                            if (val < precio.max) {
-                                setPrecio(prev => ({ ...prev, min: val }));
-                            }
+                            if (val < precio.max) setPrecio(prev => ({ ...prev, min: val }));
                         }}
                     />
                     <input
@@ -193,11 +192,10 @@ export default function ProductoFiltros({
                         min="0"
                         max="200"
                         value={precio.max}
+                        // sin style={{ zIndex: ... }}
                         onChange={(e) => {
                             const val = Number(e.target.value);
-                            if (val > precio.min) {
-                                setPrecio(prev => ({ ...prev, max: val }));
-                            }
+                            if (val > precio.min) setPrecio(prev => ({ ...prev, max: val }));
                         }}
                     />
                 </div>
