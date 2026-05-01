@@ -1,0 +1,97 @@
+.footer {
+    width: 100%;
+    background-color: #8daebd;
+    padding: 40px 0; /* vertical padding */
+    box-sizing: border-box;
+    flex-shrink: 0; /* evitar que el footer se colapse */
+  }
+  
+  /* Contenedor interior centrado y con max-width */
+  .contenedor-footer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px; /* separación lateral en pantallas pequeñas */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 40px;
+    /* quitar margin-bottom para evitar espacio extra debajo del footer */
+    margin-bottom: 0;
+    box-sizing: border-box;
+  }
+  
+  .columna-footer {
+    color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 200px;
+    max-width: 260px;
+    margin: 20px 0;
+  }
+  
+  .columna-footer:last-of-type {
+    flex: 2;
+    max-width: 400px;
+    align-items: flex-start;
+    text-align: left;
+  }
+  
+  .titulo-footer {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    font-family: "Cormorant", sans-serif;
+  }
+  
+  .enlace-footer {
+    font-size: 14px;
+    color: white;
+    margin: 6px 0;
+    text-align: center;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .enlace-footer:hover {
+    color: #7f7c7c;
+  }
+  
+  .logos-footer {
+    filter: brightness(0) invert(1);
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .logos-footer img {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+  }
+  
+  .logo-footer {
+    color: white;
+    width: 120px;
+    height: auto;
+    font-size: 36px;
+    font-family: "Ablafit", sans-serif;
+  }
+  
+  .footer-final {
+    border-top: 1px solid white;
+    padding-top: 20px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  /* Texto final centrado dentro del footer */
+  .texto-final-footer {
+    font-size: 14px;
+    color: white;
+    margin-top: 20px;
+    text-align: center;
+  }

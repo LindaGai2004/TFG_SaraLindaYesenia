@@ -1,0 +1,13 @@
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feed-loading,
+.feed-error,
+.feed-vacio {
+  text-align: center;
+  color: #666;
+  margin-top: 20px;
+}

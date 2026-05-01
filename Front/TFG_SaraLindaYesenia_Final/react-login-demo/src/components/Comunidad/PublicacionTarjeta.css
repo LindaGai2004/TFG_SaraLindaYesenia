@@ -1,0 +1,164 @@
+.publicacion-tarjeta {
+  background: #fffefc;
+  padding: 10px 15px 15px 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+
+.publicacion-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.publicacion-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+.publicacion-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.publicacion-usuario {
+  font-weight: bold;
+}
+
+.publicacion-fecha {
+  font-size: 12px;
+  color: #777;
+}
+
+/* Texto */
+.publicacion-texto {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+/* Imagen */
+.publicacion-imagen img {
+  width: 100%;
+  max-height: 400px;
+  /*object-fit: cover;*/
+  object-fit: contain;
+background: #f5f5f5;
+
+  border-radius: 12px;
+}
+
+
+/* Acciones -----------------------------------------------------------------*/
+.publicacion-acciones {
+  display: flex;
+  gap: 15px;
+  margin-top: 12px;
+}
+
+
+.btn-accion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.btn-accion:hover {
+  background: #f0f0f0;
+}
+
+.comentario-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.comentario-fecha {
+  font-size: 12px;
+  color: #777;
+}
+
+.btn-ver-mas {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.icono-accion {
+  width: 20px;
+  height: 20px;
+  /*margin-right: 6px;*/
+}
+
+
+/* Enlace para etiquetar libro -------------------------------------------*/
+.enlace-producto-contenedor {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #f0f7ff; /* Un azul muy clarito */
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #cce4ff;
+}
+
+.enlace-producto-detalle {
+  color: #8daebd;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.enlace-producto-detalle:hover {
+  text-decoration: underline;
+  color: #8daebd;
+}
+
+.img-libro-enlace {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+
+/* Botón eliminar publicación -------------------------------------------*/
+.btn-eliminar-publicacion {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  
+  width: 32px;
+  height: 32px; 
+  padding: 0;
+  border-radius: 4px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.btn-eliminar-publicacion:hover {
+  background: #f0f0f0;
+}
+
+.icono-eliminar {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  text-align: center;
+}

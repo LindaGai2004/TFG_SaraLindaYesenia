@@ -1,0 +1,98 @@
+/* Fondo de toda la página */
+.codigo-page {
+  background-color: #f9f7f4;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor del formulario */
+.codigo-container {
+  width: 85%;
+  max-width: 450px;
+  margin: 60px auto;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center;
+}
+
+/* Título */
+.codigo-container h2 {
+  color: #6d96a6;
+  margin-bottom: 36px;
+  font-size: 48px;
+  font-family: 'Cormorant', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Formulario */
+.codigo-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+/* Etiqueta */
+.codigo-container form label {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Input */
+.codigo-container form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Botón */
+.codigo-container form button {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #6d96a6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.codigo-container form button:hover {
+  background-color: #5a7f8d;
+}
+
+/* Mensaje */
+.codigo-container p {
+  margin-top: 15px;
+  font-size: 0.95rem;
+  color: #6d96a6;
+  text-align: center;
+}
+
+/* Contador */
+.contador {
+  margin-top: 10px;
+  color: #6d96a6;
+  font-size: 0.9rem;
+}
+
+.btn-reenviar {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #6d96a6;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-decoration: underline;
+}

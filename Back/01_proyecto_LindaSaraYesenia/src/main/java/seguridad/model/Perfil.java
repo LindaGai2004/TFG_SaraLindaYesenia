@@ -27,6 +27,8 @@ public class Perfil implements Serializable{
 	
 	private int idPerfil;
 	private String nombre;
+	
+	
 	public int getIdPerfil() {
 		return idPerfil;
 	}
@@ -42,6 +44,10 @@ public class Perfil implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	
+	
+
 	
 	
 
