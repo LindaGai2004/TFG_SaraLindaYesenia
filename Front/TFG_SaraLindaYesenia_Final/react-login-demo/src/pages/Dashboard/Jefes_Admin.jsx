@@ -57,7 +57,7 @@ export default function Jefes({
           <tbody>
             {filtered.map(j => (
               <tr key={j.id}>
-                <td><div className="table-avatar bg-amber-light">👔</div></td>
+                <td><div className="table-avatar bg-amber-light"></div></td>
                 <td className="text-xs font-semibold text-primary">{j.nombre}</td>
                 <td className="text-xs text-primary">{j.apellidos}</td>
                 <td className="text-xs text-secondary">{j.email}</td>

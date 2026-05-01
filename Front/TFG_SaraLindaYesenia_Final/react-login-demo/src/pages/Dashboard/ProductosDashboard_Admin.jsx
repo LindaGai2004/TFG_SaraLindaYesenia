@@ -1,7 +1,8 @@
 import { useState, useMemo , useEffect} from 'react';
-import { Search, Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import Modal from '../../components/Modal_dashboard';
 import { apiGet } from '../../api/api';
+import ProductDashboardSearch from '../../components/ProductDashboardSearch';
 
 export default function Productos({
   books,
@@ -37,6 +38,7 @@ export default function Productos({
   const [apiBooks, setApiBooks] = useState([]);
   const [apiPapeleria, setApiPapeleria] = useState([]);
   const [isSearching, setIsSearching] = useState(false); 
+  const [searchLoading, setSearchLoading] = useState(false);
   const [idiomasBD, setIdiomasBD] = useState([]);
 
 useEffect(() => {
@@ -56,14 +58,17 @@ useEffect(() => {
   //para buscador
 useEffect(() => {
   const fetchBuscar = async () => {
-    if (!prodSearch || prodSearch.trim().length < 2) {
+    if (!prodSearch || prodSearch.trim().length < 1) {
       setIsSearching(false);  // ← 不在搜索状态
       setApiBooks([]);
       setApiPapeleria([]);
+      setSearchLoading(false);
       return;
     }
 
     setIsSearching(true);  // ← 正在搜索
+
+    setSearchLoading(true);
 
     try {
       const data = await apiGet(
@@ -83,6 +88,8 @@ useEffect(() => {
       console.error("Error búsqueda:", e);
       setApiBooks([]);
       setApiPapeleria([]);
+    } finally {
+      setSearchLoading(false);
     }
   };
 
@@ -90,6 +97,11 @@ useEffect(() => {
   return () => clearTimeout(timer);
 
 }, [prodSearch]);
+
+const searchResults = useMemo(
+  () => [...apiBooks, ...apiPapeleria],
+  [apiBooks, apiPapeleria]
+);
 
 //Para filtro de estado
 useEffect(() => {
@@ -187,15 +199,19 @@ const filteredStationery = useMemo(() =>
       </div>
 
       {/* 搜索栏 */}
-      <div className="search-wrapper mb-3">
-        <Search size={15} className="search-icon" />
-        <input
-          placeholder="Buscar por nombre, autor, marca..."
-          value={prodSearch}
-          onChange={e => setProdSearch(e.target.value)}
-          className="input-field search-input"
-        />
-      </div>
+      <ProductDashboardSearch
+        value={prodSearch}
+        onChange={setProdSearch}
+        results={searchResults}
+        loading={searchLoading}
+        onSelect={(producto) => {
+          setProdSearch(producto.nombreProducto ?? '');
+          setPopup({
+            type: producto.isbn !== undefined && producto.isbn !== null ? 'book' : 'papeleria',
+            data: producto,
+          });
+        }}
+      />
 
       {/* 筛选器 */}
       <div className="filters-row">

@@ -1,26 +1,23 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar_dashboard';
 import Header from '../components/Header_dashboard';
-import Dashboard from './Dashboard/DashboardPrincipal';
-import Productos from './Dashboard/ProductosDashboard';
-import Clientes from './Dashboard/ClientesDashboard';
-import Jefes from './Dashboard/Jefes';
-import Trabajadores from './Dashboard/Trabajadores';
-import Pedidos from './Dashboard/Pedidos';
+import Dashboard from './Dashboard/DashboardPrincipal_Admin';
+import Productos from './Dashboard/ProductosDashboard_Admin';
+import Clientes from './Dashboard/ClientesDashboard_Admin';
+import Jefes from './Dashboard/Jefes_Admin';
+import Trabajadores from './Dashboard/Trabajadores_Admin';
+import Pedidos from './Dashboard/Pedidos_Admin';
 import AdminConfig from './Dashboard/AdminConfig';
 import api from '../api/api';
 import './Administrador.css';
-import { apiGet, apiPost, apiPut, apiDelete } from "../api/api";
-
+import { apiGet, apiPost, apiPut, apiDelete } from '../api/api';
+import { useAuth } from '../context/AuthContext';
 
 function App() {
-  // STATE
+  const { user } = useAuth();
   const [page, setPage] = useState('dashboard');
   const [loading, setLoading] = useState(true);
-
   const [notification, setNotification] = useState(null);
-  
-  // Data from backend
   const [books, setBooks] = useState([]);
   const [papeleria, setPapeleria] = useState([]);
   const [clients, setClients] = useState([]);
@@ -31,70 +28,55 @@ function App() {
   const [mensualTotal, setMensualTotal] = useState(0);
   const [admin, setAdmin] = useState(null);
 
-    const showNotification = (type, message) => {
-      setNotification({ type, message });
+  const showNotification = (type, message) => {
+    setNotification({ type, message });
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+  };
 
-      setTimeout(() => {
-        setNotification(null);
-      }, 3000);
-    };
-  // ═══ FETCH DATA FROM BACKEND ═════════════════════════════════════════════
   useEffect(() => {
     fetchAllData();
-  }, []);
+  }, [user?.email]);
 
   const fetchAllData = async () => {
     setLoading(true);
     try {
-      /*const [
-        pedidosData,
-        gananciaData,
-      ] = await Promise.all([
-        api.pedidos.getAll(),
-        api.estadisticas.getGananciaMensual(),
-      ])*/
+      const adminList = await apiGet('/rol/1');
+      const libroData = await apiGet('/libros/todos');
+      const papeleriaData = await apiGet('/papelerias/todos');
+      const clienteData = await apiGet('/rol/2');
+      const jefeData = await apiGet('/rol/4');
+      const trabajadorData = await apiGet('/rol/3');
+      const pedidosData = await apiGet('/pedidos/todos');
+      const mensualData = await apiGet('/pedidos/mensual');
+      const mensualTotalData = await apiGet('/pedidos/mensual/total');
+      const currentAdmin = adminList.find((item) => item.email === user?.email) ?? adminList[0] ?? {};
 
-      const adminList = await apiGet("/rol/1"); 
-      const LibroData = await apiGet("/libros/todos");
-      const PapeleriaData = await apiGet("/papelerias/todos");
-      const ClienteData = await apiGet("/rol/2");
-      const JefeData = await apiGet("/rol/4");
-      const TrabajadorData = await apiGet("/rol/3");
-      const PedidosData = await apiGet("/pedidos/todos");
-      const MensualData = await apiGet("/pedidos/mensual");
-      const MensualTotalData = await apiGet("/pedidos/mensual/total")
-
-      setAdmin(adminList[0] || {});
-      setBooks(LibroData);
-      setPapeleria(PapeleriaData);
-      setClients(ClienteData);
-      setJefes(JefeData);
-      setTrabajadores(TrabajadorData);
-      setPedidos(PedidosData);
-      setMensual(MensualData);
-      setMensualTotal(MensualTotalData);
-/*
+      setAdmin(currentAdmin);
+      setBooks(libroData);
+      setPapeleria(papeleriaData);
+      setClients(clienteData);
+      setJefes(jefeData);
+      setTrabajadores(trabajadorData);
       setPedidos(pedidosData);
-      serMensual(gananciaData);*/
+      setMensual(mensualData);
+      setMensualTotal(mensualTotalData);
     } catch (error) {
       console.error('Error fetching data:', error);
-      // Aquí podrías mostrar una notificación de error al usuario
     } finally {
       setLoading(false);
     }
   };
 
-  // ═══ CRUD OPERATIONS ═════════════════════════════════════════════════════
-
-  // --- LIBROS ---
   const addBook = async (bookData) => {
     try {
       await apiPost('/libros/altaLibro', bookData);
       await fetchAllData();
-      showNotification("success", "Libro añadido correctamente");
+      showNotification('success', 'Libro anadido correctamente');
     } catch (error) {
-      alert("ERROR: " + error.message); 
-      showNotification("error", error.message || "Error al añadir libro");
+      alert(`ERROR: ${error.message}`);
+      showNotification('error', error.message || 'Error al anadir libro');
       throw error;
     }
   };
@@ -103,9 +85,9 @@ function App() {
     try {
       await apiPut(`/libros/modificarLibro/${idProducto}`, bookData);
       await fetchAllData();
-      showNotification("success", "Libro modificado correctamente");
+      showNotification('success', 'Libro modificado correctamente');
     } catch (error) {
-      showNotification("error", error.message || "Error al modificar libro");
+      showNotification('error', error.message || 'Error al modificar libro');
       throw error;
     }
   };
@@ -114,21 +96,20 @@ function App() {
     try {
       await apiDelete(`/productos/eliminar/${idProducto}`);
       await fetchAllData();
-      showNotification("success", "Libro eliminado correctamente");
+      showNotification('success', 'Libro eliminado correctamente');
     } catch (error) {
-      showNotification("error", error.message || "Error al eliminar libro");
+      showNotification('error', error.message || 'Error al eliminar libro');
       throw error;
     }
   };
 
-  // --- PAPELERÍA ---
   const addPapeleria = async (data) => {
     try {
       await apiPost('/papelerias/altaPapeleria', data);
       await fetchAllData();
-      showNotification("success", "Producto de papeleria añadido correctamente");
+      showNotification('success', 'Producto de papeleria anadido correctamente');
     } catch (error) {
-      showNotification("error", error.message || "Error al añadir papeleria");
+      showNotification('error', error.message || 'Error al anadir papeleria');
       throw error;
     }
   };
@@ -137,9 +118,9 @@ function App() {
     try {
       await apiPut(`/papelerias/modificarPapeleria/${idProducto}`, data);
       await fetchAllData();
-      showNotification("success", "Papeleria modificada correctamente");
+      showNotification('success', 'Papeleria modificada correctamente');
     } catch (error) {
-      showNotification("error", error.message || "Error al modificar papeleria");
+      showNotification('error', error.message || 'Error al modificar papeleria');
       throw error;
     }
   };
@@ -148,21 +129,20 @@ function App() {
     try {
       await apiDelete(`/productos/eliminar/${idProducto}`);
       await fetchAllData();
-      showNotification("success", "Papeleria eliminada correctamente");
+      showNotification('success', 'Papeleria eliminada correctamente');
     } catch (error) {
-      showNotification("error", error.message || "Error al eliminar papeleria");
+      showNotification('error', error.message || 'Error al eliminar papeleria');
       throw error;
     }
   };
 
-  // --- CLIENTES ---
   const editClient = async (email, data) => {
     try {
       await apiPut(`/usuario/${email}`, data);
       await fetchAllData();
-      showNotification("success", "Cliente modificado correctamente");
+      showNotification('success', 'Cliente modificado correctamente');
     } catch (error) {
-      showNotification("error", error.message || "Error al modificar cliente");
+      showNotification('error', error.message || 'Error al modificar cliente');
       throw error;
     }
   };
@@ -171,36 +151,31 @@ function App() {
     try {
       await apiDelete(`/usuario/${id}`);
       await fetchAllData();
-      showNotification("success", "Cliente eliminado correctamente");
+      showNotification('success', 'Cliente eliminado correctamente');
     } catch (error) {
-      showNotification("error", error.message);
+      showNotification('error', error.message);
       throw error;
     }
   };
 
-  // --- JEFES ---
   const addJefe = async (data) => {
     try {
-      const body = {
-      ...data,
-      perfil: { idPerfil: 4 } 
-    };
-      await apiPost("/admin/crear", body);
+      await apiPost('/admin/crear', { ...data, perfil: { idPerfil: 4 } });
       await fetchAllData();
-      showNotification("success", "Jefe añadido correctamente");
-  } catch (error) {
-    showNotification("error", error.message || "Error al añadir jefe");
-    throw error;
-  }
+      showNotification('success', 'Jefe anadido correctamente');
+    } catch (error) {
+      showNotification('error', error.message || 'Error al anadir jefe');
+      throw error;
+    }
   };
 
   const editJefe = async (email, data) => {
     try {
       await apiPut(`/usuario/${email}`, data);
       await fetchAllData();
-      showNotification("success", "Jefe modificado correctamente");
+      showNotification('success', 'Jefe modificado correctamente');
     } catch (error) {
-      showNotification("error", error.message || "Error al modificar jefe");
+      showNotification('error', error.message || 'Error al modificar jefe');
       throw error;
     }
   };
@@ -209,85 +184,61 @@ function App() {
     try {
       await apiDelete(`/usuario/${id}`);
       await fetchAllData();
-      showNotification("success", "Usuario eliminado correctamente");
+      showNotification('success', 'Usuario eliminado correctamente');
     } catch (error) {
-      showNotification("error", error.message);
+      showNotification('error', error.message);
       throw error;
     }
   };
 
-  // --- TRABAJADORES ---
   const addTrabajador = async (data) => {
-     try {
-      const body = {
-      ...data,
-      perfil: { idPerfil: 3 } 
-    };
-      await apiPost("/admin/crear", body);
+    try {
+      await apiPost('/admin/crear', { ...data, perfil: { idPerfil: 3 } });
       await fetchAllData();
-      showNotification("success", "Trabajador añadido correctamente");
-  } catch (error) {
-    showNotification("error", error.message || "Error al añadir trabajador");
-    throw error;
-  }
+      showNotification('success', 'Trabajador anadido correctamente');
+    } catch (error) {
+      showNotification('error', error.message || 'Error al anadir trabajador');
+      throw error;
+    }
   };
 
   const editTrabajador = async (email, data) => {
     try {
       await apiPut(`/usuario/${email}`, data);
       await fetchAllData();
-      showNotification("success", "Trabajador modificado correctamente");
+      showNotification('success', 'Trabajador modificado correctamente');
     } catch (error) {
-      showNotification("error", error.message || "Error al modificar trabajador");
+      showNotification('error', error.message || 'Error al modificar trabajador');
       throw error;
     }
   };
 
   const deleteTrabajador = async (id) => {
-    try{
+    try {
       await apiDelete(`/usuario/${id}`);
       await fetchAllData();
-      showNotification("success", "Usuario eliminado correctamente");
+      showNotification('success', 'Usuario eliminado correctamente');
     } catch (error) {
-      showNotification("error", error.message);
+      showNotification('error', error.message);
       throw error;
     }
   };
 
-  // --- PEDIDOS ---
   const cancelPedido = async (id) => {
     try {
       await api.pedidos.cancel(id);
-      setPedidos(prev => prev.map(o => o.id === id ? { ...o, estado: 'Cancelado' } : o));
+      setPedidos((prev) => prev.map((o) => (o.id === id ? { ...o, estado: 'Cancelado' } : o)));
     } catch (error) {
       console.error('Error canceling Pedido:', error);
       throw error;
     }
   };
 
-  // --- ADMIN ---
-  const updateAdmin = async (data) => {
-    try {
-      await apiPut(`/usuario/${data.email}`, data);
-      await fetchAllData();
-      showNotification("success", "Administrador modificado correctamente");
-    } catch (error) {
-      showNotification("error", error.message || "Error al modificar administrador");
-      throw error;
-    }
+  const updateAdmin = async (updatedAdmin) => {
+    setAdmin(updatedAdmin);
+    showNotification('success', 'Administrador modificado correctamente');
   };
 
-  const handleLogout = async () => {
-    try {
-      await api.admin.logout();
-      // Redirect to login page or clear session
-      window.location.href = '/login';
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
-
-  // ═══ PAGE COMPONENTS ═════════════════════════════════════════════════════
   const pageComponents = {
     dashboard: Dashboard,
     productos: Productos,
@@ -297,22 +248,13 @@ function App() {
     pedidos: Pedidos,
     admin: AdminConfig,
   };
- 
+
   const PageComponent = pageComponents[page];
 
-  // ═══ RENDER ══════════════════════════════════════════════════════════════
   if (loading) {
     return (
       <div className="admin-layout">
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          width: '100%', 
-          height: '100vh',
-          fontSize: '1.5rem',
-          color: '#6d96a6'
-        }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100vh', fontSize: '1.5rem', color: '#6d96a6' }}>
           Cargando...
         </div>
       </div>
@@ -321,11 +263,11 @@ function App() {
 
   return (
     <div className="admin-layout">
-      <Sidebar currentPage={page} onNavigate={setPage} onLogout={handleLogout} />
-      
+      <Sidebar currentPage={page} onNavigate={setPage} />
+
       <div className="main-wrapper">
-        <Header admin={admin} />
-        
+        <Header usuario={admin} />
+
         <main className="main-content">
           <div className="main-content-inner">
             <PageComponent
@@ -337,7 +279,7 @@ function App() {
               pedidos={pedidos}
               mensual={mensual}
               mensualTotal={mensualTotal}
-              admin={admin}
+              usuario={admin}
               onAddBook={addBook}
               onEditBook={editBook}
               onDeleteBook={deleteBook}
@@ -353,37 +295,30 @@ function App() {
               onEditTrabajador={editTrabajador}
               onDeleteTrabajador={deleteTrabajador}
               onCancelPedido={cancelPedido}
-              onUpdateAdmin={updateAdmin}
+              onUpdateUsuario={updateAdmin}
             />
           </div>
         </main>
-         {notification && (
+
+        {notification && (
           <div className="modal-overlay active">
-            <div className={`modal-content ${notification.type === "success" ? "modal-success" : "modal-error"}`}>
-              <div style={{ textAlign: "center", padding: "25px" }}>
+            <div className={`modal-content ${notification.type === 'success' ? 'modal-success' : 'modal-error'}`}>
+              <div style={{ textAlign: 'center', padding: '25px' }}>
                 <div
                   style={{
-                    width: "90px",
-                    height: "90px",
-                    borderRadius: "50%",
-                    backgroundColor:
-                      notification.type === "success" ? "#6d96a6" : "#DB504A",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto"
+                    width: '90px',
+                    height: '90px',
+                    borderRadius: '50%',
+                    backgroundColor: notification.type === 'success' ? '#6d96a6' : '#DB504A',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto',
                   }}
                 >
-                  <img
-                    src={notification.type === "success" ? "/tick.png" : "/cruz.png"}
-                    alt="icon"
-                    width="40"
-                  />
+                  <img src={notification.type === 'success' ? '/tick.png' : '/cruz.png'} alt="icon" width="40" />
                 </div>
-                <h2 style={{ marginTop: "15px" }}>
-                  {notification.type === "success" ? "¡Éxito!" : "Error"}
-                </h2>
-
+                <h2 style={{ marginTop: '15px' }}>{notification.type === 'success' ? 'Exito' : 'Error'}</h2>
                 <p>{notification.message}</p>
               </div>
             </div>
@@ -391,9 +326,7 @@ function App() {
         )}
       </div>
     </div>
-    
   );
-  
 }
 
 export default App;

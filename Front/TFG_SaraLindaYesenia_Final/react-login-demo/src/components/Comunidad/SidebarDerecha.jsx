@@ -3,6 +3,10 @@ import api from "../../api/api";
 import { getApiUrl } from "../../api/api"; 
 import "./SidebarDerecha.css";
 
+async function toggleFollowRequest(idSeguido, miId) {
+  return api.apiPost(`/usuarios/${idSeguido}/seguir?idUsuarioActual=${miId}`, {});
+}
+
 export default function SidebarDerecha() {
   const [usuarios, setUsuarios] = useState([]);
   
@@ -43,7 +47,7 @@ export default function SidebarDerecha() {
 
     try {
         // Hacemos la petición
-        const res = await api.apiPost(`/usuarios/${idSeguido}/seguir?idUsuarioActual=${miId}`);
+        const res = await toggleFollowRequest(idSeguido, miId);
         console.log("Respuesta servidor:", res);
 
         if (res && typeof res.siguiendo !== 'undefined') {
@@ -54,6 +58,7 @@ export default function SidebarDerecha() {
                         : u
                 )
             );
+            window.dispatchEvent(new CustomEvent("community-follow-changed"));
         }
     } catch (e) {
         console.error("Error al seguir:", e);
@@ -72,7 +77,7 @@ export default function SidebarDerecha() {
           u && u.idUsuario !== user?.idUsuario && (
             <li key={u.idUsuario} className="usuario-recomendado">
               <img
-                src={u.avatar ? getApiUrl(u.avatar) : "/default-avatar.png"}
+                src={(u.avatar ?? u.fotoPerfil ?? u.imagenPerfil) ? getApiUrl(u.avatar ?? u.fotoPerfil ?? u.imagenPerfil) + '?t=' + Date.now() : "/default-avatar.png"}
                 alt="avatar"
                 className="avatar"
               />

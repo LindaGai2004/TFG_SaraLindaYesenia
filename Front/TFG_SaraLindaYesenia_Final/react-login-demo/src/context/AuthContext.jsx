@@ -38,9 +38,9 @@ export function AuthProvider({ children }) {
   async function login(email, password) {
     try {
       const res = await apiPost('/api/login', { email, password });
-
+     if (!res) return null;
       const normalizedUser = normalizeUser(res.user);
-
+      
       localStorage.setItem('token', res.token);
       localStorage.setItem('user', JSON.stringify(normalizedUser));
 

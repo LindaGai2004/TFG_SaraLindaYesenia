@@ -6,9 +6,22 @@ const FALLBACK_COLORS = [
   "linear-gradient(135deg,#2d3a6e,#7c8dcf)",
 ];
 
+function getHistorialKey() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return HISTORIAL_KEY;
+    // 解码JWT获取用户email/id
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const userId = payload.sub ?? payload.email ?? payload.id ?? 'guest';
+    return `bn_historial_${userId}`;
+  } catch {
+    return HISTORIAL_KEY;
+  }
+}
+
 export function getHistorial() {
   try {
-    return JSON.parse(localStorage.getItem(HISTORIAL_KEY)) || [];
+    return JSON.parse(localStorage.getItem(getHistorialKey())) || [];
   } catch {
     return [];
   }
@@ -19,11 +32,11 @@ export function guardarEnHistorial(producto) {
     (item) => String(item.id) !== String(producto.id)
   );
   const nuevo = [producto, ...historial].slice(0, HISTORIAL_MAX);
-  localStorage.setItem(HISTORIAL_KEY, JSON.stringify(nuevo));
+  localStorage.setItem(getHistorialKey(), JSON.stringify(nuevo)); // ✅
 }
 
 export function limpiarHistorial() {
-  localStorage.removeItem(HISTORIAL_KEY);
+  localStorage.removeItem(getHistorialKey()); // ✅
 }
 
 export function getProductoImagen(producto) {

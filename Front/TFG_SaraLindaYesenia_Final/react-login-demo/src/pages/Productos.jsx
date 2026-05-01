@@ -14,11 +14,6 @@ export default function Productos() {
     const [searchParams] = useSearchParams();
     const productosPorPagina = 24;
 
-    useEffect(() => {
-        cargarTodos();
-    }, []);
-
-
     // Función para el buscador de los productos
     const manejarBusqueda = async (e) => {
         const texto = e.target.value;

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,19 +21,19 @@ import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
 import seguridad.security.JwtService;
 import seguridad.service.EmailService;
-import seguridad.service.PublicacionService;
 import seguridad.service.UsuarioService;
 import seguridad.service.VerificacionCuentaService;
 
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 @RestController
 @CrossOrigin(origins = "*")
 public class UsuarioRestController {
 
     @Autowired
     private UsuarioService usuarioService;
-    
-    @Autowired
-    private PublicacionService publicacionService;
     
     @Autowired
     private VerificacionCuentaService verificacionService;
@@ -220,9 +221,7 @@ public class UsuarioRestController {
         // Campos a modificar
         if (usuario.getUsername() != null) objetivo.setUsername(usuario.getUsername());
 
-        if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
-            objetivo.setPassword(usuario.getPassword());
-        }
+       
 
         if (usuario.getNombre() != null) objetivo.setNombre(usuario.getNombre());
         if (usuario.getApellidos() != null) objetivo.setApellidos(usuario.getApellidos());
@@ -418,21 +417,43 @@ public class UsuarioRestController {
     }
     
     
-    // Seguir usuarios
-    @PostMapping("/usuarios/{idSeguido}/seguir")
-    public ResponseEntity<?> seguirUsuario(
-            @PathVariable Integer idSeguido, 
-            @RequestParam Integer idUsuarioActual
-    ) {
+ // 在类顶部添加
+    @Value("${app.upload.dir:./upload/}")
+    private String uploadDir;
+
+    // 修改接口里的路径
+    @PostMapping("/usuario/{email}/avatar")
+    public ResponseEntity<?> subirAvatar(
+            @PathVariable String email,
+            @RequestParam("file") MultipartFile file,
+            Authentication auth) {
+
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(401).body("No autenticado");
+        }
+
         try {
-            boolean siguiendo = publicacionService.toggleSeguir(idUsuarioActual, idSeguido);
+            String nombreArchivo = "avatar_" + email.replace("@", "_").replace(".", "_")
+                    + "_" + System.currentTimeMillis() + ".jpg";
+
+            // ✅ 用 uploadDir 而不是硬编码路径
+            Path ruta = Paths.get(uploadDir + "avatars/" + nombreArchivo);
+            Files.createDirectories(ruta.getParent());
+            Files.write(ruta, file.getBytes());
+
+            Usuario objetivo = usuarioService.findByEmail(email);
+            if (objetivo == null) {
+                return ResponseEntity.notFound().build();
+            }
             
-            return ResponseEntity.ok(Map.of(
-                "siguiendo", siguiendo,
-                "mensaje", siguiendo ? "Ahora sigues a este usuario" : "Has dejado de seguir a este usuario"
-            ));
+            objetivo.setAvatar("/uploads/avatars/" + nombreArchivo);
+            usuarioService.save(objetivo);
+
+            return ResponseEntity.ok(Map.of("avatar", "/uploads/avatars/" + nombreArchivo));
+
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al procesar el seguimiento");
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error al subir avatar: " + e.getMessage());
         }
     }
 }

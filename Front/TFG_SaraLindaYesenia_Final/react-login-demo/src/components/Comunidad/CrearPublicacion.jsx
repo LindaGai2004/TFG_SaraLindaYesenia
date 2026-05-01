@@ -14,6 +14,7 @@ export default function CrearPublicacion({ onPublicada }) {
   const [mostrarAvisoLogin, setMostrarAvisoLogin] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const avatar = user?.avatar ?? user?.fotoPerfil ?? user?.imagenPerfil ?? "";
 
   const handleImagen = (e) => {
     const file = e.target.files[0];
@@ -94,7 +95,7 @@ export default function CrearPublicacion({ onPublicada }) {
       )}
       <div className="crear-top">
         <img
-          src={user?.avatar ? getApiUrl(user.avatar) : "/assets/default-user.png"}
+          src={avatar ? getApiUrl(avatar) : "/assets/default-user.png"}
           alt="usuario"
           className="crear-avatar"
         />

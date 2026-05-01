@@ -22,11 +22,14 @@ function handle401() {
     path.includes("producto") ||
     path.includes("comunidad") ||
     path.includes("notificacion") ||
-    path.includes("favoritos")
+    path.includes("favoritos") ||
+    path.includes("administrador") || 
+    path.includes("jefe") ||
+    path.includes("trabajador") ||
+    path.includes("cliente")
   ) {
-    return;
+    return; 
   }
-
   console.error("Token inválido o caducado"); 
   localStorage.setItem("token_expirado", "true");
   localStorage.removeItem("user"); 
@@ -62,14 +65,15 @@ export async function apiPost(path, body, isFormData = false) {
   const headers = isFormData
     ? { ...(isPublic ? {} : getAuthHeader()) }
     : { 
-        "Content-Type": "application/json", 
+        "Content-Type": "application/json",
+        "Accept": "application/json, text/plain, */*",
         ...(isPublic ? {} : getAuthHeader()) 
       };
 
   const options = {
     method: "POST",
     headers,
-    body: isFormData ? body : JSON.stringify(body)
+    body: isFormData ? body : JSON.stringify(body ?? {})
   };
 
   const res = await fetch(`${BASE_URL}${path}`, options);

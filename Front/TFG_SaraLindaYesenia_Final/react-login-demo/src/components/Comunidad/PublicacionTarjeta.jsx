@@ -103,7 +103,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
           onClick={() => onLike(publicacion.idPublicacion)}
         >
           <img
-            src={publicacion.likedByUser ? "/corazon_lleno.png" : "/corazon_vacio.png"}
+            src={publicacion.usuarioAvatar ? getApiUrl(publicacion.usuarioAvatar) + '?t=' + Date.now() : "/assets/default-user.png"}
             alt="like"
             className="icono-accion"
           />

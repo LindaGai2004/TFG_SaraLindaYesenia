@@ -98,8 +98,10 @@ public class SecurityConfig {
             	
             	.requestMatchers("/publicaciones/*/like").authenticated()
             	.requestMatchers("/publicaciones/*/comentarios").authenticated()
-            	.requestMatchers(HttpMethod.POST, "/usuarios/*/seguir").authenticated()
-
+            	//.requestMatchers(HttpMethod.POST, "/usuarios/*/seguir").authenticated()
+            	.requestMatchers(HttpMethod.GET, "/usuarios/*/seguidores").permitAll()
+            	.requestMatchers(HttpMethod.GET, "/usuarios/*/seguidos").permitAll()
+            	.requestMatchers(HttpMethod.POST, "/usuarios/*/seguir").permitAll()
             
             //endpoints protegidos por rol
             .requestMatchers("/admin/crear").hasAnyRole("ADMON","JEFE")
