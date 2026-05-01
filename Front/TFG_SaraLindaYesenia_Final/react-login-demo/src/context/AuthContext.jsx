@@ -26,70 +26,45 @@ export function AuthProvider({ children }) {
   //const [user, setUser] = useState(null);
   const [user, setUser] = useState(() => {
 
-  //Guarda el usuario completo
+    //Guarda el usuario completo
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const [initializing, setInitializing] = useState(true); // marca que estamos cargando la sesión
-
-  // Al arrancar, cargar lo guardado en localStorage (si hay)
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem('user');
-      if (raw) {
-        try {
-          setUser(JSON.parse(raw));
-        } catch (parseErr) {
-          // si hay un error al parsear, limpiamos localStorage
-          console.error('Error parsing stored user:', parseErr);
-          localStorage.removeItem('user');
-          setUser(null);
-        }
-      } else {
-        setUser(null);
-      }
-    } catch (err) {
-      // protección extra por si localStorage falla por permisos
-      console.error('Error reading localStorage:', err);
-      setUser(null);
-    } finally {
-      // indicamos que hemos intentado inicializar la sesión
-      setInitializing(false);
-    }
+    setInitializing(false);
   }, []);
-
-
   //Ahora Actualizado para ingresar con email NO username
-async function login(email, password) {
-  try {
-    const res = await apiPost('/api/login', { email, password });
+  async function login(email, password) {
+    try {
+      const res = await apiPost('/api/login', { email, password });
 
-    const normalizedUser = normalizeUser(res.user);
-   
-    localStorage.setItem('token', res.token);
-    localStorage.setItem('user', JSON.stringify(normalizedUser));
+      const normalizedUser = normalizeUser(res.user);
 
-    setUser(normalizedUser);
-    return normalizedUser;
+      localStorage.setItem('token', res.token);
+      localStorage.setItem('user', JSON.stringify(normalizedUser));
 
-  } catch (err) {
-    console.error('Login error:', err);
-    return null;
+      setUser(normalizedUser);
+      return normalizedUser;
+
+    } catch (err) {
+      console.error('Login error:', err);
+      return null;
+    }
   }
-}
 
-function updateUser(updatedUser) {
-  const normalizedUser = normalizeUser(updatedUser);
-  setUser(normalizedUser);
-  localStorage.setItem('user', JSON.stringify(normalizedUser));
-}
+  function updateUser(updatedUser) {
+    const normalizedUser = normalizeUser(updatedUser);
+    setUser(normalizedUser);
+    localStorage.setItem('user', JSON.stringify(normalizedUser));
+  }
 
-function logout() {
-  setUser(null);
-  localStorage.removeItem('user');
-  localStorage.removeItem('token'); 
-  localStorage.removeItem('cartItems');
-}
+  function logout() {
+    setUser(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('cartItems');
+  }
   // Exponemos initializing para que ProtectedRoute espere mientras cargamos
   const value = { user, login, logout, updateUser, initializing };
 
