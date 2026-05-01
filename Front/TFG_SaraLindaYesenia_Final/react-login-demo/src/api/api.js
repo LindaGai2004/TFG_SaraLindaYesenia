@@ -10,7 +10,9 @@ function getAuthHeader() {
 function handle401() { 
   const path = window.location.pathname;
 
-  // No hacer nada en estas páginas
+  // Already on login, don't redirect again
+  if (path === "/login") return;
+
   if (
     path.includes("verificacion") || 
     path.includes("recuperar") || 
@@ -24,16 +26,15 @@ function handle401() {
   ) {
     return;
   }
-  //alert("401 - Token inválido o caducado"); 
+
   console.error("Token inválido o caducado"); 
-  localStorage.setItem("token_expirado", "true");  // Guarda el aviso para el login
+  localStorage.setItem("token_expirado", "true");
   localStorage.removeItem("user"); 
   localStorage.removeItem("token"); 
   localStorage.removeItem("cartItems"); 
   localStorage.removeItem("dl_option"); 
   window.location.href = "/login"; 
 }
-
 
 export async function apiGet(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
