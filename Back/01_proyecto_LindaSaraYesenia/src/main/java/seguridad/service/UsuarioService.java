@@ -31,6 +31,5 @@ public interface UsuarioService extends UserDetailsService{
 
 	/* Usuarios recomendados */
 	List<UsuarioRecomendadoDto> obtenerUsuariosRecomendados(Integer idUsuarioLogueado);
-	
 
 }

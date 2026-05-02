@@ -56,7 +56,7 @@ export default function ProductoLista({ productos }) {
         ...prev,
         [idProducto]: !prev[idProducto]
       }));
-
+      setTimeout(() => setMensaje(""), 2000); // añadido
     } catch (error) {
       console.error("Error al actualizar favorito:", error);
     }

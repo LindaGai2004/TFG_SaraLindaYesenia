@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getUploadUrl } from "../../api/api";  // según api.js
 
 export default function ProductoImagenes({ imagenes = [], modo = "completo" }) {
   if (!imagenes || imagenes.length === 0) {
@@ -12,7 +13,7 @@ export default function ProductoImagenes({ imagenes = [], modo = "completo" }) {
   if (modo === "simple") {
     return (
       <img
-        src={`http://localhost:9001/uploads/${principal.ruta}`}
+        src={getUploadUrl(principal.ruta)}
         alt="Producto"
         className="producto-lista-imagen"
       />
@@ -31,7 +32,7 @@ export default function ProductoImagenes({ imagenes = [], modo = "completo" }) {
     <div className="galeria-producto">
       <div className="imagen-principal">
         <img
-          src={`http://localhost:9001/uploads/${imagenActual}`}
+          src={getUploadUrl(imagenActual)}
           alt="Producto"
         />
       </div>
@@ -40,7 +41,7 @@ export default function ProductoImagenes({ imagenes = [], modo = "completo" }) {
         {miniaturas.map((m, index) => (
           <img
             key={m.idImagen}
-            src={`http://localhost:9001/uploads/${m.ruta}`}
+            src={getUploadUrl(m.ruta)}
             alt="Miniatura"
             className={miniaturaActiva === index ? "miniatura-activa" : ""}
             onClick={() => {

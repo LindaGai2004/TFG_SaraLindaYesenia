@@ -1,7 +1,7 @@
 import "./PublicacionTarjeta.css";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
-
+import { getApiUrl } from "../../api/api";
 export default function PublicacionTarjeta({ publicacion, onLike, onComentar, onEliminar }) {
   const [comentario, setComentario] = useState("");
   const [mostrarComentarios, setMostrarComentarios] = useState(false);
@@ -27,7 +27,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
           <img
             src={
               publicacion.usuarioAvatar
-                ? `http://localhost:9001${publicacion.usuarioAvatar}`
+                ? getApiUrl(publicacion.usuarioAvatar)
                 : "/assets/default-user.png"
             }
             alt="avatar"
@@ -69,7 +69,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
       {publicacion.imagen && (
         <div className="publicacion-imagen">
           <img
-            src={`http://localhost:9001${publicacion.imagen}`}
+            src={getApiUrl(publicacion.imagen)}
             alt="imagen publicación"
           />
         </div>

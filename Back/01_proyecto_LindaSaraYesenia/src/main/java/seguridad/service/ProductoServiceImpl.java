@@ -75,7 +75,7 @@ public class ProductoServiceImpl implements ProductoService {
             return 0;
         }
     }*/
-
+    
     @Override
     public Producto getProductoDestacado() {
         return productoRepository.findByDestacadoTrue()

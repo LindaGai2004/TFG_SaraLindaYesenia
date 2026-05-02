@@ -17,32 +17,42 @@ export default function RestablecerContrasena() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensaje(""); 
+    setMensaje(""); // Limpiamos mensajes previos
 
-    // Validación de longitud
     if (password.length < 6) {
         setMensaje("La contraseña debe tener al menos 6 caracteres.");
         return;
     }
 
-    // Validación de coincidencia
     if (password !== confirmar) {
-      setMensaje("Las contraseñas no coinciden. Revisa que ambas sean iguales.");
+      setMensaje("Las contraseñas no coinciden.");
       return;
     }
 
+    {/*try {
+      await api.apiPost("/auth/restablecer", { email, password });
+      setMensaje("Contraseña actualizada correctamente.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+    } catch (err) {
+      const msg = err.response?.data || "Error al actualizar la contraseña.";
+      setMensaje(msg);
+    } */}
+
     setCargando(true);
     try {
+      // Enviamos email y password al endpoint
       await api.apiPost("/auth/restablecer", { email, password });
       
-      setMensaje("Contraseña actualizada correctamente. Redirigiendo al login...");
+      setMensaje("Contraseña actualizada correctamente. Redirigiendo...");
       
       setTimeout(() => {
         navigate("/login");
       }, 2000);
     } catch (err) {
       const msg = err.response?.data || "Error al actualizar la contraseña.";
-      setMensaje(`${msg}`);
+      setMensaje(msg);
     } finally {
       setCargando(false);
     }
@@ -57,7 +67,7 @@ export default function RestablecerContrasena() {
         <form onSubmit={handleSubmit}>
 
           {/* Contraseña */}
-          <label>Nueva contraseña</label>
+          <label>Contraseña</label>
           <div className="input-wrapper">
             <input
               type={mostrarPass ? "text" : "password"}

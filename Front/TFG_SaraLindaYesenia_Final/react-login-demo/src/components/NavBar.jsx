@@ -29,7 +29,6 @@ function NavBar({ isVisible = true }) {
   }
 
 
-
   return (
     <>
       <nav className={`barra-navegacion ${isVisible ? 'visible' : ''}`}>
@@ -53,7 +52,7 @@ function NavBar({ isVisible = true }) {
           <Link to="/acercaDe" className="enlace">Acerca de</Link>
         </div>
 
-        {/* CENTRO: Logo (Importante para que el CSS funcione) */}
+        {/* CENTRO - Logo */}
         <div className="titulo-pagina">
           <Link to="/" className="logo-navbar-link">
             <h1 className="logo-navbar">Archives</h1>
@@ -69,11 +68,16 @@ function NavBar({ isVisible = true }) {
               if (!user) {
                 navigate("/login");
               } else {
-                const rol = user.perfil?.nombre;
+                {/*const rol = user.perfil?.nombre;
                 if (rol === "ROLE_CLIENTE") navigate("/cliente");
                 else if (rol === "ROLE_ADMON") navigate("/administrador");
                 else if (rol === "ROLE_JEFE") navigate("/jefe");
-                else if (rol === "ROLE_TRABAJADOR") navigate("/trabajador");
+                else if (rol === "ROLE_TRABAJADOR") navigate("/trabajador");*/}
+                
+                if (user.perfil?.nombre === "ROLE_CLIENTE") navigate("/cliente");
+                else if (user.perfil?.nombre === "ROLE_ADMON") navigate("/administrador");
+                else if (user.perfil?.nombre === "ROLE_JEFE") navigate("/jefe");
+                else if (user.perfil?.nombre === "ROLE_TRABAJADOR") navigate("/trabajador");
               }
             }}
           >
@@ -95,10 +99,7 @@ function NavBar({ isVisible = true }) {
       </nav>
 
       {/* El Sidebar se renderiza fuera del <nav> */}
-      <CartSidebar 
-        isOpen={isSidebarOpen} 
-        onClose={() => setIsSidebarOpen(false)} 
-      />
+      <CartSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </>
   );
 }

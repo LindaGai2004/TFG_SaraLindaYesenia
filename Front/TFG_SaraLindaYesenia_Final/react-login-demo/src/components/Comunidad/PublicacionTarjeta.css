@@ -143,19 +143,16 @@ background: #f5f5f5;
 
 
 /* Botón eliminar publicación -------------------------------------------*/
-/* Botón eliminar publicación corregido */
 .btn-eliminar {
-  background: #8daebd; /* Usamos tu azul principal para que sea visible */
+  background: #8daebd;
   border: 1.5px solid #8daebd;
   cursor: pointer;
-  
-  /* Tamaño cuadrado para que no se vea deforme */
   width: 32px; 
   height: 32px; 
-  min-width: 32px; /* Evita que flexbox lo aplaste */
+  min-width: 32px;
   
   padding: 0;
-  border-radius: 8px; /* Coherente con los otros botones */
+  border-radius: 8px;
   
   display: flex;
   align-items: center;
@@ -164,19 +161,17 @@ background: #f5f5f5;
 }
 
 .btn-eliminar:hover {
-  background: white; /* Efecto Archives: fondo blanco al pasar el ratón */
-  border-color: #e74c3c; /* Borde rojo al querer eliminar */
+  background: white;
+  border-color: #e74c3c;
 }
 
-/* Manejo de la imagen dentro del botón eliminar */
 .btn-eliminar img, .btn-eliminar .icono-accion {
-  width: 18px; /* Un poco más pequeño que el botón para que respire */
+  width: 18px;
   height: 18px;
   object-fit: contain;
   transition: filter 0.2s ease;
 }
 
-/* Truco opcional: si la imagen es blanca, en hover la ponemos roja */
 .btn-eliminar:hover img {
   filter: invert(27%) sepia(91%) saturate(2352%) hue-rotate(346deg) brightness(91%) contrast(88%);
 }

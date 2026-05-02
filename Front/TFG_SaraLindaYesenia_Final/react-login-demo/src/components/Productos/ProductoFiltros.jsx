@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { apiGet } from "../../api/api"; // según api.js
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 import "./ProductoFiltros.css";
+import axios from "axios";
 
-// He añadido 'initialFilters' a los props para que el useEffect no de error
 export default function ProductoFiltros({ 
     onFiltrar, 
-    initialFilters = null, // Propiedad añadida
+    initialFilters = null,
     initialTipo = "", 
     initialGenero = "", 
     initialCategoria = "" 
@@ -20,25 +22,26 @@ export default function ProductoFiltros({
 
     const [idiomasBD, setIdiomasBD] = useState([]);
     const [generosBD, setGenerosBD] = useState([]);
-    const [marcasBD, setMarcasBD] = useState([]); 
+    const [marcasBD, setMarcasBD] = useState([]);
     const [categoriasBD, setCategoriasBD] = useState([]);
 
     // Carga inicial de datos desde la BD
+    //se cambio por apiGet
     useEffect(() => {
-        axios.get("http://localhost:9001/idiomas/todos")
-            .then(res => setIdiomasBD(res.data))
+        apiGet("/idiomas/todos")
+            .then(res => setIdiomasBD(res))
             .catch(err => console.error("Error idiomas:", err));
 
-        axios.get("http://localhost:9001/generos/todos")
-            .then(res => setGenerosBD(res.data))
+        apiGet("/generos/todos")
+            .then(res => setGenerosBD(res))
             .catch(err => console.error("Error géneros:", err));
 
-        axios.get("http://localhost:9001/marcas/todos")
-            .then(res => setMarcasBD(res.data))
+        apiGet("/marcas/todos")
+            .then(res => setMarcasBD(res))
             .catch(err => console.error("Error marcas:", err));
 
-        axios.get("http://localhost:9001/categorias/todos")
-            .then(res => setCategoriasBD(res.data))
+        apiGet("/categorias/todos")
+            .then(res => setCategoriasBD(res))
             .catch(err => console.error("Error categorías:", err));
     }, []);
 
@@ -60,7 +63,7 @@ export default function ProductoFiltros({
 
     const aplicarFiltros = () => {
         const filtros = {};
-    
+
         if (tipo) filtros.tipo = tipo;
         if (estado) filtros.estado = estado;
         if (idioma) filtros.idioma = idioma;

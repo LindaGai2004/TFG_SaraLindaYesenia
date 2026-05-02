@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { apiGet, apiPut } from '../api/api';
+import { apiGet, apiPut, apiPost, getApiUrl, getUploadUrl } from '../api/api';
 import Favoritos from './Favoritos';
+import SeguimientoCliente from './SeguimientoCliente';
 import { crearItemHistorial, getHistorial, getProductoImagen } from '../utils/historialProductos';
 import './Cliente.css';
 
@@ -14,18 +15,17 @@ const MINI_BOOK_COLORS = [
 ];
 
 const GENERO_PORTADAS_PREFERIDAS = {
-  'Histórico':   'Guerra y paz',
-  'Infantil':    'Anna Karénina',
-  'Juvenil':     'Madame Bovary',
-  'Misterio':    'El retrato de Dorian Gray',
-  'Novela':      '1984',
-  'Poesía':      'Juego de tronos',
-  'Romance':     'Cien años de soledad',
-  'Teatro':      'La rueda del tiempo',
-  'Terror':      'Pedro Páramo',
-  'Viajes':      'Ficciones',
+  'Histórico': 'Guerra y paz',
+  'Infantil': 'Anna Karénina',
+  'Juvenil': 'Madame Bovary',
+  'Misterio': 'El retrato de Dorian Gray',
+  'Novela': '1984',
+  'Poesía': 'Juego de tronos',
+  'Romance': 'Cien años de soledad',
+  'Teatro': 'La rueda del tiempo',
+  'Terror': 'Pedro Páramo',
+  'Viajes': 'Ficciones',
 };
-const CLIENT_PROFILE_IMAGE_KEY = 'cliente_profile_image_preview';
 
 const Icon = ({ d, size = 22, sw = 1.8, color = 'currentColor' }) => (
   <svg
@@ -47,110 +47,9 @@ const Icons = {
   cart: <><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.56l1.65-8.44H6" /></>,
   chevR: <polyline points="9 18 15 12 9 6" />,
   chevL: <polyline points="15 18 9 12 15 6" />,
-  chat: <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />,
-  close: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
-  send: <><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></>,
-  clip: <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />,
   eye: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>,
   trash: <><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" /><path d="M10 11v6" /><path d="M14 11v6" /><path d="M9 6V4h6v2" /></>,
 };
-
-const MOCK_CHAT = [
-  { id: 1, rol: 'user', texto: 'Good Day!' },
-  { id: 2, rol: 'user', texto: "I'm looking for gift editions of the Harry Potter books. Do you have them?" },
-  { id: 3, rol: 'bot', texto: 'Good Day!' },
-  { id: 4, rol: 'bot', texto: 'We have 3 popular gift editions. Which one would you like?', libros: true },
-  { id: 5, rol: 'user', texto: 'I think the middle one is the one I was looking for.' },
-  { id: 6, rol: 'user', texto: 'Can you add it to the cart please?' },
-];
-
-function ChatPanel({ open, onClose }) {
-  const [mensajes, setMensajes] = useState(MOCK_CHAT);
-  const [input, setInput] = useState('');
-  const endRef = useRef(null);
-  const messagesRef = useRef(null);
-
-  useEffect(() => {
-    const container = messagesRef.current;
-
-    if (!container) return;
-
-    container.scrollTo({
-      top: container.scrollHeight,
-      behavior: mensajes.length > 0 ? 'smooth' : 'auto',
-    });
-  }, [mensajes]);
-
-  const enviar = () => {
-    const texto = input.trim();
-    if (!texto) return;
-    setMensajes(prev => [...prev, { id: Date.now(), rol: 'user', texto }]);
-    setInput('');
-  };
-
-  return (
-    <div className={`chat-panel ${open ? 'open' : 'closed'}`}>
-      <div className="chat-header">
-        <span className="chat-header-title">Chat</span>
-        <div className="chat-header-actions">
-          <div className="chat-dots"><span /><span /><span /></div>
-          <button className="chat-close" onClick={onClose}>
-            <Icon d={Icons.close} size={13} color="var(--accent)" sw={2.2} />
-          </button>
-        </div>
-      </div>
-
-      <div className="chat-privacy">
-        <div className="chat-privacy-label">
-          <b>Privacy and Support</b>
-          <span>Get Immediate Support</span>
-        </div>
-        <div className="chat-privacy-arrow">
-          <Icon d={Icons.chevR} size={14} color="var(--text-secondary)" sw={2.2} />
-        </div>
-      </div>
-
-      <div className="chat-messages" ref={messagesRef}>
-        {mensajes.map(msg => (
-          <div key={msg.id} className={`chat-msg ${msg.rol}`}>
-            {msg.rol === 'bot' && (
-              <div className="msg-avatar">
-                <Icon d={Icons.chat} size={13} color="var(--accent)" sw={1.8} />
-              </div>
-            )}
-            <div>
-              <div className={msg.rol === 'user' ? 'msg-bubble-user' : 'msg-bubble-bot'}>
-                {msg.texto}
-              </div>
-              {msg.libros && (
-                <div className="msg-books">
-                  {MINI_BOOK_COLORS.map((c, i) => (
-                    <div key={i} className="mini-book" style={{ background: c }} />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-        <div ref={endRef} />
-      </div>
-
-      <div className="chat-input-area">
-        <div className="chat-attach"><Icon d={Icons.clip} size={19} sw={1.7} /></div>
-        <input
-          className="chat-input"
-          value={input}
-          placeholder="Write a message..."
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && enviar()}
-        />
-        <button className="chat-send" onClick={enviar}>
-          <Icon d={Icons.send} size={14} color="white" sw={2.2} />
-        </button>
-      </div>
-    </div>
-  );
-}
 
 export default function Portfolio() {
   const { user, logout, updateUser } = useAuth();
@@ -164,7 +63,6 @@ export default function Portfolio() {
   const [searchSuggestions, setSearchSuggestions] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [historial, setHistorial] = useState(() => getHistorial());
   const [generos, setGeneros] = useState([]);
@@ -183,9 +81,7 @@ export default function Portfolio() {
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileMessage, setProfileMessage] = useState('');
-  const [profileImagePreview, setProfileImagePreview] = useState(
-    () => localStorage.getItem(CLIENT_PROFILE_IMAGE_KEY) ?? ''
-  );
+  const [profileImagePreview, setProfileImagePreview] = useState('');
 
   const statusStyle = {
     CARRITO: { bg: '#dbeafe', color: '#1d4ed8', label: 'Añadido' },
@@ -245,14 +141,15 @@ export default function Portfolio() {
     statusStyle[estadoPedido] ?? { bg: '#ede8f5', color: '#6d5e9e', label: estadoPedido ?? 'Sin estado' };
 
   const isCartPedido = (pedido) => pedido?.estadoPedido === 'CARRITO';
-  const profileImageFromBackend =
+  const profileImageFromBackend = getApiUrl(
     user?.fotoPerfil ??
     user?.imagenPerfil ??
     user?.avatar ??
     profileData?.fotoPerfil ??
     profileData?.imagenPerfil ??
     profileData?.avatar ??
-    '';
+    ''
+  );
 
   const profileImageSrc = profileImagePreview || profileImageFromBackend || '/68e45e7a40b25293eb1f3a85d9368ae0.png';
 
@@ -409,7 +306,7 @@ export default function Portfolio() {
           apiGet('/generos/todos'),
           apiGet('/productos/todos'),
         ]);
-        
+
         const libros = productosData ?? [];
 
         const buscarLibroPreferido = (nombreGenero) => {
@@ -431,7 +328,7 @@ export default function Portfolio() {
           const primerLibro = libroPreferido ?? libros.find(
             (libro) => libro.genero?.nombreGenero === genero.nombreGenero
           );
-           console.log(genero.nombreGenero, primerLibro, getProductoImagen(primerLibro));
+          console.log(genero.nombreGenero, primerLibro, getProductoImagen(primerLibro));
           return {
             ...genero,
             libroPortada: primerLibro ? getProductoImagen(primerLibro) : null,
@@ -448,17 +345,29 @@ export default function Portfolio() {
 
     cargarGeneros();
   }, []);
-  
+
   useEffect(() => {
     const cargarPedidos = async () => {
       setPedidosLoading(true);
       try {
         const data = await apiGet('/pedidos/usuario/');
-        const ordenados = [...(data ?? [])].sort((a, b) => {
-          const dateA = new Date(b.fechaVenta ?? b.fechaActualizacion ?? 0).getTime();
-          const dateB = new Date(a.fechaVenta ?? a.fechaActualizacion ?? 0).getTime();
-          return dateA - dateB;
-        });
+        const ordenados = [...(data ?? [])]
+            .filter(pedido => {
+                // 如果是购物车状态，只有里面有商品才显示
+                if (pedido.estadoPedido === 'CARRITO') {
+                    const totalItems = (pedido.items ?? []).reduce(
+                        (acc, item) => acc + (item.cantidad ?? 0), 0
+                    );
+                    return totalItems > 0;
+                }
+                // 其他状态（REALIZADO, CANCELADO, DEVUELTO）正常显示
+                return true;
+            })
+            .sort((a, b) => {
+                const dateA = new Date(b.fechaVenta ?? b.fechaActualizacion ?? 0).getTime();
+                const dateB = new Date(a.fechaVenta ?? a.fechaActualizacion ?? 0).getTime();
+                return dateA - dateB;
+            });
         setPedidos(ordenados);
       } catch (error) {
         console.error('Error cargando pedidos:', error);
@@ -502,80 +411,62 @@ export default function Portfolio() {
     setProfileForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleProfileImageChange = (event) => {
+ const handleProfileImageChange = async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    // 本地预览（立即显示）
     const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result ?? '');
-      setProfileImagePreview(result);
-      localStorage.setItem(CLIENT_PROFILE_IMAGE_KEY, result);
-    };
+    reader.onload = () => setProfileImagePreview(String(reader.result ?? ''));
     reader.readAsDataURL(file);
+
+    // 上传到后端
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const result = await apiPost(
+            `/usuario/${profileData?.email ?? profileForm.email}/avatar`,
+            formData,
+            true // isFormData = true
+        );
+        // 更新全局用户状态
+        if (result?.avatar) {
+            updateUser({ ...user, avatar: result.avatar });
+            // 删除 localStorage 里的旧预览
+            localStorage.removeItem('client_profile_image');
+        }
+    } catch (e) {
+        console.error("Error al subir avatar", e);
+    }
   };
 
   const handleSaveProfile = async () => {
-  if (!profileForm.email) return;
-
-  setProfileSaving(true);
-  setProfileMessage('');
-
-  try {
-    // 只发必要字段，不带多余的Spring Security字段
-    const payload = {
-      nombre: profileForm.nombre,
-      apellidos: profileForm.apellidos,
-      email: profileForm.email,
-      username: profileForm.username,
-      direccion: profileForm.direccion,
-      fechaNacimiento: profileForm.fechaNacimiento || null,
-      perfil: profileData?.perfil ?? { idPerfil: 2 },
-    };
-
-    if (profileForm.password) {
-      payload.password = profileForm.password;
-    }
-
-    await apiPut(`/usuario/${profileData?.email ?? profileForm.email}`, payload);
-
-    updateUser({ ...user, ...payload });
-    setProfileData(prev => ({ ...prev, ...payload }));
-    setProfileForm(prev => ({ ...prev, password: '' }));
-    setProfileMessage('Perfil actualizado correctamente.');
-  } catch (error) {
-    console.error('Error actualizando perfil:', error);
-    setProfileMessage('No se pudo actualizar el perfil.');
-  } finally {
-    setProfileSaving(false);
-  }
-};
- /* const handleSaveProfile = async () => {
     if (!profileForm.email) return;
 
     setProfileSaving(true);
     setProfileMessage('');
 
     try {
+      // 只发必要字段，不带多余的Spring Security字段
       const payload = {
-        ...profileData,
-        ...profileForm,
+        nombre: profileForm.nombre,
+        apellidos: profileForm.apellidos,
+        email: profileForm.email,
+        username: profileForm.username,
+        direccion: profileForm.direccion,
+        fechaNacimiento: profileForm.fechaNacimiento || null,
+        perfil: profileData?.perfil ?? { idPerfil: 2 },
       };
 
-      if (!payload.password) {
-        delete payload.password;
+      if (profileForm.password) {
+        payload.password = profileForm.password;
       }
 
       await apiPut(`/usuario/${profileData?.email ?? profileForm.email}`, payload);
 
-      const updatedLocalUser = {
-        ...user,
-        ...payload,
-      };
-
-      updateUser(updatedLocalUser);
-      setProfileData((prev) => ({ ...prev, ...payload }));
-      setProfileForm((prev) => ({ ...prev, password: '' }));
+      updateUser({ ...user, ...payload });
+      setProfileData(prev => ({ ...prev, ...payload }));
+      setProfileForm(prev => ({ ...prev, password: '' }));
       setProfileMessage('Perfil actualizado correctamente.');
     } catch (error) {
       console.error('Error actualizando perfil:', error);
@@ -583,7 +474,41 @@ export default function Portfolio() {
     } finally {
       setProfileSaving(false);
     }
-  };*/
+  };
+  /* const handleSaveProfile = async () => {
+     if (!profileForm.email) return;
+ 
+     setProfileSaving(true);
+     setProfileMessage('');
+ 
+     try {
+       const payload = {
+         ...profileData,
+         ...profileForm,
+       };
+ 
+       if (!payload.password) {
+         delete payload.password;
+       }
+ 
+       await apiPut(`/usuario/${profileData?.email ?? profileForm.email}`, payload);
+ 
+       const updatedLocalUser = {
+         ...user,
+         ...payload,
+       };
+ 
+       updateUser(updatedLocalUser);
+       setProfileData((prev) => ({ ...prev, ...payload }));
+       setProfileForm((prev) => ({ ...prev, password: '' }));
+       setProfileMessage('Perfil actualizado correctamente.');
+     } catch (error) {
+       console.error('Error actualizando perfil:', error);
+       setProfileMessage('No se pudo actualizar el perfil.');
+     } finally {
+       setProfileSaving(false);
+     }
+   };*/
 
   const scrollHistorial = (direction) => {
     const container = historialRef.current;
@@ -636,6 +561,19 @@ export default function Portfolio() {
           <span className="nav-label">Pedidos</span>
         </a>
 
+        <a
+          className={`app-sidebar-link ${page === 'seguimiento' ? 'active' : ''}`}
+          onClick={() => setPage('seguimiento')}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <span className="nav-label">Comunidad</span>
+        </a>
+
         <div style={{ flex: 1 }} />
         <div className="sidebar-divider" />
 
@@ -660,6 +598,22 @@ export default function Portfolio() {
       <div className="app-main-wrapper">
         <div className="app-main">
           <div className="app-header">
+              <div
+                onClick={() => navigate('/')}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', flexShrink: 0 }}
+              >
+                <span style={{ 
+                  fontSize: '1.3rem', 
+                  fontWeight: 600, 
+                  letterSpacing: '-0.5px', 
+                  color: 'black',
+                  fontFamily: '"Ablafit", sans-serif'
+                }}>
+                  Archives
+                </span>
+                <img src="/libro.png" alt="Logo" style={{ width: 40, height: 'auto' }} />
+              </div>
+
             <div className="search-wrapper">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8" />
@@ -742,12 +696,12 @@ export default function Portfolio() {
                   <div className="section-header">
                     <span className="section-title">Historial</span>
                     <div className="nav-arrows">
-                        <button className="nav-arrow" onClick={() => scrollHistorial(-1)} type="button">
-                          <Icon d={Icons.chevL} size={14} sw={2.2} />
-                        </button>
-                        <button className="nav-arrow" onClick={() => scrollHistorial(1)} type="button">
-                          <Icon d={Icons.chevR} size={14} sw={2.2} />
-                        </button>
+                      <button className="nav-arrow" onClick={() => scrollHistorial(-1)} type="button">
+                        <Icon d={Icons.chevL} size={14} sw={2.2} />
+                      </button>
+                      <button className="nav-arrow" onClick={() => scrollHistorial(1)} type="button">
+                        <Icon d={Icons.chevR} size={14} sw={2.2} />
+                      </button>
                     </div>
                   </div>
 
@@ -798,11 +752,11 @@ export default function Portfolio() {
                             style={
                               genero.libroPortada
                                 ? {
-                                    backgroundImage: `linear-gradient(to top, rgba(28, 25, 32, 0.62), rgba(28, 25, 32, 0.12)), url(${genero.libroPortada})`,
-                                  }
+                                  backgroundImage: `linear-gradient(to top, rgba(28, 25, 32, 0.62), rgba(28, 25, 32, 0.12)), url(${genero.libroPortada})`,
+                                }
                                 : {
-                                    backgroundImage: `linear-gradient(to top, rgba(28, 25, 32, 0.58), rgba(28, 25, 32, 0.1)), ${genero.color ?? MINI_BOOK_COLORS[index % MINI_BOOK_COLORS.length]}`,
-                                  }
+                                  backgroundImage: `linear-gradient(to top, rgba(28, 25, 32, 0.58), rgba(28, 25, 32, 0.1)), ${genero.color ?? MINI_BOOK_COLORS[index % MINI_BOOK_COLORS.length]}`,
+                                }
                             }
                           >
                             <span className="genre-cover-title">{genero.nombreGenero}</span>
@@ -817,6 +771,8 @@ export default function Portfolio() {
             )}
 
             {page === 'favoritos' && <Favoritos />}
+
+            {page === 'seguimiento' && <SeguimientoCliente user={user} />}
 
             {page === 'pedidos' && (
               <div className="orders-section">
@@ -856,7 +812,7 @@ export default function Portfolio() {
                           <div className="order-card-media">
                             {portada ? (
                               <img
-                                src={`http://localhost:9001/uploads/${portada}`}
+                                src={getUploadUrl(portada)}
                                 alt={items[0]?.nombreProducto ?? `Pedido ${pedido.idPedido}`}
                                 className="order-card-image"
                               />
@@ -868,7 +824,7 @@ export default function Portfolio() {
                           <div className="order-card-body">
                             <div className="order-card-top">
                               <div>
-                                <h3 className="order-card-title">Pedido #{pedido.idPedido ?? pedido.id}</h3>
+                                <h3 className="order-card-title">Pedido #{index + 1}</h3>
                                 <p className="order-card-summary">{summaryText}</p>
                               </div>
                               <span
@@ -944,9 +900,7 @@ export default function Portfolio() {
                           >
                             Subir foto
                           </button>
-                          <p className="profile-photo-help">
-                            La vista previa de la foto queda guardada en este navegador.
-                          </p>
+                      
                         </div>
 
                         <div className="profile-form-grid">
@@ -1034,15 +988,7 @@ export default function Portfolio() {
             )}
           </div>
         </div>
-
-        <ChatPanel open={chatOpen} onClose={() => setChatOpen(false)} />
       </div>
-
-      {!chatOpen && (
-        <button className="chat-float" onClick={() => setChatOpen(true)}>
-          <Icon d={Icons.chat} size={22} color="white" sw={1.8} />
-        </button>
-      )}
     </div>
   );
 }

@@ -14,6 +14,8 @@ export function CartProvider({ children }) {
   // Función para obtener los datos reales del servidor
   async function refreshCartFromServer() {
     try {
+      const token = localStorage.getItem('token');
+      if (!token) return; // si no hay token, no hacemos nada
       const data = await apiGet("/carrito");
       // Aseguramos que cargamos la lista de items que devuelve el DTO de Carrito
       setCartItems(data.items || []);
@@ -23,7 +25,10 @@ export function CartProvider({ children }) {
   }
 
   useEffect(() => {
-    refreshCartFromServer();
+    const token = localStorage.getItem('token');
+    if (token) {
+      refreshCartFromServer();
+    }
   }, []);
 
   // Añadir al carrito
@@ -41,11 +46,11 @@ export function CartProvider({ children }) {
       // Buscamos el item para saber su cantidad actual
       const item = cartItems.find(i => (i.idProducto || i.id_producto) === idProducto);
       if (item) {
-        await apiPut("/carrito/update", { 
-          idProducto: idProducto, 
-          cantidad: item.cantidad + 1 
+        await apiPut("/carrito/update", {
+          idProducto: idProducto,
+          cantidad: item.cantidad + 1
         });
-        await refreshCartFromServer(); 
+        await refreshCartFromServer();
       }
     } catch (e) {
       console.error("Error al aumentar cantidad", e);
@@ -56,9 +61,9 @@ export function CartProvider({ children }) {
     try {
       const item = cartItems.find(i => (i.idProducto || i.id_producto) === idProducto);
       if (item && item.cantidad > 1) {
-        await apiPut("/carrito/update", { 
-          idProducto: idProducto, 
-          cantidad: item.cantidad - 1 
+        await apiPut("/carrito/update", {
+          idProducto: idProducto,
+          cantidad: item.cantidad - 1
         });
         await refreshCartFromServer();
       } else if (item && item.cantidad === 1) {
@@ -79,7 +84,7 @@ export function CartProvider({ children }) {
     }
   }
 
- // Se usa cuando cambia el estado del carrito y lo mantiene(persiste)
+  // Se usa cuando cambia el estado del carrito y lo mantiene(persiste)
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);

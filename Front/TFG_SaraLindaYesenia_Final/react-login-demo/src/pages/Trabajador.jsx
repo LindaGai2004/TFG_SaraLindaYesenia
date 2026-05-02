@@ -1,226 +1,116 @@
-import { useEffect, useState } from "react";
-import { apiGet } from "../api/api";
+import { useState, useEffect } from 'react';
+import Sidebar_Trabajador from '../components/Sidebar_Trabajador';
+import Header from '../components/Header_dashboard';
+import DashboardTrabajador from './Dashboard/Trabajador/DashboardPrincipal_Trabajador';
+import ProductosTrabajador from './Dashboard/Trabajador/ProductosDashboard_Trabajador';
+import ClientesJefe from './Dashboard/Jefe/ClientesDashboard_Jefe';
+import PedidosJefe from './Dashboard/Jefe/Pedidos_Jefe';
+import TrabajadorConfig from './Dashboard/Trabajador/TrabajadorConfig';
+import './Administrador.css';
+import { apiGet } from '../api/api';
 import { useAuth } from '../context/AuthContext';
-import "./Administrador.css";
 
-export default function Trabajador() {
-  const [misDatos, setMisDatos] = useState([]);
-  const [clientes, setClientes] = useState([]);
-  const [darkMode, setDarkMode] = useState(false);
-  const [activeMenuItem, setActiveMenuItem] = useState(0);
+function TrabajadorDashboard() {
+  const { user } = useAuth();
+  const [page, setPage] = useState('dashboard');
+  const [loading, setLoading] = useState(true);
+  const [notification, setNotification] = useState(null);
+  const [books, setBooks] = useState([]);
+  const [papeleria, setPapeleria] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [pedidos, setPedidos] = useState([]);
+  const [trabajador, setTrabajador] = useState(null);
 
-  const { user, logout } = useAuth();
-
-  // Cargar datos de la API
-  useEffect(() => {
-    cargarDatos();
-  }, [user]);
-
-  async function cargarDatos() {
-    try {
-      const resTrabajadores = await apiGet('/rol/3'); // Datos del trabajador
-      const resClientes = await apiGet('/rol/2');
-
-      setMisDatos(resTrabajadores);
-      setClientes(resClientes);
-    } catch (error) {
-      console.error("Error cargando datos:", error);
-    }
-  }
-
-  // Aplicar clase dark mode al body
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
-
-  const handleMenuItemClick = (index) => {
-    setActiveMenuItem(index);
+  const showNotification = (type, message) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 3000);
   };
 
-  const menuItems = [
-    { text: 'Dashboard', href: '#', icon: 'bxs-dashboard' },
-    { text: 'Clientes', href: '#', icon: 'bxs-user' }
-  ];
+  useEffect(() => {
+    fetchAllData();
+  }, [user?.email]);
+
+  const fetchAllData = async () => {
+    setLoading(true);
+    try {
+      const trabajadorList = await apiGet('/rol/3');
+      const libroData = await apiGet('/libros/todos');
+      const papeleriaData = await apiGet('/papelerias/todos');
+      const clienteData = await apiGet('/rol/2');
+      const pedidosData = await apiGet('/pedidos/todos');
+      const currentTrabajador = trabajadorList.find((t) => t.email === user?.email) || trabajadorList[0] || {};
+
+      setTrabajador(currentTrabajador);
+      setBooks(libroData);
+      setPapeleria(papeleriaData);
+      setClients(clienteData);
+      setPedidos(pedidosData);
+    } catch (err) {
+      console.error('Error fetching data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateTrabajador = async (updatedTrabajador) => {
+    setTrabajador(updatedTrabajador);
+    showNotification('success', 'Datos actualizados correctamente');
+  };
+
+  const pageComponents = {
+    dashboard: DashboardTrabajador,
+    productos: ProductosTrabajador,
+    clientes: ClientesJefe,
+    pedidos: PedidosJefe,
+    config: TrabajadorConfig,
+  };
+
+  const PageComponent = pageComponents[page];
+
+  if (loading) {
+    return (
+      <div className="admin-layout">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100vh', fontSize: '1.5rem', color: '#6d96a6' }}>
+          Cargando...
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      {/* SIDEBAR */}
-      <section id="sidebar">
-        <a href="#" className="brand">
-          <i className='bx bxs-smile'></i>
-          <span>TrabajadorHub</span>
-        </a>
-        
-        <ul className="side-menu top">
-          {menuItems.map((item, index) => (
-            <li 
-              key={index} 
-              className={activeMenuItem === index ? 'active' : ''}
-              onClick={() => handleMenuItemClick(index)}
-            >
-              <a href={item.href}>
-                <i className={`bx ${item.icon}`}></i>
-                <span>{item.text}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        
-        <ul className="side-menu bottom">
-          <li>
-            <a href="#" className="logout">
-              <i className='bx bx-power-off'></i>
-              <span onClick={logout}>Logout</span>
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* CONTENT */}
-      <section id="content">
-        {/* NAVBAR */}
-        <nav>
-          <div className="switch-mode" onClick={toggleDarkMode}>
-            <div className="ball"></div>
-            <img 
-              src={darkMode ? '/sun.png' : '/moon.png'} 
-              alt={darkMode ? "Sol" : "Luna"} 
-              className="mode-icon"
-              style={darkMode ? { transform: 'translate(-20px, 0px)' } : {}}
+    <div className="admin-layout">
+      <Sidebar_Trabajador currentPage={page} onNavigate={setPage} />
+      <div className="main-wrapper">
+        <Header usuario={trabajador} />
+        <main className="main-content">
+          <div className="main-content-inner">
+            <PageComponent
+              books={books}
+              papeleria={papeleria}
+              clients={clients}
+              pedidos={pedidos}
+              usuario={trabajador}
+              onUpdateUsuario={updateTrabajador}
             />
           </div>
-        </nav>
-
-        {/* MAIN */}
-        <main>
-          <div className="head-title">
-            <div className="left">
-              <h1>Dashboard Trabajador</h1>
-            </div>
-          </div>
-
-          {/* Tabla - Mis Datos del Trabajador */}
-          <div className="table-data">
-            <div className="order order-full-width">
-              <div className="head">
-                <h3>Datos de Trabajador</h3>
-              </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Username</th>
-                    <th>Dirección</th>
-                    <th>Fecha Nacimiento</th>
-                    <th>Fecha Registro</th>
-                    <th>Enabled</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {misDatos.length > 0 ? (
-                    misDatos.map((trabajador, i) => (
-                      <tr key={i}>
-                        <td>{trabajador.nombre}</td>
-                        <td>{trabajador.apellidos}</td>
-                        <td>{trabajador.username}</td>
-                        <td>{trabajador.direccion}</td>
-                        <td>{trabajador.fechaNacimiento}</td>
-                        <td>{trabajador.fechaRegistro}</td>
-                        <td>{trabajador.enabled}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="6" style={{ textAlign: "center" }}>
-                        No hay datos disponibles
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <ul className="box-info">
-            <li>
-              <i className='bx bxs-calendar-check'></i>
-              <span>
-                <h3>1020</h3>
-                <p>Tareas Completadas</p>
-              </span>
-            </li>
-            <li>
-              <i className='bx bxs-group'></i>
-              <span>
-                <h3>{clientes.length}</h3>
-                <p>Clientes</p>
-              </span>
-            </li>
-            <li>
-              <i className='bx bxs-dollar-circle'></i>
-              <span>
-                <h3>$2543.00</h3>
-                <p>Total Sales</p>
-              </span>
-            </li>
-          </ul>
-
-          <div className="table-data">
-            <TablaClientes titulo="Clientes" datos={clientes} />
-          </div>
         </main>
-      </section>
+
+        {notification && (
+          <div className="modal-overlay active">
+            <div className={`modal-content ${notification.type === 'success' ? 'modal-success' : 'modal-error'}`}>
+              <div style={{ textAlign: 'center', padding: '25px' }}>
+                <div style={{ width: '90px', height: '90px', borderRadius: '50%', backgroundColor: notification.type === 'success' ? '#6d96a6' : '#DB504A', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
+                  <img src={notification.type === 'success' ? '/tick.png' : '/cruz.png'} alt="icon" width="40" />
+                </div>
+                <h2 style={{ marginTop: '15px' }}>{notification.type === 'success' ? 'Exito' : 'Error'}</h2>
+                <p>{notification.message}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-function TablaClientes({ titulo, datos }) {
-  return (
-    <div className="order order-full-width">
-      <div className="head">
-        <h3>{titulo}</h3>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Username</th>
-            <th>Fecha Registro</th>
-            <th>Fecha Nacimiento</th>
-            <th>Direccion</th>
-            <th>Enable</th>
-          </tr>
-        </thead>
-        <tbody>
-          {datos && datos.length > 0 ? (
-            datos.map((cliente, index) => (
-              <tr key={index}>
-                <td>{cliente.nombre}</td>
-                <td>{cliente.apellidos}</td>
-                <td>{cliente.username}</td>
-                <td>{cliente.fechaRegistro}</td>
-                <td>{cliente.fechaNacimiento}</td>
-                <td>{cliente.direccion}</td>
-                <td>{cliente.enabled === 1 ? 'Sí' : 'No'}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="7" style={{ textAlign: 'center' }}>
-                No hay datos disponibles
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+export default TrabajadorDashboard;

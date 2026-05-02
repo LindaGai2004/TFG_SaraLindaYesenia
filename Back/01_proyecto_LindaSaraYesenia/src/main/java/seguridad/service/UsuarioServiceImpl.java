@@ -7,18 +7,19 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.security.core.userdetails.UserDetails;
-	import org.springframework.security.core.userdetails.UserDetailsService;
-	import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import seguridad.model.Perfil;
-	import seguridad.model.Usuario;
+import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
 import seguridad.repository.SeguidorRepository;
 import seguridad.repository.UsuarioRepository;
+
 	@Service
 	public class UsuarioServiceImpl implements UsuarioService, UserDetailsService{
 	
@@ -33,7 +34,6 @@ import seguridad.repository.UsuarioRepository;
 	
 	@Autowired
 		private PasswordEncoder passwordEncoder;
-	
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -184,15 +184,6 @@ import seguridad.repository.UsuarioRepository;
 		return usuarioRepository.save(existente);
 	}
 
-//anterior con {noop}
-//	public String normalizePassword(String raw) {
-//		  if (raw == null)
-//		   
-//		   return null;
-//		String cleaned = raw.replace("{noop}", "").trim();
-//		   
-//		   return "{noop}" + cleaned;
-//		}
 
 	//BUSCAR POR NOMBRE, USERMANE, ETC
 	@Override
@@ -253,5 +244,4 @@ import seguridad.repository.UsuarioRepository;
 		return usuarioRepository.existsByUsername(username);
 	}
 
-	
 }

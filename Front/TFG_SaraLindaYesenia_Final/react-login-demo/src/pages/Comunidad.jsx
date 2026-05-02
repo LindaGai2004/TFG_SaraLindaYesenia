@@ -4,7 +4,7 @@ import SidebarDerecha from "../components/Comunidad/SidebarDerecha";
 
 export default function Comunidad() {
   return (
-    <div className="comunidad-wrapper"> {/* Nuevo contenedor */}
+    <div className="comunidad-wrapper">
       <div className="comunidad-page">
         <div className="columna-izquierda">
           <Feed />
