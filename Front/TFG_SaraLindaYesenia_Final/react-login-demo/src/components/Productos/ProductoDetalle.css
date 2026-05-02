@@ -176,8 +176,8 @@
 }
 
 .btn-icono img {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
 }
 
@@ -362,6 +362,211 @@
   font-weight: 600;
 }
 
+
+/* RESEÑAS -------------------------------------------------------------------- */
+.fila-resenas {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.resenas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.resenas-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.media-estrellas {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.numero-media {
+  font-size: 48px;
+  font-weight: bold;
+  color: #333;
+}
+
+.selector-estrellas .star {
+  font-size: 25px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.selector-estrellas .star.filled {
+  color: #ffb400;
+}
+
+.form-resena textarea {
+  width: 100%;
+  height: 80px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.btn-enviar-resena {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.resena-card {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.resena-usuario {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.resena-usuario img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.nombre-u { font-weight: bold; margin: 0; }
+.estrellas-r { color: #ffb400; font-size: 14px; }
+.fecha-r { margin-left: auto; color: #888; font-size: 12px; }
+
+
+/* Eliminar reseña*/
+.btn-eliminar-resena {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 15px;
+  padding: 5px;
+  transition: transform 0.2s;
+  opacity: 0.6;
+}
+
+.btn-eliminar-resena:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+
+/* reseña arriba de precio */
+.rating-superior {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.estrellas-rating {
+  color: #ffb400; /* Dorado para las estrellas */
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.numero-media-texto {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+}
+
+.total-valoraciones-link {
+  color: #666;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.total-valoraciones-link:hover {
+  color: #ffb400;
+}
+
+#seccion-resenas {
+  scroll-margin-top: 120px; 
+}
+
+
+/* CONTENEDOR DE PESTAÑAS ------------------------------------------ */
+.contenedor-pestañas {
+  margin-top: 50px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* CABECERA */
+.cabecera-pestañas {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #d0d8dd;
+  gap: 20px;
+}
+
+.tab-btn {
+  padding: 12px 25px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: "Cormorant", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #888;
+  transition: all 0.3s ease;
+  position: relative;
+  bottom: -1px;
+}
+
+.tab-btn:hover {
+  color: #6d96a6;
+}
+
+/* Pestaña activa*/
+.tab-btn.active {
+  color: white;
+  border-bottom: 3px solid #6d96a6;
+}
+
+.contenido-pestaña {
+  padding: 30px 10px;
+  min-height: 250px;
+}
+
+/* Animación para que el contenido aparezca suavemente */
+.animar-entrada {
+  animation: fadeEffect 0.5s ease;
+}
+
+@keyframes fadeEffect {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detalles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
 
 /* RESPONSIVE TABLET ------------------------------------------------------------*/
 @media (min-width: 769px) and (max-width: 1500px) {

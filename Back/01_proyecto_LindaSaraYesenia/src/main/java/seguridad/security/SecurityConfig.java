@@ -77,6 +77,8 @@ public class SecurityConfig {
             	    "/productos/todos",
             	    "/productos/filtrar",
             	    "/productos/**",
+            	    "/resenas/**",
+            	    "/resenas/guardar",
 
             	    "/todos",
             	    "/recomendados",

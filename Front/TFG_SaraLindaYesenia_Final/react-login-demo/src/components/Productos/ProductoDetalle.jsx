@@ -23,6 +23,42 @@ export default function ProductoDetalle() {
   const [mostrarAvisoFavorito, setMostrarAvisoFavorito] = useState(false);
   const [mostrarAvisoCarrito, setMostrarAvisoCarrito] = useState(false);
 
+  // 'descripcion', 'detalles' o 'resenas'
+  const [tabActiva, setTabActiva] = useState("descripcion");
+
+  // Estados para reseñas
+  const [resenas, setResenas] = useState([]);
+  const [media, setMedia] = useState(0);
+  const [nuevaCalificacion, setNuevaCalificacion] = useState(5);
+  const [nuevoComentario, setNuevoComentario] = useState("");
+  const [yaResenado, setYaResenado] = useState(false);
+  
+  const handleEliminarResena = async (idResena) => {
+    if (!window.confirm("¿Estás seguro de que quieres borrar tu reseña?")) return;
+
+    try {
+      // Usamos el idResena para la ruta del delete
+      await apiDelete(`/resenas/eliminar/${idResena}`);
+      
+      // Actualizamos el estado local para que desaparezca de la lista
+      setResenas(resenas.filter(r => r.idResena !== idResena));
+      
+      // Permitimos que el usuario pueda volver a escribir una reseña
+      setYaResenado(false);
+      
+      setMensaje("Reseña eliminada");
+      setTimeout(() => setMensaje(""), 2000);
+
+      // Recargar la media para que se actualice sin la reseña borrada
+      const resMedia = await fetch(`http://localhost:9001/resenas/media/${id}`);
+      const nuevaMedia = await resMedia.json();
+      setMedia(nuevaMedia);
+    } catch (error) {
+      console.error("Error al eliminar la reseña:", error);
+      setMensaje("No se pudo eliminar la reseña");
+    }
+  };
+
   // Cargar producto base
   useEffect(() => {
     fetch(`http://localhost:9001/productos/${id}`)
@@ -114,6 +150,62 @@ export default function ProductoDetalle() {
       })
       .catch(() => setEsFavorito(false));
   }, [producto, user]);
+
+
+  // Cargar reseñas y media ---------------------------------------------------------
+  useEffect(() => {
+    if (!id) return;
+    
+    // Obtener lista de reseñas
+    fetch(`http://localhost:9001/resenas/producto/${id}`)
+      .then(res => res.json())
+      .then(data => setResenas(data));
+
+    // Obtener nota media
+    fetch(`http://localhost:9001/resenas/media/${id}`)
+      .then(res => res.json())
+      .then(data => setMedia(data));
+  }, [id]);
+
+  // Verificar si el usuario ya hizo una reseña (para ocultar el formulario)
+  useEffect(() => {
+    if (user && id) {
+      // Podrías crear un endpoint específico o filtrar en el array de reseñas
+      const check = resenas.some(r => r.usuario.idUsuario === user.idUsuario);
+      setYaResenado(check);
+    }
+  }, [resenas, user, id]);
+
+  const handleEnviarResena = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      setMostrarAvisoCarrito(true); // O un aviso específico para reseñas
+      return;
+    }
+
+    const resenaDTO = {
+      idUsuario: user.idUsuario,
+      idProducto: parseInt(id),
+      calificacion: nuevaCalificacion,
+      comentario: nuevoComentario
+    };
+
+    try {
+      const data = await apiPost("/resenas/guardar", resenaDTO);
+      setResenas([data, ...resenas]); // Añadir la nueva al principio
+      setNuevoComentario("");
+      setYaResenado(true);
+      setMensaje("¡Gracias por tu reseña! ✨");
+      setTimeout(() => setMensaje(""), 2000);
+      
+      // Recargar la media
+      const resMedia = await fetch(`http://localhost:9001/resenas/media/${id}`);
+      const nuevaMedia = await resMedia.json();
+      setMedia(nuevaMedia);
+    } catch (error) {
+      console.error("Error al guardar reseña", error);
+    }
+  };
 
 
   const handleCompartir = () => {
@@ -224,6 +316,27 @@ export default function ProductoDetalle() {
               <div className="col-derecha-editorial">
                 <h1 className="titulo-editorial">{producto.nombre}</h1>
                 {producto.autor && <p className="autor-editorial">{producto.autor}</p>}
+
+                <div className="rating-superior">
+                  <span className="estrellas-rating">
+                    {"★".repeat(Math.round(media)) + "☆".repeat(5 - Math.round(media))}
+                  </span>
+                  <span className="numero-media-texto">{media.toFixed(1)}</span>
+                  {/* total valoraciones */}
+                  <a 
+                    href="#seccion-resenas" className="total-valoraciones-link"
+                    onClick={(e) => {
+                      e.preventDefault(); // Evita el salto brusco
+                      setTabActiva("resenas"); // Activa la pestaña de reseñas
+                      setTimeout(() => {
+                        document.getElementById('seccion-resenas')?.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }}
+                  >
+                    ({resenas.length} valoraciones)
+                  </a>
+                </div>
+
                 <p className="precio-editorial">{producto.precio} €</p>
 
                 <p className="descripcion-editorial">{producto.descripcion}</p>
@@ -248,7 +361,7 @@ export default function ProductoDetalle() {
                   <div className="botones-iconos">
                     <button className="btn-icono" onClick={toggleFavorito}>
                       <img
-                        src={esFavorito ? "/corazon_negro.png" : "/corazon_blanco.png"}
+                        src={esFavorito ? "/corazon_lleno.png" : "/corazon_vacio.png"}
                         alt="Favorito"
                       />
                     </button>
@@ -260,74 +373,155 @@ export default function ProductoDetalle() {
                 </div>
               </div>
             </div>
-
-            {/* FILA 2 */}
-            <div className="fila-inferior">
-              <div className="col-inferior-izq">
-
-                {/* TÍTULO CAMBIANTE */}
-                <h2 className="titulo-seccion">
-                  {producto.tipo === "LIBRO" ? "Resumen" : "Acerca de este producto"}
-                </h2>
-
-                {/* LIBRO */}
-                {producto.tipo === "LIBRO" && (
-                  <>
-                    <p className="texto-resumen">
-                      {expandido ? producto.resumen : resumenCorto}
-                    </p>
-
-                    {producto.resumen && producto.resumen.length > 250 && (
-                      <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
-                        {expandido ? "Leer menos" : "Leer más"}
-                      </button>
-                    )}
-                  </>
-                )}
-
-                {/* PAPELERÍA */}
-                {producto.tipo === "PAPELERIA" && (
-                  <>
-                    <ul className="lista-detalles">
-                      {(expandidoPap ? frasesPapeleria : frasesPapeleria.slice(0, 3)).map((frase, index) => (
-                        <li key={index}>{frase}</li>
-                      ))}
-                    </ul>
-
-                    {frasesPapeleria.length > 3 && (
-                      <button className="btn-leer-mas" onClick={() => setExpandidoPap(!expandidoPap)}>
-                        {expandidoPap ? "Leer menos" : "Leer más"}
-                      </button>
-                    )}
-                  </>
-                )}
+            {/* SECCIÓN DE PESTAÑAS (TABS) */}
+            <div className="contenedor-pestañas">
+              <div className="cabecera-pestañas">
+                <button 
+                  className={`tab-btn ${tabActiva === "descripcion" ? "active" : ""}`}
+                  onClick={() => setTabActiva("descripcion")}
+                >
+                  {producto.tipo === "LIBRO" ? "Resumen" : "Acerca del producto"}
+                </button>
+                <button 
+                  className={`tab-btn ${tabActiva === "detalles" ? "active" : ""}`}
+                  onClick={() => setTabActiva("detalles")}
+                >
+                  Detalles
+                </button>
+                <button 
+                  className={`tab-btn ${tabActiva === "resenas" ? "active" : ""}`}
+                  onClick={() => setTabActiva("resenas")}
+                  id="seccion-resenas"
+                >
+                  Reseñas ({resenas.length})
+                </button>
               </div>
 
-              <div className="col-inferior-der">
-                <h2 className="titulo-seccion">Detalles</h2>
+              <div className="contenido-pestaña">
+                
+                {/* PESTAÑA 1: DESCRIPCIÓN / RESUMEN */}
+                {tabActiva === "descripcion" && (
+                  <div className="tab-panel animar-entrada">
+                    {producto.tipo === "LIBRO" ? (
+                      <>
+                        <p className="texto-resumen">
+                          {expandido ? producto.resumen : resumenCorto}
+                        </p>
+                        {producto.resumen && producto.resumen.length > 250 && (
+                          <button className="btn-leer-mas" onClick={() => setExpandido(!expandido)}>
+                            {expandido ? "Leer menos" : "Leer más"}
+                          </button>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <ul className="lista-detalles">
+                          {(expandidoPap ? frasesPapeleria : frasesPapeleria.slice(0, 3)).map((frase, index) => (
+                            <li key={index}>{frase}</li>
+                          ))}
+                        </ul>
+                        {frasesPapeleria.length > 3 && (
+                          <button className="btn-leer-mas" onClick={() => setExpandidoPap(!expandidoPap)}>
+                            {expandidoPap ? "Leer menos" : "Leer más"}
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
 
-                <div className="detalles-grid">
+                {/* PESTAÑA 2: DETALLES TÉCNICOS */}
+                {tabActiva === "detalles" && (
+                  <div className="tab-panel animar-entrada">
+                    <div className="detalles-grid">
+                      {producto.tipo === "LIBRO" ? (
+                        <>
+                          <p><strong>Editorial:</strong> {producto.editorial}</p>
+                          <p><strong>Idioma:</strong> {producto.idioma}</p>
+                          <p><strong>ISBN:</strong> {producto.isbn}</p>
+                          <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
+                          <p><strong>Género:</strong> {producto.genero}</p>
+                          <p><strong>Páginas:</strong> {producto.numeroPaginas}</p>
+                        </>
+                      ) : (
+                        <>
+                          <p><strong>Marca:</strong> {producto.marca}</p>
+                          <p><strong>Categoría:</strong> {producto.categoria}</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
 
-                  {/* DETALLES LIBRO */}
-                  {producto.tipo === "LIBRO" && (
-                    <>
-                      <p><strong>Editorial:</strong> {producto.editorial}</p>
-                      <p><strong>Idioma:</strong> {producto.idioma}</p>
-                      <p><strong>ISBN:</strong> {producto.isbn}</p>
-                      <p><strong>Fecha publicación:</strong> {producto.fechaPublicacion}</p>
-                      <p><strong>Género:</strong> {producto.genero}</p>
-                    </>
-                  )}
+                {/* PESTAÑA 3: RESEÑAS */}
+                {tabActiva === "resenas" && (
+                  <div className="tab-panel animar-entrada">
+                    <div className="resenas-header">
+                      <div className="media-estrellas">
+                        <span className="numero-media">{media.toFixed(1)}</span>
+                        <div className="estrellas-puntos">
+                          {"★".repeat(Math.round(media)) + "☆".repeat(5 - Math.round(media))}
+                        </div>
+                        <p>{resenas.length} valoraciones</p>
+                      </div>
 
-                  {/* DETALLES PAPELERÍA */}
-                  {producto.tipo === "PAPELERIA" && (
-                    <>
-                      <p><strong>Marca:</strong> {producto.marca}</p>
-                      <p><strong>Categoría:</strong> {producto.categoria}</p>
-                    </>
-                  )}
+                      {user && !yaResenado ? (
+                        <form className="form-resena" onSubmit={handleEnviarResena}>
+                          <h3>Escribe tu opinión</h3>
+                          <div className="selector-estrellas">
+                            {[1, 2, 3, 4, 5].map(num => (
+                              <span 
+                                key={num} 
+                                className={`star ${nuevaCalificacion >= num ? 'filled' : ''}`}
+                                onClick={() => setNuevaCalificacion(num)}
+                              >★</span>
+                            ))}
+                          </div>
+                          <textarea 
+                            placeholder="¿Qué te ha parecido este producto?"
+                            value={nuevoComentario}
+                            onChange={(e) => setNuevoComentario(e.target.value)}
+                            required
+                          />
+                          <button type="submit" className="btn-enviar-resena">Publicar reseña</button>
+                        </form>
+                      ) : user && yaResenado ? (
+                        <p className="aviso-resena">Ya has valorado este producto. ¡Gracias!</p>
+                      ) : (
+                        <p className="aviso-resena">Inicia sesión para dejar una reseña.</p>
+                      )}
+                    </div>
 
-                </div>
+                    <div className="lista-resenas-items">
+                      {resenas.length === 0 ? (
+                        <p>Aún no hay reseñas. ¡Sé el primero en opinar!</p>
+                      ) : (
+                        resenas.map(r => (
+                          <div key={r.idResena} className="resena-card">
+                            <div className="resena-usuario">
+                              <img src={r.usuario.avatar || "/avatar-default.png"} alt="User" />
+                              <div>
+                                <p className="nombre-u">{r.usuario.username}</p>
+                                <div className="estrellas-r">
+                                  {"★".repeat(r.calificacion) + "☆".repeat(5 - r.calificacion)}
+                                </div>
+                              </div>
+                              <span className="fecha-r">{new Date(r.fecha).toLocaleDateString()}</span>
+                              
+                              {user && user.idUsuario === r.usuario.idUsuario && (
+                                <button 
+                                  className="btn-eliminar-resena"
+                                  onClick={() => handleEliminarResena(r.idResena)}
+                                >🗑️</button>
+                              )}
+                            </div>
+                            <p className="texto-r">{r.comentario}</p>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

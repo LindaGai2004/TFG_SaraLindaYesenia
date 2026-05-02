@@ -14,6 +14,7 @@ export default function Productos() {
     const [searchParams] = useSearchParams();
     const productosPorPagina = 24; 
 
+    {/** 
     useEffect(() => {
         async function cargarTodos() {
             try {
@@ -25,7 +26,7 @@ export default function Productos() {
         }
     
         cargarTodos();
-    }, []);    
+    }, []);    */}
 
 
     // Función para el buscador de los productos
@@ -51,7 +52,6 @@ export default function Productos() {
         }
     };
 
-    // Mueve filtrarProductos ANTES del useEffect para que pueda usarla
     const filtrarProductos = async (filtros) => {
         try {
             const response = await axios.get(
@@ -74,7 +74,6 @@ export default function Productos() {
         }
     }
 
-    // Un solo useEffect
     useEffect(() => {
         const genero = searchParams.get("genero");
         const categoria = searchParams.get("categoria");
@@ -132,7 +131,7 @@ export default function Productos() {
                     <div className="buscador-tienda">
                         <input
                             type="text"
-                            placeholder="Buscar libros o papelería..."
+                            placeholder="Buscar por autor, título, ISBN..."
                             value={busqueda}
                             onChange={manejarBusqueda}
                             className="input-busqueda"

@@ -2,15 +2,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Search, User, ShoppingCart, Headphones } from 'lucide-react';
 import { useState } from 'react';
+import { useCart } from '../context/CartContext';
 import CartSidebar from './Carrito/CartSideBar.jsx';
 import './NavBar.css';
 
 function NavBar({ isVisible = true }) {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { cartItems } = useCart();
   
   // Estado para controlar el Sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Calculamos la cantidad total de productos
+  const totalItems = cartItems?.reduce((acc, item) => acc + item.cantidad, 0) || 0;
 
   // Función para manejar el carrito
   function manejarClickCarrito() {
@@ -22,6 +27,8 @@ function NavBar({ isVisible = true }) {
       setIsSidebarOpen(true);
     }
   }
+
+
 
   return (
     <>
@@ -77,9 +84,12 @@ function NavBar({ isVisible = true }) {
             <Search size={22} className="icono-buscar" />
           </div>
 
-          {/* Icono de Carrito con la nueva función */}
-          <div className="accion" onClick={manejarClickCarrito}>
+          {/* Icono de Carrit */}
+          <div className="accion contenedor-carrito" onClick={manejarClickCarrito}>
             <ShoppingCart size={22} className="icono-carrito" />
+            {totalItems > 0 && (
+              <span className="carrito-badge">{totalItems}</span>
+            )}
           </div>
         </div>
       </nav>

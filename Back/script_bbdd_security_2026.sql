@@ -177,7 +177,6 @@ create table comentarios_publicacion (
     foreign key (id_usuario) references usuarios(id_usuario)
 );
 
-
 create table seguidores (
     id int auto_increment primary key,
     id_seguidor int not null,
@@ -186,6 +185,20 @@ create table seguidores (
     unique key unica_relacion (id_seguidor, id_seguido),
     foreign key (id_seguidor) references usuarios(id_usuario) on delete cascade,
     foreign key (id_seguido) references usuarios(id_usuario) on delete cascade
+);
+
+
+create table resenas_productos (
+    id_resena int auto_increment primary key,
+    id_usuario int not null,
+    id_producto int not null,
+    calificacion int not null check (calificacion >= 1 AND calificacion <= 5),
+    comentario text,
+    fecha datetime default current_timestamp,
+    
+    unique key unica_resena_usuario (id_usuario, id_producto),
+    foreign key (id_usuario) references usuarios(id_usuario) on delete cascade,
+    foreign key (id_producto) references productos(id_producto) on delete cascade
 );
 
 

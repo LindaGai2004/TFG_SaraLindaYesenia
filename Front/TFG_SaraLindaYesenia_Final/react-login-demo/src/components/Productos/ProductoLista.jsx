@@ -136,7 +136,7 @@ export default function ProductoLista({ productos }) {
             {/* Icono de favorito */}
             <button className="favorito-btn" onClick={() => toggleFavorito(p.idProducto)}>
               <img
-                src={favoritos[p.idProducto] ? "/corazon_negro.png" : "/corazon_blanco.png"}
+                src={favoritos[p.idProducto] ? "/corazon_lleno.png" : "/corazon_vacio.png"}
                 alt="Favorito"
                 className="favorito-icon"
               />
