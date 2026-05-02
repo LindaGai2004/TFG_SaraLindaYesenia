@@ -11,6 +11,7 @@ export default function CrearPublicacion({ onPublicada }) {
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+
   const [mostrarAvisoLogin, setMostrarAvisoLogin] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -59,10 +60,8 @@ export default function CrearPublicacion({ onPublicada }) {
         formData.append("idProducto", productoSeleccionado.idProducto);
       }
 
-      // 🔥 IMPORTANTE: backend puede no devolver nada
       const nuevaPub = await api.apiPost("/publicaciones", formData, true);
 
-      // 🔥 SI NO DEVUELVE NADA → recargar feed
       if (onPublicada) {
         onPublicada(nuevaPub || null);
       }

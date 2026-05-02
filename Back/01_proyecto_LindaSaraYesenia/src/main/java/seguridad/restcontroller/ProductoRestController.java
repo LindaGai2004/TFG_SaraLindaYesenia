@@ -82,7 +82,20 @@ public class ProductoRestController {
                 tipo, idioma, genero, marca, categoria, precioMin, precioMax, estado
         );
         return ResponseEntity.ok(lista);
-    }   
+    }
+
+    
+    
+    // Buscador
+
+    /*@GetMapping("/buscar/todos")
+    public ResponseEntity<?> buscarProducto(@RequestParam String texto) {
+        List<Producto> lista = productoService.buscardorProducto(texto);
+        if (lista.isEmpty()) {
+            return ResponseEntity.ok("No hay NINGUN PRODUCTO que coincidan con la busqueda");
+        }
+        return ResponseEntity.ok(lista);
+    }*/
     
     // Buscador (CORREGIDO)
     @GetMapping("/buscar/todos")

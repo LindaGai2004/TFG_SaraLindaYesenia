@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ChevronLeft, ChevronRight} from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import { apiGet, apiPost } from '../api/api';
 
 const LIBRO_MES_STORAGE_KEY = 'libro_mes_id';
@@ -156,19 +157,26 @@ export default function Home() {
 
   {/*Botón de incrementar*/ }
   const [cantidad, setCantidad] = useState(1);
+  const { addToCart, refreshCartFromServer } = useCart();
   async function handleAddToCart(item) {
     if (!user) {
-      alert("Debes iniciar sesión");
+      setMostrarAvisoCarrito(true);
       return;
     }
+    
     try {
       await apiPost("/carrito/add", item);
-      alert("Producto añadido");
+      await refreshCartFromServer(); 
+      
+      setTimeout(() => setMensaje(""), 2000);
+      
     } catch (e) {
       console.error(e);
-      alert("Error al añadir producto");
+      setMensaje("Error al añadir producto");
+      setTimeout(() => setMensaje(""), 2000);
     }
   }
+  
   const incrementarCantidad = () => {
     setCantidad(cantidad + 1);
   };
@@ -442,9 +450,6 @@ export default function Home() {
                       idProducto: libroMes.idProducto,
                       cantidad: cantidad
                     });
-
-                    setMensaje("Producto añadido al carrito");
-                    setTimeout(() => setMensaje(""), 2000);
                   }}
                 >
                   AÑADIR AL CARRITO

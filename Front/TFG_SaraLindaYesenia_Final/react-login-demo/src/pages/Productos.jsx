@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import axios from "axios";
 import { apiGet } from "../api/api";
 import ProductoFiltros from "../components/Productos/ProductoFiltros.jsx";
 import ProductoLista from "../components//Productos/ProductoLista.jsx";
@@ -12,7 +13,22 @@ export default function Productos() {
     const [paginaActual, setPaginaActual] = useState(1);
     const [busqueda, setBusqueda] = useState("");
     const [searchParams] = useSearchParams();
-    const productosPorPagina = 24;
+    const productosPorPagina = 24; 
+
+    {/** 
+    useEffect(() => {
+        async function cargarTodos() {
+            try {
+                const response = await axios.get("http://localhost:9001/productos/todos");
+                setProductos(response.data);
+            } catch (error) {
+                console.error("Error cargando productos:", error);
+            }
+        }
+    
+        cargarTodos();
+    }, []);    */}
+
 
     // Función para el buscador de los productos
     const manejarBusqueda = async (e) => {
@@ -110,7 +126,7 @@ export default function Productos() {
                     <div className="buscador-tienda">
                         <input
                             type="text"
-                            placeholder="Buscar libros o papelería..."
+                            placeholder="Buscar por autor, título, ISBN..."
                             value={busqueda}
                             onChange={manejarBusqueda}
                             className="input-busqueda"

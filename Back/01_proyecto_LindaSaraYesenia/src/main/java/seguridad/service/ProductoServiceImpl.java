@@ -52,7 +52,30 @@ public class ProductoServiceImpl implements ProductoService {
             return -1;
         }
     }
-
+    
+  /*  @Override
+    @Transactional
+    public int deleteById(Integer idProducto) {
+        Optional<Producto> optional = productoRepository.findById(idProducto);
+        if (optional.isEmpty()) {
+            return -1;
+        }
+        try {
+            Producto p = optional.get();
+            if (p instanceof Libro) {
+                libroRepo.deleteById(idProducto);
+            } else if (p instanceof Papeleria) {
+                papeleriaRepo.deleteById(idProducto);
+            } else {
+                productoRepository.deleteById(idProducto);
+            }
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }*/
+    
     @Override
     public Producto getProductoDestacado() {
         return productoRepository.findByDestacadoTrue()

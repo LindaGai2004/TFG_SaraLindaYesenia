@@ -20,7 +20,6 @@ import seguridad.service.SeguidorService;
 public class SeguidorRestController {
 
 
-
 	    @Autowired
 	    private SeguidorService seguidorService;
 	    

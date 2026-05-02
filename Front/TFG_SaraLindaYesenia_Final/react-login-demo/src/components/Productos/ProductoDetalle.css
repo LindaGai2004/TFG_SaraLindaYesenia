@@ -161,7 +161,7 @@
   width: 48px;
   height: 48px;
   background: #8daebd;
-  border: 1px solid #8daebd;
+  border: 1.5px solid #8daebd;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -171,13 +171,13 @@
 }
 
 .btn-icono:hover {
-  background: white;
-  border-color: #8daebd;
+  background: #6d96a6;
+  border-color: #6d96a6;
 }
 
 .btn-icono img {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
 }
 
@@ -362,6 +362,441 @@
   font-weight: 600;
 }
 
+
+/* SECCIÓN RESEÑAS --------------------------------------------------------- */
+
+#seccion-resenas {
+  scroll-margin-top: 120px; 
+}
+
+.resenas-container-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 0 auto;
+}
+
+/* HEADER: Estadísticas y Barras */
+.resenas-header-stats {
+  display: flex;
+  gap: 40px;
+  padding-top: 20px;
+  border-radius: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.stats-left {
+  text-align: center;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.numero-media {
+  font-size: 56px;
+  font-weight: 800;
+  color: #333;
+  line-height: 1;
+}
+
+.total-valoraciones-link {
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 5px;
+}
+
+/* Barras de progreso */
+.stats-middle {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.barra-fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.etiqueta-estrella {
+  min-width: 85px;
+  color: #555;
+  font-weight: 500;
+}
+
+.barra-vacia {
+  flex: 1;
+  height: 14px;
+  background: #f0f0f0;
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.barra-llena {
+  height: 100%;
+  background: #8daebd;
+  border-radius: 7px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cantidad-texto {
+  min-width: 40px;
+  text-align: right;
+  color: #888;
+  font-weight: bold;
+}
+
+/* Acciones (Botón escribir opinión) */
+.stats-right {
+  min-width: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stats-right h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.btn-abrir-resena {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-abrir-resena:hover {
+  background: #000;
+  transform: translateY(-2px);
+}
+
+.btn-abrir-resena.cancelar {
+  background: #a33;
+}
+
+/* ESTRELLAS (Globales) */
+.star-display {
+  font-size: 1.3rem;
+  color: #e0e0e0;
+  margin-right: 2px;
+}
+
+.star-display.filled {
+  color: #ffc107;
+}
+
+.estrellas-puntos {
+  display: flex;
+  gap: 2px;
+  margin: 8px 0;
+}
+
+/* SELECTOR (Cuando el usuario marca estrellas) */
+.selector-estrellas-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 10; /* Asegura que esté por encima de otros elementos */
+}
+
+.selector-estrellas-inline .star {
+    font-size: 32px;
+    cursor: pointer !important; /* Fuerza el cursor de mano */
+    color: #ccc;
+    transition: color 0.2s;
+    pointer-events: all; /* Asegura que capture el click */
+}
+
+.selector-estrellas-inline .star.filled {
+    color: #ffc107;
+}
+
+/* FORMULARIO */
+.form-resena {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
+.form-resena textarea {
+  width: 100%;
+  height: 120px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+  margin: 15px 0;
+}
+
+.btn-enviar-resena {
+  background: #ffc107;
+  color: #000;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* LISTA DE RESEÑAS */
+.resena-card {
+  padding: 25px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.resena-usuario {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.resena-usuario .avatar-usuario { 
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.resena-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.nombre-u {
+  font-weight: bold;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.fecha-r {
+  margin-left: auto;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.texto-r {
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+}
+
+.btn-eliminar-resena {
+  background: #8daebd;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 20px;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  width: 35px;
+  height: 30px;
+}
+
+.img-eliminar {
+  width: 23px;
+  height: 23px;
+  object-fit: contain;
+}
+
+.aviso-resena, .check-done {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Contenedor del formulario cuando está dentro del header */
+.form-resena-inline {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-inline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-inline-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.btn-cerrar-inline {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #999;
+}
+
+.selector-estrellas-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.texto-ayuda-estrellas {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.form-inline-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-cancelar-inline {
+    background: #f0f0f0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-cancelar-inline:hover {
+    background: #e5e5e5;
+}
+
+/* Ajuste del textarea dentro del header */
+.form-resena-inline textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* Línea divisoria */
+.resenas-divider {
+  border: 0;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 20px 0 20px 0;
+  width: 100%;
+}
+
+/* Contenedor en Grid */
+.lista-resenas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales */
+  gap: 30px; /* Espacio entre las tarjetas */
+}
+
+/* Estilo de la tarjeta adaptado al grid */
+.resena-card-v2 {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Estrellas y textos (reutilizando tus clases) */
+.nombre-u {
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.texto-r {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+
+/* CONTENEDOR DE PESTAÑAS ------------------------------------------ */
+.contenedor-pestañas {
+  margin-top: 50px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* CABECERA */
+.cabecera-pestañas {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1.5px solid #e0e0e0;
+  gap: 20px;
+}
+
+.tab-btn {
+  padding: 12px 25px;
+  border: none !important;
+  background: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font-size: 1.05rem !important;
+  font-weight: normal !important;
+  color: #888 !important;
+  transition: all 0.3s ease;
+  position: relative;
+  border-bottom: 3px solid transparent !important;
+}
+
+/* Pestaña activa*/
+.tab-btn.active {
+  color: #6d96a6 !important;
+  font-weight: 900 !important;
+}
+
+.contenido-pestaña {
+  padding: 30px 10px;
+  min-height: 250px;
+}
+
+/* Animación para que el contenido aparezca suavemente */
+.animar-entrada {
+  animation: fadeEffect 0.5s ease;
+}
+
+@keyframes fadeEffect {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detalles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
 
 /* RESPONSIVE TABLET ------------------------------------------------------------*/
 @media (min-width: 769px) and (max-width: 1500px) {

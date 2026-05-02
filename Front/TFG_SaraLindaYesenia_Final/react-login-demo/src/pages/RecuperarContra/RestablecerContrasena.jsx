@@ -62,6 +62,7 @@ export default function RestablecerContrasena() {
     <div className="restablecer-page">
       <div className="restablecer-container">
         <h2>Restablecer contraseña</h2>
+        <p className="instrucciones">Crea una nueva contraseña segura para tu cuenta.</p>
 
         <form onSubmit={handleSubmit}>
 
@@ -72,6 +73,7 @@ export default function RestablecerContrasena() {
               type={mostrarPass ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Mínimo 6 caracteres"
               required
               disabled={cargando}
             />
@@ -89,13 +91,15 @@ export default function RestablecerContrasena() {
           </div>
 
           {/* Confirmar contraseña */}
-          <label>Confirmar contraseña</label>
+          <label>Confirmar nueva contraseña</label>
           <div className="input-wrapper">
             <input
               type={mostrarConfirmar ? "text" : "password"}
               value={confirmar}
               onChange={(e) => setConfirmar(e.target.value)}
+              placeholder="Repite tu contraseña"
               required
+              disabled={cargando}
             />
             <span
               className="toggle-ojito"
@@ -109,10 +113,21 @@ export default function RestablecerContrasena() {
             </span>
           </div>
 
-          <button type="submit">Guardar contraseña</button>
+          {/* Aviso dinámico mientras escribe si no coinciden */}
+          {confirmar.length > 0 && password !== confirmar && (
+            <span className="error-live">Las contraseñas no coinciden</span>
+          )}
+
+          <button type="submit" disabled={cargando || password.length < 6}>
+            {cargando ? "Guardando..." : "Guardar contraseña"}
+          </button>
         </form>
 
-        {mensaje && <p className="mensaje">{mensaje}</p>}
+        {mensaje && (
+          <div className={`mensaje-box ${mensaje.includes("correctamente") ? "exito" : "error"}`}>
+            {mensaje}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -122,91 +122,44 @@
   color: rgb(56, 55, 55) !important;
 }
 
+
 /* Filtro de precio */
 .price-slider {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.price-slider input[type="range"] {
+  position: relative;
   width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 6px;
-  background: #c7d3dd;
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
-  pointer-events: auto;
-  position: static;
-  transform: none;
+  height: 18px;
+  margin-top: 12px;
 }
 
+/* Ambos sliders superpuestos */
+.price-slider input[type="range"] {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  pointer-events: none;
+  background: none;
+}
+
+/* Línea */
+.price-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #c7d3dd;
+  border-radius: 4px;
+}
+
+/* CIRCULITOS (thumbs) */
 .price-slider input[type="range"]::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 25px;
+  height: 25px;
+  background: #8daebd;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
   -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  background: #8daebd;
-  border-radius: 50%;
-  border: 2px solid white;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  margin-top: -6px;
 }
 
-.price-slider input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: #8daebd;
-  border-radius: 50%;
-  border: 2px solid white;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-/*firefox de shit*/
-.price-slider input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: #8daebd;
-  border-radius: 50%;
-  border: 2px solid white;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-.price-slider input[type="range"]::-moz-range-track {
-  height: 6px;
-  background: #c7d3dd;
-  border-radius: 4px;
-}
-/* rc-slider custom styles */
-.rc-slider-rail {
-  background-color: #c7d3dd !important;
-  height: 6px !important;
-}
-
-.rc-slider-track {
-  background-color: #8daebd !important;
-  height: 6px !important;
-}
-
-.rc-slider-handle {
-  width: 18px !important;
-  height: 18px !important;
-  background-color: #8daebd !important;
-  border: 2px solid white !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
-  opacity: 1 !important;
-  margin-top: -6px !important;
-}
-
-.rc-slider-handle:hover,
-.rc-slider-handle:focus,
-.rc-slider-handle-dragging {
-  border-color: white !important;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.3) !important;
-}
 /* Valores debajo */
 .price-values {
   display: flex;

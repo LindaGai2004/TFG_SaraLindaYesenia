@@ -3,6 +3,7 @@ package seguridad.service;
 import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 import seguridad.model.Rol;
 import seguridad.model.Usuario;
@@ -13,6 +14,7 @@ public interface UsuarioService extends UserDetailsService{
 	Usuario findById(Integer idUsuario);
 	Usuario findByEmail(String email);
 	boolean existsByEmail(String email);
+	boolean existsByUsername(String username);
 	
 	List<Usuario> findAll();
 	
@@ -23,8 +25,6 @@ public interface UsuarioService extends UserDetailsService{
 
 	List<Usuario> findByPerfil(int idPerfil);
 	int deleteById(Integer idUsuario);
-	//anterior
-	//String normalizePassword(String raw);
 	List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
 
 	/* Usuarios recomendados */

@@ -72,48 +72,66 @@
   margin-top: 10px;
 }
 
-/* BOTÓN SUBIR IMAGEN */
-.btn-subir {
+.btn-subir, .btn-publicar {
+  /* Quitamos estilos anteriores y aplicamos la base del carrito */
+  width: auto; /* Dejamos auto para que se adapten al texto/icono */
+  min-width: 120px;
+  height: 35px;
+  padding: 0 16px;
   background: #8daebd;
   color: white;
-  padding: 8px 12px;
+  font-weight: bold;
   border-radius: 8px;
+  border: 1.5px solid #8daebd;
+  font-size: 13px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background .2s ease;
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 8px;
+
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.btn-subir:hover {
-  background: #6d96a6;
+/* Capa blanca que entra */
+.btn-subir::before, .btn-publicar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: left 0.4s ease;
+  z-index: -1;
 }
 
+.btn-subir:hover::before, .btn-publicar:hover::before {
+  left: 0;
+}
+
+.btn-subir:hover, .btn-publicar:hover {
+  color: #8daebd;
+  border-color: #8daebd;
+  background: #8daebd;
+}
+
+/* Ajuste específico para el input oculto */
 .btn-subir input {
   display: none;
 }
 
-/* BOTÓN PUBLICAR */
-.btn-publicar {
-  background: #6d96a6;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background .2s ease;
-}
-
-.btn-publicar:hover {
-  background: #8daebd;
-}
-
+/* Ajuste para el botón deshabilitado */
 .btn-publicar:disabled {
-  background: #8daebd;
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn-subir:hover svg, .btn-subir:hover img {
+  filter: brightness(0) saturate(100%) invert(75%) sepia(19%) saturate(543%) hue-rotate(156deg) brightness(88%) contrast(85%);
 }
 
 
@@ -126,7 +144,7 @@
 }
 
 .buscador-libros input {
-  width: 100%;
+  width: 30%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -167,4 +185,15 @@
 .producto-etiquetado img {
   width: 20px;
   height: 20px;
+}
+
+
+/* RESPONSIVE tablet --------------------------------------------------------------------*/
+@media (min-width: 769px) and (max-width: 1500px) {
+  .buscador-libros input {
+    width: 40%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+  }
 }

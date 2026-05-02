@@ -46,7 +46,8 @@ public class PublicacionRestController {
     public ResponseEntity<List<PublicacionDto>> obtenerPorUsuario(@PathVariable Integer idUsuario) {
         return ResponseEntity.ok(publicacionService.obtenerPublicacionesPorUsuario(idUsuario));
     }
-   
+    
+
     // Crear una nueva publicacion (Corregido sin ruta hardcodeada)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PublicacionDto> crearPublicacion(

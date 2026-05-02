@@ -68,4 +68,29 @@ public class EmailServiceImpl implements EmailService{
 
 	    mailSender.send(email);
 	}
+	
+	@Override
+	public void enviarEmailVerificacion(String to, String nombre, String token) throws Exception {
+	    MimeMessage mensaje = mailSender.createMimeMessage();
+	    MimeMessageHelper helper = new MimeMessageHelper(mensaje, false, "UTF-8");
+
+	    String urlVerificacion = "http://localhost:5173/verificacion-cuenta?token=" + token;
+
+	    String texto = 
+	        "¡Hola, " + nombre + "!\n\n" +
+	        "Estamos muy emocionados de tenerte en Archives. Ya falta muy poco para que puedas " +
+	        "empezar a compartir tus lecturas favoritas, explorar nuestro catálogo de libros y " +
+	        "papelería y conectar con otros lectores.\n\n" +
+	        "Para activar tu cuenta y confirmar que este es tu correo, por favor haz clic en " +
+	        "este enlace en tu navegador:\n" +
+	        urlVerificacion + "\n\n" +
+	        "¡Nos vemos dentro!\n" +
+	        "El equipo de Archives";
+
+	    helper.setTo(to);
+	    helper.setSubject("¡Te damos la bienvenida a Archives! Confirma tu cuenta");
+	    helper.setText(texto, false); // false -> texto plano (sin HTML)
+
+	    mailSender.send(mensaje);
+	}
 }

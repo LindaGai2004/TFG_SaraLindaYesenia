@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+Back/01_proyecto_LindaSaraYesenia/bin/
+# secrets
+application-local.properties
+**/application-local.properties
+.env
+=======
 # Compilados
 Back/01_proyecto_LindaSaraYesenia/bin/
 Back/chatbot-service/bin/
@@ -10,3 +17,4 @@ application-local.properties
 # Imágenes de upload (generadas en runtime)
 Back/01_proyecto_LindaSaraYesenia/upload/
 Back/chatbot-service/src/main/resources/application-local.properties
+>>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94

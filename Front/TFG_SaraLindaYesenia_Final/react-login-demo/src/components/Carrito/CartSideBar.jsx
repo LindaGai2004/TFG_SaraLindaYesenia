@@ -99,10 +99,10 @@ export default function CartSidebar({ isOpen, onClose }) {
 
                   <div className="sidebar-item-actions">
                     <button className="action-btn favorite" onClick={() => toggleFavorito(idParaAccion)}>
-                      <img src={isFav ? "/corazon_negro.png" : "/corazon_blanco.png"} alt="Fav" />
+                      <img src={isFav ? "/corazon_lleno.png" : "/corazon_vacio.png"} alt="Fav" />
                     </button>
                     <button className="action-btn delete" onClick={() => quitarFromCart(idParaAccion)}>
-                      <img src="/eliminar_negro.png" alt="Eliminar" />
+                      <img src="/eliminar_blanco.png" alt="Eliminar" />
                     </button>
                   </div>
                 </div>

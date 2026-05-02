@@ -10,7 +10,6 @@ function getAuthHeader() {
 function handle401() { 
   const path = window.location.pathname;
 
-  // Already on login, don't redirect again
   if (path === "/login") return;
 
   if (

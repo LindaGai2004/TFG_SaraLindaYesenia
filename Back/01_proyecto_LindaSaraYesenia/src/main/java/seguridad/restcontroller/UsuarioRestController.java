@@ -1,10 +1,12 @@
 package seguridad.restcontroller;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,18 +15,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioDto;
 import seguridad.model.dto.UsuarioRecomendadoDto;
 import seguridad.repository.PerfilRepository;
+import seguridad.repository.UsuarioRepository;
 import seguridad.security.JwtService;
 import seguridad.service.EmailService;
+import seguridad.service.PublicacionService;
 import seguridad.service.UsuarioService;
 import seguridad.service.VerificacionCuentaService;
 
-import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,6 +40,9 @@ public class UsuarioRestController {
     private UsuarioService usuarioService;
     
     @Autowired
+    private PublicacionService publicacionService;
+    
+    @Autowired
     private VerificacionCuentaService verificacionService;
     
     @Autowired
@@ -43,6 +50,9 @@ public class UsuarioRestController {
    
     @Autowired
     private PerfilRepository perfilRepository;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
    
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -105,17 +115,22 @@ public class UsuarioRestController {
                 return ResponseEntity.badRequest().body("El email ya está registrado");
             }
 
-            // NO encriptes aquí
-            usuario.setEnabled(0); // lo corregimos ahora abajo
+            if (usuarioService.existsByUsername(usuario.getUsername())) {
+                return ResponseEntity.badRequest().body("El nombre de usuario ya está en uso");
+            }
+
+            usuario.setEnabled(0); 
+
             Usuario nuevo = usuarioService.registrarCliente(usuario);
 
-            var token = verificacionService.crearToken(nuevo);
-            String link = "http://localhost:5173/verificacion-cuenta?token=" + token.getToken();
+            var tokenVerificacion = verificacionService.crearToken(nuevo);
+            String link = "http://localhost:5173/verificacion-cuenta?token=" + tokenVerificacion.getToken();
 
             emailService.enviarEmailSimple(
                     nuevo.getEmail(),
-                    "Verifica tu cuenta",
-                    "Haz clic en el siguiente enlace para activar tu cuenta:\n" + link
+                    "Verifica tu cuenta en Archives",
+                    "Hola " + nuevo.getNombre() + ",\n\n" +
+                    "Gracias por registrarte. Haz clic en el siguiente enlace para activar tu cuenta:\n" + link
             );
 
             UsuarioDto dto = new UsuarioDto(nuevo);
@@ -123,7 +138,8 @@ public class UsuarioRestController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error en el registro: " + e.getMessage());
         }
     }
 
@@ -221,7 +237,9 @@ public class UsuarioRestController {
         // Campos a modificar
         if (usuario.getUsername() != null) objetivo.setUsername(usuario.getUsername());
 
-       
+        if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
+            objetivo.setPassword(usuario.getPassword());
+        }
 
         if (usuario.getNombre() != null) objetivo.setNombre(usuario.getNombre());
         if (usuario.getApellidos() != null) objetivo.setApellidos(usuario.getApellidos());
@@ -238,7 +256,7 @@ public class UsuarioRestController {
                     .orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
             objetivo.setPerfil(perfilDB);
         }
-
+        
         // enabled solo 1 o 2
         int en = usuario.getEnabled();
         if (en == 1 || en == 2) objetivo.setEnabled(en);
@@ -416,12 +434,11 @@ public class UsuarioRestController {
         return usuarioService.obtenerUsuariosRecomendados(idLogueado);
     }
     
-    
- // 在类顶部添加
+ 
     @Value("${app.upload.dir:./upload/}")
     private String uploadDir;
 
-    // 修改接口里的路径
+   
     @PostMapping("/usuario/{email}/avatar")
     public ResponseEntity<?> subirAvatar(
             @PathVariable String email,

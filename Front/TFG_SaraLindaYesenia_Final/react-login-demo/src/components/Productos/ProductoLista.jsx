@@ -42,15 +42,16 @@ export default function ProductoLista({ productos }) {
       setMostrarAvisoFavorito(true);
       return;
     }
+
     const esFavorito = favoritos[idProducto];
+
     try {
       if (esFavorito) {
         await apiDelete(`/usuarios/favoritos/${idProducto}`);
-        setMensaje("Eliminado de favoritos"); // añadido
       } else {
         await apiPost(`/usuarios/favoritos/${idProducto}`);
-        setMensaje("Añadido a favoritos"); // añadido
       }
+
       setFavoritos(prev => ({
         ...prev,
         [idProducto]: !prev[idProducto]
@@ -151,8 +152,6 @@ export default function ProductoLista({ productos }) {
                 }
 
                 addToCart(p.idProducto, 1);
-                setMensaje("Producto añadido al carrito");
-                setTimeout(() => setMensaje(""), 2000);
               }}
             >
               Añadir al carrito

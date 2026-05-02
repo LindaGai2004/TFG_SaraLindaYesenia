@@ -44,7 +44,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
         {/* BOTÓN ELIMINAR */}
         {(esDuenio || esAdmin) && (
           <button 
-            className="btn-accion"
+            className="btn-eliminar"
             onClick={() => {
               if(window.confirm("¿Estás seguro de que quieres borrar esta publicación?")) {
                 onEliminar(publicacion.idPublicacion);
@@ -103,7 +103,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
           onClick={() => onLike(publicacion.idPublicacion)}
         >
           <img
-            src={publicacion.usuarioAvatar ? getApiUrl(publicacion.usuarioAvatar) + '?t=' + Date.now() : "/assets/default-user.png"}
+            src={publicacion.likedByUser ? "/corazon_lleno.png" : "/corazon_vacio.png"}
             alt="like"
             className="icono-accion"
           />

@@ -50,6 +50,12 @@ export default function Register() {
   const validate = () => {
     const newErrors = {};
 
+    if (!username.trim()) {
+      newErrors.username = "el nombre de usuario es obligatorio";
+    } else if (username.length < 3) {
+      newErrors.username = "El nombre de usuario debe tener al menos 3 caracteres";
+    }
+
     if (!email.trim()) {
       newErrors.email = "El correo es obligatorio";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -104,8 +110,14 @@ export default function Register() {
       navigate(`/verificacion-cuenta?email=${email}`);
 
     } catch (err) {
-      const mensaje = err.message || "Error al crear el usuario";
-      alert(mensaje);
+      // CAPTURAR ERROR DE USUARIO DUPLICADO DESDE EL BACK
+      const mensajeBack = err.response?.data || err.message;
+      
+      if (mensajeBack.includes("username") || mensajeBack.toLowerCase().includes("usuario ya registrado")) {
+        setErrors(prev => ({ ...prev, username: "Este nombre de usuario ya está en uso" }));
+      } else {
+        alert(mensajeBack);
+      }
     }
   };
 

@@ -77,6 +77,8 @@ public class SecurityConfig {
             	    "/productos/todos",
             	    "/productos/filtrar",
             	    "/productos/**",
+            	    "/resenas/**",
+            	    "/resenas/guardar",
 
             	    "/todos",
             	    "/recomendados",
@@ -98,6 +100,8 @@ public class SecurityConfig {
             	
             	.requestMatchers("/publicaciones/*/like").authenticated()
             	.requestMatchers("/publicaciones/*/comentarios").authenticated()
+            	.requestMatchers(HttpMethod.POST, "/usuarios/*/seguir").authenticated()
+
             	//.requestMatchers(HttpMethod.POST, "/usuarios/*/seguir").authenticated()
             	.requestMatchers(HttpMethod.GET, "/usuarios/*/seguidores").permitAll()
             	.requestMatchers(HttpMethod.GET, "/usuarios/*/seguidos").permitAll()
