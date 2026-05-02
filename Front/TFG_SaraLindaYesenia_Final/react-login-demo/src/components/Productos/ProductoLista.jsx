@@ -152,8 +152,6 @@ export default function ProductoLista({ productos }) {
                 }
 
                 addToCart(p.idProducto, 1);
-                setMensaje("Producto añadido al carrito");
-                setTimeout(() => setMensaje(""), 2000);
               }}
             >
               Añadir al carrito

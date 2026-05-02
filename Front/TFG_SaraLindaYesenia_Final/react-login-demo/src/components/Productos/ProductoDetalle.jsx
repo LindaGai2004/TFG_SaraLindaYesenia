@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
 import ProductoImagenes from "./ProductoImagenes";
-import { apiGet, apiPost, apiDelete, getUploadUrl  } from "../../api/api";
+import { apiGet, apiPost, apiDelete, getUploadUrl, getApiUrl  } from "../../api/api";
 import { crearItemHistorial, guardarEnHistorial } from "../../utils/historialProductos";
 import "./ProductoDetalle.css";
 
@@ -33,6 +33,15 @@ export default function ProductoDetalle() {
   const [nuevaCalificacion, setNuevaCalificacion] = useState(5);
   const [nuevoComentario, setNuevoComentario] = useState("");
   const [yaResenado, setYaResenado] = useState(false);
+
+  const dist = [5, 4, 3, 2, 1].map(star => {
+    const cantidad = resenas.filter(r => r.calificacion === star).length;
+    const porcentaje = resenas.length > 0 ? (cantidad / resenas.length) * 100 : 0;
+    return { star, cantidad, porcentaje };
+  });
+
+  // Estado para controlar la visibilidad del formulario
+  const [mostrarForm, setMostrarForm] = useState(false);
   
   const handleEliminarResena = async (idResena) => {
     if (!window.confirm("¿Estás seguro de que quieres borrar tu reseña?")) return;
@@ -188,9 +197,16 @@ export default function ProductoDetalle() {
 
     try {
       const data = await apiPost("/resenas/guardar", resenaDTO);
-      setResenas([data, ...resenas]); // Añadir la nueva al principio
+      
+      // Actualizamos el listado y estados de control
+      setResenas([data, ...resenas]); 
       setNuevoComentario("");
       setYaResenado(true);
+      
+      // Cerramos el formulario
+      setMostrarForm(false); 
+      
+      // Feedback visual
       setMensaje("¡Gracias por tu reseña! ✨");
       setTimeout(() => setMensaje(""), 2000);
       
@@ -198,8 +214,9 @@ export default function ProductoDetalle() {
       const resMedia = await fetch(`http://localhost:9001/resenas/media/${id}`);
       const nuevaMedia = await resMedia.json();
       setMedia(nuevaMedia);
+
     } catch (error) {
-      console.error("Error al guardar reseña", error);
+      console.error("Error al guardar la reseña", error);
     }
   };
 
@@ -316,9 +333,13 @@ export default function ProductoDetalle() {
 
                 <div className="rating-superior">
                   <span className="estrellas-rating">
-                    {"★".repeat(Math.round(media)) + "☆".repeat(5 - Math.round(media))}
+                    {[1, 2, 3, 4, 5].map((num) => (
+                      <span key={num} className={`star-display ${Math.round(media) >= num ? 'filled' : ''}`}>
+                        ★
+                      </span>
+                    ))}
                   </span>
-                  <span className="numero-media-texto">{media.toFixed(1)}</span>
+                  <span className="numero-media-texto">{media.toFixed(1)} </span>
                   {/* total valoraciones */}
                   <a 
                     href="#seccion-resenas" className="total-valoraciones-link"
@@ -344,12 +365,10 @@ export default function ProductoDetalle() {
                     onClick={() => {
                       if (!user) {
                         setMostrarAvisoCarrito(true);
-                        return; // evita añadir al carrito sin haberte logueado 
+                        return;
                       }
 
                       addToCart(producto.id, 1);
-                      setMensaje("Producto añadido al carrito");
-                      setTimeout(() => setMensaje(""), 2000);
                     }}
                   >
                     Añadir al carrito
@@ -364,13 +383,13 @@ export default function ProductoDetalle() {
                     </button>
 
                     <button className="btn-icono" onClick={handleCompartir}>
-                      <img src="/compartir.jpg" alt="Compartir" />
+                      <img src="/compartir.png" alt="Compartir" />
                     </button>
                   </div>
                 </div>
               </div>
             </div>
-            {/* SECCIÓN DE PESTAÑAS (TABS) */}
+            {/* SECCIÓN DE PESTAÑAS*/}
             <div className="contenedor-pestañas">
               <div className="cabecera-pestañas">
                 <button 
@@ -390,7 +409,7 @@ export default function ProductoDetalle() {
                   onClick={() => setTabActiva("resenas")}
                   id="seccion-resenas"
                 >
-                  Reseñas ({resenas.length})
+                  Reseñas
                 </button>
               </div>
 
@@ -453,69 +472,122 @@ export default function ProductoDetalle() {
                 {/* PESTAÑA 3: RESEÑAS */}
                 {tabActiva === "resenas" && (
                   <div className="tab-panel animar-entrada">
-                    <div className="resenas-header">
-                      <div className="media-estrellas">
-                        <span className="numero-media">{media.toFixed(1)}</span>
-                        <div className="estrellas-puntos">
-                          {"★".repeat(Math.round(media)) + "☆".repeat(5 - Math.round(media))}
-                        </div>
-                        <p>{resenas.length} valoraciones</p>
-                      </div>
-
-                      {user && !yaResenado ? (
-                        <form className="form-resena" onSubmit={handleEnviarResena}>
-                          <h3>Escribe tu opinión</h3>
-                          <div className="selector-estrellas">
-                            {[1, 2, 3, 4, 5].map(num => (
-                              <span 
-                                key={num} 
-                                className={`star ${nuevaCalificacion >= num ? 'filled' : ''}`}
-                                onClick={() => setNuevaCalificacion(num)}
-                              >★</span>
-                            ))}
-                          </div>
-                          <textarea 
-                            placeholder="¿Qué te ha parecido este producto?"
-                            value={nuevoComentario}
-                            onChange={(e) => setNuevoComentario(e.target.value)}
-                            required
-                          />
-                          <button type="submit" className="btn-enviar-resena">Publicar reseña</button>
-                        </form>
-                      ) : user && yaResenado ? (
-                        <p className="aviso-resena">Ya has valorado este producto. ¡Gracias!</p>
-                      ) : (
-                        <p className="aviso-resena">Inicia sesión para dejar una reseña.</p>
-                      )}
-                    </div>
-
-                    <div className="lista-resenas-items">
-                      {resenas.length === 0 ? (
-                        <p>Aún no hay reseñas. ¡Sé el primero en opinar!</p>
-                      ) : (
-                        resenas.map(r => (
-                          <div key={r.idResena} className="resena-card">
-                            <div className="resena-usuario">
-                              <img src={r.usuario.avatar || "/avatar-default.png"} alt="User" />
-                              <div>
-                                <p className="nombre-u">{r.usuario.username}</p>
-                                <div className="estrellas-r">
-                                  {"★".repeat(r.calificacion) + "☆".repeat(5 - r.calificacion)}
-                                </div>
+                    <div className="resenas-container-layout">
+                      
+                      {/* HEADER: Estadísticas y Botón / Formulario */}
+                      <div className="resenas-header-stats">
+                        {!mostrarForm ? (
+                          <>
+                            <div className="stats-left">
+                              <span className="numero-media">{media.toFixed(1)}</span>
+                              <div className="estrellas-puntos">
+                                {[1, 2, 3, 4, 5].map((num) => (
+                                  <span key={num} className={`star-display ${Math.round(media) >= num ? 'filled' : ''}`}>★</span>
+                                ))}
                               </div>
-                              <span className="fecha-r">{new Date(r.fecha).toLocaleDateString()}</span>
-                              
-                              {user && user.idUsuario === r.usuario.idUsuario && (
-                                <button 
-                                  className="btn-eliminar-resena"
-                                  onClick={() => handleEliminarResena(r.idResena)}
-                                >🗑️</button>
+                              <p className="total-val">{resenas.length} valoraciones</p>
+                            </div>
+
+                            <div className="stats-middle">
+                              {[5, 4, 3, 2, 1].map((star) => {
+                                const cantidad = resenas.filter(r => r.calificacion === star).length;
+                                const porcentaje = resenas.length > 0 ? (cantidad / resenas.length) * 100 : 0;
+                                return (
+                                  <div key={star} className="barra-fila">
+                                    <span className="etiqueta-estrella">{star} {star === 1 ? 'estrella' : 'estrellas'}</span>
+                                    <div className="barra-vacia">
+                                      <div className="barra-llena" style={{ width: `${porcentaje}%` }}></div>
+                                    </div>
+                                    <span className="cantidad-texto">{porcentaje.toFixed(0)}%</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            <div className="stats-right">
+                              {user && !yaResenado ? (
+                                <button className="btn-abrir-resena" onClick={() => setMostrarForm(true)}>
+                                  Escribir mi opinión
+                                </button>
+                              ) : user && yaResenado ? (
+                                <p className="check-done">Ya has valorado este producto. ¡Gracias!</p>
+                              ) : (
+                                <p className="aviso-resena">Inicia sesión para dejar una reseña.</p>
                               )}
                             </div>
-                            <p className="texto-r">{r.comentario}</p>
+                          </>
+                        ) : (
+                          <div className="form-resena-inline animar-entrada">
+                            <div className="form-inline-header">
+                              <h3>¿Qué te ha parecido este producto?</h3>
+                              <button className="btn-cerrar-inline" onClick={() => setMostrarForm(false)}>✕</button>
+                            </div>
+                            <form onSubmit={handleEnviarResena}>
+                              <div className="selector-estrellas-inline">
+                                {[1, 2, 3, 4, 5].map(num => (
+                                  <span 
+                                    key={num} 
+                                    className={`star ${nuevaCalificacion >= num ? 'filled' : ''}`}
+                                    onClick={() => setNuevaCalificacion(num)}
+                                  >★</span>
+                                ))}
+                                <span className="texto-ayuda-estrellas">Pulsa para puntuar</span>
+                              </div>
+                              <textarea 
+                                placeholder="Cuéntanos qué te ha gustado y qué no..."
+                                value={nuevoComentario}
+                                onChange={(e) => setNuevoComentario(e.target.value)}
+                                required
+                              />
+                              <div className="form-inline-footer">
+                                <button type="button" className="btn-cancelar-inline" onClick={() => setMostrarForm(false)}>Ahora no</button>
+                                <button type="submit" className="btn-enviar-resena">Publicar reseña</button>
+                              </div>
+                            </form>
                           </div>
-                        ))
-                      )}
+                        )}
+                      </div>
+
+                      {/* LÍNEA DIVISORIA */}
+                      <hr className="resenas-divider" />
+
+                      {/* LISTADO DE RESEÑAS EN GRID (2 por fila) */}
+                      <div className="lista-resenas-grid">
+                        {resenas.length === 0 ? (
+                          <p className="empty-msg">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
+                        ) : (
+                          resenas.map(r => (
+                            <div key={r.idResena} className="resena-card-v2">
+                              <div className="resena-usuario">
+                                <img
+                                  src={
+                                    r.usuario.avatar 
+                                      ? getApiUrl(r.usuario.avatar) 
+                                      : "/assets/default-user.png"
+                                  }
+                                  alt={`Avatar de ${r.usuario.username}`}
+                                  className="avatar-usuario" // Usamos la clase específica que creamos antes
+                                />
+                                <div className="resena-meta">
+                                  <p className="nombre-u">{r.usuario.username}</p>
+                                  <div className="estrellas-r">
+                                    {[1, 2, 3, 4, 5].map((num) => (
+                                      <span key={num} className={`star-display ${r.calificacion >= num ? 'filled' : ''}`}>★</span>
+                                    ))}
+                                  </div>
+                                </div>
+                                <span className="fecha-r">{new Date(r.fecha).toLocaleDateString()}</span>
+                                {user && user.idUsuario === r.usuario.idUsuario && (
+                                  <button className="btn-eliminar-resena" onClick={() => handleEliminarResena(r.idResena)}>
+                                    <img src="/eliminar_blanco.png" alt="Eliminar" className="img-eliminar" />
+                                  </button>
+                                )}
+                              </div>
+                              <p className="texto-r">{r.comentario}</p>
+                            </div>
+                          ))
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}

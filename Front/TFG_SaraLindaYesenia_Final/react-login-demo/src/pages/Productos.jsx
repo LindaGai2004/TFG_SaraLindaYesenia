@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-<<<<<<< HEAD
 import axios from "axios";
-=======
 import { apiGet } from "../api/api";
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
 import ProductoFiltros from "../components/Productos/ProductoFiltros.jsx";
 import ProductoLista from "../components//Productos/ProductoLista.jsx";
 import "./Productos.css";
@@ -16,7 +13,6 @@ export default function Productos() {
     const [paginaActual, setPaginaActual] = useState(1);
     const [busqueda, setBusqueda] = useState("");
     const [searchParams] = useSearchParams();
-<<<<<<< HEAD
     const productosPorPagina = 24; 
 
     {/** 
@@ -33,45 +29,11 @@ export default function Productos() {
         cargarTodos();
     }, []);    */}
 
-=======
-    const productosPorPagina = 24;
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
 
     // Función para el buscador de los productos
     const manejarBusqueda = async (e) => {
         const texto = e.target.value;
         setBusqueda(texto);
-<<<<<<< HEAD
-        setPaginaActual(1); // Resetear a la página 1 al buscar
-
-        if (texto.trim().length > 0) {
-            try {
-                const response = await axios.get(`http://localhost:9001/productos/buscar/todos`, {
-                    params: { texto: texto }
-                });
-                // Si el back devuelve un array, lo ponemos
-                //  si no lista vacía
-                setProductos(Array.isArray(response.data) ? response.data : []);
-            } catch (error) {
-                console.error("Error en la búsqueda:", error);
-                setProductos([]);
-            }
-        } else {
-            cargarTodos(); // Si borra el texto, mostramos todo otra vez
-        }
-    };
-
-    const filtrarProductos = async (filtros) => {
-        try {
-            const response = await axios.get(
-                "http://localhost:9001/productos/filtrar",
-                { params: filtros }
-            );
-            setProductos(response.data);
-            setPaginaActual(1);
-        } catch (error) {
-            console.error("Error al filtrar productos:", error);
-=======
         setPaginaActual(1);
         if (texto.trim().length > 0) {
             try {
@@ -94,28 +56,19 @@ export default function Productos() {
             setPaginaActual(1);
         } catch (error) {
             console.error("Error al filtrar:", error);
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
         }
     };
 
     async function cargarTodos() {
         try {
-<<<<<<< HEAD
-            const response = await axios.get("http://localhost:9001/productos/todos");
-            setProductos(response.data);
-=======
             const data = await apiGet("/productos/todos");
             setProductos(data);
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
         } catch (error) {
             console.error("Error cargando productos:", error);
         }
     }
 
-<<<<<<< HEAD
-=======
     // Un solo useEffect
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
     useEffect(() => {
         const genero = searchParams.get("genero");
         const categoria = searchParams.get("categoria");

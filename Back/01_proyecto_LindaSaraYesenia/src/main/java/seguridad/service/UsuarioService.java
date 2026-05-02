@@ -25,8 +25,6 @@ public interface UsuarioService extends UserDetailsService{
 
 	List<Usuario> findByPerfil(int idPerfil);
 	int deleteById(Integer idUsuario);
-	//anterior
-	//String normalizePassword(String raw);
 	List<Usuario> FindByRolAndTexto(int idPerfil, String texto);
 
 	/* Usuarios recomendados */

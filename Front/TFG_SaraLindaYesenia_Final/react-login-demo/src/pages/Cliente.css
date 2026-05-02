@@ -107,7 +107,6 @@ body {
   color: var(--sidebar-icon);
   transition: all 0.18s;
   text-decoration: none;
-  user-select: none;
 }
 
 .app-sidebar-link svg,

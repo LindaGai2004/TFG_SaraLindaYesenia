@@ -4,7 +4,7 @@ import { getApiUrl } from "../../api/api";
 import "./SidebarDerecha.css";
 
 async function toggleFollowRequest(idSeguido, miId) {
-  return api.apiPost(`/usuarios/${idSeguido}/seguir?idUsuarioActual=${miId}`, {});
+  return api.apiPost(`/usuarios/${idSeguido}/seguir?idUsuarioActual=${miId}`, {}, true);
 }
 
 export default function SidebarDerecha() {
@@ -13,6 +13,7 @@ export default function SidebarDerecha() {
   // Obtenemos el usuario de forma segura
   const userData = localStorage.getItem("user");
   const user = userData ? JSON.parse(userData) : null;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     cargarUsuarios();
@@ -28,17 +29,13 @@ export default function SidebarDerecha() {
   }
 
   const handleSeguir = async (idSeguido) => {
-    console.log("¡Botón pulsado para el usuario!", idSeguido);
-    
-    // Leemos el usuario directamente del storage cuando se hace click
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    console.log("Usuario recuperado en el click:", storedUser);
-    const miId = storedUser?.idUsuario || storedUser?.id;
-
-    if (!miId) {
-        alert("No se encuentra tu sesión. Por favor, cierra sesión y vuelve a entrar.");
+    // 1. Validaciones previas
+    if (!token || !user) {
+        alert("Debes iniciar sesión para seguir usuarios");
         return;
     }
+
+    const miId = user?.idUsuario || user?.id;
 
     if (miId === idSeguido) {
         console.warn("No puedes seguirte a ti mismo");
@@ -46,10 +43,12 @@ export default function SidebarDerecha() {
     }
 
     try {
-        // Hacemos la petición
+        // 2. Ejecutar la petición al SeguidorRestController
         const res = await toggleFollowRequest(idSeguido, miId);
         console.log("Respuesta servidor:", res);
 
+        // 3. El controlador devuelve un Map, verificamos la clave 'siguiendo'
+        // Tu compañera usa ResponseEntity.ok(seguidorService.toggleSeguir(...))
         if (res && typeof res.siguiendo !== 'undefined') {
             setUsuarios(prevUsuarios => 
                 prevUsuarios.map(u => 
@@ -58,10 +57,15 @@ export default function SidebarDerecha() {
                         : u
                 )
             );
+            
+            // Disparamos evento para que el feed principal se actualice si es necesario
             window.dispatchEvent(new CustomEvent("community-follow-changed"));
         }
     } catch (e) {
         console.error("Error al seguir:", e);
+        if(e.message?.includes("401")) {
+            alert("Sesión expirada. Por favor, vuelve a entrar.");
+        }
     }
   };
 

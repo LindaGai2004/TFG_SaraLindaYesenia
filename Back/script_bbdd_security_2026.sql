@@ -177,10 +177,6 @@ create table comentarios_publicacion (
     foreign key (id_usuario) references usuarios(id_usuario)
 );
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
 create table seguidores (
     id int auto_increment primary key,
     id_seguidor int not null,
@@ -192,7 +188,6 @@ create table seguidores (
 );
 
 
-<<<<<<< HEAD
 create table resenas_productos (
     id_resena int auto_increment primary key,
     id_usuario int not null,
@@ -207,8 +202,6 @@ create table resenas_productos (
 );
 
 
-=======
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
 INSERT INTO perfiles(nombre)
 values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 ('ROLE_TRABAJADOR'),
@@ -217,7 +210,6 @@ values ('ROLE_ADMON'),('ROLE_CLIENTE'),
 
 INSERT INTO usuarios 
 (username, password, nombre, apellidos, enabled, fecha_registro, fecha_nacimiento, direccion, email, avatar, id_perfil) VALUES
-<<<<<<< HEAD
 ('tomasesc', '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'Madrid', 'tomas@ifp.com', '/uploads/perfiles/tomas.png', 1),
 ('mariardu', '$2a$10$G1z9biVEqDJfQsPQeieplO1OEiXgoJvUcT9/XBOgTCuWdiNj0UcaC', 'Maria', 'Radu', 1, '2025-11-05', '1960-11-02', 'Madrid', 'maria@ifp.com', '/uploads/perfiles/maria.png', 2),
 ('saribaras', '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'Sevilla', 'sara@ifp.com', '/uploads/perfiles/sara.png', 2),
@@ -235,15 +227,6 @@ INSERT INTO usuarios
 ('sunakim', '$2a$10$6D1fPoIBGmtphX2frS93neMaHhPtAR425X7R6fUL.ODWx2gEgwmli', 'Suna', 'Kim', 1, '2023-09-29', '2003-10-02', 'Valencia', 'suna@ifp.com', '/uploads/perfiles/suna.png', 2),
 ('evagoma', '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'Cordoba', 'eva@ifp.com', '/uploads/perfiles/eva.png', 3),
 ('ramgnzl', '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'Madrid','ramon@ifp.com', '/uploads/perfiles/ramon.png', 4);
-=======
-('tomas', '$2a$10$uMbqlGPfQxpF3J8p0uRiYOS427rAkvdmN.7vwdc0BJgOYwZd2aMXC', 'Tomas', 'Escu', 1, '2025-11-05', '1960-11-02', 'Madrid', 'tomas@ifp.com', '/uploads/perfiles/tomas.png', 1),
-('sarita', '$2a$10$rjk61QcvcX6QMw1ApHy3Nerc98E1ac.a3SFiUCdPeOqOtitp0NxoG', 'Sara', 'Baras', 1, '2024-02-05', '1999-03-16', 'Sevilla', 'sara@ifp.com', '/uploads/perfiles/sara.png', 2),
-('juan', '$2a$10$JWVBDtdPuxc3Lp7W4BieDO7js2mvEz6YiSEj9e1e6mGhwRmRmsj4m', 'Juan', 'García', 1, '2018-12-23', '1970-06-21', 'Galicia', 'juan@ifp.com', '/uploads/perfiles/juan.png', 2),
-('paqui', '$2a$10$tnK/swSN.pPaSnByMaLyU.sfLCkDsE1mqZ7F93Is.QXl72eNxSgTq', 'Paqui', 'Rodríguez', 1, '2004-05-14', '1989-02-13', 'Cuenca', 'paqui@ifp.com', '/uploads/perfiles/paqui.png', 2),
-('carlos', '$2a$10$LG/oVQoygOcECMEsZ3159us096iIFQl3PrsPg/u3DNPXVpykU85A2', 'Carlos', 'Rubio', 1, '2023-09-29', '2003-10-02', 'Salamanca', 'carlos@ifp.com', '/uploads/perfiles/carlos.png', 2),
-('eva', '$2a$10$1eJ8IlKZUGX.UI.Of6LZvuzqxuH4kBQRPyVRNeaRJKC20dgNwZniq', 'Eva', 'Goma', 1, '2000-01-02', '1978-05-24', 'Cordoba', 'eva@ifp.com', '/uploads/perfiles/eva.png', 3),
-('ramon', '$2a$10$cE3JWkqnFFhjc5i70AIdfOt3n14mT5dJJ.WppnC6O4mywoNW/tVOe', 'Ramon', 'González', 1, '2014-07-07', '1996-06-04', 'Madrid','ramon@ifp.com', '/uploads/perfiles/ramon.png', 4);
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
 
 
 INSERT INTO genero (nombre_genero)VALUES
@@ -914,7 +897,6 @@ INSERT INTO facturas (num_factura, fecha_factura, precio_total, id_pedido) VALUE
 
 
 INSERT INTO publicaciones (id_usuario, texto, imagen, fecha, likes, comentarios) VALUES
-<<<<<<< HEAD
 (4, 'Hoy he vuelto a una librería pequeña del centro. No iba con intención de comprar nada, pero ya sabéis cómo acaba eso…', NULL, NOW() - INTERVAL 1 DAY, 3, 1),
 (7, 'Me encanta cuando un libro te sorprende justo cuando pensabas que ya lo habías entendido todo. Esa sensación no tiene precio.', NULL, NOW() - INTERVAL 2 DAY, 5, 2),
 (2, 'Estoy intentando leer un poco cada mañana antes de empezar el día. Me ayuda a no ir con prisas y a empezar con buena energía.', NULL, NOW() - INTERVAL 3 DAY, 2, 0),
@@ -927,27 +909,61 @@ INSERT INTO publicaciones (id_usuario, texto, imagen, fecha, likes, comentarios)
 (2, 'Hoy me he dado cuenta de que subrayo demasiado, pero no pienso parar. Cada frase bonita merece ser guardada.', NULL, NOW() - INTERVAL 10 DAY, 1, 0),
 (3, 'Creo que voy a empezar a escribir reseñas cortas de los libros que leo. No sé si a alguien le servirán, pero a mí me ayudará a recordarlos.', NULL, NOW() - INTERVAL 11 DAY, 2, 0),
 (6, 'Me encanta cuando un libro te hace sentir acompañada, incluso en los días más raros.', NULL, NOW() - INTERVAL 12 DAY, 5, 3);
-=======
-(2, 'Hoy he vuelto a una librería pequeña del centro. No iba con intención de comprar nada, pero ya sabéis cómo acaba eso…', NULL, NOW() - INTERVAL 1 DAY, 3, 1),
-(2, 'Me encanta cuando un libro te sorprende justo cuando pensabas que ya lo habías entendido todo. Esa sensación no tiene precio.', NULL, NOW() - INTERVAL 2 DAY, 5, 2),
-(2, 'Estoy intentando leer un poco cada mañana antes de empezar el día. Me ayuda a no ir con prisas y a empezar con buena energía.', NULL, NOW() - INTERVAL 3 DAY, 2, 0),
-(2, 'Hoy he encontrado una frase preciosa: “A veces, lo que buscas llega cuando dejas de buscarlo”. La he tenido que subrayar.', NULL, NOW() - INTERVAL 4 DAY, 4, 1),
-(2, 'He empezado un cuaderno nuevo para escribir ideas. No sé si saldrá algo bueno, pero me hace ilusión tener un espacio solo para mí.', NULL, NOW() - INTERVAL 5 DAY, 1, 0),
-(2, '¿Alguna recomendación de libros de misterio? Me apetece algo que me enganche desde la primera página.', NULL, NOW() - INTERVAL 6 DAY, 6, 3),
-(2, 'Hoy he tenido una tarde tranquila con café y lectura. Ojalá más días así.', NULL, NOW() - INTERVAL 7 DAY, 2, 0),
-(2, 'Estoy releyendo un libro que me marcó hace años. Qué curioso cómo cambia la perspectiva con el tiempo.', NULL, NOW() - INTERVAL 8 DAY, 3, 1),
-(4, 'A veces solo necesito desconectar un rato y perderme entre páginas. Es mi forma favorita de respirar.', NULL, NOW() - INTERVAL 9 DAY, 4, 2),
-(2, 'Hoy me he dado cuenta de que subrayo demasiado, pero no pienso parar. Cada frase bonita merece ser guardada.', NULL, NOW() - INTERVAL 10 DAY, 1, 0),
-(3, 'Creo que voy a empezar a escribir reseñas cortas de los libros que leo. No sé si a alguien le servirán, pero a mí me ayudará a recordarlos.', NULL, NOW() - INTERVAL 11 DAY, 2, 0),
-(2, 'Me encanta cuando un libro te hace sentir acompañada, incluso en los días más raros.', NULL, NOW() - INTERVAL 12 DAY, 5, 3);
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
 
+
+INSERT INTO resenas_productos (id_usuario, id_producto, calificacion, comentario, fecha) VALUES
+(4, 1, 5, 'Excelente calidad, justo lo que buscaba.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(8, 2, 2, 'No me ha gustado mucho el acabado, esperaba otra cosa.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(15, 3, 4, 'Muy buen producto, aunque el embalaje llegó algo dañado.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(2, 4, 1, 'Mala experiencia, dejó de funcionar a los dos días.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(11, 5, 5, 'Increíble, funciona a la perfección.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(6, 6, 3, 'Está bien para el precio que tiene, ni más ni menos.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(13, 7, 5, 'Súper recomendado, calidad premium.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(9, 8, 4, 'Satisfecho con la compra, envío rápido.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(3, 9, 2, 'Me parece un poco caro para lo que realmente es.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(14, 10, 5, 'Espectacular, volveré a comprar sin duda.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(7, 11, 3, 'Cumple, pero el manual es muy difícil de entender.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(12, 12, 4, 'Todo correcto y en el tiempo previsto.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(5, 13, 1, 'No lo recomiendo, materiales muy frágiles.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(10, 14, 5, 'Mejor de lo que esperaba, diseño muy elegante.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(2, 15, 4, 'Buen rendimiento en general.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(15, 16, 5, 'Una joya, merece mucho la pena.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(8, 17, 3, 'Aceptable, pero tardó mucho en llegar.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(4, 18, 5, 'La mejor compra que he hecho en meses.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(11, 19, 2, 'Llegó con un pequeño arañazo en la parte trasera.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(6, 20, 4, 'Muy práctico para el uso diario.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(13, 21, 5, 'Resistente y muy bonito visualmente.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(9, 22, 1, 'Pésimo, no se parece en nada a las fotos.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(3, 23, 4, 'Calidad estándar, hace su función.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(14, 24, 5, 'Absolutamente genial.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(7, 25, 3, 'Sin más, un producto normal y corriente.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(12, 26, 4, 'Buena relación calidad-precio.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(5, 27, 5, 'Me encanta, lo uso a todas horas.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(10, 28, 2, 'Difícil de usar, no es nada intuitivo.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(2, 29, 4, 'Sólido y bien construido.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(15, 30, 5, 'Perfecto, 10/10.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(8, 31, 3, 'Llegó tarde, pero el producto está bien.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(4, 32, 5, 'Simplemente fantástico.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(11, 33, 4, 'Me ha sorprendido positivamente.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(6, 34, 1, 'Se rompió al primer uso. Dinero tirado.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(13, 35, 5, 'Súper útil, justo lo que necesitaba.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(9, 36, 4, 'Estética muy cuidada.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(3, 37, 2, 'No volvería a comprarlo por este precio.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(14, 38, 5, 'Magnífico, envío impecable.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(7, 39, 4, 'Funciona bien después de un mes.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(12, 40, 3, 'Es pasable, pero hay mejores opciones.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(5, 41, 5, 'Lo recomiendo al 100%.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(10, 42, 4, 'Color muy bonito y tacto agradable.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(2, 43, 5, 'Sencillo pero muy eficaz.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(15, 44, 1, 'Un desastre de producto y de soporte.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(8, 45, 5, 'Calidad de materiales excelente.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(4, 46, 4, 'Muy buena compra, repetiría.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(11, 47, 2, 'Bastante ruidoso al funcionar.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(6, 48, 5, 'Cumple con creces lo prometido.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(13, 49, 3, 'Llegó con retraso, el producto es normal.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
+(9, 50, 5, 'Insuperable por este precio.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY));
 
 ALTER TABLE pedidos
 ADD COLUMN metodo_pago VARCHAR(20),
 ADD COLUMN estado_pago VARCHAR(20),
-<<<<<<< HEAD
 ADD COLUMN paypal_id_pedido VARCHAR(100);
-=======
-ADD COLUMN paypal_id_pedido VARCHAR(100);
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94

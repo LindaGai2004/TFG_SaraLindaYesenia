@@ -10,13 +10,8 @@ function getAuthHeader() {
 function handle401() { 
   const path = window.location.pathname;
 
-<<<<<<< HEAD
-  // No hacer nada en estas páginas
-=======
-  // Already on login, don't redirect again
   if (path === "/login") return;
 
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
   if (
     path.includes("verificacion") || 
     path.includes("recuperar") || 
@@ -26,15 +21,6 @@ function handle401() {
     path.includes("producto") ||
     path.includes("comunidad") ||
     path.includes("notificacion") ||
-<<<<<<< HEAD
-    path.includes("favoritos")
-  ) {
-    return;
-  }
-  //alert("401 - Token inválido o caducado"); 
-  console.error("Token inválido o caducado"); 
-  localStorage.setItem("token_expirado", "true");  // Guarda el aviso para el login
-=======
     path.includes("favoritos") ||
     path.includes("administrador") || 
     path.includes("jefe") ||
@@ -45,7 +31,6 @@ function handle401() {
   }
   console.error("Token inválido o caducado"); 
   localStorage.setItem("token_expirado", "true");
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
   localStorage.removeItem("user"); 
   localStorage.removeItem("token"); 
   localStorage.removeItem("cartItems"); 
@@ -53,10 +38,6 @@ function handle401() {
   window.location.href = "/login"; 
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
 export async function apiGet(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
     headers: { ...getAuthHeader() }
@@ -83,23 +64,15 @@ export async function apiPost(path, body, isFormData = false) {
   const headers = isFormData
     ? { ...(isPublic ? {} : getAuthHeader()) }
     : { 
-<<<<<<< HEAD
-        "Content-Type": "application/json", 
-=======
         "Content-Type": "application/json",
         "Accept": "application/json, text/plain, */*",
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
         ...(isPublic ? {} : getAuthHeader()) 
       };
 
   const options = {
     method: "POST",
     headers,
-<<<<<<< HEAD
-    body: isFormData ? body : JSON.stringify(body)
-=======
     body: isFormData ? body : JSON.stringify(body ?? {})
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94
   };
 
   const res = await fetch(`${BASE_URL}${path}`, options);
@@ -190,12 +163,8 @@ export default {
   apiPost,
   apiPut,
   apiDelete
-<<<<<<< HEAD
-};
-=======
 };
 // Get para imagenes
 export const getUploadUrl = (ruta) => `${BASE_URL}/uploads/${ruta}`;
 //
 export const getApiUrl = (ruta) => `${BASE_URL}${ruta}`;
->>>>>>> 3131c297597b9d91db9817b7dde066a3f7f90f94

@@ -12,7 +12,6 @@ export default function CrearPublicacion({ onPublicada }) {
   const [resultados, setResultados] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
-  const user = JSON.parse(localStorage.getItem("user"));
   const [mostrarAvisoLogin, setMostrarAvisoLogin] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();

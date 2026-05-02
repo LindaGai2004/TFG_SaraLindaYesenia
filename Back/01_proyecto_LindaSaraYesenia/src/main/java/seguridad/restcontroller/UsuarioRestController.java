@@ -434,25 +434,6 @@ public class UsuarioRestController {
         return usuarioService.obtenerUsuariosRecomendados(idLogueado);
     }
     
-    
-    // Seguir usuarios
-    @PostMapping("/usuarios/{idSeguido}/seguir")
-    public ResponseEntity<?> seguirUsuario(
-            @PathVariable Integer idSeguido, 
-            @RequestParam Integer idUsuarioActual
-    ) {
-        try {
-            boolean siguiendo = publicacionService.toggleSeguir(idUsuarioActual, idSeguido);
-            
-            return ResponseEntity.ok(Map.of(
-                "siguiendo", siguiendo,
-                "mensaje", siguiendo ? "Ahora sigues a este usuario" : "Has dejado de seguir a este usuario"
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al procesar el seguimiento");
-        }
-    }
-    
  
     @Value("${app.upload.dir:./upload/}")
     private String uploadDir;
