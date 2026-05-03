@@ -6,6 +6,7 @@ import { apiGet, apiPut, apiPost, getApiUrl, getUploadUrl } from '../api/api';
 import Favoritos from './Favoritos';
 import SeguimientoCliente from './SeguimientoCliente';
 import { crearItemHistorial, getHistorial, getProductoImagen } from '../utils/historialProductos';
+import { useCart } from '../context/CartContext';
 import './Cliente.css';
 
 const MINI_BOOK_COLORS = [
@@ -63,7 +64,8 @@ export default function Portfolio() {
   const [searchSuggestions, setSearchSuggestions] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const { cartItems } = useCart();
+  const cartCount = cartItems?.reduce((acc, item) => acc + item.cantidad, 0) || 0;
   const [historial, setHistorial] = useState(() => getHistorial());
   const [generos, setGeneros] = useState([]);
   const [pedidos, setPedidos] = useState([]);
@@ -195,7 +197,7 @@ export default function Portfolio() {
     return () => window.removeEventListener('focus', onFocus);
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const cargarResumenCliente = async () => {
       try {
         const carrito = await apiGet('/carrito');
@@ -207,7 +209,7 @@ export default function Portfolio() {
     };
 
     cargarResumenCliente();
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     const cargarPerfilCliente = async () => {
