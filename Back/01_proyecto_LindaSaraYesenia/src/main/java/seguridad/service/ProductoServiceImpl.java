@@ -18,6 +18,7 @@ import seguridad.model.dto.ProductoChatbotDto;
 import seguridad.repository.LibroRepository;
 import seguridad.repository.PapeleriaRespository;
 import seguridad.repository.ProductoRepository;
+import seguridad.repository.ResenaProductoRepository;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
@@ -29,9 +30,19 @@ public class ProductoServiceImpl implements ProductoService {
     @Autowired
     private PapeleriaRespository papeleriaRepo;
 
-    @Override
+    @Autowired
+    private ResenaProductoRepository resenaRepository;
+
+    /*@Override
     public List<Producto> findAll() {
         return productoRepository.findAll();
+    }*/
+    
+    @Override
+    public List<Producto> findAll() {
+        List<Producto> productos = productoRepository.findAll();
+        asignarCalificaciones(productos);
+        return productos;
     }
 
     @Override
@@ -121,14 +132,18 @@ public class ProductoServiceImpl implements ProductoService {
         resultado.addAll(porIsbn);
         resultado.addAll(porAutor);
 
-        return new ArrayList<>(resultado);
+        //return new ArrayList<>(resultado);
+        
+        List<Producto> listaFinal = new ArrayList<>(resultado);
+        asignarCalificaciones(listaFinal);
+        return listaFinal;
     }
 
     @Override
     public List<Producto> filtrar(String tipo, String idioma, String genero,
                                   String marca, String categoria,
                                   Double precioMin, Double precioMax,
-                                  String estado) {
+                                  String estado, Integer calificacion) {
 
         List<Producto> resultado = new ArrayList<>();
 
@@ -184,9 +199,27 @@ public class ProductoServiceImpl implements ProductoService {
                         !((Papeleria) p).getCategoria().getNombreCategoria().equalsIgnoreCase(categoria));
             }
         }
+        
+        // Filtro por calificación media
+        if (calificacion != null && calificacion > 0) {
+            resultado.removeIf(p -> {
+                Double media = resenaRepository.obtenerMediaCalificacion(p.getIdProducto());
+                
+                if (media == null) {
+                    return true; // Si no tiene reseñas, lo quitamos
+                }
 
+                //Redondeamos la media al entero más cercano
+                long mediaRedondeada = Math.round(media);
+
+                return mediaRedondeada != calificacion;
+            });
+        }
+        
+        asignarCalificaciones(resultado);
         return resultado;
     }
+    
 
     // PRODUCTOS RELACIONADOS PARA LIBROS
     @Override
@@ -274,5 +307,12 @@ public class ProductoServiceImpl implements ProductoService {
 		
 	}
 
+	
+	private void asignarCalificaciones(List<Producto> lista) {
+	    for (Producto p : lista) {
+	        Double media = resenaRepository.obtenerMediaCalificacion(p.getIdProducto());
+	        p.setCalificacionMedia(media != null ? media : 0.0);
+	    }
+	}
 
 }

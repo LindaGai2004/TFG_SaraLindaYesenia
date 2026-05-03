@@ -397,7 +397,7 @@
 .numero-media {
   font-size: 56px;
   font-weight: 800;
-  color: #333;
+  color: #8daebd;
   line-height: 1;
 }
 
@@ -467,18 +467,20 @@
 }
 
 .btn-abrir-resena {
-  background: #333;
+  background: #8daebd;
   color: white;
-  border: none;
+  border: 1.5px solid #8daebd;
   padding: 12px 20px;
-  border-radius: 25px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .btn-abrir-resena:hover {
-  background: #000;
+  background: white;
+  color: #8daebd;
+  border: 1.5px solid #8daebd;
   transform: translateY(-2px);
 }
 
@@ -546,8 +548,8 @@
 }
 
 .btn-enviar-resena {
-  background: #ffc107;
-  color: #000;
+  background: #8daebd;
+  color: white;
   border: none;
   padding: 12px 25px;
   border-radius: 8px;
@@ -641,15 +643,18 @@
 .form-inline-header h3 {
     margin: 0;
     font-size: 1.2rem;
-    color: #333;
+    color: #6d96a6;
 }
 
 .btn-cerrar-inline {
-    background: none;
+    background: #8daebd;
     border: none;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
     font-size: 1.2rem;
     cursor: pointer;
-    color: #999;
+    color: white;
 }
 
 .selector-estrellas-inline {
@@ -672,10 +677,11 @@
 }
 
 .btn-cancelar-inline {
-    background: #f0f0f0;
-    border: none;
+    background: white;
+    color: #6d96a6;
+    border: 1.5px solid #8daebd;
     padding: 10px 20px;
-    border-radius: 20px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
 }
@@ -766,13 +772,28 @@
   color: #888 !important;
   transition: all 0.3s ease;
   position: relative;
-  border-bottom: 3px solid transparent !important;
 }
 
 /* Pestaña activa*/
 .tab-btn.active {
   color: #6d96a6 !important;
   font-weight: 900 !important;
+}
+
+.tab-btn::after {
+  content: "";
+  position: absolute;
+  bottom: -1.5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #6d96a6;
+  transform: scaleX(0); /* Empieza invisible */
+  transition: transform 0.3s ease;
+}
+
+.tab-btn.active::after {
+  transform: scaleX(1);
 }
 
 .contenido-pestaña {

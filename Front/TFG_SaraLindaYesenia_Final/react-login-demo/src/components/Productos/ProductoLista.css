@@ -141,11 +141,34 @@
   margin-top: 4px;
 }
 
+.producto-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
 .producto-precio {
   color: #6d96a6;
   font-weight: bold;
   margin-top: 8px;
   font-size: 1.1rem;
+}
+
+/* Contenedor de la estrella y el número */
+.producto-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  padding-top: 10px;
+  color: #666;
+  font-weight: 500;
+}
+
+.estrella-mini {
+  color: #ffc107;
+  font-size: 1rem;
 }
 
 .sin-resultados {

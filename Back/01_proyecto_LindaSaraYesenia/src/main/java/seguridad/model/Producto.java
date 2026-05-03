@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
@@ -20,6 +21,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -66,6 +68,10 @@ public abstract class Producto implements Serializable{
 	@OneToMany(mappedBy = "producto")
 	@JsonIgnoreProperties("producto") //evita bucles infinitos al convertir a JSON.
 	private List<ImagenProducto> imagenes;
+	
+	@Transient // Evita que Hibernate busque la columna en SQL
+	@JsonProperty("calificacionMedia")
+    private Double calificacionMedia;
 
 	
 	public Producto(Integer idProducto, String nombreProducto, String descripcion, Double precio, Integer stock,

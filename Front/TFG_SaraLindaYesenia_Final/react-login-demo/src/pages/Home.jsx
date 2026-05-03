@@ -284,7 +284,7 @@ export default function Home() {
         {/* Bloque de video */}
         <div className="bloque-video">
           <video className="video-fondo" autoPlay muted loop>
-            <source src="/home-video-2.mp4" type="video/mp4" />
+            <source src="/home-video-1.mp4" type="video/mp4" />
           </video>
 
           <div className="contenido-video">
@@ -296,6 +296,139 @@ export default function Home() {
             <a href="/productos" className="btn-hero">
               Ver catálogo
             </a>
+          </div>
+        </div>
+
+
+        {/* Sección Features: Tienda, Comunidad, Chatbot */}
+        <div className="seccion-features">
+          <h2 className="titulo-features">Mucho más que una librería</h2>
+          <div className="contenedor-features">
+            {/* Columna 1: Tienda */}
+            <div className="bloque-feature" onClick={() => navigate('/productos')}>
+              <div className="icono-feature-wrapper">
+                <img src="/tienda.png" alt="Tienda" className="icono-feature" />
+              </div>
+              <h3 className="titulo-feature">Tienda</h3>
+              <p className="texto-feature">
+                Explora nuestro catálogo de libros y papelería. Una colección 
+                curada para inspirar tu creatividad y acompañar tus lecturas.
+              </p>
+              <span className="link-feature">Explorar catálogo →</span>
+            </div>
+
+            {/* Columna 2: Comunidad */}
+            <div className="bloque-feature" onClick={() => navigate('/comunidad')}>
+              <div className="icono-feature-wrapper">
+                <img src="/comunidad.png" alt="Comunidad" className="icono-feature" />
+              </div>
+              <h3 className="titulo-feature">Comunidad</h3>
+              <p className="texto-feature">
+                Un espacio para compartir tu pasión. Conecta con otros lectores, intercambia 
+                impresiones sobre tus libros favoritos y comparte tu lectura"
+              </p>
+              <span className="link-feature">Explorar comunidad →</span>
+            </div>
+
+            {/* Columna 3: Chatbot */}
+            <div className="bloque-feature">
+              <div className="icono-feature-wrapper">
+                <img src="/chatbot.png" alt="Chatbot" className="icono-feature" />
+              </div>
+              <h3 className="titulo-feature">Asistente Virtual</h3>
+              <p className="texto-feature">
+                ¿No sabes qué elegir? Nuestro chatbot inteligente te ayuda a encontrar 
+                el libro perfecto o el regalo ideal según tus gustos.
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        {/* Sección libro del mes */}
+        <div className="seccion-libro-mes">
+          <h2 className="titulo-libro-mes">El libro del mes</h2>
+
+          <div className="contenido-libro-mes">
+
+            {/* Columna izquierda: imagen */}
+            <div className="columna-imagen-libro">
+              <img
+                src={`http://localhost:9001/uploads/${libroMes.imagenes[0].ruta}`}
+                alt={libroMes.nombreProducto}
+                className="imagen-libro-mes"
+              />
+            </div>
+
+            {/* Columna derecha: información */}
+            <div className="columna-info-libro">
+              <h3 className="nombre-libro-mes">{libroMes.nombreProducto}</h3>
+
+              <p className="autor">{libroMes.autor || "Autor desconocido"}</p>
+
+              <div className="contenedor-precio">
+                <span className="precio-libro-mes">{libroMes.precio}€</span>
+              </div>
+
+              <div className="acciones-libro">
+                <div className="boton-cantidad">
+                  <button className="simbolo-cantidad" onClick={decrementarCantidad}>−</button>
+                  <span className="numero-cantidad">{cantidad}</span>
+                  <button className="simbolo-cantidad" onClick={incrementarCantidad}>+</button>
+                </div>
+
+                <button
+                  className="boton-carrito"
+                  onClick={() => {
+                    if (!user) {
+                      setMostrarAvisoCarrito(true);
+                      return;
+                    }
+
+                    handleAddToCart({
+                      idProducto: libroMes.idProducto,
+                      cantidad: cantidad
+                    });
+                  }}
+                >
+                  AÑADIR AL CARRITO
+                </button>
+              </div>
+
+              <p className="resumen-libro">{libroMes.resumen}</p>
+            </div>
+          </div>
+        </div>
+
+
+        {/* Sección extractos */}
+        <div className="seccion-extractos">
+          <h2 className="titulo-extractos">Extractos</h2>
+
+          <div className="contenedor-extractos">
+            {/* Columna 1 */}
+            <div className="columna-extracto">
+              <img src="/extracto1.jpg" alt="Extracto libro 1" className="imagen-extracto" />
+              <h3 className="titulo-libro-extracto">My America</h3>
+              <p className="texto-extracto">"¿Qué significa vivir en un país donde las personas responsables de proteger a sus ciudadanos pueden verse tan a menudo implicadas en sus muertes?”</p>
+              <p className="fecha-extracto">Publicado: 12/05/1955</p>
+            </div>
+
+            {/* Columna 2 */}
+            <div className="columna-extracto">
+              <img src="/extracto2.jpg" alt="Extracto libro 2" className="imagen-extracto" />
+              <h3 className="titulo-libro-extracto">Ricardo Martín</h3>
+              <p className="texto-extracto">Una saga familiar marcada por la magia y la historia.</p>
+              <p className="fecha-extracto">Publicado: 20/07/2023</p>
+            </div>
+
+            {/* Columna 3 */}
+            <div className="columna-extracto">
+              <img src="/extracto3.jpg" alt="Extracto libro 3" className="imagen-extracto" />
+              <h3 className="titulo-libro-extracto">El camino del despertar</h3>
+              <p className="texto-extracto">"El deseo de alcanzar salud, prosperidad y felicidad requiere un cambio profundo en nuestra forma de ser, pues sin esa transformación interior es imposible lograr esas metas."</p>
+              <p className="fecha-extracto">Publicado: 01/09/2023</p>
+            </div>
           </div>
         </div>
 
@@ -402,94 +535,6 @@ export default function Home() {
             <button className="flecha-resenas derecha" onClick={scrollResenasDerecha}>
               <ChevronRight size={20} />
             </button>
-          </div>
-        </div>
-
-
-        {/* Sección libro del mes */}
-        <div className="seccion-libro-mes">
-          <h2 className="titulo-libro-mes">El libro del mes</h2>
-
-          <div className="contenido-libro-mes">
-
-            {/* Columna izquierda: imagen */}
-            <div className="columna-imagen-libro">
-              <img
-                src={`http://localhost:9001/uploads/${libroMes.imagenes[0].ruta}`}
-                alt={libroMes.nombreProducto}
-                className="imagen-libro-mes"
-              />
-            </div>
-
-            {/* Columna derecha: información */}
-            <div className="columna-info-libro">
-              <h3 className="nombre-libro-mes">{libroMes.nombreProducto}</h3>
-
-              <p className="autor">{libroMes.autor || "Autor desconocido"}</p>
-
-              <div className="contenedor-precio">
-                <span className="precio-libro-mes">{libroMes.precio}€</span>
-              </div>
-
-              <div className="acciones-libro">
-                <div className="boton-cantidad">
-                  <button className="simbolo-cantidad" onClick={decrementarCantidad}>−</button>
-                  <span className="numero-cantidad">{cantidad}</span>
-                  <button className="simbolo-cantidad" onClick={incrementarCantidad}>+</button>
-                </div>
-
-                <button
-                  className="boton-carrito"
-                  onClick={() => {
-                    if (!user) {
-                      setMostrarAvisoCarrito(true);
-                      return;
-                    }
-
-                    handleAddToCart({
-                      idProducto: libroMes.idProducto,
-                      cantidad: cantidad
-                    });
-                  }}
-                >
-                  AÑADIR AL CARRITO
-                </button>
-              </div>
-
-              <p className="resumen-libro">{libroMes.resumen}</p>
-            </div>
-          </div>
-        </div>
-
-
-        {/* Sección extractos */}
-        <div className="seccion-extractos">
-          <h2 className="titulo-extractos">Extractos</h2>
-
-          <div className="contenedor-extractos">
-            {/* Columna 1 */}
-            <div className="columna-extracto">
-              <img src="/extracto1.jpg" alt="Extracto libro 1" className="imagen-extracto" />
-              <h3 className="titulo-libro-extracto">My America</h3>
-              <p className="texto-extracto">"¿Qué significa vivir en un país donde las personas responsables de proteger a sus ciudadanos pueden verse tan a menudo implicadas en sus muertes?”</p>
-              <p className="fecha-extracto">Publicado: 12/05/1955</p>
-            </div>
-
-            {/* Columna 2 */}
-            <div className="columna-extracto">
-              <img src="/extracto2.jpg" alt="Extracto libro 2" className="imagen-extracto" />
-              <h3 className="titulo-libro-extracto">Ricardo Martín</h3>
-              <p className="texto-extracto">Una saga familiar marcada por la magia y la historia.</p>
-              <p className="fecha-extracto">Publicado: 20/07/2023</p>
-            </div>
-
-            {/* Columna 3 */}
-            <div className="columna-extracto">
-              <img src="/extracto3.jpg" alt="Extracto libro 3" className="imagen-extracto" />
-              <h3 className="titulo-libro-extracto">El camino del despertar</h3>
-              <p className="texto-extracto">"El deseo de alcanzar salud, prosperidad y felicidad requiere un cambio profundo en nuestra forma de ser, pues sin esa transformación interior es imposible lograr esas metas."</p>
-              <p className="fecha-extracto">Publicado: 01/09/2023</p>
-            </div>
           </div>
         </div>
 

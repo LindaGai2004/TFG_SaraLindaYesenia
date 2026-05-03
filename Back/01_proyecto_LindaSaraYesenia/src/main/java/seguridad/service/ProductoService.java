@@ -32,7 +32,8 @@ public interface ProductoService {
         String categoria,
         Double precioMin,
         Double precioMax,
-        String estado
+        String estado,
+        Integer calificacion
     );
     
   

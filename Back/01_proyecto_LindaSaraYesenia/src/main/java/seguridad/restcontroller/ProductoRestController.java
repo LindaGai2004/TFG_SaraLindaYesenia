@@ -22,7 +22,7 @@ import seguridad.model.Papeleria;
 
 import seguridad.repository.LibroRepository;
 import seguridad.repository.PapeleriaRespository;
-
+import seguridad.repository.ResenaProductoRepository;
 import seguridad.service.ProductoService;
 
 @RestController
@@ -38,6 +38,7 @@ public class ProductoRestController {
 
     @Autowired
     private PapeleriaRespository papeleriaRepo;
+   
 
     // Destacado
 
@@ -76,28 +77,19 @@ public class ProductoRestController {
             @RequestParam(required = false) String categoria,
             @RequestParam(required = false) Double precioMin,
             @RequestParam(required = false) Double precioMax,
-            @RequestParam(required = false) String estado) {
+            @RequestParam(required = false) String estado,
+    		@RequestParam(required = false) Integer calificacion) {
 
         List<Producto> lista = productoService.filtrar(
-                tipo, idioma, genero, marca, categoria, precioMin, precioMax, estado
+                tipo, idioma, genero, marca, categoria, precioMin, precioMax, estado, calificacion
         );
         return ResponseEntity.ok(lista);
     }
 
     
     
-    // Buscador
-
-    /*@GetMapping("/buscar/todos")
-    public ResponseEntity<?> buscarProducto(@RequestParam String texto) {
-        List<Producto> lista = productoService.buscardorProducto(texto);
-        if (lista.isEmpty()) {
-            return ResponseEntity.ok("No hay NINGUN PRODUCTO que coincidan con la busqueda");
-        }
-        return ResponseEntity.ok(lista);
-    }*/
     
-    // Buscador (CORREGIDO)
+    // Buscador 
     @GetMapping("/buscar/todos")
     public ResponseEntity<List<Producto>> buscarProducto(@RequestParam String texto) {
         List<Producto> lista = productoService.buscardorProducto(texto);
@@ -105,7 +97,6 @@ public class ProductoRestController {
     }
 
     // Obtener producto por ID
-
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerProductoPorId(@PathVariable Integer id) {
 
