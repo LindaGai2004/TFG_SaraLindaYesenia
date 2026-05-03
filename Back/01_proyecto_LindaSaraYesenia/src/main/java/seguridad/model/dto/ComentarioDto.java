@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ComentarioDto {
 
 	private String usuarioNombre;
+	private String usuarioAvatar;
     private String texto;
     private String fecha;
 }

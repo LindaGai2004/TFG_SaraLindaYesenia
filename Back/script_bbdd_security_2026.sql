@@ -911,6 +911,43 @@ INSERT INTO publicaciones (id_usuario, texto, imagen, fecha, likes, comentarios)
 (6, 'Me encanta cuando un libro te hace sentir acompañada, incluso en los días más raros.', NULL, NOW() - INTERVAL 12 DAY, 5, 3);
 
 
+INSERT INTO likes_publicacion (id_publicacion, id_usuario, fecha) VALUES
+(1, 1, '2025-10-15 14:20:00'), (1, 2, '2025-10-15 16:45:00'), (1, 3, '2025-10-16 09:10:00'),
+(2, 1, '2025-11-20 11:30:00'), (2, 3, '2025-11-20 12:15:00'), (2, 4, '2025-11-21 08:00:00'), (2, 5, '2025-11-21 22:10:00'), (2, 6, '2025-11-22 10:05:00'),
+(3, 7, '2025-12-05 19:30:00'), (3, 4, '2025-12-06 07:45:00'),
+(4, 1, '2026-01-10 15:00:00'), (4, 3, '2026-01-10 18:22:00'), (4, 5, '2026-01-11 11:40:00'), (4, 6, '2026-01-12 14:15:00'),
+(5, 2, '2026-02-14 20:00:00'),
+(6, 1, '2026-03-01 09:00:00'), (6, 2, '2026-03-01 10:15:00'), (6, 3, '2026-03-01 12:30:00'), (6, 4, '2026-03-02 15:50:00'), (6, 7, '2026-03-03 18:20:00'), (6, 8, '2026-03-04 21:00:00'),
+(7, 3, '2026-03-15 13:10:00'), (7, 5, '2026-03-16 17:40:00'),
+(8, 1, '2026-03-25 10:00:00'), (8, 2, '2026-03-25 11:30:00'), (8, 4, '2026-03-26 09:15:00'),
+(9, 2, '2026-04-05 19:00:00'), (9, 3, '2026-04-05 20:15:00'), (9, 5, '2026-04-06 14:30:00'), (9, 6, '2026-04-07 10:00:00'),
+(10, 7, '2026-04-15 22:50:00'),
+(11, 4, '2026-04-20 16:15:00'), (11, 5, '2026-04-21 11:05:00'),
+(12, 1, '2026-05-01 08:30:00'), (12, 2, '2026-05-01 09:45:00'), (12, 3, '2026-05-02 14:20:00'), (12, 4, '2026-05-02 16:50:00'), (12, 7, '2026-05-03 10:10:00');
+
+
+INSERT INTO comentarios_publicacion (id_publicacion, id_usuario, texto, fecha) VALUES
+(1, 2, '¡Las librerías pequeñas son las mejores! Siempre se encuentra algo especial.', '2026-05-02 10:30:00'),
+
+(2, 3, 'Me pasó lo mismo con mi última lectura, ¡qué giro final!', '2026-05-01 15:45:12'),
+(2, 5, '¿De qué libro hablas? Me interesa.', '2026-05-01 18:20:00'),
+
+(4, 6, 'Esa frase es de mis favoritas, gracias por compartirla.', '2026-04-30 09:15:00'),
+
+(6, 2, 'Si te gusta el misterio, tienes que leer a Shari Lapena.', '2026-04-28 20:10:00'),
+(6, 4, '¡"La verdad sobre el caso Harry Quebert" es increíble!', '2026-04-28 21:05:30'),
+(6, 7, 'Yo te recomiendo cualquiera de Joël Dicker.', '2026-04-29 11:00:00'),
+
+(8, 3, 'Es genial ver cómo crecemos junto con los libros.', '2026-04-27 14:00:00'),
+
+(9, 1, 'Totalmente. Leer es como resetear el cerebro.', '2026-04-26 22:30:00'),
+(9, 5, 'Para mí es el mejor momento del día.', '2026-04-27 08:45:00'),
+
+(12, 4, '¡Qué bonito lo que dices! Un libro es el mejor compañero.', '2026-04-25 12:00:00'),
+(12, 2, 'Siento lo mismo, sobre todo en los días de lluvia.', '2026-04-25 16:20:00'),
+(12, 3, 'Archives es el lugar perfecto para encontrar esos libros "refugio".', '2026-04-26 10:10:00');
+
+
 INSERT INTO resenas_productos (id_usuario, id_producto, calificacion, comentario, fecha) VALUES
 (4, 1, 5, 'Excelente calidad, justo lo que buscaba.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),
 (8, 2, 2, 'No me ha gustado mucho el acabado, esperaba otra cosa.', DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY)),

@@ -196,6 +196,7 @@ public class PublicacionServiceImpl implements PublicacionService {
                 .stream()
                 .map(c -> new ComentarioDto(
                         c.getUsuario().getNombre(),
+                        c.getUsuario().getAvatar(),
                         c.getTexto(),
                         formatearFecha(c.getFecha())
                 ))

@@ -86,6 +86,8 @@ export default function Feed() {
         `/publicaciones/${idPublicacion}/comentarios?idUsuario=${user.idUsuario}&texto=${encodeURIComponent(texto)}`
       );
 
+      const miAvatar = user?.avatar ?? user?.fotoPerfil ?? user?.imagenPerfil ?? "";
+
       setPublicaciones((prev) =>
         prev.map((p) =>
           p.idPublicacion === idPublicacion
@@ -97,6 +99,7 @@ export default function Feed() {
                   {
                     texto,
                     usuarioNombre: user.nombre,
+                    usuarioAvatar: miAvatar,
                     fecha: "Justo ahora"
                   }
                 ]

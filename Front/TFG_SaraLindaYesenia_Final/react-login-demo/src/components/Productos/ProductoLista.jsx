@@ -128,7 +128,18 @@ export default function ProductoLista({ productos }) {
                   </p>
                 )}
 
-                <p className="producto-precio">{p.precio} €</p>
+                <div className="producto-meta">
+                  <p className="producto-precio">{p.precio} €</p>
+                  
+                  <div className="producto-rating">
+                    <span className="estrella-mini">★</span>
+                    <span>
+                      {p.calificacionMedia !== null && p.calificacionMedia !== undefined 
+                        ? Number(p.calificacionMedia).toFixed(1) 
+                        : "0.0"}
+                    </span>
+                  </div>
+                </div>
               </div>
 
             </Link>

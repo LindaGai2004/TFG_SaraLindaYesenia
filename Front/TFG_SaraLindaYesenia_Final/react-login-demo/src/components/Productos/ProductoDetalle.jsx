@@ -71,8 +71,8 @@ export default function ProductoDetalle() {
 
 
   // Cargar producto base
-  // ahora con ruta de api.js
   useEffect(() => {
+    setProducto(null);
     apiGet(`/productos/${id}`)
       .then(data => {
         guardarEnHistorial(crearItemHistorial(data));
@@ -251,14 +251,11 @@ export default function ProductoDetalle() {
     try {
       if (esFavorito) {
         await apiDelete(`/usuarios/favoritos/${producto.id}`);
-        setMensaje("Eliminado de favoritos");
       } else {
         await apiPost(`/usuarios/favoritos/${producto.id}`);
-        setMensaje("Añadido a favoritos");
       }
 
       setEsFavorito(!esFavorito);
-      setTimeout(() => setMensaje(""), 2000);
 
     } catch (error) {
       console.error("Error al actualizar favorito:", error);
@@ -324,7 +321,7 @@ export default function ProductoDetalle() {
             {/* FILA 1 */}
             <div className="fila-superior dos-columnas">
               <div className="col-izquierda">
-                <ProductoImagenes imagenes={producto.imagenes} />
+                <ProductoImagenes key={id} imagenes={producto.imagenes} />
               </div>
 
               <div className="col-derecha-editorial">

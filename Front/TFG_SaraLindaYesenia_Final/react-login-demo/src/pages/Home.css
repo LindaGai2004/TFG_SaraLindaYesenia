@@ -115,7 +115,6 @@
 
 /* Estilos del subtítulo */
 .subtitulo-video {
-  color: white;
   font-size: 20px;
   margin-bottom: 24px;
 }
@@ -137,6 +136,91 @@
   background: white;
   color: #8daebd;
 }
+
+
+/*------------------------------------- FEATURES -------------------------------------*/
+.seccion-features {
+  padding: 80px 5%;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee;
+}
+
+.contenedor-features {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.bloque-feature {
+  text-align: center;
+  padding: 30px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.bloque-feature:hover {
+  background-color: #f9f7f4;
+  transform: translateY(-5px);
+}
+
+.icono-feature-wrapper {
+  width: 80px;
+  height: 80px;
+  background-color: #8daebd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px;
+}
+
+.bloque-feature:hover .icono-feature-wrapper {
+  background-color: #6d96a6;
+}
+
+.icono-feature {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.titulo-features {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: "Cormorant", sans-serif;
+  letter-spacing: -.96px;
+  color: #6d96a6;
+  line-height: 1.16em;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.titulo-feature {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #6d96a6;
+  font-weight: 600;
+}
+
+.texto-feature {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.link-feature {
+  font-weight: 600;
+  color: #6d96a6;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 
 
 /*------------------------------------- RESEÑAS -------------------------------------*/
@@ -451,7 +535,7 @@
 .seccion-extractos {
   width: 100%;
   padding: 60px 20px;
-  background-color: #f9f7f4;
+  background-color: white;
   text-align: center;
 }
 
@@ -493,12 +577,11 @@
 }
 
 .titulo-libro-extracto {
-  font-size: 35px;
+  font-size: 23px;
   font-weight: 500;
   margin-bottom: 8px;
   line-height: 1.2;
-  color: #2c2c2c;
-  font-family: "Cormorant", sans-serif;
+  color: #6d96a6;
   letter-spacing: -1px;
 }
 
@@ -514,7 +597,7 @@
 
 .fecha-extracto {
   font-size: 13px;
-  color: #2c2c2c;
+  color: #6d96a6;
   font-weight: 500;
   letter-spacing: 2px;
   margin-top: 18px;

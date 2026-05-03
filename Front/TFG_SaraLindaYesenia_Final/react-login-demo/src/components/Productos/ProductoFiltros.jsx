@@ -19,6 +19,7 @@ export default function ProductoFiltros({
     const [genero, setGenero] = useState(initialGenero ? [initialGenero] : []);
     const [marca, setMarca] = useState("");
     const [categoria, setCategoria] = useState(initialCategoria ? [initialCategoria] : []);
+    const [calificacion, setCalificacion] = useState(0);
 
     const [idiomasBD, setIdiomasBD] = useState([]);
     const [generosBD, setGenerosBD] = useState([]);
@@ -26,7 +27,6 @@ export default function ProductoFiltros({
     const [categoriasBD, setCategoriasBD] = useState([]);
 
     // Carga inicial de datos desde la BD
-    //se cambio por apiGet
     useEffect(() => {
         apiGet("/idiomas/todos")
             .then(res => setIdiomasBD(res))
@@ -59,6 +59,7 @@ export default function ProductoFiltros({
             min: initialFilters.precioMin ?? 0,
             max: initialFilters.precioMax ?? 200,
         });
+        setCalificacion(initialFilters.calificacion ?? 0);
     }, [initialFilters]);
 
     const aplicarFiltros = () => {
@@ -75,6 +76,8 @@ export default function ProductoFiltros({
         filtros.precioMax = precio.max;
 
         if (marca) filtros.marca = marca;
+
+        if (calificacion > 0) filtros.calificacion = calificacion;
 
         onFiltrar(filtros);
     };
@@ -206,6 +209,35 @@ export default function ProductoFiltros({
                 <div className="price-values">
                     <span>{precio.min} €</span>
                     <span>{precio.max} €</span>
+                </div>
+            </div>
+
+            {/* FILTRO POR RESEÑAS (ESTRELLAS) */}
+            <div className="filtro">
+                <label>Valoración mínima</label>
+                <div className="resenas-filter-list">
+                    {[5, 4, 3, 2, 1].map((num) => (
+                        <label key={num} className="resena-check-row">
+                            <input
+                                type="checkbox"
+                                checked={calificacion === num}
+                                onChange={() => setCalificacion(calificacion === num ? 0 : num)}
+                            />
+                            <div className="stars-row">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span 
+                                        key={star} 
+                                        className={`star-icon ${num >= star ? 'filled' : ''}`}
+                                    >
+                                        ★
+                                    </span>
+                                ))}
+                                <span className="text-o-mas"> 
+                                    {num} {num === 1 ? 'estrella' : 'estrellas'} 
+                                </span>
+                            </div>
+                        </label>
+                    ))}
                 </div>
             </div>
 
