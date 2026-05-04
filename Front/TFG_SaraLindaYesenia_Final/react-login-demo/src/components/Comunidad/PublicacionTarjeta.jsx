@@ -1,46 +1,45 @@
 import "./PublicacionTarjeta.css";
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getApiUrl } from "../../api/api";
+import { useAuth } from "../../context/AuthContext";
+
 export default function PublicacionTarjeta({ publicacion, onLike, onComentar, onEliminar }) {
   const [comentario, setComentario] = useState("");
   const [mostrarComentarios, setMostrarComentarios] = useState(false);
   const [verTodos, setVerTodos] = useState(false);
 
   // Obtenemos el usuario logueado desde el localStorage
-  const user = JSON.parse(localStorage.getItem("user"));
+  //const user = JSON.parse(localStorage.getItem("user"));
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const miAvatar = user?.avatar ?? user?.fotoPerfil ?? user?.imagenPerfil ?? "";
+
   const esDuenio = user && user.nombre === publicacion.usuarioNombre;
   const esAdmin = user && user.perfil?.idPerfil === 1;
 
-  // Mostrar solo los primeros 3 si no está expandido
+  // --- CAMBIO 1: Mostrar solo el ÚLTIMO si no está expandido ---
   const comentariosVisibles = verTodos
     ? publicacion.listaComentarios || []
-    : (publicacion.listaComentarios || []).slice(0, 3);
+    : (publicacion.listaComentarios || []).slice(-1); // Muestra el último comentario
 
   return (
     <div className="publicacion-tarjeta">
 
       {/* Cabecera */}
       <div className="publicacion-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <img
-            src={
-              publicacion.usuarioAvatar
-                ? getApiUrl(publicacion.usuarioAvatar)
-                : "/assets/default-user.png"
-            }
+            src={publicacion.usuarioAvatar ? getApiUrl(publicacion.usuarioAvatar) : "/assets/default-user.png"}
             alt="avatar"
             className="publicacion-avatar"
           />
-
           <div className="publicacion-info">
             <span className="publicacion-usuario">{publicacion.usuarioNombre}</span>
             <span className="publicacion-fecha">{publicacion.fecha}</span>
           </div>
         </div>
 
-        
         {/* BOTÓN ELIMINAR */}
         {(esDuenio || esAdmin) && (
           <button 
@@ -75,7 +74,6 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
         </div>
       )}
 
-
       {/* Enlace al detalle del producto */}
       {publicacion.idProducto && (
         <div className="enlace-producto-contenedor">
@@ -92,11 +90,9 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
           </Link>
         </div>
       )}
-      
 
       {/* Reacciones */}
       <div className="publicacion-acciones">
-
         {/* Botón Like */}
         <button
           className={`btn-accion ${publicacion.likedByUser ? "liked" : ""}`}
@@ -126,58 +122,79 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
         </button>
       </div>
 
-      {/* Comentarios */}
+      {/* Bloque de Comentarios */}
       {mostrarComentarios && (
         <div className="comentarios-box">
-
-          {/* Lista de comentarios */}
-          {comentariosVisibles.map((c, i) => (
-            <div key={i} className="comentario-item">
-              <strong>{c.usuarioNombre}:</strong> {c.texto}
-              <span className="comentario-fecha">{c.fecha}</span>
-            </div>
-          ))}
-
-          {/* Botón "ver más" si hay más de 3 comentarios */}
-          {publicacion.listaComentarios?.length > 3 && !verTodos && (
-            <button
-              className="btn-ver-mas"
-              onClick={() => setVerTodos(true)}
-            >
-              Ver más comentarios ▼
-            </button>
-          )}
-
-          {/* Botón "ver menos" */}
-          {verTodos && (
-            <button
-              className="btn-ver-mas"
-              onClick={() => setVerTodos(false)}
-            >
-              Ver menos ▲
-            </button>
-          )}
-
-          {/* Input para escribir comentario */}
-          <div className="comentario-input">
-            <input
-              type="text"
-              placeholder="Escribe un comentario..."
-              value={comentario}
-              onChange={(e) => setComentario(e.target.value)}
+          
+          {/* Input con tu avatar conectado */}
+          <div className="comentario-input-wrapper">
+            <img 
+              src={miAvatar ? getApiUrl(miAvatar) : "/assets/default-user.png"} 
+              alt="mi avatar" 
+              className="avatar-comentario-input" 
             />
-
-            <button
-              className="btn-enviar"
-              onClick={() => {
-                if (!comentario.trim()) return;
-                onComentar(publicacion.idPublicacion, comentario);
-                setComentario("");
-              }}
-            >
-              Enviar
-            </button>
+            <div className="comentario-input">
+              <input
+                type="text"
+                placeholder="Escribe un comentario..."
+                value={comentario}
+                onChange={(e) => setComentario(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && comentario.trim()) {
+                      onComentar(publicacion.idPublicacion, comentario);
+                      setComentario("");
+                  }
+                }}
+              />
+              <button
+                className="btn-enviar"
+                onClick={() => {
+                  if (!comentario.trim()) return;
+                  onComentar(publicacion.idPublicacion, comentario);
+                  setComentario("");
+                }}
+              >
+                Enviar
+              </button>
+            </div>
           </div>
+
+          {/* Lista de comentarios con avatar y orden inverso */}
+          <div className="lista-comentarios">
+            {[...comentariosVisibles].reverse().map((c, i) => (
+              <div key={i} className="comentario-item-contenedor">
+                <img 
+                  src={c.usuarioAvatar ? getApiUrl(c.usuarioAvatar) : "/assets/default-user.png"} 
+                  alt="avatar" 
+                  className="avatar-comentario-mini" 
+                />
+                <div className="cuerpo-comentario">
+                  <div className="burbuja-comentario">
+                    <strong>{c.usuarioNombre}</strong>
+                    <p>{c.texto}</p>
+                  </div>
+                  <span className="comentario-fecha">{c.fecha}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Botón dinámico de ver más/menos */}
+          {publicacion.listaComentarios?.length > 1 && (
+            <button
+              className="btn-ver-mas-comunidad"
+              onClick={() => setVerTodos(!verTodos)}
+            >
+              {verTodos 
+                ? "Ver menos ▲" 
+                : `Ver los otros comentarios ▼`
+              }
+            </button>
+          )}
+
+          {publicacion.listaComentarios?.length === 0 && (
+            <p className="txt-sin-comentarios">Sé el primero en comentar...</p>
+          )}
         </div>
       )}
 

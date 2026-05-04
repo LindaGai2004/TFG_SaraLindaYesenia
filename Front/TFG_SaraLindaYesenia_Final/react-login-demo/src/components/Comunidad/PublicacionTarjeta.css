@@ -82,25 +82,175 @@ background: #f5f5f5;
   border-color: #6d96a6;
 }
 
-.comentario-item {
+/* Comentario -------------------------------------------------------------------------- */
+.comentarios-box {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 10px 10px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 6px;
-  font-size: 14px;
+  gap: 15px; /* Un poco más de espacio para los avatares */
+}
+
+/* Área del Input y Botón enviar */
+.comentario-input {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 5px 15px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+  margin-bottom: 5px;
+}
+
+.comentario-input:focus-within {
+  border-color: #6d96a6;
+  box-shadow: 0 0 0 2px rgba(109, 150, 166, 0.1);
+}
+
+.comentario-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  background: transparent;
+}
+
+/* Contenedor que agrupa el avatar propio y la barra de input */
+.comentario-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Avatar circular al lado del input */
+.avatar-comentario-input {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Asegúrate de que el comentario-input ocupe el resto del ancho */
+.comentario-input {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 5px 15px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+}
+
+.btn-enviar {
+  background: none;
+  border: none;
+  color: #6d96a6;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.2s;
+}
+
+.btn-enviar:hover {
+  color: #4a6a78;
+  transform: scale(1.05);
+}
+
+/* Lista de comentarios */
+.lista-comentarios {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* --- NUEVAS CLASES PARA EL AVATAR A LA IZQUIERDA --- */
+
+.comentario-item-contenedor {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  animation: fadeIn 0.4s ease;
+}
+
+.avatar-comentario-mini {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #eee;
+  background-color: #fff;
+}
+
+.cuerpo-comentario {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+}
+
+.burbuja-comentario {
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 18px;
+  border-top-left-radius: 2px; /* Efecto de pico de mensaje */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.burbuja-comentario strong {
+  display: block;
+  color: #333;
+  font-size: 0.85rem;
+  margin-bottom: 3px;
+}
+
+.burbuja-comentario p {
+  margin: 0 !important;
+  font-size: 0.9rem !important;
+  color: #444 !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
 }
 
 .comentario-fecha {
-  font-size: 12px;
-  color: #777;
+  font-size: 0.7rem;
+  color: #aaa;
+  margin-top: 4px;
+  margin-left: 8px;
 }
 
-.btn-ver-mas {
+/* Botón Ver más */
+.btn-ver-mas-comunidad {
   background: none;
   border: none;
-  color: #007bff;
+  color: #6d96a6;
+  font-size: 0.85rem;
+  font-weight: 700;
   cursor: pointer;
-  margin: 5px 0;
-  font-size: 14px;
+  align-self: flex-start;
+  padding: 5px 0;
+  margin-top: 5px;
+}
+
+.btn-ver-mas-comunidad:hover {
+  text-decoration: underline;
+}
+
+.txt-sin-comentarios {
+  font-size: 0.85rem;
+  color: #999;
+  text-align: center;
+  font-style: italic;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .icono-accion {

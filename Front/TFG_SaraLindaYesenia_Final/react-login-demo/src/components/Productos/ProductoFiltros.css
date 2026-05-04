@@ -169,3 +169,44 @@
   font-weight: 600;
   margin-top: 4px;
 }
+
+
+/* filtro por reseñas -------------------------------------------------------*/
+.resenas-filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.resena-check-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.resena-check-row input {
+    cursor: pointer;
+}
+
+.stars-row {
+    display: flex;
+    align-items: center;
+}
+
+.star-icon {
+    color: #e0e0e0; /* Gris para vacías */
+    font-size: 1.1rem;
+}
+
+.star-icon.filled {
+    color: #ffc107; /* Amarillo para llenas */
+}
+
+.text-o-mas {
+  margin-left: 5px;
+  color: #666;
+  font-size: 0.8rem;
+}
