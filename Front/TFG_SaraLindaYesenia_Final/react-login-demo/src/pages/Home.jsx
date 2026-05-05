@@ -1,5 +1,6 @@
 import './Home.css';
 import { useState, useRef, useEffect, } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ChevronLeft, ChevronRight} from 'lucide-react';
@@ -294,7 +295,7 @@ export default function Home() {
             </p>
 
             <a href="/productos" className="btn-hero">
-              Ver catálogo
+              <span>Ver catálogo</span>
             </a>
           </div>
         </div>
@@ -377,7 +378,7 @@ export default function Home() {
                   <button className="simbolo-cantidad" onClick={incrementarCantidad}>+</button>
                 </div>
 
-                <button
+                <button type="submit"
                   className="boton-carrito"
                   onClick={() => {
                     if (!user) {
@@ -391,7 +392,7 @@ export default function Home() {
                     });
                   }}
                 >
-                  AÑADIR AL CARRITO
+                    <span>AÑADIR AL CARRITO</span>
                 </button>
               </div>
 

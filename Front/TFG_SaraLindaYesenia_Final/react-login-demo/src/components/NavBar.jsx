@@ -36,7 +36,7 @@ function NavBar({ isVisible = true }) {
         <div className="enlaces-navegacion">
           <Link to="/productos" className="enlace">
             Tienda
-            <span>
+            {/*<span>
               <svg aria-hidden="true" focusable="false" className="icon icon-caret" viewBox="0 0 10 6">
                 <path
                   fillRule="evenodd"
@@ -45,7 +45,7 @@ function NavBar({ isVisible = true }) {
                   fill="currentColor"
                 />
               </svg>
-            </span>
+            </span>*/}
           </Link>
 
           <Link to="/comunidad" className="enlace">Comunidad</Link>
