@@ -92,7 +92,7 @@
   
   .enlaces-navegacion {
     display: flex;
-    gap: 30px;
+    gap: 46px;
     padding: 19px 0;
     text-decoration: none;
   }
@@ -106,7 +106,7 @@
   }
   
   .enlace:hover {
-    color: #7f7c7c;
+    color: #43555F;
   }
   
   .icon.icon-caret {
@@ -150,10 +150,11 @@
     text-decoration: none;
     color: white;
     font-weight: 500;
+    transition: color 0.3s;
   }
   
   .accion:hover {
-    color: #7f7c7c;
+    color: #43555F;
     ;
   }
   
@@ -180,7 +181,7 @@
   
   .icono-buscar:hover,
   .icono-carrito:hover {
-    color: #7f7c7c;
+    color: #43555F;
   }
 
 

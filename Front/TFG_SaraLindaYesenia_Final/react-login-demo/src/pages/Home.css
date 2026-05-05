@@ -69,7 +69,7 @@
 .bloque-video {
   position: relative;
   width: 100%;
-  height: 85vh;
+  height: 75vh;
   overflow: hidden;
 }
 
@@ -77,7 +77,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.35);
 }
 
 /* Video de fondo */
@@ -111,6 +111,7 @@
   font-size: 64px;
   margin-bottom: 16px;
   font-family: "Cormorant", sans-serif;
+  line-height: 64px;
 }
 
 /* Estilos del subtítulo */
@@ -124,24 +125,49 @@
   margin-top: 20px;
   padding: 12px 28px;
   background: #8daebd;
-  color: white;
+  color: #F7F5F2;
   font-weight: 600;
-  border-radius: 50px;
+  border-radius: 3px;
   text-decoration: none;
-  font-size: 1.1rem;
-  transition: background 0.3s ease, color 0.3s ease;
+  font-weight: 600;
+  position: relative;       
+  overflow: hidden;         
+  transition: color 0.3s ease, border-color 0.3s ease;  
+  border: 1.5px solid #8daebd; 
+  text-transform: uppercase;
+}
+
+.btn-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #F7F5F2;
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+
+.btn-hero:hover::before {
+  left: 0;
+}
+
+.btn-hero span {
+  position: relative;
+  z-index: 1;
 }
 
 .btn-hero:hover {
-  background: white;
-  color: #8daebd;
+  color: #8daebd;   
+  border-color: #8daebd;
 }
 
 
 /*------------------------------------- FEATURES -------------------------------------*/
 .seccion-features {
-  padding: 80px 5%;
-  background-color: #ffffff;
+  padding: 60px 20px;
+  background-color: #F7F5F2;
   border-bottom: 1px solid #eee;
 }
 
@@ -162,7 +188,7 @@
 }
 
 .bloque-feature:hover {
-  background-color: #f9f7f4;
+  background-color: #F0EBE5;
   transform: translateY(-5px);
 }
 
@@ -178,7 +204,7 @@
 }
 
 .bloque-feature:hover .icono-feature-wrapper {
-  background-color: #6d96a6;
+  background-color: #bda78e;
 }
 
 .icono-feature {
@@ -193,7 +219,7 @@
   margin-bottom: 20px;
   font-family: "Cormorant", sans-serif;
   letter-spacing: -.96px;
-  color: #6d96a6;
+  color: #43555F;
   line-height: 1.16em;
   margin-bottom: 40px;
   text-align: center;
@@ -202,7 +228,7 @@
 .titulo-feature {
   font-size: 1.5rem;
   margin-bottom: 15px;
-  color: #6d96a6;
+  color: #43555F;
   font-weight: 600;
 }
 
@@ -225,7 +251,7 @@
 
 /*------------------------------------- RESEÑAS -------------------------------------*/
 .seccion-resenas {
-  background-color: #f9f7f4;
+  background-color: #F0EBE5;
   padding: 60px 20px;
   text-align: center;
 }
@@ -236,7 +262,7 @@
   margin-bottom: 20px;
   font-family: "Cormorant", sans-serif;
   letter-spacing: -.96px;
-  color: #6d96a6;
+  color: #43555F;
   line-height: 1.16em;
   margin-bottom: 55px;
   text-align: center;
@@ -248,13 +274,14 @@
   font-family: 'Cormorant', sans-serif;
   letter-spacing: -.96px;
   line-height: 26px;
+  color: #4A5E68;
 }
 
 .subtitulo-libro-resena {
   margin-top: 7px;
   text-align: center;
   font-weight: 500;
-  color: #2c2c2c;
+  color: #4A5E68;
   font-size: 14px;
 }
 
@@ -278,7 +305,7 @@
 .bloque-resena {
   flex: 0 0 calc(33.333% - 20px);
   /* 3 columnas -> cada una ocupa un tercio menos el gap */
-  margin: 0 10px;
+  margin: 10px 10px;
   /* separación lateral */
   background-color: #fff;
   border-radius: 12px;
@@ -297,7 +324,7 @@
   margin-top: 20px;
   text-align: center;
   font-weight: 500;
-  color: #2c2c2c;
+  color: #4A5E68;
   font-size: 14px;
   /* font-style: italic;*/
 }
@@ -322,6 +349,7 @@
   font-size: 15px;
   text-align: left;
   margin-top: 0px;
+  color: #4A5E68;
 }
 
 .datos-lector-resena {
@@ -329,19 +357,20 @@
   display: flex;
   flex-direction: column;
   margin-top: 0px;
+  color: #4A5E68;
 }
 
 .ocupacion-lector-resena {
   font-size: 13px;
-  color: #777;
+  color: #4A5E68;
   text-align: left;
   margin-top: 5px;
 }
 
 .flecha-resenas {
   transform: translateY(0);
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #2c2c2c;
+  background-color: #8DAEBD;
+  border: 1.5px solid #8DAEBD;
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -350,15 +379,16 @@
   align-items: center;
   justify-content: center;
   font-size: 211px;
-  color: #2c2c2c;
+  color: #F7F5F2;
   transition: all 0.3s;
   z-index: 10;
   margin-top: 0px;
 }
 
 .flecha-resenas:hover {
-  background-color: #2c2c2c;
-  color: #fff;
+  background-color: #F7F5F2;
+  border-color: #8DAEBD;
+  color: #8DAEBD;
 }
 
 .flecha-resenas.izquierda {
@@ -376,7 +406,7 @@
 .seccion-libro-mes {
   width: 100%;
   padding: 60px 20px;
-  background-color: #f9f7f4;
+  background-color: #F0EBE5;
 }
 
 .titulo-libro-mes {
@@ -384,7 +414,7 @@
   font-weight: bold;
   margin-bottom: 55px;
   font-family: "Cormorant", serif;
-  color: #6d96a6;
+  color: #43555F;
   text-align: center;
 }
 
@@ -416,14 +446,14 @@
   font-weight: 700;
   margin-bottom: 8px;
   line-height: 1.2;
-  color: #6d96a6;
+  color: #4A5E68;
   font-family: "Cormorant", serif;
 }
 
 .autor {
   margin-top: 7px;
   font-weight: 600;
-  color: #6d96a6;
+  color: #8daebd;
   font-size: 18px;
   margin-bottom: 15px;
 }
@@ -435,7 +465,7 @@
 .precio-libro-mes {
   font-size: 22px;
   font-weight: 700;
-  color: #6d96a6;
+  color: #4A5E68;
 }
 
 /* ACCIONES */
@@ -456,16 +486,18 @@
   height: 52px;
   width: 140px;
   padding: 0 16px;
-  background-color: #fff;
-  color: #2c2c2c;
+  background-color: #F7F5F2;
+  color: #4A5E68;
 }
-
+.numero-cantidad {
+  color: #4A5E68;
+}
 .simbolo-cantidad {
   background: none;
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: #666;
+  color: #4A5E68;
   transition: all 0.2s ease;
 }
 
@@ -482,50 +514,49 @@
   align-items: center;
   justify-content: center;
   background-color: #8daebd;
-  color: white;
+  color:#F7F5F2;
   border: 1.5px solid #8daebd;
-  border-radius: 6px;
+  border-radius: 3px;
   height: 52px;
   padding: 0 24px;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.3px;
   transition: all 0.3s ease;
 }
 
+
 .boton-carrito::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -100%; /* Empieza fuera del botón */
+  left: -100%;
   width: 100%;
   height: 100%;
-  background: white;
-  transition: left 0.4s ease;
-  z-index: 1;/* Debajo del texto */
-  color: #8daebd;
+  background-color: #F7F5F2;
+  transition: left 0.3s ease;
+  z-index: 0;
 }
 
 .boton-carrito:hover::before {
   left: 0;
-
 }
 
 .boton-carrito span {
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 .boton-carrito:hover {
-  color: #8daebd !important;
+  color: #8daebd;
   border-color: #8daebd;
 }
 
 .resumen-libro {
   font-size: 15px;
   line-height: 1.7;
-  color: #666;
+  color: #43555F;
   margin-top: 2px;
   text-align: left;
 }
@@ -535,7 +566,7 @@
 .seccion-extractos {
   width: 100%;
   padding: 60px 20px;
-  background-color: white;
+  background-color: #F7F5F2;
   text-align: center;
 }
 
@@ -545,7 +576,7 @@
   margin-bottom: 55px;
   font-family: "Cormorant", sans-serif;
   letter-spacing: -.96px;
-  color: #6d96a6;
+  color: #43555F;
   line-height: 1.16em;
 }
 
@@ -581,14 +612,14 @@
   font-weight: 500;
   margin-bottom: 8px;
   line-height: 1.2;
-  color: #6d96a6;
+  color: #4A5E68;
   letter-spacing: -1px;
 }
 
 .texto-extracto {
   font-size: 15px;
   line-height: 1.6;
-  color: #666;
+  color: #4A5E68;
   margin-top: 18px;
   text-align: center;
   padding-left: 40px;
