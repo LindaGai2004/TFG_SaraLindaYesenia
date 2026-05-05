@@ -48,15 +48,18 @@ export default function ProductoLista({ productos }) {
     try {
       if (esFavorito) {
         await apiDelete(`/usuarios/favoritos/${idProducto}`);
+        setMensaje("Eliminado de favoritos");
       } else {
         await apiPost(`/usuarios/favoritos/${idProducto}`);
+        setMensaje("Guardado en favoritos");
       }
 
       setFavoritos(prev => ({
         ...prev,
         [idProducto]: !prev[idProducto]
       }));
-      setTimeout(() => setMensaje(""), 2000); // añadido
+      setTimeout(() => setMensaje(""), 2000);
+
     } catch (error) {
       console.error("Error al actualizar favorito:", error);
     }
@@ -68,38 +71,50 @@ export default function ProductoLista({ productos }) {
 
   return (
     <>
-    {mostrarAvisoFavorito && (
-      <div className="notificacion-login">
-        <p>Debes iniciar sesión para guardar favoritos.</p>
+      {mostrarAvisoFavorito && (
+        <div className="notificacion-login">
+          <p>Debes iniciar sesión para guardar favoritos.</p>
 
-        <div className="notificacion-botones">
-          <a href="/login" className="btn-login-aviso">Ir al login</a>
-          <button
-            className="btn-cerrar-aviso"
-            onClick={() => setMostrarAvisoFavorito(false)}
-          >
-            Cerrar
-          </button>
+          <div className="notificacion-botones">
+            <a href="/login" className="btn-login-aviso">Ir al login</a>
+            <button
+              className="btn-cerrar-aviso"
+              onClick={() => setMostrarAvisoFavorito(false)}
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
-    {mostrarAvisoCarrito && (
-      <div className="notificacion-login">
-        <p>Debes iniciar sesión para añadir productos al carrito.</p>
-        <div className="notificacion-botones">
-          <a href="/login" className="btn-login-aviso">Ir al login</a>
-          <button 
-            className="btn-cerrar-aviso" 
-            onClick={() => setMostrarAvisoCarrito(false)}
-          >
-            Cerrar
-          </button>
+      {mostrarAvisoCarrito && (
+        <div className="notificacion-login">
+          <p>Debes iniciar sesión para añadir productos al carrito.</p>
+          <div className="notificacion-botones">
+            <a href="/login" className="btn-login-aviso">Ir al login</a>
+            <button 
+              className="btn-cerrar-aviso" 
+              onClick={() => setMostrarAvisoCarrito(false)}
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
-    {mensaje && <div className="notificacion-toast">{mensaje}</div>}
+      {mensaje && (
+        <div className="notificacion-login">
+          <p>{mensaje}</p>
+          <div className="notificacion-botones">
+            <button 
+              className="btn-cerrar-aviso" 
+              onClick={() => setMensaje("")}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="producto-grid">
         {productos.map((p) => (
@@ -163,6 +178,13 @@ export default function ProductoLista({ productos }) {
                 }
 
                 addToCart(p.idProducto, 1);
+
+                setMensaje(`¡Producto añadido al carrito!`);
+          
+                // Limpiar el mensaje después de 2 segundos
+                setTimeout(() => {
+                  setMensaje("");
+                }, 2000);
               }}
             >
               Añadir al carrito

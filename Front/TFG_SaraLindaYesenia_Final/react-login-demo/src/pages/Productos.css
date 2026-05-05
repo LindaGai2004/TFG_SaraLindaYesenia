@@ -122,3 +122,26 @@
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(141, 174, 189, 0.2);
 }
+
+
+/* RESPONSIVE tablet --------------------------------------------------------------------*/
+@media (min-width: 769px) and (max-width: 1500px) {
+  .productos-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    padding-top: 50px;
+    background: #f9f7f4;
+  }
+}
+
+/* RESPONSIVE MÓVIL ------------------------------------------------------------*/
+@media (max-width: 768px) {
+  .productos-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    padding-top: 80px;
+    background: #f9f7f4;
+  }
+}

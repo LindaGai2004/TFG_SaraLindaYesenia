@@ -4,15 +4,18 @@
 .cart-sidebar {
   position: fixed;
   top: 0;
-  right: -400px;
-  width: 380px;
+  /* Cambiamos el valor negativo para que coincida con el ancho */
+  right: -30%; 
+  /* Forzamos el ancho al 30% del viewport */
+  width: 30%; 
   height: 100vh;
-  background-color: #f9f7f4; /* Fondo crema suave */
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  background-color: #f9f7f4;
   z-index: 1000;
   transition: right 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
+  /* Opcional: añadir un ancho mínimo para que en móviles no sea minúsculo */
+  min-width: 300px; 
 }
 
 .cart-sidebar.open {
@@ -361,4 +364,22 @@
 
 .cart-sidebar-footer {
   display: contents;
+}
+
+
+/* tablet */
+@media (max-width: 500px) {
+  .cart-sidebar {
+    width: 60%;
+    right: -60%;
+  }
+}
+
+
+/* Ajuste para pantallas pequeñas (Móvil) */
+@media (max-width: 500px) {
+  .cart-sidebar {
+    width: 85%;
+    right: -85%;
+  }
 }

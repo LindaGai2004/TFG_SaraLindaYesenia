@@ -39,7 +39,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #f0f0f0;
-  flex-shrink: 0; /* Evita que la imagen se aplaste */
+  flex-shrink: 0; 
 }
 
 .usuario-recomendado .info {
@@ -49,11 +49,17 @@
   min-width: 0;
 }
 
+.usuario-recomendado .info strong,
+.usuario-recomendado .info .username,
+.stats-sidebar {
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  display: block;
+}
+
 .usuario-recomendado .info strong {
   font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Si el nombre es muy largo pone "..." */
 }
 
 .usuario-recomendado .info .username {

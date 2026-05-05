@@ -94,7 +94,7 @@ export default function CrearPublicacion({ onPublicada }) {
       )}
       <div className="crear-top">
         <img
-          src={avatar ? getApiUrl(avatar) : "/assets/default-user.png"}
+          src={avatar ? getApiUrl(avatar) : "/default-user.png"}
           alt="usuario"
           className="crear-avatar"
         />

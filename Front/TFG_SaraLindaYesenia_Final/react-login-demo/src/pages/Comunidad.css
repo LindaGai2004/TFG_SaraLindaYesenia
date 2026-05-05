@@ -6,11 +6,12 @@
 
 .comunidad-page {
   display: flex;
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1500px;
-    margin: 0 auto;
-    height: calc(100vh - 40px);
+  gap: 2rem;
+  margin: 0 auto;
+  margin-top: 60px;
+  max-width: 1200px;
+  width: 90%;
+  height: calc(100vh - 60px);
 }
 
 /* COLUMNA IZQUIERDA: scroll independiente */
@@ -108,7 +109,6 @@
 @media (min-width: 769px) and (max-width: 1500px) {
   .comunidad-page {
     width: 80%; 
-    margin: 20px auto;
     gap: 30px;
   }
 }
@@ -118,9 +118,9 @@
   .comunidad-page {
     flex-direction: column;
     height: auto;
-    width: 95%;
+    width: 90%;
     padding: 1rem;
-    margin: 10px auto;
+    margin: 60px auto;
   }
 
   .columna-izquierda {
