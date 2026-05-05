@@ -573,7 +573,7 @@ export default function ProductoDetalle() {
                                   src={
                                     r.usuario.avatar 
                                       ? getApiUrl(r.usuario.avatar) 
-                                      : "/assets/default-user.png"
+                                      : "/default-user.png"
                                   }
                                   alt={`Avatar de ${r.usuario.username}`}
                                   className="avatar-usuario" // Usamos la clase específica que creamos antes
