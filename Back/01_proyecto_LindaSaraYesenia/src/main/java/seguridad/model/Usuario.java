@@ -68,6 +68,7 @@ public class Usuario implements UserDetails, Serializable{
 	    joinColumns = @JoinColumn(name = "id_usuario"),
 	    inverseJoinColumns = @JoinColumn(name = "id_producto")
 	)
+	@JsonIgnore
 	private List<Producto> favoritos = new ArrayList<>();
 	
 	

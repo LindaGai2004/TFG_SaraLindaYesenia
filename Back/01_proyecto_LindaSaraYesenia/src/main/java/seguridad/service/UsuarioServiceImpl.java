@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import seguridad.model.Perfil;
 import seguridad.model.Usuario;
 import seguridad.model.dto.UsuarioRecomendadoDto;
+import seguridad.repository.ComentarioPublicacionRepository;
 import seguridad.repository.PerfilRepository;
 import seguridad.repository.SeguidorRepository;
 import seguridad.repository.UsuarioRepository;
@@ -34,6 +35,24 @@ import seguridad.repository.UsuarioRepository;
 	
 	@Autowired
 		private PasswordEncoder passwordEncoder;
+	
+	// Para eliminar los clientes
+	@Autowired
+	private ComentarioPublicacionRepository comentarioPublicacionRepository;
+
+	@Autowired
+	private seguridad.repository.PublicacionRepository publicacionRepository;
+	
+	@Autowired
+	private seguridad.repository.PedidoRepository pedidoRepository;
+
+	@Autowired
+	private seguridad.repository.DetallePedidoRepository detallePedidoRepository;
+	
+	@Autowired
+	private seguridad.repository.FacturaRepository facturaRepository;
+	
+	
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -54,17 +73,6 @@ import seguridad.repository.UsuarioRepository;
 		return usuarioRepository.findByEmail(email).orElse(null);
 	}
 	
-	/*
-	@Override
-	public Usuario findByEmailPassword(String email, String password) {
-	        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
-	        if (usuario != null && usuario.getPassword().equals("{noop}" + password)) {
-	           return usuario;
-	        } else {
-	        return null;
-	        }
-	}
-	*/
 	
 	@Override
 	public List<Usuario> findAll() {
@@ -117,12 +125,7 @@ import seguridad.repository.UsuarioRepository;
 		   }
 		   //el service se asegura de añadir {noop} si hace falta
 		   String password = usuario.getPassword();
-		   //anterior
-//		   if (!password.startsWith("{noop}")) {
-//		       usuario.setPassword("{noop}" + password);
-//		   } else {
-//		       usuario.setPassword(password);
-//		   }
+
 		   usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
 		   usuario.setFechaRegistro(LocalDate.now());
@@ -154,15 +157,34 @@ import seguridad.repository.UsuarioRepository;
 	
 	//ELIMINAR
 	@Override
+	@org.springframework.transaction.annotation.Transactional
 	public int deleteById(Integer idUsuario) {
-
-	   boolean exists = usuarioRepository.existsById(idUsuario);
-	   if (!exists) {
-	       return 0;
-	   }else {
-	   usuarioRepository.deleteById(idUsuario);
-	   return 1;
-	   }
+	    if (!usuarioRepository.existsById(idUsuario)) {
+	        return 0;
+	    }
+	    
+	    List<seguridad.model.Publicacion> pubs = publicacionRepository.findByUsuario_IdUsuario(idUsuario);
+	    List<Integer> pubIds = pubs.stream().map(seguridad.model.Publicacion::getId).toList();
+	    
+	    if (!pubIds.isEmpty()) {
+	        comentarioPublicacionRepository.deleteByPublicacionIds(pubIds);
+	    }
+	    
+	    comentarioPublicacionRepository.deleteByUsuarioId(idUsuario);
+	    
+	    if (!pubIds.isEmpty()) {
+	        publicacionRepository.deleteAll(pubs);
+	    }
+	    
+	    List<seguridad.model.Pedido> pedidos = pedidoRepository.findByUsuario_IdUsuario(idUsuario);
+	    for (seguridad.model.Pedido p : pedidos) {
+	        detallePedidoRepository.deleteByPedido_IdPedido(p.getIdPedido());
+	        facturaRepository.deleteByPedido_IdPedido(p.getIdPedido());
+	    }
+	    pedidoRepository.deleteByUsuario_IdUsuario(idUsuario);
+	    
+	    usuarioRepository.deleteById(idUsuario);
+	    return 1;
 	}
 	
 	

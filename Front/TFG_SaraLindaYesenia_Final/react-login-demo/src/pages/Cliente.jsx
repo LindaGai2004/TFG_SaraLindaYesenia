@@ -197,20 +197,6 @@ export default function Portfolio() {
     return () => window.removeEventListener('focus', onFocus);
   }, []);
 
-  /*useEffect(() => {
-    const cargarResumenCliente = async () => {
-      try {
-        const carrito = await apiGet('/carrito');
-        setCartCount(carrito?.items?.length ?? 0);
-      } catch (error) {
-        console.error('Error cargando carrito del cliente:', error);
-        setCartCount(0);
-      }
-    };
-
-    cargarResumenCliente();
-  }, []);*/
-
   useEffect(() => {
     const cargarPerfilCliente = async () => {
       if (!user) return;
@@ -355,19 +341,22 @@ export default function Portfolio() {
         const data = await apiGet('/pedidos/usuario/');
         const ordenados = [...(data ?? [])]
             .filter(pedido => {
-                // 如果是购物车状态，只有里面有商品才显示
                 if (pedido.estadoPedido === 'CARRITO') {
                     const totalItems = (pedido.items ?? []).reduce(
                         (acc, item) => acc + (item.cantidad ?? 0), 0
                     );
                     return totalItems > 0;
                 }
-                // 其他状态（REALIZADO, CANCELADO, DEVUELTO）正常显示
                 return true;
             })
             .sort((a, b) => {
-                const dateA = new Date(b.fechaVenta ?? b.fechaActualizacion ?? 0).getTime();
-                const dateB = new Date(a.fechaVenta ?? a.fechaActualizacion ?? 0).getTime();
+                const aIsCart = a.estadoPedido === 'CARRITO';
+                const bIsCart = b.estadoPedido === 'CARRITO';
+                if (aIsCart && !bIsCart) return 1;
+                if (!aIsCart && bIsCart) return -1;
+                
+                const dateA = new Date(a.fechaVenta ?? a.fechaActualizacion ?? 0).getTime();
+                const dateB = new Date(b.fechaVenta ?? b.fechaActualizacion ?? 0).getTime();
                 return dateA - dateB;
             });
         setPedidos(ordenados);
@@ -417,24 +406,20 @@ export default function Portfolio() {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // 本地预览（立即显示）
     const reader = new FileReader();
     reader.onload = () => setProfileImagePreview(String(reader.result ?? ''));
     reader.readAsDataURL(file);
 
-    // 上传到后端
     try {
         const formData = new FormData();
         formData.append("file", file);
         const result = await apiPost(
             `/usuario/${profileData?.email ?? profileForm.email}/avatar`,
             formData,
-            true // isFormData = true
+            true 
         );
-        // 更新全局用户状态
         if (result?.avatar) {
             updateUser({ ...user, avatar: result.avatar });
-            // 删除 localStorage 里的旧预览
             localStorage.removeItem('client_profile_image');
         }
     } catch (e) {
@@ -449,7 +434,6 @@ export default function Portfolio() {
     setProfileMessage('');
 
     try {
-      // 只发必要字段，不带多余的Spring Security字段
       const payload = {
         nombre: profileForm.nombre,
         apellidos: profileForm.apellidos,
@@ -477,40 +461,6 @@ export default function Portfolio() {
       setProfileSaving(false);
     }
   };
-  /* const handleSaveProfile = async () => {
-     if (!profileForm.email) return;
- 
-     setProfileSaving(true);
-     setProfileMessage('');
- 
-     try {
-       const payload = {
-         ...profileData,
-         ...profileForm,
-       };
- 
-       if (!payload.password) {
-         delete payload.password;
-       }
- 
-       await apiPut(`/usuario/${profileData?.email ?? profileForm.email}`, payload);
- 
-       const updatedLocalUser = {
-         ...user,
-         ...payload,
-       };
- 
-       updateUser(updatedLocalUser);
-       setProfileData((prev) => ({ ...prev, ...payload }));
-       setProfileForm((prev) => ({ ...prev, password: '' }));
-       setProfileMessage('Perfil actualizado correctamente.');
-     } catch (error) {
-       console.error('Error actualizando perfil:', error);
-       setProfileMessage('No se pudo actualizar el perfil.');
-     } finally {
-       setProfileSaving(false);
-     }
-   };*/
 
   const scrollHistorial = (direction) => {
     const container = historialRef.current;

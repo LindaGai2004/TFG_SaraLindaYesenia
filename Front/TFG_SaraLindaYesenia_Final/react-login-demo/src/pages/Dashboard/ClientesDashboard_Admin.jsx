@@ -30,6 +30,7 @@ export default function Clientes({
           value={clientSearch}
           onChange={e => setClientSearch(e.target.value)}
           className="input-field search-input"
+          disabled={!!formModal || !!popup} 
         />
       </div>
 
@@ -51,7 +52,8 @@ export default function Clientes({
           </thead>
           <tbody>
             {filteredClients.map(c => {
-              const pedCnt = pedidos.filter(p => p.email === c.email).length;
+             //const pedCnt = pedidos.filter(p => p.email === c.email).length;
+             const pedCnt = pedidos.filter(p => p.email === c.email && !(p.estadoPedido === 'CARRITO' && (p.total ?? 0) === 0)).length;
               return (
                 <tr key={c.id} onClick={() => setPopup({ type: 'client', data: c })} className="cursor-pointer">
                   <td>
@@ -137,7 +139,8 @@ export default function Clientes({
           {pedidos.filter(p => p.email === popup.data.email).length === 0 ? (
             <p className="text-xs text-muted">De momento no tienes pedido</p>
           ) : (
-            pedidos.filter(p => p.email === popup.data.email).map(p => {
+            //pedidos.filter(p => p.email === popup.data.email).map(p => {
+            pedidos.filter(p => p.email === popup.data.email && !(p.estadoPedido === 'CARRITO' && (p.total ?? 0) === 0)).map(p => {
               const statusStyle = {
                 'CANCELADO': { bg: '#fef3c7', color: '#92400e' },
                 'CARRITO': { bg: '#dbeafe', color: '#1d4ed8' },

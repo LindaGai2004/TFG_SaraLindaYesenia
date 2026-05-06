@@ -7,4 +7,5 @@ import seguridad.model.Factura;
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, Integer> {
 	Factura findByPedido_IdPedido(Integer idPedido);
+	void deleteByPedido_IdPedido(Integer idPedido);
 }

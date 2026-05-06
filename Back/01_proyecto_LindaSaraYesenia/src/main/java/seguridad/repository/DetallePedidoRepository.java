@@ -14,4 +14,5 @@ public interface DetallePedidoRepository extends JpaRepository<DetallePedido, In
 	List<DetallePedido> findByPedido_IdPedido(Integer idPedido);
 	Optional<DetallePedido> findByPedido_IdPedidoAndProducto_IdProducto(Integer idPedido, Integer idProducto);
 	List<DetallePedido> findByPedido(Pedido pedido);
+	void deleteByPedido_IdPedido(Integer idPedido);
 }

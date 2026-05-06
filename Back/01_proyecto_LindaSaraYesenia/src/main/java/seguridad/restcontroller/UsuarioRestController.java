@@ -239,6 +239,7 @@ public class UsuarioRestController {
 
         if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
             objetivo.setPassword(usuario.getPassword());
+            objetivo.setPassword(passwordEncoder.encode(usuario.getPassword()));
         }
 
         if (usuario.getNombre() != null) objetivo.setNombre(usuario.getNombre());

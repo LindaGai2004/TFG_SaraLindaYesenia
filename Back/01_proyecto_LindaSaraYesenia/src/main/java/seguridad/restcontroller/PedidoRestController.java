@@ -42,6 +42,7 @@ public class PedidoRestController {
 	public ResponseEntity<?> todos(){
 		List<Pedido> pedidos = pserv.findAll();
 		List<PedidoResponseDto> respuestas = pedidos.stream()
+				.filter(p -> !(p.getEstadoPedido() == EstadoPedido.CARRITO && (p.getTotal() == null || p.getTotal() == 0.0)))
 				.map(p ->pserv.resumenPedido(p.getIdPedido()))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(respuestas);
@@ -86,8 +87,8 @@ public class PedidoRestController {
 			return ResponseEntity.ok(resumen);
 		}
 		
-	 
-	//Cambio de Estado
+/*	 
+	//Cambio de Estado, no da tiempo
 	@PutMapping("/{idPedido}/estado/{estado}")
 	@PreAuthorize("hasAnyRole('CLIENTE')")
 	public ResponseEntity<?> modificarEstado(@PathVariable Integer idPedido, @PathVariable EstadoPedido estado){
@@ -98,5 +99,5 @@ public class PedidoRestController {
         return ResponseEntity.ok(pedido);
 	}
 
-	
+	*/
 }

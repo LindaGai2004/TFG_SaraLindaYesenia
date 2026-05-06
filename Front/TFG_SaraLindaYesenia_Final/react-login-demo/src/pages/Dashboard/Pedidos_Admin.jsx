@@ -109,22 +109,13 @@ export default function Pedidos({ pedidos, clients, onCancelPedido }) {
                       {o.fechaVenta ? timeAgo(o.fechaVenta) : '—'}
                     </div>
                   </td>
-                  <td>
-                    {canCan ? (
-                      <button onClick={e => { e.stopPropagation(); onCancelPedido(o.idPedido); }} className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition hover:bg-red-100 text-error">
-                        <XCircle size={11} /> Cancelar
-                      </button>
-                    ) : o.estado !== 'Cancelado' && (
-                      <span className="flex items-center gap-1 text-xs text-muted"><Clock size={10} />  Pedido Caducado</span>
-                    )}
-                  </td>
+                 
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-      <p className="text-xs mt-3 text-muted">⏰ Los pedidos solo se puede cancelar dentro de las primeras 24 horas.</p>
 
       {popup?.type === 'pedido' && (
         

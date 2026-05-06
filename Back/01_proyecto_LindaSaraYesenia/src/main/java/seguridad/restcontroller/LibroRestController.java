@@ -44,7 +44,7 @@ public class LibroRestController {
 	}
 	
 	@PutMapping("/modificarLibro/{idProducto}")
-	@PreAuthorize("hasRole('ADMON')")
+	@PreAuthorize("hasAnyRole('ADMON', 'JEFE')")
 	public ResponseEntity<?> modificar(@PathVariable Integer idProducto, @RequestBody Libro libro) {
 		libro.setIdProducto(idProducto);
 		Libro modificado = libroService.updateLibro(libro);

@@ -15,5 +15,8 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, Intege
 
     // Obtener publicaciones de un usuario específico
     List<Publicacion> findByUsuarioIdUsuarioOrderByFechaDesc(Integer idUsuario);
+    
+    List<Publicacion> findByUsuario_IdUsuario(int idUsuario);
 
+    
 }
