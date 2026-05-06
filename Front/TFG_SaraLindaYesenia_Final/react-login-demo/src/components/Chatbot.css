@@ -16,7 +16,41 @@
   transition: background 0.2s;
 }
 .chat-fab:hover { background: #8DAEBD; }
+.chat-fab-stars {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: 9px;
+  margin-top: 3px;
+}
 
+.star {
+  position: absolute;
+  color: white;
+  line-height: 1;
+}
+
+.star-1 {
+  font-size: 18px;
+  top: 8px;
+  right: 9px;
+}
+
+.star-2 {
+  font-size: 14px;
+  bottom: 0;
+  left: 12px;
+  top: 0px;
+}
+
+.star-3 {
+  font-size: 11px;
+  top: 9px;
+  left: 20px;
+}
 /* ── CHAT WINDOW ───────────────────────────── */
 .chat-ventana {
   position: fixed;
@@ -122,9 +156,9 @@
   transition: background 0.15s, color 0.15s;
 }
 .chat-sugerencia-btn:hover {
-  background: #8DAEBD;
+  background: #BDA78E;
   color: #fff;
-  border-color: #8DAEBD;
+  border-color: #BDA78E;
 }
 
 /* ── PRODUCT CARDS ─────────────────────────── */
@@ -170,7 +204,7 @@
   cursor: pointer;
   transition: background 0.2s;
 }
-.chat-btn-soporte:hover { background: #4A5E68; }
+.chat-btn-soporte:hover { background: #BDA78E; }
 
 .chat-btn-ver-producto {
   display: inline-block;
@@ -183,7 +217,7 @@
   text-decoration: none;
   transition: background 0.2s;
 }
-.chat-btn-ver-producto:hover { background: #4A5E68; }
+.chat-btn-ver-producto:hover { background: #BDA78E; }
 
 /* ── LOADING DOTS ──────────────────────────── */
 .chat-cargando {
@@ -195,7 +229,7 @@
 .chat-cargando span {
   width: 8px;
   height: 8px;
-  background: #8DAEBD;
+  background: #BDA78E;
   border-radius: 50%;
   animation: bounce 1s infinite;
 }
@@ -235,6 +269,9 @@
   cursor: pointer;
   font-size: 14px;
   transition: background 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.chat-enviar:hover   { background: #4A5E68; }
-.chat-enviar:disabled { opacity: 0.5; cursor: not-allowed; }
+.chat-enviar:hover   { background: #4A5E68; opacity: 1; }
+.chat-enviar:disabled { background: #c8dae2; cursor: not-allowed; }

@@ -294,7 +294,7 @@ INSERT INTO productos
 ('Cien años de soledad','Saga familiar marcada por magia, memoria y destino.','LIBRO',21.90,45,'DISPONIBLE','2024-03-11',15.00),
 ('El amor en los tiempos del cólera','Relato sobre amor persistente y el paso del tiempo.','LIBRO',18.90,30,'AGOTADO','2024-03-12',12.50),
 ('La casa de los espíritus','Historia familiar llena de realismo mágico y emociones profundas.','LIBRO',17.90,40,'DISPONIBLE','2024-03-13',11.50),
-('Rayuela','Novela experimental que invita a una lectura libre y fragmentada.','LIBRO',16.50,35,'AGOTADO','2024-03-14',10.50),
+('Rayuela','Novela experimental que invita a una lectura libre y fragmentada.','LIBRO',16.50,35,'DISPONIBLE','2024-03-14',10.50),
 ('Pedro Páramo','Relato breve que mezcla muerte, memoria y voces del pasado.','LIBRO',13.90,50,'DISPONIBLE','2024-03-15',8.50),
 ('Ficciones','Colección de relatos que exploran laberintos, símbolos y paradojas.','LIBRO',19.50,25,'AGOTADO','2024-03-16',14.00),
 ('La ciudad y los perros','Crítica social ambientada en un colegio militar opresivo.','LIBRO',17.90,30,'DISPONIBLE','2024-03-17',12.00),
@@ -454,7 +454,7 @@ conflicto. Es un retrato implacable de un mundo donde nadie está a salvo.'),
 (30,'9780000000040','RBA','2004-06-30','Neil Gaiman',624,7,5,
 'Una mezcla de mitología y modernidad que cuestiona la fe, la identidad y el papel de los dioses en un mundo cambiante. La novela explora cómo las creencias evolucionan con el tiempo y cómo las figuras divinas deben adaptarse a una sociedad que ya no las recuerda, mientras fuerzas antiguas y nuevas compiten por sobrevivir.'),
 
-(31,'9780000000041','Debolsillo','2017-10-09','Jack Donoso',624,7,5,
+(31,'9780000000041','Debolsillo','2017-10-09','Jack Donoso',624,6,5,
 'Jack Donoso es un joven y peculiar periodista que está inciando su carrera profesional en la sección de Espectáculos del diario El Patriota, de Ciudad Cándida. Lleva una vida tranquila hasta que, por azares del destino, debe cubrir la nota de la explosión de un automóvil frente al edificio del Ministerio de Obras Públicas. A partir de ese momento, se ve implicado en una intriga política y policiaca que pone en peligro su vida. Esta emocionante novela recupera las características del género policiaco y les añade elementos fantásticos.');
 
 

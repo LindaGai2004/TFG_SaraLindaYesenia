@@ -52,11 +52,11 @@ function MensajeBot({ mensaje, onEnviar }) {
           </a>
         )}
         {mensaje.necesitaSoporte && (
-          <button className="chat-btn-soporte"
-            onClick={() => window.location.href = "/contacto"}>
-            Contactar con soporte
-          </button>
-        )}
+    <button className="chat-btn-soporte"
+        onClick={() => onEnviar("hasta luego")}>
+        Contactar con soporte
+    </button>
+)}
       </div>
     </div>
   );
@@ -91,8 +91,8 @@ export default function Chatbot() {
 
   const generosLibro = [
     "Terror 😱", "Romance 💕", "Aventura ⚔️",
-    "Fantasía 🔮", "Clásicos 📖", "Misterio 🕵️",
-    "Filosofía 💭", "Sorpréndeme ✨"
+    "Fantasía 🔮", "Clásicos 📖", "Misterio 🕵️"
+    , "Sorpréndeme ✨"
   ];
 
   const categoriasPapeleria = [
@@ -121,7 +121,6 @@ export default function Chatbot() {
     if (t.includes("papel")) return "/productos?tipo=papeleria&categoria=Papel";
     if (t.includes("terror")) return "/productos?tipo=libro&genero=Terror";
     if (t.includes("romance")) return "/productos?tipo=libro&genero=Romance";
-    if (t.includes("fantas")) return "/productos?tipo=libro&genero=Fantas%C3%ADa";
     if (t.includes("aventura")) return "/productos?tipo=libro&genero=Aventura";
     if (t.includes("misterio")) return "/productos?tipo=libro&genero=Misterio";
     if (t.includes("filosof")) return "/productos?tipo=libro&genero=Filosof%C3%ADa";
@@ -137,8 +136,7 @@ export default function Chatbot() {
     "Terror 😱": "terror",
     "Romance 💕": "romance",
     "Aventura ⚔️": "aventura",
-    "Fantasía 🔮": "fantasía",
-    "Clásicos 📖": "clásicos",
+    "Clásicos 📖": "Clásicos",
     "Misterio 🕵️": "misterio",
     "Filosofía 💭": "filosofía",
   };
@@ -177,7 +175,7 @@ export default function Chatbot() {
 
     // Sorpréndeme
     if (texto.includes("Sorpréndeme")) {
-      const generos = ["Terror", "Romance", "Aventura", "Fantasía", "Clásicos", "Misterio"];
+      const generos = ["Terror", "Romance", "Aventura", "Clásicos", "Misterio"];
       const random = generos[Math.floor(Math.random() * generos.length)];
       enviarMensaje(random);
       return;
@@ -215,7 +213,7 @@ export default function Chatbot() {
     if (texto.includes("Recomiéndame un libro")) {
       setMensajes((prev) => [...prev, {
         tipo: "bot",
-        texto: "¿Qué tipo de libro te apetece?",
+        texto: "¿Qué tipo de género te interesa?",
         productos: [], necesitaSoporte: false,
         categorias: generosLibro,
       }]);
@@ -297,11 +295,15 @@ export default function Chatbot() {
 
   return (
     <>
-      <button className="chat-fab" onClick={() => setAbierto(!abierto)}
-        aria-label="Abrir chatbot">
-        {abierto ? "✕" : "✦"}
+      <button className="chat-fab" onClick={() => setAbierto(!abierto)} aria-label="Abrir chatbot">
+        {abierto ? "✕" : (
+          <span className="chat-fab-stars">
+            <span className="star star-1">✦</span>
+            <span className="star star-2">✦</span>
+            <span className="star star-3">✦</span>
+          </span>
+        )}
       </button>
-
       {abierto && (
         <div className="chat-ventana">
           <div className="chat-header">
@@ -350,9 +352,13 @@ export default function Chatbot() {
               onKeyDown={(e) => e.key === "Enter" && enviarMensaje(input)}
               placeholder="Escribe tu mensaje..."
               className="chat-input"
-              disabled={despedido} />
-            <button className="chat-enviar" onClick={() => enviarMensaje(input)}
-              disabled={cargando || despedido}>➤</button>
+              disabled={despedido || mensajes.some(m => m.necesitaSoporte)}/>
+            <button className="chat-enviar" onClick={enviarMensaje} disabled={!input.trim() || cargando || mensajes.some(m => m.necesitaSoporte)}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </button>
           </div>
         </div>
       )}
