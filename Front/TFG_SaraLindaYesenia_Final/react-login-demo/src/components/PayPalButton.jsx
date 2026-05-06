@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { apiPost } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import "./PayPalButton.css";
 
 export default function PayPalButton({ idPedido, mode, total }) {
@@ -9,6 +10,7 @@ export default function PayPalButton({ idPedido, mode, total }) {
   const [processing, setProcessing] = useState(false);
   const hostedFieldsRef = useRef(null);
   const buttonsRef = useRef(null);
+  const { refreshCartFromServer } = useCart();
 
   // ── MODO POPUP — callback ref garantiza que el div ya existe en el DOM ──
   const paypalContainerRef = useCallback((node) => {
@@ -33,6 +35,7 @@ export default function PayPalButton({ idPedido, mode, total }) {
       onApprove: async (data) => {
         try {
           const pedido = await apiPost(`/api/paypal/capturar-pedido/${data.orderID}`);
+          await refreshCartFromServer();  // ← añade esto
           navigate("/resumen", { state: pedido });
         } catch {
           alert("Error confirmando el pago");
@@ -79,6 +82,7 @@ export default function PayPalButton({ idPedido, mode, total }) {
         cardholderName: document.getElementById("card-name")?.value,
       });
       const pedido = await apiPost(`/api/paypal/capturar-pedido/${orderId}`);
+      await refreshCartFromServer();
       navigate("/resumen", { state: pedido });
     } catch (err) {
       console.error(err);
