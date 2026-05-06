@@ -1,0 +1,929 @@
+/* FONDO GENERAL ------------------------------------------ */
+.fondo-detalle {
+  background: #f9f7f4;
+   padding-top: 40px;
+}
+
+/* LAYOUT GENERAL ------------------------------------------ */
+.detalle-layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 20px;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* FILA SUPERIOR (IMAGEN + INFO) ------------------------------------------ */
+.fila-superior {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+}
+
+.fila-superior.dos-columnas {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+}
+
+/* COLUMNA IZQUIERDA (GALERÍA) ------------------------------------------ */
+.col-izquierda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.galeria-producto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.galeria-producto .imagen-principal img {
+  width: 100%;
+  height: 370px;
+  object-fit: cover;
+}
+
+.galeria-producto .miniaturas {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.galeria-producto .miniaturas img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.galeria-producto .miniaturas img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  border-color: #184763;
+}
+
+/* COLUMNA DERECHA (INFO) ------------------------------------------ */
+.col-derecha-editorial {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.titulo-editorial {
+  font-size: 50px;
+  font-family: "Cormorant", sans-serif;
+  margin: 0;
+  font-weight: 700;
+  color: #6d96a6;
+}
+
+.autor-editorial {
+  font-size: 25px;
+  margin-top: 5px;
+  color: #6d96a6;
+}
+
+.precio-editorial {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #6d96a6;
+}
+
+.descripcion-editorial {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* BOTONES -------------------------------------------------- */
+.editorial-botones-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0 25px 0;
+}
+
+/* Botón añadir al carrito */
+.btn-cesta-editorial {
+  width: 160px;
+  height: 50px;
+  padding: 10px;
+  background: #8daebd;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 1px solid #8daebd;
+  font-size: 0.9rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+.btn-cesta-editorial::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: left 0.4s ease;
+  z-index: -1;
+}
+
+.btn-cesta-editorial:hover::before {
+  left: 0;
+}
+
+.btn-cesta-editorial:hover {
+  color: #8daebd;
+  border-color: #8daebd;
+}
+
+/* Botones icono */
+.botones-iconos {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-icono {
+  width: 48px;
+  height: 48px;
+  background: #8daebd;
+  border: 1.5px solid #8daebd;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.btn-icono:hover {
+  background: #6d96a6;
+  border-color: #6d96a6;
+}
+
+.btn-icono img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+/* FILA INFERIOR (RESUMEN + DETALLES) ------------------------------------------ */
+.fila-inferior {
+  max-width: 1100px;
+  margin: 40px auto;
+  display: grid;
+
+  /* Antes: 1fr 1fr → ahora la izquierda es más ancha */
+  grid-template-columns: 1.4fr 0.8fr;
+
+  gap: 60px; /* más separación para empujar la derecha */
+  padding: 20px 10px;
+}
+
+/* Columna izquierda más ancha */
+.col-inferior-izq {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px; /* antes 450px */
+}
+
+/* Columna derecha más pegada a la derecha */
+.col-inferior-der {
+  margin-left: auto; /* empuja la columna hacia la derecha */
+  width: 100%;
+  max-width: 380px; /* un poco más estrecha */
+}
+
+.titulo-seccion {
+  font-size: 30px;
+  font-family: "Cormorant", sans-serif;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #6d96a6;
+}
+
+/* RESUMEN / DESCRIPCIÓN ------------------------------------------ */
+.texto-resumen {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+.btn-leer-mas {
+  background: none;
+  border: none;
+  color: #6d96a6;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn-leer-mas:hover {
+  text-decoration: underline;
+}
+
+/* LISTA DE PAPELERÍA ------------------------------------------ */
+.lista-detalles {
+  list-style: disc;
+  padding-left: 20px;
+  margin-top: 10px;
+  line-height: 1.6;
+  color: #444;
+}
+
+.detalles-grid p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+
+/* RELACIONADOS ----------------------------------------------- */
+.detalle-relacionados {
+  padding: 15px;
+  border-radius: 6px;
+  width: 200px;
+  position: sticky;
+  top: 20px;
+}
+
+.detalle-relacionados h3 {
+  font-size: 30px;
+  font-weight: 700;
+  font-family: "Cormorant", sans-serif;
+  color: #6d96a6;
+  margin-bottom: 15px;
+}
+
+.relacionados-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.relacionado-item {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #d0d8dd;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.relacionado-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.relacionado-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.relacionado-nombre {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6d96a6;
+}
+
+.relacionado-precio {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #6d96a6;
+}
+
+
+/* AVISO DE LOGIN (FAVORITOS / CARRITO) ----------------------------------------*/
+.notificacion-login {
+  position: fixed;
+  top: 120px;
+  right: 40px;
+  background: #e8f1f5;
+  border: 1px solid #6d96a6;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 7;
+  color: #184763;
+  font-weight: 500;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Contenedor de botones */
+.notificacion-botones {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+/* Botón "Ir al login" */
+.btn-login-aviso {
+  background: #6d96a6;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.btn-login-aviso:hover {
+  background: #184763;
+}
+
+/* Botón cerrar */
+.btn-cerrar-aviso {
+  background: #e0e0e0;
+  padding: 6px 12px;
+  border: 1.5px solid #6d96a6;
+  border-radius: 6px;
+  color: #184763;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+
+
+
+
+/* SECCIÓN RESEÑAS --------------------------------------------------------- */
+
+#seccion-resenas {
+  scroll-margin-top: 120px; 
+}
+
+.resenas-container-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 0 auto;
+}
+
+/* HEADER: Estadísticas y Barras */
+.resenas-header-stats {
+  display: flex;
+  gap: 40px;
+  padding-top: 20px;
+  border-radius: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.stats-left {
+  text-align: center;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.numero-media {
+  font-size: 56px;
+  font-weight: 800;
+  color: #8daebd;
+  line-height: 1;
+}
+
+.total-valoraciones-link {
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 5px;
+}
+
+/* Barras de progreso */
+.stats-middle {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.barra-fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.etiqueta-estrella {
+  min-width: 85px;
+  color: #555;
+  font-weight: 500;
+}
+
+.barra-vacia {
+  flex: 1;
+  height: 14px;
+  background: #f0f0f0;
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.barra-llena {
+  height: 100%;
+  background: #8daebd;
+  border-radius: 7px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cantidad-texto {
+  min-width: 40px;
+  text-align: right;
+  color: #888;
+  font-weight: bold;
+}
+
+/* Acciones (Botón escribir opinión) */
+.stats-right {
+  min-width: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stats-right h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.btn-abrir-resena {
+  background: #8daebd;
+  color: white;
+  border: 1.5px solid #8daebd;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-abrir-resena:hover {
+  background: white;
+  color: #8daebd;
+  border: 1.5px solid #8daebd;
+  transform: translateY(-2px);
+}
+
+.btn-abrir-resena.cancelar {
+  background: #a33;
+}
+
+/* ESTRELLAS (Globales) */
+.star-display {
+  font-size: 1.3rem;
+  color: #e0e0e0;
+  margin-right: 2px;
+}
+
+.star-display.filled {
+  color: #ffc107;
+}
+
+.estrellas-puntos {
+  display: flex;
+  gap: 2px;
+  margin: 8px 0;
+}
+
+/* SELECTOR (Cuando el usuario marca estrellas) */
+.selector-estrellas-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 10; /* Asegura que esté por encima de otros elementos */
+}
+
+.selector-estrellas-inline .star {
+    font-size: 32px;
+    cursor: pointer !important; /* Fuerza el cursor de mano */
+    color: #ccc;
+    transition: color 0.2s;
+    pointer-events: all; /* Asegura que capture el click */
+}
+
+.selector-estrellas-inline .star.filled {
+    color: #ffc107;
+}
+
+/* FORMULARIO */
+.form-resena {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
+.form-resena textarea {
+  width: 100%;
+  height: 120px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+  margin: 15px 0;
+}
+
+.btn-enviar-resena {
+  background: #8daebd;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* LISTA DE RESEÑAS */
+.resena-card {
+  padding: 25px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.resena-usuario {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.resena-usuario .avatar-usuario { 
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.resena-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.nombre-u {
+  font-weight: bold;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.fecha-r {
+  margin-left: auto;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.texto-r {
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+}
+
+.btn-eliminar-resena {
+  background: #8daebd;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 20px;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  width: 35px;
+  height: 30px;
+}
+
+.img-eliminar {
+  width: 23px;
+  height: 23px;
+  object-fit: contain;
+}
+
+.aviso-resena, .check-done {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Contenedor del formulario cuando está dentro del header */
+.form-resena-inline {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-inline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-inline-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #6d96a6;
+}
+
+.btn-cerrar-inline {
+    background: #8daebd;
+    border: none;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: white;
+}
+
+.selector-estrellas-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.texto-ayuda-estrellas {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.form-inline-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-cancelar-inline {
+    background: white;
+    color: #6d96a6;
+    border: 1.5px solid #8daebd;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-cancelar-inline:hover {
+    background: #e5e5e5;
+}
+
+/* Ajuste del textarea dentro del header */
+.form-resena-inline textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* Línea divisoria */
+.resenas-divider {
+  border: 0;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 20px 0 20px 0;
+  width: 100%;
+}
+
+/* Contenedor en Grid */
+.lista-resenas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales */
+  gap: 30px; /* Espacio entre las tarjetas */
+}
+
+/* Estilo de la tarjeta adaptado al grid */
+.resena-card-v2 {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Estrellas y textos (reutilizando tus clases) */
+.nombre-u {
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.texto-r {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+
+/* CONTENEDOR DE PESTAÑAS ------------------------------------------ */
+.contenedor-pestañas {
+  margin-top: 50px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* CABECERA */
+.cabecera-pestañas {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1.5px solid #e0e0e0;
+  gap: 20px;
+}
+
+.tab-btn {
+  padding: 12px 25px;
+  border: none !important;
+  background: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font-size: 1.05rem !important;
+  font-weight: normal !important;
+  color: #888 !important;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Pestaña activa*/
+.tab-btn.active {
+  color: #6d96a6 !important;
+  font-weight: 900 !important;
+}
+
+.tab-btn::after {
+  content: "";
+  position: absolute;
+  bottom: -1.5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #6d96a6;
+  transform: scaleX(0); /* Empieza invisible */
+  transition: transform 0.3s ease;
+}
+
+.tab-btn.active::after {
+  transform: scaleX(1);
+}
+
+.contenido-pestaña {
+  padding: 30px 10px;
+  min-height: 250px;
+}
+
+/* Animación para que el contenido aparezca suavemente */
+.animar-entrada {
+  animation: fadeEffect 0.5s ease;
+}
+
+@keyframes fadeEffect {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detalles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* RESPONSIVE TABLET ------------------------------------------------------------*/
+@media (min-width: 769px) and (max-width: 1500px) {
+  .detalle-layout {
+    grid-template-columns: 1fr 220px;
+    max-width: 1000px;
+    padding: 15px;
+  }
+
+  /* Imagen + info */
+  .fila-superior.dos-columnas {
+    grid-template-columns: 240px 1fr;
+    gap: 30px;
+  }
+
+  .galeria-producto .imagen-principal img {
+    height: 300px;
+  }
+
+  .galeria-producto .miniaturas img {
+    height: 70px;
+  }
+
+  .titulo-editorial {
+    font-size: 40px;
+  }
+
+  .autor-editorial,.precio-editorial {
+    font-size: 22px;
+  }
+
+  .fila-inferior {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 80px;
+    padding: 20px 10px;
+  }
+
+  .col-inferior-izq {
+    max-width: 550px;
+  }
+
+  .col-inferior-der {
+    margin-left: auto; /* empuja la columna hacia la derecha */
+    max-width: 360px;
+  }
+
+  .detalle-relacionados {
+    width: 180px;
+  }
+}
+
+/* RESPONSIVE MÓVIL ------------------------------------------------------------*/
+@media (max-width: 768px) {
+
+  .detalle-layout {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .fila-superior.dos-columnas {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .galeria-producto .imagen-principal img {
+    height: 260px;
+  }
+
+  .galeria-producto .miniaturas img {
+    height: 60px;
+  }
+
+  .titulo-editorial {
+    font-size: 32px;
+  }
+
+  .autor-editorial,
+  .precio-editorial {
+    font-size: 20px;
+  }
+
+  /* Botones */
+  .editorial-botones-fila {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .btn-cesta-editorial {
+    width: 100%;
+  }
+
+  .fila-inferior {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .detalle-relacionados {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+  }
+}

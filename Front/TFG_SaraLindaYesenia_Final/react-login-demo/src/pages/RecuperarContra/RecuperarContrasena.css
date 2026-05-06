@@ -1,0 +1,56 @@
+/* Fondo de toda la página */
+.recuperar-page {
+  background-color: #f9f7f4;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor del formulario */
+.recuperar-contenedor {
+  width: 85%;
+  max-width: 450px;
+  margin: 60px auto;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* centra todo horizontalmente */
+  text-align: center;
+}
+
+/* Título */
+.recuperar-contenedor h2 {
+  color: #6d96a6;
+  margin-bottom: 36px;
+  font-size: 48px;
+  font-family: 'Cormorant', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap; /* evita que se parta en dos líneas */
+}
+
+/* Formulario */
+.recuperar-contenedor form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+/* Texto explicativo */
+.recuperar-contenedor form label {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Mensaje */
+.recuperar-contenedor p {
+  margin-top: 15px;
+  font-size: 0.95rem;
+  color: #6d96a6;
+  text-align: center;
+}

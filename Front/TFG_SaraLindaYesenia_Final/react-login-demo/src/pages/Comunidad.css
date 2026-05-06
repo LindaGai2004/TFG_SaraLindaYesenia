@@ -1,0 +1,141 @@
+.comunidad-wrapper {
+  background-color: #f9f7f4; 
+  width: 100%;
+  min-height: 100vh;
+}
+
+.comunidad-page {
+  display: flex;
+  gap: 2rem;
+  margin: 0 auto;
+  margin-top: 60px;
+  max-width: 1200px;
+  width: 90%;
+  height: calc(100vh - 60px);
+}
+
+/* COLUMNA IZQUIERDA: scroll independiente */
+.columna-izquierda {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  overflow-y: auto; /* scroll solo aquí */
+  padding-right: 10px; /* evita que tape el scroll */
+}
+
+/* COLUMNA DERECHA: fija */
+.columna-derecha {
+  flex: 1;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+
+  /* Cambios clave aquí: */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ocupa el mismo alto que la izquierda */
+  overflow: hidden; /* Evita que el contenido se salga del recuadro blanco */
+}
+
+/* TITULO */
+.titulo-comunidad {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #184763;
+  margin-bottom: 1rem;
+}
+
+/* ESTILO DE TARJETAS (coherente con producto-card) */
+.comunidad-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: transform .2s ease;
+}
+
+.comunidad-card:hover {
+  transform: translateY(-4px);
+}
+
+/* BOTONES DE ACCIÓN */
+.btn-accion {
+  background: #8daebd;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background .2s ease;
+}
+
+.btn-accion:hover {
+  background: #6d96a6;
+}
+
+/* FORMULARIO DE COMENTARIOS */
+.comentarios-box {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comentarios-box input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.btn-enviar {
+  background: #6d96a6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.btn-enviar:hover {
+  background: #184763;
+}
+
+/* RESPONSIVE tablet --------------------------------------------------------------------*/
+@media (min-width: 769px) and (max-width: 1500px) {
+  .comunidad-page {
+    width: 80%; 
+    gap: 30px;
+  }
+}
+
+/* MÓVILES Y TABLETS PEQUEÑAS  */
+@media (max-width: 768px) {
+  .comunidad-page {
+    flex-direction: column;
+    height: auto;
+    width: 90%;
+    padding: 1rem;
+    margin: 60px auto;
+  }
+
+  .columna-izquierda {
+    overflow-y: visible;
+    height: auto;
+  }
+
+  .columna-derecha {
+    position: static;
+    width: 100%;
+    height: auto;
+    order: 2;
+  }
+  
+  .columna-izquierda {
+    order: 1;
+  }
+}

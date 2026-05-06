@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body style="font-family: Arial, sans-serif; color:#333;">
+
+    <h2>Hola <span th:text="${usuario.nombre}"></span>, 👋</h2>
+
+    <p>
+        Gracias por tu compra en <strong>Archives</strong>.
+    </p>
+
+    <p>
+        Tu pedido con número 
+        <strong th:text="${factura.numFactura}"></strong> 
+        se ha procesado correctamente.
+    </p>
+
+    <p>
+        Total pagado:
+        <strong th:text="${factura.precioTotal}"></strong> €
+    </p>
+
+    <br/>
+
+    <p>
+        Te adjuntamos la factura en PDF.
+    </p>
+
+    <hr/>
+
+    <p style="font-size:12px; color:gray;">
+        Este es un mensaje automático, por favor no respondas a este correo.
+    </p>
+
+</body>
+</html>

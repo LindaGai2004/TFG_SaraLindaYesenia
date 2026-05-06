@@ -1,0 +1,91 @@
+.verificacion-page {
+  background-color: #f9f7f4;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.verificacion-container {
+  width: 85%;
+  max-width: 450px;
+  margin: 60px auto;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.verificacion-container h2 {
+  color: #6d96a6;
+  margin-bottom: 20px;
+  font-size: 48px;
+  font-family: 'Cormorant', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.mensaje-email {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.loader {
+  border: 5px solid #ddd;
+  border-top: 5px solid #6d96a6;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.esperando {
+  font-size: 0.95rem;
+  color: #6d96a6;
+  margin-bottom: 30px;
+}
+
+.botones-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+
+.btn-reenviar {
+  flex: 1;
+  padding: 12px;
+  background-color: #ffffff;
+  border: 2px solid #6d96a6;
+  color: #6d96a6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-reenviar:hover {
+  background-color: #e8eef1;
+}
+
+.btn-continuar {
+  flex: 1;
+  padding: 12px;
+  background-color: #6d96a6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-continuar:hover {
+  background-color: #5a7f8d;
+}

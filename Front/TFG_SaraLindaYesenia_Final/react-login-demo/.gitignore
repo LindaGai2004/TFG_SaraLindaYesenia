@@ -1,0 +1,24 @@
+# Logs
+logs
+*.log
+
+# Node
+node_modules
+dist
+dist-ssr
+
+# Env
+.env
+*.local
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+
+# Backend (Spring)
+target/
+
+# PROPERTIES sensibles (chatbot SOLO)
+Back/chatbot-service/src/main/resources/application*.properties

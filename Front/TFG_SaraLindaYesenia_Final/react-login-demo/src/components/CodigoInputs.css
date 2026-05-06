@@ -1,0 +1,23 @@
+.codigo-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.codigo-inputs input {
+  width: 48px;
+  height: 58px;
+  text-align: center;
+  font-size: 1.8rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.2s ease;
+  background-color: white;
+}
+
+.codigo-inputs input:focus {
+  border-color: #6d96a6;
+  box-shadow: 0 0 4px rgba(109, 150, 166, 0.4);
+}

@@ -1,0 +1,234 @@
+.crear-publicacion {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.crear-top {
+  display: flex;
+  gap: 10px;
+}
+
+.crear-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.crear-textarea {
+  flex: 1;
+  border: none;
+  resize: none;
+  font-size: 15px;
+  outline: none;
+  padding: 10px;
+
+  min-height: 50px;
+  line-height: 1.4;
+}
+/* PREVIEW IMAGEN */
+.preview-imagen {
+  position: relative;
+  margin-top: 10px;
+}
+
+.preview-imagen img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+
+/* BOTÓN ELIMINAR IMAGEN */
+.preview-imagen button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(109, 150, 166, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  font-weight: bold;
+}
+
+.btn-eliminar:hover {
+  background: #c0392b;
+}
+
+/* BOTTOM */
+.crear-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn-subir, .btn-publicar {
+  /* Quitamos estilos anteriores y aplicamos la base del carrito */
+  width: auto; /* Dejamos auto para que se adapten al texto/icono */
+  min-width: 120px;
+  height: 35px;
+  padding: 0 16px;
+  background: #8daebd;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 1.5px solid #8daebd;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Capa blanca que entra */
+.btn-subir::before, .btn-publicar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: left 0.4s ease;
+  z-index: -1;
+}
+
+.btn-subir:hover::before, .btn-publicar:hover::before {
+  left: 0;
+}
+
+.btn-subir:hover, .btn-publicar:hover {
+  color: #8daebd;
+  border-color: #8daebd;
+  background: #8daebd;
+}
+
+/* Ajuste específico para el input oculto */
+.btn-subir input {
+  display: none;
+}
+
+/* Ajuste para el botón deshabilitado */
+.btn-publicar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-subir:hover svg, .btn-subir:hover img {
+  filter: brightness(0) saturate(100%) invert(75%) sepia(19%) saturate(543%) hue-rotate(156deg) brightness(88%) contrast(85%);
+}
+
+
+/* Buscador libros -------------------------------------------------------*/
+.buscador-libros {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.buscador-libros input {
+  width: 30%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+}
+.lista-resultados {
+  position: absolute;
+  background: white;
+  width: 100%;
+  border: 1px solid #ddd;
+  z-index: 10;
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+.lista-resultados li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+.lista-resultados li:hover {
+  background: #f0f2f5;
+}
+
+
+/* Producto ya seleccionado -----------------------------------------------*/
+.producto-etiquetado {
+  background-color: #f0f7ff;
+  border: 1px solid #cce4ff;
+  border-radius: 20px;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+}
+
+.producto-etiquetado img {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* RESPONSIVE tablet --------------------------------------------------------------------*/
+@media (min-width: 769px) and (max-width: 1500px) {
+  .buscador-libros input {
+    width: 40%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+  }
+}
+
+
+/* RESPONSIVE MÓVIL ------------------------------------------------------------*/
+@media (max-width: 768px) {
+  .crear-publicacion {
+    padding: 10px; 
+    margin-bottom: 15px;
+  }
+
+  .crear-avatar {
+    width: 35px;
+    height: 35px;
+  }
+
+  .crear-textarea {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .buscador-libros input {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .btn-subir, .btn-publicar {
+    min-width: 100px;
+    height: 32px;
+    font-size: 12px;
+    padding: 0 10px;
+  }
+
+  .producto-etiquetado {
+    font-size: 12px; /* Etiqueta de producto más pequeña */
+    padding: 5px 10px;
+  }
+}

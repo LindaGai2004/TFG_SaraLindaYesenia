@@ -1,0 +1,327 @@
+.publicacion-tarjeta {
+  background: #fffefc;
+  padding: 20px 20px 20px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+
+.publicacion-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.publicacion-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+.publicacion-info {
+  display: flex;
+  padding-left: 10px;
+  flex-direction: column;
+}
+
+.publicacion-usuario {
+  font-weight: bold;
+}
+
+.publicacion-fecha {
+  font-size: 12px;
+  color: #777;
+}
+
+/* Texto */
+.publicacion-texto {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+/* Imagen */
+.publicacion-imagen img {
+  width: 100%;
+  max-height: 400px;
+  /*object-fit: cover;*/
+  object-fit: contain;
+background: #f5f5f5;
+
+  border-radius: 12px;
+}
+
+
+/* Acciones -----------------------------------------------------------------*/
+.publicacion-acciones {
+  display: flex;
+  gap: 15px;
+  margin-top: 12px;
+}
+
+
+.btn-accion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #8daebd;
+  border: 1.5px solid #8daebd;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-accion:hover {
+  background: #6d96a6;
+  border-color: #6d96a6;
+}
+
+/* Comentario -------------------------------------------------------------------------- */
+.comentarios-box {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Un poco más de espacio para los avatares */
+}
+
+/* Área del Input y Botón enviar */
+.comentario-input {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 5px 15px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+  margin-bottom: 5px;
+}
+
+.comentario-input:focus-within {
+  border-color: #6d96a6;
+  box-shadow: 0 0 0 2px rgba(109, 150, 166, 0.1);
+}
+
+.comentario-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  background: transparent;
+}
+
+/* Contenedor que agrupa el avatar propio y la barra de input */
+.comentario-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Avatar circular al lado del input */
+.avatar-comentario-input {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Asegúrate de que el comentario-input ocupe el resto del ancho */
+.comentario-input {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 5px 15px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+}
+
+.btn-enviar {
+  background: none;
+  border: none;
+  color: #6d96a6;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.2s;
+}
+
+.btn-enviar:hover {
+  color: #4a6a78;
+  transform: scale(1.05);
+}
+
+/* Lista de comentarios */
+.lista-comentarios {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* --- NUEVAS CLASES PARA EL AVATAR A LA IZQUIERDA --- */
+
+.comentario-item-contenedor {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  animation: fadeIn 0.4s ease;
+}
+
+.avatar-comentario-mini {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #eee;
+  background-color: #fff;
+}
+
+.cuerpo-comentario {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+}
+
+.burbuja-comentario {
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 18px;
+  border-top-left-radius: 2px; /* Efecto de pico de mensaje */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.burbuja-comentario strong {
+  display: block;
+  color: #333;
+  font-size: 0.85rem;
+  margin-bottom: 3px;
+}
+
+.burbuja-comentario p {
+  margin: 0 !important;
+  font-size: 0.9rem !important;
+  color: #444 !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+}
+
+.comentario-fecha {
+  font-size: 0.7rem;
+  color: #aaa;
+  margin-top: 4px;
+  margin-left: 8px;
+}
+
+/* Botón Ver más */
+.btn-ver-mas-comunidad {
+  background: none;
+  border: none;
+  color: #6d96a6;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-start;
+  padding: 5px 0;
+  margin-top: 5px;
+}
+
+.btn-ver-mas-comunidad:hover {
+  text-decoration: underline;
+}
+
+.txt-sin-comentarios {
+  font-size: 0.85rem;
+  color: #999;
+  text-align: center;
+  font-style: italic;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.icono-accion {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}
+
+
+
+/* Enlace para etiquetar libro -------------------------------------------*/
+.enlace-producto-contenedor {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #cce4ff;
+}
+
+.enlace-producto-detalle {
+  color: #8daebd;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.enlace-producto-detalle:hover {
+  text-decoration: underline;
+  color: #8daebd;
+}
+
+.img-libro-enlace {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+
+/* Botón eliminar publicación -------------------------------------------*/
+.btn-eliminar {
+  background: #8daebd;
+  border: 1.5px solid #8daebd;
+  cursor: pointer;
+  width: 32px; 
+  height: 32px; 
+  min-width: 32px;
+  
+  padding: 0;
+  border-radius: 8px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-eliminar:hover {
+  background: white;
+  border-color: #e74c3c;
+}
+
+.btn-eliminar img, .btn-eliminar .icono-accion {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  transition: filter 0.2s ease;
+}
+
+.btn-eliminar:hover img {
+  filter: invert(27%) sepia(91%) saturate(2352%) hue-rotate(346deg) brightness(91%) contrast(88%);
+}

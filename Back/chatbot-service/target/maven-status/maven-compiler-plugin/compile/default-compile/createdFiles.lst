@@ -1,0 +1,7 @@
+chatbot\configs\RestConfig.class
+chatbot\ChatbotServiceApplication.class
+chatbot\restcontroller\ChatRestController.class
+chatbot\dto\ChatRequest.class
+chatbot\service\ChatService.class
+chatbot\service\ChatServiceImpl.class
+chatbot\dto\ChatResponse.class

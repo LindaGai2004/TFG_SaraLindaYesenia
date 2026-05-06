@@ -1,0 +1,36 @@
+.paypal-yellow-btn {
+  width: 100%;
+  padding: 0.95rem;
+  background: #ffc439;
+  color: #003087;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+.paypal-yellow-btn:hover { background: #f0b429; }
+
+/* Hosted Fields — los iframes de PayPal se inyectan dentro de estos divs */
+.hosted-field {
+  border: 1.5px solid #e0ddd8;
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  height: 42px;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+.hosted-field.braintree-hosted-fields-focused {
+  border-color: #c9895a;
+}
+
+.paypal-popup-wrapper {
+  margin-top: 0.5rem;
+}
+
+/* Fuerza al iframe de PayPal a tener border-radius */
+.paypal-popup-wrapper iframe {
+  border-radius: 10px !important;
+}
