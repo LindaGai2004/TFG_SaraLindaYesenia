@@ -173,6 +173,7 @@ public class PedidoServiceImpl implements PedidoService {
 	            pedido.getUsuario().getNombre(),
 	            pedido.getUsuario().getDireccion(),
 	            pedido.getUsuario().getEmail(),
+	            pedido.getUsuario().getAvatar(),
 	            items
 	    );
 	}

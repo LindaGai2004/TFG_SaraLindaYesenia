@@ -55,7 +55,17 @@ export default function Clientes({
               return (
                 <tr key={c.id} onClick={() => setPopup({ type: 'client', data: c })} className="cursor-pointer">
                   <td>
-                    <div className="table-avatar bg-green-light">👤</div>
+                    <div className="table-avatar">
+                      {c.avatar
+                        ? <img
+                            src={`http://localhost:9001${c.avatar.replace('/uploads/', '/upload/')}`}
+                            alt={c.nombre}
+                            style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+                            onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+                          />
+                        : null}
+                      <span style={{ display: c.avatar ? 'none' : 'flex' }}>👤</span>
+                    </div>
                   </td>
                   <td className="text-xs font-semibold text-primary">{c.nombre}</td>
                   <td className="text-xs text-primary">{c.apellidos}</td>
@@ -88,7 +98,27 @@ export default function Clientes({
       {popup?.type === 'client' && (
         <Modal open width="max-w-lg" onClose={() => setPopup(null)} title="👤 Clientes">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-green-light">👤</div>
+            <div style={{ 
+                width: '48px', 
+                height: '48px', 
+                borderRadius: '50%', 
+                overflow: 'hidden', 
+                flexShrink: 0,
+                backgroundColor: '#dce8ed',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+              {popup.data.avatar
+                ? <img
+                    src={`http://localhost:9001${popup.data.avatar.replace('/uploads/', '/upload/')}`}
+                    alt={popup.data.nombre}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={e => { e.currentTarget.style.display='none'; }}
+                  />
+                : <span className="text-xl">👤</span>
+              }
+            </div>
             <div>
               <p className="font-bold text-primary">{popup.data.nombre} {popup.data.apellidos}</p>
               <p className="text-xs text-secondary">{popup.data.username} · {popup.data.email}</p>

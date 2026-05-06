@@ -86,6 +86,7 @@ public class SecurityConfig {
             	    "/libros/**",
             	    "/papelerias/**",
             	    "/uploads/**",
+            	    "/upload/**",
             	    "/generos/**",
             	    "/idiomas/**",
             	    "/categorias/**",
@@ -113,7 +114,7 @@ public class SecurityConfig {
             .requestMatchers("/carrito/**").authenticated()
             .requestMatchers("/rol/**").authenticated()
             .requestMatchers("/api/paypal/**").permitAll()
-            .requestMatchers("/uploads/**").permitAll()
+            .requestMatchers("/uploads/**","/upload/**").permitAll()
             .requestMatchers("/productos/buscar-chatbot").permitAll()
             .requestMatchers("/productos/filtrar-chatbot").permitAll()
             .requestMatchers("/usuarios/favoritos/**").authenticated()

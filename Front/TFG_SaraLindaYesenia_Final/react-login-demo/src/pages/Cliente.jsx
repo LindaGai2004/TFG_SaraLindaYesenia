@@ -86,7 +86,7 @@ export default function Portfolio() {
   const [profileImagePreview, setProfileImagePreview] = useState('');
 
   const statusStyle = {
-    CARRITO: { bg: '#dbeafe', color: '#1d4ed8', label: 'Añadido' },
+    CARRITO: { bg: '#4A5E68', color: '#F7F5F2', label: 'Añadido' },
     REALIZADO: { bg: '#dce8ed', color: '#3f6b7c', label: 'Realizado' },
     DEVUELTO: { bg: '#fee2e2', color: '#991b1b', label: 'Devuelto' },
     CANCELADO: { bg: '#fef3c7', color: '#92400e', label: 'Cancelado' },
@@ -527,16 +527,11 @@ export default function Portfolio() {
   return (
     <div className="app-container">
       <div className="app-sidebar">
-        <div
-          className="sidebar-avatar"
-          onClick={() => setPage('perfil')}
-        >
-          <img
-            src={profileImageSrc}
-            alt="Profile"
-            onError={e => { e.target.style.display = 'none'; }}
-          />
-        </div>
+        <div onClick={() => navigate('/')}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', flexShrink: 0 }}
+              >
+                <img src="/libro.png" alt="Logo" style={{ width: 50, height: 'auto', paddingBottom: '15px' }} />
+              </div>
 
         <a className={`app-sidebar-link ${page === 'home' ? 'active' : ''}`} onClick={() => setPage('home')}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -576,9 +571,7 @@ export default function Portfolio() {
           <span className="nav-label">Comunidad</span>
         </a>
 
-        <div style={{ flex: 1 }} />
         <div className="sidebar-divider" />
-
         <a className={`app-sidebar-link ${page === 'perfil' ? 'active' : ''}`} onClick={() => setPage('perfil')}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -600,21 +593,7 @@ export default function Portfolio() {
       <div className="app-main-wrapper">
         <div className="app-main">
           <div className="app-header">
-              <div
-                onClick={() => navigate('/')}
-                style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', flexShrink: 0 }}
-              >
-                <span style={{ 
-                  fontSize: '1.3rem', 
-                  fontWeight: 600, 
-                  letterSpacing: '-0.5px', 
-                  color: 'black',
-                  fontFamily: '"Ablafit", sans-serif'
-                }}>
-                  Archives
-                </span>
-                <img src="/libro.png" alt="Logo" style={{ width: 40, height: 'auto' }} />
-              </div>
+              
 
             <div className="search-wrapper">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -694,7 +673,7 @@ export default function Portfolio() {
           <div className="app-scroll">
             {page === 'home' && (
               <>
-                <div>
+                <div style={{ paddingLeft: '20px' }}>
                   <div className="section-header">
                     <span className="section-title">Historial</span>
                     <div className="nav-arrows">
@@ -779,7 +758,7 @@ export default function Portfolio() {
             {page === 'pedidos' && (
               <div className="orders-section">
                 <div className="orders-header">
-                  <div>
+                  <div style={{ paddingLeft: '20px' }}>
                     <span className="section-title">Mis Pedidos</span>
                     <p className="orders-subtitle">
                       {pedidos.length === 0

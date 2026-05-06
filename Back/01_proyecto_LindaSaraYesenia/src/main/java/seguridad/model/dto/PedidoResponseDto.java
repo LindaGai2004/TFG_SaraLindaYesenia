@@ -31,6 +31,7 @@ public class PedidoResponseDto {
 	private String nombre;
 	private String direccion;
 	private String email;
+	private String avatar; 
 	
 	private List<PedidoItemResponseDto> items;
 

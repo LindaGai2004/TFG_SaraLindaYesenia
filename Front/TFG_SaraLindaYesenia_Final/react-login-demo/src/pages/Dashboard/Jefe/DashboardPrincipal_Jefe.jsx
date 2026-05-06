@@ -72,7 +72,23 @@ export default function DashboardJefe({
               <tbody>
                 {(trabajadores ?? []).map((t) => (
                   <tr key={t.idUsuario ?? t.id}>
-                    <td><div className="table-avatar bg-blue-light">👤</div></td>
+                    <td>
+                      <div style={{
+                        width: '36px', height: '36px', borderRadius: '50%',
+                        overflow: 'hidden', backgroundColor: '#dce8ed',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                      }}>
+                        {t.avatar
+                          ? <img
+                              src={`http://localhost:9001${t.avatar.replace('/uploads/', '/upload/')}`}
+                              alt={t.nombre}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                              onError={e => { e.currentTarget.style.display='none'; }}
+                            />
+                          : <span style={{ fontSize: '1rem' }}>👤</span>
+                        }
+                      </div>
+                    </td>
                     <td className="text-xs font-semibold text-primary">{t.nombre}</td>
                     <td className="text-xs text-primary">{t.apellidos}</td>
                     <td className="text-xs text-secondary">{t.email}</td>
@@ -108,7 +124,23 @@ export default function DashboardJefe({
                   const pedCnt = (pedidos ?? []).filter((o) => o.email === c.email).length;
                   return (
                     <tr key={c.idUsuario ?? c.id}>
-                      <td><div className="table-avatar bg-green-light">👤</div></td>
+                      <td>
+                        <div style={{
+                          width: '36px', height: '36px', borderRadius: '50%',
+                          overflow: 'hidden', backgroundColor: '#dce8ed',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                        }}>
+                          {c.avatar
+                            ? <img
+                                src={`http://localhost:9001${c.avatar.replace('/uploads/', '/upload/')}`}
+                                alt={c.nombre}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                onError={e => { e.currentTarget.style.display='none'; }}
+                              />
+                            : <span style={{ fontSize: '1rem' }}>👤</span>
+                          }
+                        </div>
+                      </td>
                       <td className="text-xs font-semibold text-primary">{c.nombre}</td>
                       <td className="text-xs font-semibold text-primary">{c.apellidos}</td>
                       <td className="text-xs text-secondary">{c.email}</td>

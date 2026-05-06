@@ -161,7 +161,27 @@ export default function Dashboard({
                   return (
                     <tr key={c.id}>
                       <td>
-                        <div className="table-avatar bg-green-light">👤</div>
+                        <div style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          overflow: 'hidden',
+                          backgroundColor: '#dce8ed',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          {c.avatar
+                            ? <img
+                                src={`http://localhost:9001${c.avatar.replace('/uploads/', '/upload/')}`}
+                                alt={c.nombre}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                onError={e => { e.currentTarget.style.display='none'; }}
+                              />
+                            : <span style={{ fontSize: '1rem' }}>👤</span>
+                          }
+                        </div>
                       </td>
                       <td className="text-xs font-semibold text-primary">{c.nombre}</td>
                       <td className="text-xs font-semibold text-primary">{c.apellidos}</td>
