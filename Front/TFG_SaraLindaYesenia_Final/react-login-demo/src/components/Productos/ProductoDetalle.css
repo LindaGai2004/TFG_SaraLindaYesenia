@@ -355,12 +355,17 @@
 
 /* Botón cerrar */
 .btn-cerrar-aviso {
-  background: transparent;
-  border: none;
+  background: #e0e0e0;
+  padding: 6px 12px;
+  border: 1.5px solid #6d96a6;
+  border-radius: 6px;
   color: #184763;
   cursor: pointer;
   font-weight: 600;
 }
+
+
+
 
 
 /* SECCIÓN RESEÑAS --------------------------------------------------------- */

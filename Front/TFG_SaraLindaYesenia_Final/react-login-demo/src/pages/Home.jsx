@@ -285,7 +285,7 @@ export default function Home() {
         {/* Bloque de video */}
         <div className="bloque-video">
           <video className="video-fondo" autoPlay muted loop>
-            <source src="/home-video-1.mp4" type="video/mp4" />
+            <source src="/home-video.mp4" type="video/mp4" />
           </video>
 
           <div className="contenido-video">

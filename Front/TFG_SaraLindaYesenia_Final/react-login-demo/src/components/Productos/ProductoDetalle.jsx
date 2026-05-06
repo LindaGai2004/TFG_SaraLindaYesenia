@@ -251,12 +251,14 @@ export default function ProductoDetalle() {
     try {
       if (esFavorito) {
         await apiDelete(`/usuarios/favoritos/${producto.id}`);
+        setMensaje("Eliminado de favoritos");
       } else {
         await apiPost(`/usuarios/favoritos/${producto.id}`);
+        setMensaje("Guardado en favoritos");
       }
 
       setEsFavorito(!esFavorito);
-
+      setTimeout(() => setMensaje(""), 2000);
     } catch (error) {
       console.error("Error al actualizar favorito:", error);
     }
@@ -281,7 +283,6 @@ export default function ProductoDetalle() {
         <div className="notificacion-login">
           <p>Debes iniciar sesión para guardar favoritos.</p>
           <div className="notificacion-botones">
-            {/* Cambiado: usar navigate para no perder el state */}
             <button className="btn-login-aviso"
               onClick={() => navigate('/login', { state: { from: window.location.pathname } })}>
               Ir al login
@@ -309,7 +310,16 @@ export default function ProductoDetalle() {
         </div>
       )}
 
-      {mensaje && <div className="notificacion-toast">{mensaje}</div>}
+      {mensaje && (
+        <div className="notificacion-login">
+          <p>{mensaje}</p>
+          <div className="notificacion-botones">
+            <button className="btn-cerrar-aviso" onClick={() => setMensaje("")}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="fondo-detalle">
 
@@ -366,6 +376,8 @@ export default function ProductoDetalle() {
                       }
 
                       addToCart(producto.id, 1);
+                      setMensaje(`¡Producto añadido al carrito!`);
+                      setTimeout(() => setMensaje(""), 2000);
                     }}
                   >
                     Añadir al carrito
@@ -386,6 +398,7 @@ export default function ProductoDetalle() {
                 </div>
               </div>
             </div>
+
             {/* SECCIÓN DE PESTAÑAS*/}
             <div className="contenedor-pestañas">
               <div className="cabecera-pestañas">
@@ -560,7 +573,7 @@ export default function ProductoDetalle() {
                                   src={
                                     r.usuario.avatar 
                                       ? getApiUrl(r.usuario.avatar) 
-                                      : "/assets/default-user.png"
+                                      : "/default-user.png"
                                   }
                                   alt={`Avatar de ${r.usuario.username}`}
                                   className="avatar-usuario" // Usamos la clase específica que creamos antes

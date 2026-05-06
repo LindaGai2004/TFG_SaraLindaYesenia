@@ -153,8 +153,8 @@ create table publicaciones (
     fecha datetime default current_timestamp,
     likes int default 0,
     comentarios int default 0,
-    foreign key(id_usuario) references usuarios(id_usuario),
-    foreign key(id_producto) references productos(id_producto)
+    foreign key(id_usuario) references usuarios(id_usuario) on delete cascade,
+    foreign key(id_producto) references productos(id_producto) on delete set null
 );
 
 create table likes_publicacion (
@@ -163,8 +163,8 @@ create table likes_publicacion (
     id_usuario int not null,
     fecha datetime default current_timestamp,
     unique (id_publicacion, id_usuario), /* evita que un usuario dé like dos veces a la misma publicacion */
-	foreign key (id_publicacion) references publicaciones(id_publicacion),
-    foreign key (id_usuario) references usuarios(id_usuario)
+	foreign key (id_publicacion) references publicaciones(id_publicacion) on delete cascade,
+    foreign key (id_usuario) references usuarios(id_usuario) on delete cascade
 );
 
 create table comentarios_publicacion (

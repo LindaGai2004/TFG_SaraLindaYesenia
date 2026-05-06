@@ -30,7 +30,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
       <div className="publicacion-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <img
-            src={publicacion.usuarioAvatar ? getApiUrl(publicacion.usuarioAvatar) : "/assets/default-user.png"}
+            src={publicacion.usuarioAvatar ? getApiUrl(publicacion.usuarioAvatar) : "/default-user.png"}
             alt="avatar"
             className="publicacion-avatar"
           />
@@ -129,7 +129,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
           {/* Input con tu avatar conectado */}
           <div className="comentario-input-wrapper">
             <img 
-              src={miAvatar ? getApiUrl(miAvatar) : "/assets/default-user.png"} 
+              src={miAvatar ? getApiUrl(miAvatar) : "/default-user.png"} 
               alt="mi avatar" 
               className="avatar-comentario-input" 
             />
@@ -164,7 +164,7 @@ export default function PublicacionTarjeta({ publicacion, onLike, onComentar, on
             {[...comentariosVisibles].reverse().map((c, i) => (
               <div key={i} className="comentario-item-contenedor">
                 <img 
-                  src={c.usuarioAvatar ? getApiUrl(c.usuarioAvatar) : "/assets/default-user.png"} 
+                  src={c.usuarioAvatar ? getApiUrl(c.usuarioAvatar) : "/default-user.png"} 
                   alt="avatar" 
                   className="avatar-comentario-mini" 
                 />

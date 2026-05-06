@@ -81,7 +81,21 @@ export default function Pedidos({ pedidos, clients, onCancelPedido }) {
                   <td className="text-xs font-bold text-green">#{o.idPedido}</td>
                   <td>
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs bg-green-light">👤</div>
+                      <div style={{
+                      width: '28px', height: '28px', borderRadius: '50%',
+                      overflow: 'hidden', backgroundColor: '#dce8ed',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                    }}>
+                      {o.avatar
+                        ? <img
+                            src={`http://localhost:9001${o.avatar.replace('/uploads/', '/upload/')}`}
+                            alt={o.nombre}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            onError={e => { e.currentTarget.style.display='none'; }}
+                          />
+                        : <span style={{ fontSize: '0.75rem' }}>👤</span>
+                      }
+                    </div>
                       <span className="text-xs font-semibold text-primary">{o.nombre}</span>
                     </div>
                   </td>
@@ -120,7 +134,21 @@ export default function Pedidos({ pedidos, clients, onCancelPedido }) {
             <span className="text-xs font-bold px-3 py-0.5 rounded-full" style={statusStyle[popup.data.estadoPedido]}>{popup.data.estadoPedido}</span>
           </div>
           <div className="flex items-center gap-3 p-3 rounded-xl mb-3 bg-green-light">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center text-base bg-green-light">👤</div>
+            <div style={{
+              width: '36px', height: '36px', borderRadius: '50%',
+              overflow: 'hidden', backgroundColor: '#dce8ed',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+            }}>
+              {popup.data.avatar
+                ? <img
+                    src={`http://localhost:9001${popup.data.avatar.replace('/uploads/', '/upload/')}`}
+                    alt={popup.data.nombre}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={e => { e.currentTarget.style.display='none'; }}
+                  />
+                : <span style={{ fontSize: '1rem' }}>👤</span>
+              }
+            </div>
             <div>
               <p className="text-xs font-bold text-primary">{popup.data.nombre}</p>
               <p className="text-xs text-secondary">{popup.data.email}</p>

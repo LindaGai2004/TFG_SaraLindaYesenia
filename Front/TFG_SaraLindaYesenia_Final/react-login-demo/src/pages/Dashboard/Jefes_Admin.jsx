@@ -57,7 +57,29 @@ export default function Jefes({
           <tbody>
             {filtered.map(j => (
               <tr key={j.id}>
-                <td><div className="table-avatar bg-amber-light"></div></td>
+                <td>
+                   <div style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    backgroundColor: '#dce8ed',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    {j.avatar
+                      ? <img
+                          src={`http://localhost:9001${j.avatar.replace('/uploads/', '/upload/')}`}
+                          alt={j.nombre}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          onError={e => { e.currentTarget.style.display='none'; }}
+                        />
+                      : <span style={{ fontSize: '1rem' }}>👤</span>
+                    }
+                  </div>
+                </td>
                 <td className="text-xs font-semibold text-primary">{j.nombre}</td>
                 <td className="text-xs text-primary">{j.apellidos}</td>
                 <td className="text-xs text-secondary">{j.email}</td>

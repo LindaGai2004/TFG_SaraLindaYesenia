@@ -464,8 +464,8 @@
   }
   
   .btn-primary {
-    background: var(--admin-success);
-    color: #fff;
+    background: #8daebd;
+    color: #F7F5F2;
   }
   
   .btn-primary:hover {
@@ -718,7 +718,7 @@
   .text-blue { color: #3b82f6; }
   .text-amber { color: #f59e0b; }
   
-  .bg-green-light { background: var(--admin-success-soft); }
+ /* .bg-green-light { background: var(--admin-success-soft); }*/
   .bg-blue-light { background: #dbeafe; }
   .bg-amber-light { background: #fef3c7; }
   
